@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/BackEnd" libraries="{TokoKoHong-Alpha/BackEnd/node_modules}" />
+    <file url="file://$PROJECT_DIR$/Desktop-App" libraries="{TokoKoHong-Alpha/Desktop-App/node_modules}" />
+  </component>
+</project>
