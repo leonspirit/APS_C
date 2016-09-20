@@ -37,8 +37,8 @@ router.post('/tambah_barang', function(req,res){
     connection.query(querystring, barang, function(err,result){
 
         if(err) throw err;
-        var querystring2 = 'INSERT INTO satuanbarang SET barangID = ?, harga_jual = ?, harga_pokok = ?, satuan = ?';
-        var satuan = [result.insertId, req.body.harga_jual, req.body.harga_pokok, req.body.satuan];
+        var querystring2 = 'INSERT INTO satuanbarang SET barangID = ?, harga_jual = ?, harga_pokok = ?, satuan = ?, konversi = ?';
+        var satuan = [result.insertId, req.body.harga_jual, req.body.harga_pokok, req.body.satuan, req.body.konversi];
         connection.query(querystring2, satuan, function(err2, result2){
             if(err2) throw err2;
             var resp = {barangID:result.insertId, satuanID:result2.insertId};
@@ -50,8 +50,8 @@ router.post('/tambah_barang', function(req,res){
 
 router.post('/tambah_satuan', function(req,res){
 
-    var satuan = [req.body.barangID, req.body.harga_jual, req.body.harga_pokok, req.body.satuan];
-    var querystring = 'INSERT INTO satuanbarang SET barangID = ?, harga_jual = ?, harga_pokok = ?, satuan = ?';
+    var satuan = [req.body.barangID, req.body.harga_jual, req.body.harga_pokok, req.body.satuan, req.body.konversi];
+    var querystring = 'INSERT INTO satuanbarang SET barangID = ?, harga_jual = ?, harga_pokok = ?, satuan = ?, konversi = ?';
     connection.query(querystring, satuan, function(err, result){
         if(err) throw err;
         var resp = {satuanID:result.insertId};
