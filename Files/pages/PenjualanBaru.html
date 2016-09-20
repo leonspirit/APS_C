@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Penjualan Baru</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="../plugins/iCheck/all.css">
+
+    <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+    
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
+    <script>
+        window.$ =window.jQuery = require('jquery');
+
+        function RemoveRow(r)
+        {
+            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
+
+            var i = r.parentNode.parentNode.rowIndex;
+            console.log(i);
+
+            var rowCount = tableBody.rows.length;
+            var rowNum = rowCount-1;
+
+            tableBody.deleteRow(i-1);
+
+            var j;
+            for (j=i;j<rowNum;j++)
+            {
+                console.log(j);
+                tableBody.rows[j].cells[0].innerHTML = j.toString();
+                tableBody.rows[j].cells[1].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-1");
+                tableBody.rows[j].cells[2].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-2");
+                tableBody.rows[j].cells[3].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-3");
+                tableBody.rows[j].cells[6].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-4");
+            }
+        }
+
+        function AddRow()
+        {
+            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
+
+            var rowCount = tableBody.rows.length;
+            var row = tableBody.insertRow(rowCount);
+            var rowNum = rowCount+1;
+
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = rowNum.toString();//nanti ganti
+
+            var cell2 = row.insertCell(1);
+            cell2.setAttribute("style", "padding:0");
+            var inputBarang = document.createElement("input");
+            inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
+            inputBarang.setAttribute("list", "DataListBarang");
+            inputBarang.setAttribute("style", "width:100%;");
+            inputBarang.setAttribute("class", "form-control input-data-"+rowNum.toString());
+            cell2.appendChild(inputBarang);
+
+            var cell3 = row.insertCell(2);
+            cell3.setAttribute("style", "padding:0");
+            var inputJumlah = document.createElement("input");
+            inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
+            inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
+            inputJumlah.setAttribute("type", "number");
+            inputJumlah.setAttribute("min", "0");
+            inputJumlah.setAttribute("style", "width:100%;");
+            cell3.appendChild(inputJumlah);
+
+            var cell4 = row.insertCell(3);
+            cell4.setAttribute("style", "padding:0");
+            var inputSatuan = document.createElement("input");
+            inputSatuan.setAttribute("list", "DataListSatuan");
+            inputSatuan.setAttribute("style", "width:100%");
+            inputSatuan.setAttribute("class", "form-control input-data"+rowNum.toString());
+            inputSatuan.setAttribute("id", "input-"+rowNum.toString()+"-3");
+            cell4.appendChild(inputSatuan);
+
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            cell6.innerHTML = "Rp. 0";
+
+            var cell7 = row.insertCell(6);
+            cell7.setAttribute("style", "padding:0");
+            var inputDiscGroup = document.createElement("div");
+            inputDiscGroup.setAttribute("style", "width:100%;");
+            inputDiscGroup.setAttribute("class", "input-group");
+            var inputDiscAddOn = document.createElement("span");
+            inputDiscAddOn.setAttribute("class","input-group-addon");
+            inputDiscAddOn.innerHTML="%";
+            var inputDisc= document.createElement("input");
+            inputDisc.setAttribute("type", "number");
+            inputDisc.setAttribute("min", "0");
+            inputDisc.setAttribute("max", "100");
+            inputDisc.setAttribute("class", "form-control input-data"+rowNum.toString());
+            inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-4");
+            inputDiscGroup.appendChild(inputDisc);
+            inputDiscGroup.appendChild(inputDiscAddOn);
+            cell7.appendChild(inputDiscGroup);
+
+            var cell8 = row.insertCell(7);
+            cell8.innerHTML = "Rp. 0";
+
+            //if admin
+            var cell9 = row.insertCell(8);
+            cell9.innerHTML = "Rp. 0";
+            var cell10 = row.insertCell(9);
+            cell10.innerHTML = "Rp. 0";
+
+            var cell11 = row.insertCell(10);
+            var delButton = document.createElement("a");
+            delButton.setAttribute("class", "del-row")
+            delButton.setAttribute("onclick", "RemoveRow(this);")
+            delButton.setAttribute("style", "color:red;")
+            var delIcon = document.createElement("i");
+            delIcon.setAttribute("class", "glyphicon glyphicon-remove");
+            delButton.appendChild(delIcon);
+            cell11.appendChild(delButton);
+        }
+        function ResetTable() {
+            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
+
+            while (true) {
+                if (tableBody.rows.length==1)
+                    break;
+                tableBody.deleteRow(-1);
+            }
+            tableBody.rows[0].cells[5].innerHTML = "Rp. 0";
+            tableBody.rows[0].cells[7].innerHTML = "Rp. 0";
+            tableBody.rows[0].cells[8].innerHTML = "Rp. 0";
+            tableBody.rows[0].cells[9].innerHTML = "Rp. 0";
+        }
+
+
+    </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a  class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>TOKO</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>TOKO</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          
+          <li class="user user-menu">
+            <a  class="dropdown-toggle" data-toggle="dropdown">
+              
+              <span class="hidden-xs">Welcome,Admin</span>
+            </a>
+            
+          </li>
+            <li class="user user-menu">
+            <a href="../index.html">
+              
+              <span class="hidden-xs">Log Out</span>
+            </a>
+            
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <!--<li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>-->
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      
+      <ul class="sidebar-menu">
+          <li>
+          <a href="Stok.html?stat=admin">
+            <i class="fa fa-archive"></i> <span>Stok Barang</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        
+        <li >
+          <a href="Laporanpenjualan.html?stat=admin">
+            <i class="fa fa-calendar-minus-o"></i> <span>Laporan Penjualan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          
+          <li>
+          <a href="Laporanpembelian.html?stat=admin">
+            <i class="fa fa-calendar-plus-o"></i> <span>Laporan Pembelian</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          <li class="active">
+          <a href="PenjualanBaru.html?stat=admin">
+            <i class="fa fa-minus-square"></i> <span>Penjualan Baru</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          <li>
+          <a href="PembelianBaru.html?stat=admin">
+            <i class="fa fa-plus-square"></i> <span>Pembelian Baru</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          <li>
+          <a href="Hutang.html?stat=admin">
+            <i class="fa fa-truck"></i> <span>Hutang</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          <li>
+          <a href="Piutang.html?stat=admin">
+            <i class="fa fa-truck"></i> <span>Piutang</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          
+          <li>
+          <a href="DaftarPelanggan.html?stat=admin">
+            <i class="fa fa-users"></i> <span>Daftar Pelanggan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          <li>
+          <a href="DaftarKaryawan.html?stat=admin">
+            <i class="fa fa-user-secret"></i> <span>Daftar Karyawan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+          
+          <li>
+          <a href="DaftarSupplier.html?stat=admin">
+            <i class="fa fa-truck"></i> <span>Daftar Supplier</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Penjualan Baru
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Penjualan Baru</li>
+      </ol>
+    </section>
+      <div class="itemEditAdd-modal">
+        <div class="modal fade"  id="myModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tambah Item</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+          </div>
+        <!-- /.modal -->
+      </div>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+        <div class="box box-primary">
+           <!-- <div class="box-header">
+              <h3 class="box-title">Penjualan</h3>
+            </div>-->
+            <datalist id="DataListPelanggan" >
+                <option value="andi">
+                <option value="budi">
+                <option value="cici">
+            </datalist>
+            <datalist id="DataListToko">
+                <option value="Toko A">
+                <option value="Toko B">
+                <option value="Toko C">
+            </datalist>
+            <div class="box-body">
+                
+                <form role="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Pelanggan</label>
+                            <input  style="width: 100%;" class="form-control" list="DataListPelanggan">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Toko</label>
+                            <input  style="width: 100%;" class="form-control" list="DataListToko">
+
+                        </div>
+                         <div class="form-group">
+                            <label>Kirim Ke</label>
+                              <input type="text" class="form-control pull-right">
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tanggal Penjualan</label>
+
+                            <div class="input-group date">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" id="datepicker">
+                            </div>
+                            <!-- /.input group -->
+                          </div>
+                        
+                        <div class="form-group">
+                            <label>Jatuh Tempo</label>
+                            <div class="input-group date">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" id="datepicker2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                                        
+                </form>
+                  <!-- /.box-body -->
+            </div>
+            <div class="box-header">
+              <h3 class="box-title">Item</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <datalist  id="DataListBarang">
+                    <option value="B001 - Buku Cerita">
+                    <option value="S001 - TV">
+                    <option value="C002 - Handphone">
+                </datalist>
+                <datalist id="DataListSatuan">
+                    <option value="butir">
+                    <option value="Lusin">
+                    <option value="Gros">
+                </datalist>
+              <table id="itemTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                  <th>Barang</th>
+                  <th>Qty</th>
+                  <th>Satuan</th>
+                    <th>Konversi</th>
+                    
+                    <th>Harga</th>
+                    <th>Disc</th>
+                    <th>Subtotal</th>
+                 <!--   <?php if (isset($_GET['stat']) && $_GET['stat']=='admin') { ?>-->
+                    <th>H.Pokok</th>
+                    <th>Untung</th>
+                 <!--   <?php  } ?>-->
+                    <th ></th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                <tr>
+                    <td>1</td>
+                    <td  style="padding:0;">
+                        <input type="text" class="form-control input-data-1" id="input-data-1-1" style="width: 100%;" list="DataListBarang">
+                    </td>
+                    <td  style="padding:0;">
+                      <input  id="input-data-1-2" type="number" min=0 style="width: 100%;" class="input-data-1 form-control">
+                    </td>
+                    <td  style="padding:0;">
+                        <input id="input-data-1-3" style="width: 100%;" class="input-data-1 form-control" list="DataListSatuan" >
+
+                    </td>
+                    <td></td>
+                    <td>
+                        Rp. 0
+                    </td>
+                    <td style="padding:0;">
+                        <div class="input-group">
+                        <input id="input-data-1-4" type="Number" class="input-data-1 form-control" >
+                        <span class="input-group-addon">%</span>
+                      </div>
+                     </td>
+                    <td>Rp. 0</td>
+                   <!-- <?php if (isset($_GET['stat']) && $_GET['stat']=='admin') { ?>-->
+                    <td>Rp. 0</td>
+                    <td>Rp. 0</td>
+                  <!--  <?php } ?>-->
+                    <td>
+                        <a onclick="RemoveRow(this);" style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
+                    </td>
+                </tr>
+                    
+                </tbody>
+                    
+                <tfoot>
+                <tr>
+                    <th></th>
+                  <th colspan="6">Total Harga</th>
+                  <th colspan=2>Rp. 20.500.000</th>
+                </tr>
+                </tfoot>
+              </table>
+                
+            </div>
+            
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <Button id ="resetButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Reset</Button>
+                 <Button id="addButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Tambah</Button>
+                <Button class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
+                
+            </div>
+             
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+    <footer class="main-footer">
+    </footer>
+
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+    
+<!-- bootstrap datepicker -->
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- DataTables -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+    
+<!-- SlimScroll -->
+<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    
+<!-- iCheck 1.0.1 -->
+<script src="../plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- page script -->
+<!--<script src="../plugins/jquery-autotab/js/jquery.autotab.min.js"></script>-->
+<script>
+  $(function () {
+    $('#itemTable').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
+      //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+      $('#datepicker2').datepicker({
+      autoclose: true
+    });
+      //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+
+   // $('.input-data-1').autotab('number');
+
+      document.getElementById("addButton").onclick = function()
+      {
+          window.scrollTo(0, document.body.scrollHeight);
+          AddRow();
+      };
+      document.getElementById("resetButton").onclick = function()
+      {
+          ResetTable();
+      }
+
+
+      
+
+
+  });
+</script>
+</body>
+</html>
