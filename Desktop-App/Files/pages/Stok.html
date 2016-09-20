@@ -83,32 +83,27 @@
     <section class="sidebar">
       
       <ul class="sidebar-menu">
-          <li class="active">
+        <li class="active">
           <a href="Stok.html?stat=admin">
             <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-
           </a>
         </li>
-        
         <li>
           <a href="Laporanpenjualan.html?stat=admin">
             <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
           </a>
         </li>
-          
           <li>
           <a href="Laporanpembelian.html?stat=admin">
             <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-
           </a>
         </li>
-          <li>
+        <li>
           <a href="PenjualanBaru.html?stat=admin">
             <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-
           </a>
         </li>
-          <li>
+        <li>
           <a href="PembelianBaru.html?stat=admin">
             <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
 
@@ -117,35 +112,28 @@
           <li>
           <a href="Hutang.html?stat=admin">
             <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-
           </a>
         </li>
-          <li>
+        <li>
           <a href="Piutang.html?stat=admin">
             <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-
           </a>
         </li>
-          
-          <li>
+        <li>
           <a href="DaftarPelanggan.html?stat=admin">
             <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-
           </a>
         </li>
           <li>
           <a href="DaftarKaryawan.html?stat=admin">
             <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-
           </a>
         </li>
           <li>
           <a href="DaftarSupplier.html?stat=admin">
             <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-
           </a>
         </li>
-        
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -221,11 +209,16 @@
           <div class="box">
             <div class="box-body">
 
-                <h4 class="box-title">
+               <!-- <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </a>
-                    </h4>
+                    </h4>-->
+                <div >
+                    <button  data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary"> <i class="glyphicon glyphicon-search"></i> Search</button>
+                    <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+
+                </div>
                 <div id="collapseOne" class="panel-collapse collapse">
                     <form id="search-form" role="form">
                         <div class="row">
@@ -339,7 +332,7 @@
                 </tbody>
                     
               </table>
-                <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+
             </div>
             <!-- /.box-body -->
           </div>
@@ -356,7 +349,7 @@
 
 </div>
 <!-- ./wrapper -->
-<script src="../model/ModelTest.js"></script>
+<script src="../model/ModelStok.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -375,62 +368,71 @@
 <!-- page script -->
 <script>
   $(function () {
-    function populateData()
+    function populateStokData()
     {
-        getAllData(function(result){
-            var i;
-            var StokTable = $('#StokTable').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-            for (i = 0; i < result.length; i++) {
-                 var HargaJual = '<span class="pull-right">'+
-                                 'Rp. '+numberWithCommas(result[i].HargaJual)+
-                                 '</span>';
+        var StokTable = $('#StokTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
+        getAllStokData(function(result){
 
-                 var HargaPokok = '<span class="pull-right">'+
-                                  'Rp. '+numberWithCommas(result[i].HargaPokok)+
-                                  '</span>';
+            if (result!=null) {
+                var i;
+                for (i = 0; i < result.length; i++) {
+                    var HargaJual = "";
+                    /*
+                            '<span class="pull-right">' +
+                            'Rp. ' + numberWithCommas(result[i].harga_jual) +
+                            '</span>';*/
 
-                 var StokReady = '<span class="pull-right">'+
-                                 numberWithCommas(result[i].StokReady)+
-                                 '</span>';
+                    var HargaPokok = "";
+                            /*'<span class="pull-right">' +
+                            'Rp. ' + numberWithCommas(result[i].harga_pokok) +
+                            '</span>';*/
 
-                 var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                                  result[i].Kode+
-                                  "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                    var StokReady = '<span class="pull-right">' +
+                            numberWithCommas(result[i].stok) +
+                            '</span>';
 
-                 var delButton = "<a style='color:red;' href=''><i class='glyphicon glyphicon-trash'></i></a>";
+                    var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='" +
+                            result[i].kode +
+                            "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                    var delButton = "<a style='color:red;' href='' data-id='" +
+                            result[i].kode +
+                            "'><i class='glyphicon glyphicon-trash'></i></a>";
 
-                 var addedRow = StokTable.row.add([
-                      result[i].Kode,
-                      result[i].Nama,
-                      StokReady,
-                      HargaJual,
-                      HargaPokok,
-                      editButton+" "+delButton
-                  ]).draw();
+                    StokTable.row.add([
+                        result[i].barangID,
+                        result[i].nama,
+                        StokReady,
+                        HargaJual,
+                        HargaPokok,
+                        editButton + " " + delButton
+                    ]).draw();
 
+                }
             }
 
         });
     }
-    populateData();
+    populateStokData();
+      //getDataCoba();
 
     $(document).on("click", ".edit-modal-toggle", function() {
       var itemId = $(this).data('id');
-      getQueryData(itemId, null, null, null, null, null, null, null, function(result){
+      getQueryStokData(itemId, null, null, null, null, null, null, null, function(result)
+        {
         if (result!= null) {
           console.log("print");
-          $("#edit-modal-nama-item").val(result[0].Nama);
-          document.getElementById("edit-modal-kode-item").innerHTML = result[0].Kode;
-          document.getElementById("edit-modal-stok-item").innerHTML = result[0].StokReady;
-          document.getElementById("edit-modal-hpokok-item").innerHTML = "Rp. "+numberWithCommas(result[0].HargaPokok);
-          $("#edit-modal-hjual-item").val(result[0].HargaJual);
+          $("#edit-modal-nama-item").val(result[0].nama);
+          document.getElementById("edit-modal-kode-item").innerHTML = result[0].barangId;
+          document.getElementById("edit-modal-stok-item").innerHTML = numberWithCommas(result[0].stok);
+          //document.getElementById("edit-modal-hpokok-item").innerHTML = "Rp. "+numberWithCommas(result[0].HargaPokok);
+         // $("#edit-modal-hjual-item").val(result[0].HargaJual);
         }
       });
 

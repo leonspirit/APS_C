@@ -2,10 +2,16 @@
  * Created by Billy on 14-Sep-16.
  */
 
-
 var baseUrl = "http://localhost:3000/"
 
-function getQueryPelanganData(id, nama, noTelp, alamat,  fn) {
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+
+
+function getQueryPembelianData(kode, nama, stokMin, stokMax, hJualMin, hJualMax, hPokokMin, hPokokMax, fn) {
 
     var xmlhttp = new XMLHttpRequest();
     var url = baseUrl;//todo: ganti url
@@ -21,7 +27,7 @@ function getQueryPelanganData(id, nama, noTelp, alamat,  fn) {
     xmlhttp.send();
 
 }
-function getAllPelangganData(fn)
+function getAllPembelianData(fn)
 {
     var xmlhttp = new XMLHttpRequest();
     var url = baseUrl;
@@ -29,14 +35,12 @@ function getAllPelangganData(fn)
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
+           // myFunction(myArr);
             fn(myArr);
         }
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
-function updateDataPelanggan(id, nama, noTelp, alamat,  fn){
 
-}
 //connection.end();
