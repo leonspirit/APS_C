@@ -28,7 +28,7 @@ router.post('/tambah_karyawan', function(req,res){
 
 router.get('/list_karyawan', function(req,res){
 
-    var querystring = 'SELECT * FROM karyawan';
+    var querystring = 'SELECT karyawanID, nama, telp, alamat, username, hak_akses FROM karyawan';
     connection.query(querystring, function(err, result){
         if(err) throw err;
         res.status(200).send(result);
@@ -45,6 +45,19 @@ router.post('/hapus_karyawan', function(req,res){
         res.type('application/json');
         res.status(200).send(resp);
     });
-})
+});
+
+router.post('/update_karyawan', function(req,res){
+
+    var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, username = ?, hak_akses = ? WHERE karyawanID = ?';
+    var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.username, req.body.hak_akses, req.body.karyawanID];
+    connection.query(querystring, karyawan, function(err, result){
+        if(err) throw err;
+        var resp = {affectedRows:result.affectedRows};
+        res.type('application/json');
+        res.status(200).send(resp);
+    });
+});
+
 
 module.exports = router
