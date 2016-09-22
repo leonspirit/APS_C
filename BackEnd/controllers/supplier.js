@@ -45,6 +45,18 @@ router.post('/hapus_supplier', function(req,res){
         res.type('application/json');
         res.status(200).send(resp);
     });
-})
+});
+
+router.post('/update_supplier', function(req,res){
+
+    var querystring = 'UPDATE supplier SET nama = ?, telp = ?, alamat = ? WHERE supplierID = ?';
+    var supplier = [req.body.nama, req.body.telp, req.body.alamat, req.body.supplierID];
+    connection.query(querystring, supplier, function(err, result){
+        if(err) throw err;
+        var resp = {affectedRows:result.affectedRows};
+        res.type('application/json');
+        res.status(200).send(resp);
+    });
+});
 
 module.exports = router

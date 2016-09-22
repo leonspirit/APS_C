@@ -45,6 +45,18 @@ router.post('/hapus_pelanggan', function(req,res){
         res.type('application/json');
         res.status(200).send(resp);
     });
-})
+});
+
+router.post('/update_pelanggan', function(req,res){
+
+    var querystring = 'UPDATE pelanggan SET nama = ?, telp = ?, alamat = ? WHERE pelangganID = ?';
+    var pelanggan = [req.body.nama, req.body.telp, req.body.alamat, req.body.pelangganID];
+    connection.query(querystring, pelanggan, function(err, result){
+        if(err) throw err;
+        var resp = {affectedRows:result.affectedRows};
+        res.type('application/json');
+        res.status(200).send(resp);
+    });
+});
 
 module.exports = router

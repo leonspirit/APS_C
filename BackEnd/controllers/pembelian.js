@@ -14,10 +14,10 @@ connection.connect();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
-/*
+
 router.post('/tambah_pembelian', function(req,res){
 
-    var querystring = 'INSERT INTO pelanggan SET nama = ?, telp = ?, alamat = ?';
+    var querystring = 'INSERT INTO pembelian SET nama = ?, telp = ?, alamat = ?';
     var pelanggan = [req.body.nama, req.body.telp, req.body.alamat];
     connection.query(querystring, pelanggan, function(err,result){
         if(err) throw err;
@@ -27,6 +27,7 @@ router.post('/tambah_pembelian', function(req,res){
     });
 });
 
+/*
 router.get('/list_pelanggan', function(req,res){
 
     var querystring = 'SELECT * FROM pelanggan';
