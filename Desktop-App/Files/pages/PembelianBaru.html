@@ -8,10 +8,6 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -29,16 +25,122 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <script>window.$ =window.jQuery = require('jquery');
+    function AddRow()
+    {
+        var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-    <script>window.$ =window.jQuery = require('jquery');</script>
+        var rowCount = tableBody.rows.length;
+        var row = tableBody.insertRow(rowCount);
+        var rowNum = rowCount+1;
+
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = rowNum.toString();//nanti ganti
+
+        var cell2 = row.insertCell(1);
+        cell2.setAttribute("style", "padding:0");
+        var inputBarang = document.createElement("input");
+        inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
+        inputBarang.setAttribute("list", "DataListBarang");
+        inputBarang.setAttribute("style", "width:100%;");
+        inputBarang.setAttribute("class", "form-control input-data-"+rowNum.toString());
+        cell2.appendChild(inputBarang);
+
+        var cell3 = row.insertCell(2);
+        cell3.setAttribute("style", "padding:0");
+        var inputJumlah = document.createElement("input");
+        inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
+        inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
+        inputJumlah.setAttribute("type", "number");
+        inputJumlah.setAttribute("min", "0");
+        inputJumlah.setAttribute("style", "width:100%;");
+        cell3.appendChild(inputJumlah);
+
+        var cell4 = row.insertCell(3);
+
+        var cell5  =row.insertCell(4);
+        cell5.setAttribute("style", "padding:0;");
+        var  inputHargaContainer = document.createElement("div");
+        inputHargaContainer.setAttribute("class", "input-group");
+        inputHargaContainer.setAttribute("style", "width:100%");
+        var inputHargaLabel = document.createElement("span");
+        inputHargaLabel.setAttribute("class", "input-group-addon")
+        inputHargaLabel.innerHTML = "Rp.";
+        var inputHarga = document.createElement("input");
+        inputHarga.setAttribute("type", "number");
+        inputHarga.setAttribute("class", "form-control");
+        inputHargaContainer.appendChild(inputHargaLabel);
+        inputHargaContainer.appendChild(inputHarga);
+        cell5.appendChild(inputHargaContainer);
+
+        var cell6 = row.insertCell(5);
+        var totalIsi = document.createElement("span");
+        totalIsi.setAttribute("class", "pull-right");
+        totalIsi.innerHTML =  " pcs";
+        cell6.appendChild(totalIsi);
+
+        var cell7 = row.insertCell(6);
+        cell7.setAttribute("style", "padding:0;");
+        var  inputDiscContainer1 = document.createElement("div");
+        inputDiscContainer1.setAttribute("class", "input-group");
+        inputDiscContainer1.setAttribute("style", "width:100%");
+        var inputDisc1 = document.createElement("input");
+        inputDisc1.setAttribute("type", "number");
+        inputDisc1.setAttribute("class", "form-control");
+        var inputDiscLabel1 = document.createElement("span");
+        inputDiscLabel1.setAttribute("class", "input-group-addon");
+        inputDiscLabel1.innerHTML = "%";
+        inputDiscContainer1.appendChild(inputDisc1);
+        inputDiscContainer1.appendChild(inputDiscLabel1);
+        cell7.appendChild(inputDiscContainer1);
+
+        var cell8 = row.insertCell(7);
+        cell8.setAttribute("style", "padding:0;");
+        var  inputDiscContainer2 = document.createElement("div");
+        inputDiscContainer2.setAttribute("class", "input-group");
+        inputDiscContainer2.setAttribute("style", "width:100%");
+        var inputDisc2 = document.createElement("input");
+        inputDisc2.setAttribute("type", "number");
+        inputDisc2.setAttribute("class", "form-control");
+        var inputDiscLabel2 = document.createElement("span");
+        inputDiscLabel2.setAttribute("class", "input-group-addon");
+        inputDiscLabel2.innerHTML = "%";
+        inputDiscContainer2.appendChild(inputDisc2);
+        inputDiscContainer2.appendChild(inputDiscLabel2);
+        cell8.appendChild(inputDiscContainer2);
+
+        var cell9 = row.insertCell(8);
+        cell9.setAttribute("style", "padding:0;");
+        var  inputDiscContainer3 = document.createElement("div");
+        inputDiscContainer3.setAttribute("class", "input-group");
+        inputDiscContainer3.setAttribute("style", "width:100%");
+        var inputDisc3 = document.createElement("input");
+        inputDisc3.setAttribute("type", "number");
+        inputDisc3.setAttribute("class", "form-control");
+        var inputDiscLabel3 = document.createElement("span");
+        inputDiscLabel3.setAttribute("class", "input-group-addon");
+        inputDiscLabel3.innerHTML = "%";
+        inputDiscContainer3.appendChild(inputDisc3);
+        inputDiscContainer3.appendChild(inputDiscLabel3);
+        cell9.appendChild(inputDiscContainer3);
+
+        var cell10 = row.insertCell(9);
+        cell10.innerHTML = "Rp. 0";
+
+        var cell11 = row.insertCell(10);
+        var delButton = document.createElement("a");
+        delButton.setAttribute("class", "del-row")
+       // delButton.setAttribute("onclick", "RemoveRow(this);")
+        delButton.setAttribute("style", "color:red;")
+        var delIcon = document.createElement("i");
+        delIcon.setAttribute("class", "glyphicon glyphicon-remove");
+        delButton.appendChild(delIcon);
+        cell11.appendChild(delButton);
+    }
+
+    </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -78,10 +180,6 @@
             </a>
             
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <!--<li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>-->
         </ul>
       </div>
     </nav>
@@ -162,7 +260,7 @@
     </section>
       <div class="itemEditAdd-modal">
         <div class="modal fade"  id="myModal">
-          <div class="modal-dialog"role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -201,14 +299,7 @@
                               <option>PT. Perusahaan3</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Toko</label>
-                            <select class="form-control select2" style="width: 100%;">
-                              <option selected="selected">Toko A</option>
-                              <option>Toko B</option>
-                              <option>Toko C</option>
-                            </select>
-                        </div>
+
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -216,7 +307,7 @@
 
                             <div class="input-group date">
                               <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                <i class="glyphicon glyphicon-calendar"></i>
                               </div>
                               <input type="text" class="form-control pull-right" id="datepicker">
                             </div>
@@ -227,9 +318,9 @@
                             <label>Tanggal Jatuh Tempo</label>
                             <div class="input-group date">
                               <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                <i class="glyphicon glyphicon-calendar"></i>
                               </div>
-                              <input type="text" class="form-control pull-right" id="datepicker">
+                              <input type="text" class="form-control pull-right" id="datepicker2">
                             </div>
                         </div>
                     </div>
@@ -244,6 +335,16 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+                <datalist id="DataListBarang">
+                    <option selected="selected">B001 - Buku Cerita</option>
+                    <option>S001 - TV</option>
+                    <option>C002 - Handphone</option>
+                </datalist>
+                <datalist id="DataListSatuan">
+                    <option selected="selected">Butir</option>
+                    <option>Lusin</option>
+                    <option>Gros</option>
+                </datalist>
               <table id="itemTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -252,135 +353,75 @@
                   <th style="width:40px">Jumlah</th>
                   <th>Satuan</th>
                   <th>Harga</th>
-                    <th style="width:60px;">Disc 1</th>
-                    <th style="width:60px;">Disc 2</th>
-                    <th style="width:60px;">Disc 3</th>
+                    <th>Total isi</th>
+                    <th >Disc 1</th>
+                    <th >Disc 2</th>
+                    <th >Disc 3</th>
                   <th>Subtotal</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     
-                <tr>
+                <!--<tr>
                     <td>1</td>
-                    <td  style="padding:0px;">
+                    <td  style="padding:0;">
                         <input list="DataListBarang" class="form-control" style="width: 100%;">
-                        <datalist id="DataListBarang">
-                          <option selected="selected">B001 - Buku Cerita</option>
-                          <option>S001 - TV</option>
-                          <option>C002 - Handphone</option>
-                        </datalist>
                     </td>
-                    <td  style="padding:0px;">
-                      <input type="number" style="width: 100%;"class="form-control">
+                    <td  style="padding:0;">
+                      <input type="number" style="width: 100%;" class="form-control">
                     </td>
-                    <td  style="padding:0px;">
+                    <td  style="padding:0;">
                         <input list="DataListSatuan" class="form-control" style="width: 100%;">
-                        <datalist id="DataListSatuan">
-                          <option selected="selected">Butir</option>
-                          <option>Lusin</option>
-                          <option>Gros</option>
-                        </datalist>
                     </td>
-                    <td  style="padding:0px;">
+                    <td  style="padding:0;">
                         <div class="input-group" style="width: 100%;">
                             <span class="input-group-addon">Rp.</span>
                             <input type="number" class="form-control">
                           </div>
                     </td>
-                    <td style="padding:0px;">
+                    <TD></TD>
+                    <td style="padding:0;">
                         <div class="input-group">
                         
                         <input type="Number" class="form-control">
                             <span class="input-group-addon">%</span>
                       </div>
                     </td>
-                    <td style="padding:0px;">
+                    <td style="padding:0;">
                         <div class="input-group">
                         
                         <input type="Number" class="form-control">
                             <span class="input-group-addon">%</span>
                       </div>
                     </td>
-                    <td style="padding:0px;">
+                    <td style="padding:0;">
                         <div class="input-group">
                         
                         <input type="Number" class="form-control">
                             <span class="input-group-addon">%</span>
                       </div>
                     </td>
-                    <td>Rp. 20.000.000</td>
+                    <td>Rp. 0</td>
                     <td>
                         <a style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
                     </td>
-                </tr>
-                    <tr class="testHidden">
-                    <td>2</td>
-                    <td  style="padding:0px;">
-                        <select class="form-control select2" style="width: 100%;">
-                          <option selected="selected">B001 - Buku Cerita</option>
-                          <option>S001 - TV</option>
-                          <option>C002 - Handphone</option>
-                        </select>
-                    </td>
-                    <td  style="padding:0px;">
-                      <input type="number" style="width: 100%;"class="form-control">
-                    </td>
-                    <td  style="padding:0px;">
-                        <select class="form-control select2" style="width: 100%;">
-                          <option selected="selected">Butir</option>
-                          <option>Lusin</option>
-                          <option>Gros</option>
-                        </select>
-                    </td>
-                    <td  style="padding:0px;">
-                        <div class="input-group" style="width: 100%;">
-                            <span class="input-group-addon">Rp.</span>
-                            <input type="number" class="form-control">
-                          </div>
-                    </td >
-                        <td style="padding:0px;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td style="padding:0px;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td style="padding:0px;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td>Rp. 20.000.000</td>
-                    <td>
-                        <a style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
-                    </td>
-                </tr>
-                    
+                    </tr>-->
                   </tbody>
                     
                 <tfoot>
                 <tr>
-                    <th colspan=4></th>
+                    <th colspan=5></th>
                      <th>Discount</th>
                     <th colspan=2 style="padding:0px;">
-                        <div class="input-group">
+                        <div class="input-group" style="width:100%">
                         
                         <input type="Number" class="form-control">
                             <span class="input-group-addon">%</span>
                       </div>
                     </th>
                     <th >Total</th>
-                  <th colspan=2>Rp. 20.500.000</th>
+                  <th colspan=2>Rp. 0</th>
                 </tr>
                 </tfoot>
               </table>
@@ -442,18 +483,21 @@
   $(function () {
       $(".testHidden").hide();
     $(".select2").select2();
-    $('#itemTable').DataTable({
+   /* $('#itemTable').DataTable({
       "paging": false,
       "lengthChange": false,
       "searching": false,
       "ordering": false,
       "info": false,
       "autoWidth": true
-    });
+    });*/
       //Date picker
     $('#datepicker').datepicker({
       autoclose: true
     });
+      $('#datepicker2').datepicker({
+          autoclose: true
+      });
       //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
       checkboxClass: 'icheckbox_minimal-blue',
@@ -461,8 +505,9 @@
     });
     document.getElementById("addButton").onclick = function()
     {
-        $(".testHidden").show();
+        AddRow();
     }
+    AddRow();
   });
 </script>
 </body>

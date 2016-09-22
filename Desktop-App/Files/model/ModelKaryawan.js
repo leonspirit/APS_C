@@ -8,7 +8,7 @@ var baseUrl = "http://localhost:3000/"
 function getQueryKaryawanData(id, nama, noTelp, alamat, userName, hakAkses, fn) {
 
     var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;//todo: ganti url
+    var url = baseUrl+"karyawan/list_karyawan";//todo: ganti url
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -24,12 +24,11 @@ function getQueryKaryawanData(id, nama, noTelp, alamat, userName, hakAkses, fn) 
 function getAllKaryawanData(fn)
 {
     var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;
+    var url = baseUrl+"karyawan/list_karyawan";
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var myArr = JSON.parse(this.responseText);
-           // myFunction(myArr);
             fn(myArr);
         }
     };

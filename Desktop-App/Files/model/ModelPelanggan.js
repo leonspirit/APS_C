@@ -24,7 +24,7 @@ function getQueryPelanganData(id, nama, noTelp, alamat,  fn) {
 function getAllPelangganData(fn)
 {
     var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;
+    var url = baseUrl+"pelanggan/list_pelanggan";
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {

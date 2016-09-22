@@ -8,10 +8,6 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -93,11 +89,18 @@
             cell4.appendChild(inputSatuan);
 
             var cell5 = row.insertCell(4);
+
             var cell6 = row.insertCell(5);
-            cell6.innerHTML = "Rp. 0";
+            var totalIsi = document.createElement("span");
+            totalIsi.setAttribute("class", "pull-right");
+            totalIsi.innerHTML =  " pcs";
+            cell6.appendChild(totalIsi);
 
             var cell7 = row.insertCell(6);
-            cell7.setAttribute("style", "padding:0");
+            cell7.innerHTML = "Rp. 0";
+
+            var cell8 = row.insertCell(7);
+            cell8.setAttribute("style", "padding:0");
             var inputDiscGroup = document.createElement("div");
             inputDiscGroup.setAttribute("style", "width:100%;");
             inputDiscGroup.setAttribute("class", "input-group");
@@ -112,18 +115,28 @@
             inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-4");
             inputDiscGroup.appendChild(inputDisc);
             inputDiscGroup.appendChild(inputDiscAddOn);
-            cell7.appendChild(inputDiscGroup);
+            cell8.appendChild(inputDiscGroup);
 
-            var cell8 = row.insertCell(7);
-            cell8.innerHTML = "Rp. 0";
+            var cell9 = row.insertCell(8);
+            var subtotal = document.createElement("span");
+            subtotal.setAttribute("class", "pull-right");
+            subtotal.innerHTML = "Rp. 0";
+            cell9.appendChild(subtotal);
 
             //if admin
-            var cell9 = row.insertCell(8);
-            cell9.innerHTML = "Rp. 0";
             var cell10 = row.insertCell(9);
-            cell10.innerHTML = "Rp. 0";
+            var hPokok = document.createElement("span");
+            hPokok.setAttribute("class", "pull-right");
+            hPokok.innerHTML = "Rp. 0";
+            cell10.appendChild(hPokok);
 
             var cell11 = row.insertCell(10);
+            var untung = document.createElement("span");
+            untung.setAttribute("class", "pull-right");
+            untung.innerHTML = "Rp. 0";
+            cell11.appendChild(untung);
+
+            var cell12 = row.insertCell(11);
             var delButton = document.createElement("a");
             delButton.setAttribute("class", "del-row")
             delButton.setAttribute("onclick", "RemoveRow(this);")
@@ -131,7 +144,7 @@
             var delIcon = document.createElement("i");
             delIcon.setAttribute("class", "glyphicon glyphicon-remove");
             delButton.appendChild(delIcon);
-            cell11.appendChild(delButton);
+            cell12.appendChild(delButton);
         }
         function ResetTable() {
             var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
@@ -141,7 +154,6 @@
                     break;
                 tableBody.deleteRow(-1);
             }
-            tableBody.rows[0].cells[5].innerHTML = "Rp. 0";
             tableBody.rows[0].cells[7].innerHTML = "Rp. 0";
             tableBody.rows[0].cells[8].innerHTML = "Rp. 0";
             tableBody.rows[0].cells[9].innerHTML = "Rp. 0";
@@ -150,7 +162,7 @@
 
     </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -189,10 +201,6 @@
             </a>
             
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <!--<li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>-->
         </ul>
       </div>
     </nav>
@@ -251,7 +259,7 @@
             </li>
             <li>
                 <a href="DaftarSupplier.html">
-                    <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
+                    <img src="../icons/Supplier.png" style="margin-right:10px;" > <span>Daftar Supplier</span>
                 </a>
             </li>
         </ul>
@@ -267,7 +275,7 @@
         Penjualan Baru
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Home</a></li>
         <li class="active">Penjualan Baru</li>
       </ol>
     </section>
@@ -307,11 +315,6 @@
                 <option value="budi">
                 <option value="cici">
             </datalist>
-            <datalist id="DataListToko">
-                <option value="Toko A">
-                <option value="Toko B">
-                <option value="Toko C">
-            </datalist>
             <div class="box-body">
                 
                 <form role="form">
@@ -320,11 +323,6 @@
                         <div class="form-group">
                             <label>Pelanggan</label>
                             <input  style="width: 100%;" class="form-control" list="DataListPelanggan">
-
-                        </div>
-                        <div class="form-group">
-                            <label>Toko</label>
-                            <input  style="width: 100%;" class="form-control" list="DataListToko">
 
                         </div>
                          <div class="form-group">
@@ -338,7 +336,7 @@
 
                             <div class="input-group date">
                               <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                <i class="glyphicon glyphicon-calendar"></i>
                               </div>
                               <input type="text" class="form-control pull-right" id="datepicker">
                             </div>
@@ -349,7 +347,7 @@
                             <label>Jatuh Tempo</label>
                             <div class="input-group date">
                               <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                <i class="glyphicon glyphicon-calendar"></i>
                               </div>
                               <input type="text" class="form-control pull-right" id="datepicker2">
                             </div>
@@ -384,6 +382,7 @@
                   <th>Qty</th>
                   <th>Satuan</th>
                     <th>Konversi</th>
+                    <th>Total Isi</th>
                     
                     <th>Harga</th>
                     <th>Disc</th>
@@ -397,7 +396,7 @@
                 </thead>
                 <tbody>
                     
-                <tr>
+                <!--<tr>
                     <td>1</td>
                     <td  style="padding:0;">
                         <input type="text" class="form-control input-data-1" id="input-data-1-1" style="width: 100%;" list="DataListBarang">
@@ -410,6 +409,7 @@
 
                     </td>
                     <td></td>
+                    <td></td>
                     <td>
                         Rp. 0
                     </td>
@@ -420,14 +420,12 @@
                       </div>
                      </td>
                     <td>Rp. 0</td>
-                   <!-- <?php if (isset($_GET['stat']) && $_GET['stat']=='admin') { ?>-->
                     <td>Rp. 0</td>
                     <td>Rp. 0</td>
-                  <!--  <?php } ?>-->
                     <td>
                         <a onclick="RemoveRow(this);" style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
                     </td>
-                </tr>
+                </tr>-->
                     
                 </tbody>
                     
@@ -494,14 +492,14 @@
 <!--<script src="../plugins/jquery-autotab/js/jquery.autotab.min.js"></script>-->
 <script>
   $(function () {
-    $('#itemTable').DataTable({
+    /*$('#itemTable').DataTable({
       "paging": false,
       "lengthChange": false,
       "searching": false,
       "ordering": false,
       "info": false,
       "autoWidth": true
-    });
+    });*/
       //Date picker
     $('#datepicker').datepicker({
       autoclose: true
@@ -515,8 +513,8 @@
       radioClass: 'iradio_minimal-blue'
     });
 
-   // $('.input-data-1').autotab('number');
 
+      AddRow();
       document.getElementById("addButton").onclick = function()
       {
           window.scrollTo(0, document.body.scrollHeight);

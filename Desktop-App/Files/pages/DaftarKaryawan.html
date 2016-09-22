@@ -19,7 +19,7 @@
   <![endif]-->
     <script>window.$ =window.jQuery = require('jquery');</script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -43,26 +43,18 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
           <li class="user user-menu">
             <a  class="dropdown-toggle" data-toggle="dropdown">
-              
               <span class="hidden-xs">Welcome, 
                   </span>
             </a>
             
           </li>
             <li class="user user-menu">
-            <a href="index.php">
-              
+            <a href="../index.html">
               <span class="hidden-xs">Log Out</span>
             </a>
-            
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <!--<li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>-->
         </ul>
       </div>
     </nav>
@@ -71,7 +63,6 @@
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
         <ul class="sidebar-menu">
             <li>
                 <a href="Stok.html">
@@ -121,7 +112,7 @@
             </li>
             <li>
                 <a href="DaftarSupplier.html">
-                    <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
+                    <img src="../icons/Supplier.png" style="margin-right:10px;" > <span>Daftar Supplier</span>
                 </a>
             </li>
         </ul>
@@ -142,16 +133,138 @@
       </ol>
     </section>
 
+      <div class="modal fade"  id="deleteModal">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Hapus Karyawan</h4>
+                  </div>
+                  <div class="modal-body">
+                      <table>
+                          <tr>
+                              <td>ID</td>
+                              <td id ="delete-modal-id"></td>
+                          </tr>
+                          <tr>
+                              <td>Nama</td>
+                              <td style="padding:0"><input class="form-control"></td>
+                          </tr>
+                      </table>
+
+                      <p>Anda yakin ingin menghapus data karyawan ini ?</p>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
+                      <button type="button" class="btn btn-primary  pull-left" id="delete-modal-yes">Ya</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal fade"  id="createModal">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Tambah Karyawan</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="create-modal-form">
+                      <table class="table">
+                          <thead>
+                          <tr>
+                              <th colspan="2">Masukkan data karyawan baru</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                              <td>Nama</td>
+                              <td style="padding:0"><input class="form-control" name="nama" id="create-modal-field-nama"></td>
+                          </tr>
+                          <tr>
+                              <td>No. Telp</td>
+                              <td style="padding:0"><input class="form-control" name="telp" id="create-modal-field-telp"></td>
+                          </tr>
+                          <tr>
+                              <td>Alamat</td>
+                              <td style="padding:0"><input class="form-control" name="alamat" id="create-modal-field-alamat"></td>
+                          </tr>
+                          <tr>
+                              <td>Username</td>
+                              <td style="padding:0"><input class="form-control" name="username" id="create-modal-field-username"></td>
+                          </tr>
+                          <tr>
+                              <td>Hak Akses</td>
+                              <td style="padding:0"><input class="form-control" name="hak_akses" id="create-modal-field-hak-akses"></td>
+                          </tr>
+                          </tbody>
+                      </table>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary  pull-left" id="create-modal-save">Simpan</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal fade"  id="editModal">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Edit Data Karyawan</h4>
+                  </div>
+                  <div class="modal-body">
+
+                      <table class="table">
+                          <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th id ="edit-modal-id"></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                              <td>Nama</td>
+                              <td style="padding:0"><input class="form-control" name="edit-modal-field-nama" id="edit-modal-field-nama"></td>
+                          </tr>
+                          <tr>
+                              <td>No. Telp</td>
+                              <td style="padding:0"><input class="form-control" name="edit-modal-field-telp" id="edit-modal-field-telp"></td>
+                          </tr>
+                          <tr>
+                              <td>Alamat</td>
+                              <td style="padding:0"><input class="form-control" name="edit-modal-field-alamat" id="edit-modal-field-alamat"></td>
+                          </tr>
+                          <tr>
+                              <td>Username</td>
+                              <td style="padding:0"><input class="form-control" name="edit-modal-field-username" id="edit-modal-field-username"></td>
+                          </tr>
+                          <tr>
+                              <td>Hak Akses</td>
+                              <td style="padding:0"><input class="form-control" name="edit-modal-field-hak-akses" id="edit-modal-field-hak-akses"></td>
+                          </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">OK</button>
+                      <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Simpan</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
 
           <div class="box">
-            <!--<div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>-->
-            <!-- /.box-header -->
             <div class="box-body">
               <table id="KaryawanTable" class="table table-bordered table-hover">
                 <thead>
@@ -161,73 +274,29 @@
                   <th >No. Telp</th>
                   <th >Alamat</th>
                     <th>Username</th>
-                    <th>Toko</th>
                     <th>Hak Akses</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <tr>
+                <!--<tr>
                     <td>A001</td>
                     <td>Andi</td>
                     <td>081111111111</td>
                     <td>Jalan Andi no 1</td>
                     <td>andi1</td>
-                    <td>Toko A</td>
                     <td>Karyawan</td>
                     <td>
                         <a><i class="glyphicon glyphicon-edit"></i></a>
                         <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
                     </td>
-                  </tr>
-                <tr>
-                    <td>A002</td>
-                    <td>Budi</td>
-                    <td>081222222222</td>
-                    <td>Jalan Budi no 2</td>
-                    <td>budi2</td>
-                    <td>Toko B</td>
-                    <td>Karyawan</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>A003</td>
-                    <td>Cici</td>
-                    <td>081333333333</td>
-                    <td>Jalan Cici no 3</td>
-                    <td>cici3</td>
-                    <td>Toko C</td>
-                    <td>Manager</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
-                <tr>
-                    <td>A004</td>
-                    <td>Doni</td>
-                    <td>081444444444</td>
-                    <td>Jalan Doni no 4</td>
-                    <td>doni4</td>
-                    <td>Toko A</td>
-                    <td>Karyawan</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
+                  </tr>-->
                   </tbody>
             
               </table>
-                <button class="btn btn-primary"><i class="fa  fa-fw fa-plus"></i> Tambah</button>
+                <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
         <!-- /.col -->
       </div>
@@ -276,9 +345,9 @@
                   "autoWidth": false
               });
               for (i = 0; i < result.length; i++) {
-                  var id = result[i].id.toString();
+                  var id = result[i].karyawanID.toString();
                   var nama = result[i].nama;
-                  var noTelp = result[i].no_telp;
+                  var noTelp = result[i].telp;
                   var alamat = result[i].alamat;
                   var userName = result[i].username;
                   var hakAkses = result[i].hak_akses;
@@ -286,7 +355,7 @@
                   var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
                           id+
                           "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                  var delButton = "<a style='color:red;' href='' data-id='" +
+                  var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
                           id+
                           "'><i class='glyphicon glyphicon-trash'></i></a>";
 
@@ -296,16 +365,134 @@
                       noTelp,
                       alamat,
                       userName,
-                      "",
                       hakAkses,
                       editButton+" "+delButton
                   ]).draw();
-
               }
-
           });
       }
       populateKaryawanData();
+
+        $(document).on("click", ".delete-modal-toggle", function(){
+            var karyawanID = $(this).data('id');
+            $(document).on("click", "#delete-modal-yes", function() {
+                DeleteKaryawan(karyawanID, function(result)
+                {
+                    console.log(result['affectedRows']);
+                    if (result['affectedRows'] == 1)
+                    {
+                        console.log("delete success");
+                        window.location.reload();
+                    }
+                    else
+                        console.log("delete failed");
+                });
+            });
+        });
+
+      function DeleteKaryawan(karyawanID, fn)
+      {
+          $.post( baseUrl + "karyawan/hapus_karyawan/", {"karyawanID": karyawanID}, function(  data ) {
+              fn(data);
+          }, "json");
+      }
+      $(document).on("click", ".edit-modal-toggle", function() {
+          populateEditModal(this);
+          $(document).on("click", "#edit-modal-save", function(){
+                updateDataKaryawan({}, function(result){
+                    console.log(result['affectedRows']);
+                    if (result['affectedRows'] == 1)
+                    {
+                        console.log("delete success");
+                        window.location.reload();
+                    }
+                    else
+                        console.log("update failed");
+                });
+          });
+      });
+
+      function populateEditModal(karyawanButton)
+      {
+          var karyawanID = $(karyawanButton).closest('tr').find('td:eq(0)').html();
+          var karyawanNama = $(karyawanButton).closest('tr').find('td:eq(1)').html();
+          var karyawanTelp = $(karyawanButton).closest('tr').find('td:eq(2)').html();
+          var karyawanAlamat = $(karyawanButton).closest('tr').find('td:eq(3)').html();
+          var karyawanUsername = $(karyawanButton).closest('tr').find('td:eq(4)').html();
+          var karyawanHakAkses = $(karyawanButton).closest('tr').find('td:eq(5)').html();
+          document.getElementById("edit-modal-id").innerHTML = karyawanID;
+          $("#edit-modal-field-nama").val(karyawanNama);
+          console.log(karyawanNama);
+          $("#edit-modal-field-telp").val(karyawanTelp);
+          $("#edit-modal-field-alamat").val(karyawanAlamat);
+          $("#edit-modal-field-username").val(karyawanUsername);
+          $("#edit-modal-field-hak-akses").val(karyawanHakAkses);
+      }
+      function updateDataKaryawan(nama, telp, alamat, username, hak_akses, fn)//todo: belom selese
+      {
+          $.post( baseUrl + "karyawan/update_karyawan/", {
+              json_string:JSON.stringify(
+                      {
+                          name: nama,
+                          telp: telp,
+                          alamat: alamat,
+                          username: username,
+                          password: "sementara",
+                          hak_akses: hak_akses
+                      }
+              )
+          }, function(  data ) {
+              fn(data);
+          }, "json");
+      }
+
+      function addKaryawan( nama, telp, alamat, username, hak_akses, fn)
+      {
+          $.post( baseUrl + "karyawan/tambah_karyawan/", {
+            json_string:JSON.stringify(
+                {
+                    nama: nama,
+                    telp: telp,
+                    alamat: alamat,
+                    username: username,
+                    password: "sementara",
+                    hak_akses: hak_akses
+                  //  formData
+                }
+            )
+          }, function(data) {
+              fn(data);
+          }, "json");
+      }
+
+    //  $(document).on("click", "#addButton", function(){
+
+          $(document).on("click", "#create-modal-save", function(){
+              var formData = $("#create-modal-form").serializeArray();
+              console.log(formData);
+              var nama = formData[0].value;
+              var telp = formData[1].value;
+              var alamat = formData[2].value;
+              var username = formData[3].value;
+              var hak_akses = formData[4].value;
+              console.log(nama);
+              console.log(telp);
+              console.log(alamat);
+              console.log(username);
+              console.log(hak_akses);
+              addKaryawan(nama,telp,alamat,username,hak_akses,function(result){
+                  console.log(result['affectedRows']);
+                  if (result['affectedRows'] == 1)
+                  {
+                      console.log("Add Karyawan success");
+                      window.location.reload();
+                  }
+                  else
+                      console.log("Add Karyawan failed");
+
+              });
+          });
+     // });
   });
 </script>
 </body>

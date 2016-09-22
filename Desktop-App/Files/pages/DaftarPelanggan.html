@@ -18,7 +18,7 @@
   <![endif]-->
     <script>window.$ =window.jQuery = require('jquery');</script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -259,9 +259,9 @@
           "autoWidth": false
         });
         for (i = 0; i < result.length; i++) {
-          var id = result[i].id.toString();
+          var id = result[i].pelangganID.toString();
           var nama = result[i].nama;
-          var noTelp = result[i].no_telp;
+          var noTelp = result[i].telp;
           var alamat = result[i].alamat;
 
           var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+

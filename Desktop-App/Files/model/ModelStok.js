@@ -14,7 +14,7 @@ function numberWithCommas(x) {
 function getKodeStokData(kode, fn) {
 
     var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"barang/"+kode.toString();//todo: ganti url
+    var url = baseUrl+"barang/"+kode;//todo: ganti url
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {

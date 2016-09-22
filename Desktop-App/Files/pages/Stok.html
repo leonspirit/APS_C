@@ -308,17 +308,17 @@
                 </div>
 
 
-              <table id="StokTable" class="table table-bordered table-hover">
+              <table id="StokTable"   class="table table-bordered table-hover">
                 <thead>
-                <tr>
-                  <th >Kode</th>
-                  <th >Nama Barang</th>
-                  <th >Stok</th>
-                  <th>H.Jual</th>
-                  <th>H.Pokok</th>
-                  <th >Action</th>
-                </tr>
-                </thead>
+                    <tr>
+                      <th >Kode</th>
+                      <th >Nama Barang</th>
+                      <th >Stok</th>
+                      <th>H.Jual</th>
+                      <th>H.Pokok</th>
+                      <th ></th>
+                    </tr>
+                    </thead>
                 <tbody>
                    <!-- <tr>
                         <td>B00004</td>
@@ -389,20 +389,18 @@
             "autoWidth": false
         });
         getAllStokData(function(result){
-
             if (result!=null) {
                 var i;
                 for (i = 0; i < result.length; i++) {
-                    var HargaJual = "";
-                    /*
+                    var HargaJual =
                             '<span class="pull-right">' +
-                            'Rp. ' + numberWithCommas(result[i].harga_jual) +
-                            '</span>';*/
+                            'Rp. ' + numberWithCommas(0) +
+                            '</span>';
 
-                    var HargaPokok = "";
-                            /*'<span class="pull-right">' +
-                            'Rp. ' + numberWithCommas(result[i].harga_pokok) +
-                            '</span>';*/
+                    var HargaPokok =
+                            '<span class="pull-right">' +
+                            'Rp. ' + numberWithCommas(0) +
+                            '</span>';
 
                     var StokReady = '<span class="pull-right">' +
                             numberWithCommas(result[i].stok) +
@@ -414,7 +412,6 @@
                     var delButton = "<a class='delete-modal-toggle' href='#deleteModal' data-toggle='modal'  style='color:red;' data-id='" +
                             result[i].kode +
                             "'><i class='glyphicon glyphicon-trash'></i></a>";
-
                     StokTable.row.add([
                         result[i].barangID,
                         result[i].nama,
@@ -433,7 +430,7 @@
 
     $(document).on("click", ".edit-modal-toggle", function() {
       var itemId = $(this).data('id');
-      getKodeStokData(itemId, function(result)
+      getKodeStokData( itemId, function(result)
         {
         if (result!= null) {
           console.log("print");

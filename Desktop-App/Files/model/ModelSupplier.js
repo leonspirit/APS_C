@@ -23,12 +23,11 @@ function getQuerySupplierData(id, nama, noTelp, alamat, fn) {
 function getAllSupplierData(fn)
 {
     var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;
+    var url = baseUrl+"supplier/list_supplier";
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var myArr = JSON.parse(this.responseText);
-           // myFunction(myArr);
             fn(myArr);
         }
     };
