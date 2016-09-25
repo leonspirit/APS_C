@@ -122,6 +122,108 @@
       </section>
     <!-- /.sidebar -->
   </aside>
+  <div class="modal fade"  id="deleteModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Hapus Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <p><strong id="delete-modal-id"></strong> - <span id="delete-modal-nama"></span></p>
+          <p>Anda yakin ingin menghapus data supplier ini ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
+          <button type="button" class="btn btn-primary  pull-left" id="delete-modal-yes">Ya</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade"  id="createModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Tambah Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <form id="create-modal-form">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2">Masukkan data supplier baru</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Nama</td>
+                <td style="padding:0"><input class="form-control" name="nama" id="create-modal-field-nama"></td>
+              </tr>
+              <tr>
+                <td>No. Telp</td>
+                <td style="padding:0"><input class="form-control" name="telp" id="create-modal-field-telp"></td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td style="padding:0"><input class="form-control" name="alamat" id="create-modal-field-alamat"></td>
+              </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary  pull-left" id="create-modal-save">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade"  id="editModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit Data Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <form id="edit-modal-form">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th id ="edit-modal-id"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Nama</td>
+                <td style="padding:0"><input class="form-control" name="nama" id="edit-modal-field-nama"></td>
+              </tr>
+              <tr>
+                <td>No. Telp</td>
+                <td style="padding:0"><input class="form-control" name="telp" id="edit-modal-field-telp"></td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td style="padding:0"><input class="form-control" name="alamat" id="edit-modal-field-alamat"></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -135,13 +237,16 @@
         <li class="active">Data Supplier</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
 
-          <div class="box">
+          <div class="box box-primary">
+            <div class="box-header">
+              <button id="searchButton" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+              <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+            </div>
             <div class="box-body">
               <table id="SupplierTable" class="table table-bordered table-hover">
                 <thead>
@@ -155,7 +260,7 @@
                 </thead>
                 <tbody>
                     
-                <tr>
+                <!--<tr>
                     <td>X001</td>
                     <td>PT. Perusahaan1</td>
                     <td>081111111111</td>
@@ -164,41 +269,9 @@
                         <a><i class="glyphicon glyphicon-edit"></i></a>
                         <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
                     </td>
-                  </tr>
-                <tr>
-                    <td>X002</td>
-                    <td>PT. Perusahaan2</td>
-                    <td>081222222222</td>
-                    <td>Jalan dua no 2</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                   </tr>
-                    <tr>
-                    <td>X003</td>
-                    <td>PT. PErusahaan3</td>
-                    <td>081333333333</td>
-                    <td>Jalan tiga no 3</td>
-                        <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
-                <tr>
-                    <td>X004</td>
-                    <td>PT.Perusahaan4</td>
-                    <td>081444444444</td>
-                    <td>Jalan empat no 4</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
+                  </tr>-->
                   </tbody>
-            
               </table>
-                <button class="btn btn-primary"><i class="fa fa-fw fa-plus"></i>Tambah</button>
             </div>
             <!-- /.box-body -->
           </div>
@@ -239,7 +312,7 @@
   $(function () {
       function populateSupplierData()
       {
-          getAllSupplierData(function(result){
+          GetAllSupplierData(function(result){
               var i;
               var SupplierTable = $('#SupplierTable').DataTable({
                   "paging": true,
@@ -250,22 +323,22 @@
                   "autoWidth": false
               });
               for (i = 0; i < result.length; i++) {
-                  var id = result[i].supplierID.toString();
-                  var nama = result[i].nama;
-                  var noTelp = result[i].telp;
-                  var alamat = result[i].alamat;
+
+                var pad ="00000";
+                var id = "" + result[i].supplierID;
+                var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
                   var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
                           id+
                           "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                  var delButton = "<a style='color:red;' href='' data-id='" +
+                  var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
                           id+
                           "'><i class='glyphicon glyphicon-trash'></i></a>";
                   SupplierTable.row.add([
-                      id,
-                      nama,
-                      noTelp,
-                      alamat,
+                      StrId,
+                      result[i].nama,
+                      result[i].telp,
+                      result[i].alamat,
                       editButton+" "+delButton
                   ]).draw();
 
@@ -274,6 +347,75 @@
           });
       }
       populateSupplierData();
+
+    $(document).on("click", ".delete-modal-toggle", function() {
+      populateDeleteModal(this);
+      var supplierID = $(this).data('id');
+      document.getElementById("delete-modal-yes").setAttribute("data-id", supplierID);
+    });
+
+    $(document).on("click", "#delete-modal-yes", function() {
+      var supplierID = $(this).data('id');
+      console.log(supplierID);
+      DeleteSupplier(supplierID, function(result)
+      {
+        console.log(result['affectedRows']);
+        if (result['affectedRows'] == 1)
+        {
+          console.log("delete success");
+          window.location.reload();
+        }
+        else
+          console.log("delete failed");
+      });
+    });
+
+    $(document).on("click", ".edit-modal-toggle", function() {
+      populateEditModal(this);
+      var supplierID = $(this).data('id');
+      document.getElementById("edit-modal-save").setAttribute("data-id", supplierID);
+
+    });
+    $(document).on("click", "#edit-modal-save", function(){
+      var Id = $(this).data('id');
+      var formData = $("#edit-modal-form").serializeArray();
+      var nama = formData[0].value.toString();
+      var telp = formData[1].value.toString();
+      var alamat = formData[2].value.toString();
+      UpdateDataSupplier(Id, nama, telp, alamat, function(result){
+        if (result['affectedRows'] == 1)
+        {
+          console.log("update supplier success");
+          window.location.reload();
+        }
+        else
+          console.log("update Supplier failed");
+      });
+    });
+
+    function populateEditModal(Button)
+    {
+      document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+      $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
+      $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
+      $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+    }
+
+    function populateDeleteModal(Button) {
+      document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+      document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+    }
+
+    $(document).on("click", "#create-modal-save", function(){
+      var formData = $("#create-modal-form").serializeArray();
+      var nama = formData[0].value.toString();
+      var telp = formData[1].value.toString();
+      var alamat = formData[2].value.toString();
+      AddSupplier(nama, telp, alamat, function(result){
+        console.log("Add Supplier success");
+        window.location.reload();
+      });
+    });
   });
 </script>
 </body>

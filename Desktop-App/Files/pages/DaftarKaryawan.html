@@ -16,7 +16,6 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
-  <![endif]-->
     <script>window.$ =window.jQuery = require('jquery');</script>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -142,17 +141,7 @@
                       <h4 class="modal-title">Hapus Karyawan</h4>
                   </div>
                   <div class="modal-body">
-                      <table>
-                          <tr>
-                              <td>ID</td>
-                              <td id ="delete-modal-id"></td>
-                          </tr>
-                          <tr>
-                              <td>Nama</td>
-                              <td style="padding:0"><input class="form-control"></td>
-                          </tr>
-                      </table>
-
+                      <p><strong id="delete-modal-id"></strong> - <span id="delete-modal-nama"></span></p>
                       <p>Anda yakin ingin menghapus data karyawan ini ?</p>
                   </div>
                   <div class="modal-footer">
@@ -219,7 +208,7 @@
                       <h4 class="modal-title">Edit Data Karyawan</h4>
                   </div>
                   <div class="modal-body">
-
+                    <form id="edit-modal-form">
                       <table class="table">
                           <thead>
                           <tr>
@@ -230,30 +219,31 @@
                           <tbody>
                           <tr>
                               <td>Nama</td>
-                              <td style="padding:0"><input class="form-control" name="edit-modal-field-nama" id="edit-modal-field-nama"></td>
+                              <td style="padding:0"><input class="form-control" name="nama" id="edit-modal-field-nama"></td>
                           </tr>
                           <tr>
                               <td>No. Telp</td>
-                              <td style="padding:0"><input class="form-control" name="edit-modal-field-telp" id="edit-modal-field-telp"></td>
+                              <td style="padding:0"><input class="form-control" name="telp" id="edit-modal-field-telp"></td>
                           </tr>
                           <tr>
                               <td>Alamat</td>
-                              <td style="padding:0"><input class="form-control" name="edit-modal-field-alamat" id="edit-modal-field-alamat"></td>
+                              <td style="padding:0"><input class="form-control" name="alamat" id="edit-modal-field-alamat"></td>
                           </tr>
                           <tr>
                               <td>Username</td>
-                              <td style="padding:0"><input class="form-control" name="edit-modal-field-username" id="edit-modal-field-username"></td>
+                              <td style="padding:0"><input class="form-control" name="username" id="edit-modal-field-username"></td>
                           </tr>
                           <tr>
                               <td>Hak Akses</td>
-                              <td style="padding:0"><input class="form-control" name="edit-modal-field-hak-akses" id="edit-modal-field-hak-akses"></td>
+                              <td style="padding:0"><input class="form-control" name="hak_akses" id="edit-modal-field-hak-akses"></td>
                           </tr>
                           </tbody>
                       </table>
+                    </form>
                   </div>
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">OK</button>
-                      <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Simpan</button>
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Save</button>
                   </div>
               </div>
           </div>
@@ -264,7 +254,12 @@
       <div class="row">
         <div class="col-xs-12">
 
-          <div class="box">
+          <div class="box box-primary">
+
+              <div class="box-header">
+                  <button id="searchButton" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+                  <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+              </div>
             <div class="box-body">
               <table id="KaryawanTable" class="table table-bordered table-hover">
                 <thead>
@@ -294,8 +289,7 @@
                   </tbody>
             
               </table>
-                <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
-            </div>
+               </div>
           </div>
         </div>
         <!-- /.col -->
@@ -334,7 +328,7 @@
 
       function populateKaryawanData()
       {
-          getAllKaryawanData(function(result){
+          GetAllKaryawanData(function(result){
               var i;
               var KaryawanTable = $('#KaryawanTable').DataTable({
                   "paging": true,
@@ -345,27 +339,23 @@
                   "autoWidth": false
               });
               for (i = 0; i < result.length; i++) {
-                  var id = result[i].karyawanID.toString();
-                  var nama = result[i].nama;
-                  var noTelp = result[i].telp;
-                  var alamat = result[i].alamat;
-                  var userName = result[i].username;
-                  var hakAkses = result[i].hak_akses;
 
+                  var pad ="00000";
+                  var id = "" + result[i].karyawanID;
+                  var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
                   var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
                           id+
                           "'><i class='glyphicon glyphicon-pencil'></i></a>";
                   var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
                           id+
                           "'><i class='glyphicon glyphicon-trash'></i></a>";
-
                   KaryawanTable.row.add([
-                      id,
-                      nama,
-                      noTelp,
-                      alamat,
-                      userName,
-                      hakAkses,
+                      StrId,
+                      result[i].nama,
+                      result[i].telp,
+                      result[i].alamat,
+                      result[i].username,
+                      result[i].hak_akses,
                       editButton+" "+delButton
                   ]).draw();
               }
@@ -373,126 +363,80 @@
       }
       populateKaryawanData();
 
-        $(document).on("click", ".delete-modal-toggle", function(){
-            var karyawanID = $(this).data('id');
-            $(document).on("click", "#delete-modal-yes", function() {
-                DeleteKaryawan(karyawanID, function(result)
+      $(document).on("click", ".delete-modal-toggle", function() {
+          var karyawanID = $(this).data('id');
+          populateDeleteModal(this);
+          document.getElementById("delete-modal-yes").setAttribute("data-id", karyawanID);
+      });
+
+        $(document).on("click", "#delete-modal-yes", function()
+        {
+            karID = $(this).data('id');
+            DeleteKaryawan(karID, function(result)
+            {
+                console.log(result['affectedRows']);
+                if (result['affectedRows'] == 1)
                 {
-                    console.log(result['affectedRows']);
-                    if (result['affectedRows'] == 1)
-                    {
-                        console.log("delete success");
-                        window.location.reload();
-                    }
-                    else
-                        console.log("delete failed");
-                });
+                    console.log("delete success");
+                    window.location.reload();
+                }
+                else
+                    console.log("delete failed");
             });
         });
 
-      function DeleteKaryawan(karyawanID, fn)
-      {
-          $.post( baseUrl + "karyawan/hapus_karyawan/", {"karyawanID": karyawanID}, function(  data ) {
-              fn(data);
-          }, "json");
-      }
       $(document).on("click", ".edit-modal-toggle", function() {
+          var karyawanID = $(this).data('id');
           populateEditModal(this);
-          $(document).on("click", "#edit-modal-save", function(){
-                updateDataKaryawan({}, function(result){
-                    console.log(result['affectedRows']);
-                    if (result['affectedRows'] == 1)
-                    {
-                        console.log("delete success");
-                        window.location.reload();
-                    }
-                    else
-                        console.log("update failed");
-                });
-          });
+          document.getElementById("edit-modal-save").setAttribute("data-id", karyawanID);
       });
 
-      function populateEditModal(karyawanButton)
-      {
-          var karyawanID = $(karyawanButton).closest('tr').find('td:eq(0)').html();
-          var karyawanNama = $(karyawanButton).closest('tr').find('td:eq(1)').html();
-          var karyawanTelp = $(karyawanButton).closest('tr').find('td:eq(2)').html();
-          var karyawanAlamat = $(karyawanButton).closest('tr').find('td:eq(3)').html();
-          var karyawanUsername = $(karyawanButton).closest('tr').find('td:eq(4)').html();
-          var karyawanHakAkses = $(karyawanButton).closest('tr').find('td:eq(5)').html();
-          document.getElementById("edit-modal-id").innerHTML = karyawanID;
-          $("#edit-modal-field-nama").val(karyawanNama);
-          console.log(karyawanNama);
-          $("#edit-modal-field-telp").val(karyawanTelp);
-          $("#edit-modal-field-alamat").val(karyawanAlamat);
-          $("#edit-modal-field-username").val(karyawanUsername);
-          $("#edit-modal-field-hak-akses").val(karyawanHakAkses);
-      }
-      function updateDataKaryawan(nama, telp, alamat, username, hak_akses, fn)//todo: belom selese
-      {
-          $.post( baseUrl + "karyawan/update_karyawan/", {
-              json_string:JSON.stringify(
-                      {
-                          name: nama,
-                          telp: telp,
-                          alamat: alamat,
-                          username: username,
-                          password: "sementara",
-                          hak_akses: hak_akses
-                      }
-              )
-          }, function(  data ) {
-              fn(data);
-          }, "json");
-      }
-
-      function addKaryawan( nama, telp, alamat, username, hak_akses, fn)
-      {
-          $.post( baseUrl + "karyawan/tambah_karyawan/", {
-            json_string:JSON.stringify(
-                {
-                    nama: nama,
-                    telp: telp,
-                    alamat: alamat,
-                    username: username,
-                    password: "sementara",
-                    hak_akses: hak_akses
-                  //  formData
-                }
-            )
-          }, function(data) {
-              fn(data);
-          }, "json");
-      }
-
-    //  $(document).on("click", "#addButton", function(){
-
-          $(document).on("click", "#create-modal-save", function(){
-              var formData = $("#create-modal-form").serializeArray();
-              console.log(formData);
-              var nama = formData[0].value;
-              var telp = formData[1].value;
-              var alamat = formData[2].value;
-              var username = formData[3].value;
-              var hak_akses = formData[4].value;
-              console.log(nama);
-              console.log(telp);
-              console.log(alamat);
-              console.log(username);
-              console.log(hak_akses);
-              addKaryawan(nama,telp,alamat,username,hak_akses,function(result){
-                  console.log(result['affectedRows']);
-                  if (result['affectedRows'] == 1)
-                  {
-                      console.log("Add Karyawan success");
+          $(document).on("click", "#edit-modal-save", function() {
+              var Id = $(this).data('id');
+              var formData = $("#edit-modal-form").serializeArray();
+              var nama = formData[0].value.toString();
+              var telp = formData[1].value.toString();
+              var alamat = formData[2].value.toString();
+              var username = formData[3].value.toString();
+              var hak_akses = formData[4].value.toString();
+              UpdateDataKaryawan(Id, nama, telp, alamat, username, hak_akses, function (result) {
+                  if (result['affectedRows'] == 1) {
+                      console.log("update karyawan success");
                       window.location.reload();
                   }
                   else
-                      console.log("Add Karyawan failed");
-
+                      console.log("update karyawan failed");
               });
           });
-     // });
+
+      function populateEditModal(karyawanButton)
+      {
+          document.getElementById("edit-modal-id").innerHTML = $(karyawanButton).closest('tr').find('td:eq(0)').html();
+          $("#edit-modal-field-nama").val($(karyawanButton).closest('tr').find('td:eq(1)').html());
+          $("#edit-modal-field-telp").val($(karyawanButton).closest('tr').find('td:eq(2)').html());
+          $("#edit-modal-field-alamat").val($(karyawanButton).closest('tr').find('td:eq(3)').html());
+          $("#edit-modal-field-username").val($(karyawanButton).closest('tr').find('td:eq(4)').html());
+          $("#edit-modal-field-hak-akses").val($(karyawanButton).closest('tr').find('td:eq(5)').html());
+      }
+
+      function populateDeleteModal(karyawanButton) {
+          document.getElementById("delete-modal-id").innerHTML = $(karyawanButton).closest('tr').find('td:eq(0)').html();
+          document.getElementById("delete-modal-nama").innerHTML = $(karyawanButton).closest('tr').find('td:eq(1)').html();
+       }
+
+      $(document).on("click", "#create-modal-save", function(){
+          var formData = $("#create-modal-form").serializeArray();
+          var nama = formData[0].value.toString();
+          var telp = formData[1].value.toString();
+          var alamat = formData[2].value.toString();
+          var username = formData[3].value.toString();
+          var hak_akses = formData[4].value.toString();
+          var password = "sementara";//TODO:ganti password
+          AddKaryawan(nama,telp,alamat,username, password, hak_akses,function(result){
+              console.log("Add Karyawan success");
+              window.location.reload();
+          });
+      });
   });
 </script>
 </body>

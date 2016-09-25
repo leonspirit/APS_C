@@ -1,0 +1,10 @@
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Ronald Cooper', '1-(409)667-0405', '2 Crescent Oaks Way', 'rcooper0', 'CJbDVsnhz', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Joshua Kim', '235-(602)417-4484', '41 Burning Wood Pass', 'jkim1', 'qzxnzlC', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Bruce Greene', '381-(242)175-0024', '5 Vahlen Street', 'bgreene2', 'jSsYvMt7NU', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Beverly Duncan', '62-(190)910-2003', '16 Maywood Parkway', 'bduncan3', 'R8VUhcI7g', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Michael Lopez', '62-(907)635-2862', '2 Farmco Lane', 'mlopez4', 'eNAIUux', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Jane Smith', '86-(676)842-2620', '0 Columbus Lane', 'jsmith5', 'U3LDKQSxTT', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Helen Ferguson', '55-(151)804-4583', '4 Londonderry Road', 'hferguson6', 'CVGp063fStK', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Nancy Burke', '212-(642)986-2308', '588 Kinsman Terrace', 'nburke7', 'Fledaf', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Wayne Grant', '994-(368)839-6990', '01392 Packers Road', 'wgrant8', 'ghJROl9nOdVR', 'karyawan');
+insert into karyawan (nama, telp, alamat, username, password, hak_akses) values ('Brenda Kelly', '63-(590)976-2587', '3536 Delaware Circle', 'bkelly9', 'CHeZd7', 'karyawan');

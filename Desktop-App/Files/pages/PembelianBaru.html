@@ -35,7 +35,7 @@
         var rowNum = rowCount+1;
 
         var cell1 = row.insertCell(0);
-        cell1.innerHTML = rowNum.toString();//nanti ganti
+        cell1.innerHTML = rowNum.toString();
 
         var cell2 = row.insertCell(1);
         cell2.setAttribute("style", "padding:0");
@@ -483,14 +483,6 @@
   $(function () {
       $(".testHidden").hide();
     $(".select2").select2();
-   /* $('#itemTable').DataTable({
-      "paging": false,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": false,
-      "info": false,
-      "autoWidth": true
-    });*/
       //Date picker
     $('#datepicker').datepicker({
       autoclose: true

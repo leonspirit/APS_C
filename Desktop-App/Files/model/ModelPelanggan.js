@@ -2,41 +2,45 @@
  * Created by Billy on 14-Sep-16.
  */
 
+var baseUrl = "http://localhost:3000/";
 
-var baseUrl = "http://localhost:3000/"
-
-function getQueryPelanganData(id, nama, noTelp, alamat,  fn) {
-
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-function getAllPelangganData(fn)
+function GetAllPelangganData(fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"pelanggan/list_pelanggan";
+    $.get( baseUrl+"pelanggan/list_pelanggan", function( data ) {
+        fn(data);
+    });
+}
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
+function DeletePelanggan(pelangganID, fn)
+{
+    $.post( baseUrl + "pelanggan/hapus_pelanggan/", {"pelangganID": pelangganID}, function(  data ) {
+        fn(data);
+    }, "json");
+}
+
+function UpdateDataPelanggan(Id, nama, telp, alamat, fn)
+{
+    $.post( baseUrl + "pelanggan/update_pelanggan/",
+        {
+            pelangganID: Id,
+            nama: nama,
+            telp: telp,
+            alamat: alamat
         }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+        , function(  data ) {
+            fn(data);
+        }, "json");
 }
-function updateDataPelanggan(id, nama, noTelp, alamat,  fn){
 
+function AddPelanggan( nama, telp, alamat, fn)
+{
+    $.post( baseUrl + "pelanggan/tambah_pelanggan/",
+        {
+            nama: nama,
+            telp: telp,
+            alamat: alamat
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
 }
-//connection.end();

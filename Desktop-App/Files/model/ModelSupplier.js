@@ -3,38 +3,46 @@
  */
 
 
-var baseUrl = "http://localhost:3000/"
-function getQuerySupplierData(id, nama, noTelp, alamat, fn) {
+var baseUrl = "http://localhost:3000/";
 
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;//todo: ganti url
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-function getAllSupplierData(fn)
+function GetAllSupplierData(fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"supplier/list_supplier";
+    $.get( baseUrl+"supplier/list_supplier", function( data ) {
+        fn(data);
+    });
+}
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            fn(myArr);
+function DeleteSupplier(supplierID, fn)
+{
+    $.post( baseUrl + "supplier/hapus_supplier/", {"supplierID": supplierID}, function(  data ) {
+        fn(data);
+    }, "json");
+}
+
+function UpdateDataSupplier(Id, nama, telp, alamat, fn)
+{
+    $.post( baseUrl + "supplier/update_supplier/",
+        {
+            supplierID: Id,
+            nama: nama,
+            telp: telp,
+            alamat: alamat
         }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+        , function(  data ) {
+            fn(data);
+        }, "json");
 }
-function updateDataSupplier(id, nama, noTelp, alamat, fn){
 
+function AddSupplier( nama, telp, alamat, fn)
+{
+    $.post( baseUrl + "supplier/tambah_supplier/",
+        {
+            nama: nama,
+            telp: telp,
+            alamat: alamat
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
 }
-//connection.end();

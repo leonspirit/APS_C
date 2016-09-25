@@ -52,7 +52,7 @@
             
           </li>
             <li class="user user-menu">
-            <a href="index.php">
+            <a href="../index.html">
               
               <span class="hidden-xs">Log Out</span>
             </a>
@@ -120,7 +120,7 @@
         </li>
         <li>
           <a href="DaftarSupplier.html">
-            <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
+            <img src="../icons/Supplier.png" style="margin-right:10px;" > <span>Daftar Supplier</span>
           </a>
         </li>
       </ul>
@@ -141,30 +141,159 @@
       </ol>
     </section>
 
+    <div class="modal fade"  id="deleteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Hapus Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <p><strong id="delete-modal-id"></strong> - <span id="delete-modal-nama"></span></p>
+            <p>Anda yakin ingin menghapus data pelanggan ini ?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary  pull-left" id="delete-modal-yes">Ya</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"  id="createModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Tambah Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <form id="create-modal-form">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th colspan="2">Masukkan data pelanggan baru</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Nama</td>
+                  <td style="padding:0"><input class="form-control" name="nama" id="create-modal-field-nama"></td>
+                </tr>
+                <tr>
+                  <td>No. Telp</td>
+                  <td style="padding:0"><input class="form-control" name="telp" id="create-modal-field-telp"></td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td style="padding:0"><input class="form-control" name="alamat" id="create-modal-field-alamat"></td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary  pull-left" id="create-modal-save">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"  id="editModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Edit Data Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <form id="edit-modal-form">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th id ="edit-modal-id"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Nama</td>
+                  <td style="padding:0"><input class="form-control" name="nama" id="edit-modal-field-nama"></td>
+                </tr>
+                <tr>
+                  <td>No. Telp</td>
+                  <td style="padding:0"><input class="form-control" name="telp" id="edit-modal-field-telp"></td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td style="padding:0"><input class="form-control" name="alamat" id="edit-modal-field-alamat"></td>
+                </tr>
+
+                </tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
 
-          <div class="box">
-            <!--<div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>-->
-            <!-- /.box-header -->
+          <div class="box box-primary">
+            <div class="box-header">
+              <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+              <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+            </div>
+
             <div class="box-body">
+              <div id="collapseOne" class="panel-collapse collapse">
+
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>ID</label>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">P</div>
+                        <input class="form-control search-filter" id="search-pelanggan-id" type="number">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Nama</label>
+                    <input class="form-control search-filter"  id="search-pelanggan-nama" type="text">
+                  </div>
+                  <div class="col-md-3">
+                    <label>No Telp</label>
+                    <input class="form-control search-filter" id="search-pelanggan-telp" type="text">
+                  </div>
+                  <div class="col-md-4">
+                    <label>Alamat</label>
+                    <input class="form-control search-filter" id="search-pelanggan-alamat" type="text">
+                  </div>
+                </div>
+              </div>
+
               <table id="PelangganTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th >ID</th>
-                  <th>Nama</th>
-                  <th >No. Telp</th>
-                  <th >Alamat</th>
+                  <th class="table-id">ID</th>
+                  <th class="table-nama">Nama</th>
+                  <th class="table-telp">No. Telp</th>
+                  <th class="table-alamat">Alamat</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <tr>
+               <!-- <tr>
                     <td>A001</td>
                     <td>Andi</td>
                     <td>081111111111</td>
@@ -173,41 +302,10 @@
                         <a><i class="glyphicon glyphicon-edit"></i></a>
                         <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
                     </td>
-                  </tr>
-                <tr>
-                    <td>A002</td>
-                    <td>Budi</td>
-                    <td>081222222222</td>
-                    <td>Jalan Budi no 2</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>A003</td>
-                    <td>Cici</td>
-                    <td>081333333333</td>
-                    <td>Jalan Cici no 3</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
-                <tr>
-                    <td>A004</td>
-                    <td>Doni</td>
-                    <td>081444444444</td>
-                    <td>Jalan Doni no 4</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                    </tr>
+                  </tr>-->
                   </tbody>
             
               </table>
-                <button class="btn btn-primary"><i class="fa  fa-fw fa-plus"></i> Tambah</button>
             </div>
             <!-- /.box-body -->
           </div>
@@ -248,42 +346,142 @@
   $(function () {
     function populatePelangganData()
     {
-      getAllPelangganData(function(result){
+      GetAllPelangganData(function(result){
         var i;
         var PelangganTable = $('#PelangganTable').DataTable({
           "paging": true,
           "lengthChange": true,
-          "searching": false,
+          "searching": true,
+          //"sDom":"lrtp",
           "ordering": true,
           "info": true,
           "autoWidth": false
         });
         for (i = 0; i < result.length; i++) {
-          var id = result[i].pelangganID.toString();
-          var nama = result[i].nama;
-          var noTelp = result[i].telp;
-          var alamat = result[i].alamat;
+          var pad ="0000";
+          var id = "" + result[i].pelangganID;
+          var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
 
           var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
                   id+
                   "'><i class='glyphicon glyphicon-pencil'></i></a>";
-          var delButton = "<a style='color:red;' href='' data-id='" +
+          var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
                   id+
                   "'><i class='glyphicon glyphicon-trash'></i></a>";
 
           PelangganTable.row.add([
-            id,
-            nama,
-            noTelp,
-            alamat,
+            StrId,
+            result[i].nama,
+            result[i].telp,
+            result[i].alamat,
             editButton+" "+delButton
           ]).draw();
-
         }
 
       });
     }
     populatePelangganData();
+
+    $(document).on("click", ".delete-modal-toggle", function() {
+      populateDeleteModal(this);
+      var pelangganID = $(this).data('id');
+      document.getElementById("delete-modal-yes").setAttribute("data-id", pelangganID);
+    });
+
+      $(document).on("click", "#delete-modal-yes", function() {
+        var pelangganID = $(this).data('id');
+        console.log(pelangganID);
+        DeletePelanggan(pelangganID, function(result)
+        {
+          console.log(result['affectedRows']);
+          if (result['affectedRows'] == 1)
+          {
+            console.log("delete success");
+            window.location.reload();
+          }
+          else
+            console.log("delete failed");
+        });
+      });
+
+    $(document).on("click", ".edit-modal-toggle", function() {
+      populateEditModal(this);
+      var pelangganID = $(this).data('id');
+      document.getElementById("edit-modal-save").setAttribute("data-id", pelangganID);
+
+    });
+    $(document).on("click", "#edit-modal-save", function(){
+      var Id = $(this).data('id');
+      var formData = $("#edit-modal-form").serializeArray();
+      var nama = formData[0].value.toString();
+      var telp = formData[1].value.toString();
+      var alamat = formData[2].value.toString();
+      UpdateDataPelanggan(Id, nama, telp, alamat, function(result){
+        if (result['affectedRows'] == 1)
+        {
+          console.log("update pelanggan success");
+          window.location.reload();
+        }
+        else
+          console.log("update pelanggan failed");
+      });
+    });
+
+    function populateEditModal(Button)
+    {
+      document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+      $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
+      $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
+      $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+    }
+
+    function populateDeleteModal(Button) {
+      document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+      document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+    }
+
+    $(document).on("click", "#create-modal-save", function(){
+      var formData = $("#create-modal-form").serializeArray();
+      var nama = formData[0].value.toString();
+      var telp = formData[1].value.toString();
+      var alamat = formData[2].value.toString();
+      AddPelanggan(nama, telp, alamat, function(result){
+          console.log("Add pelanggan success");
+          window.location.reload();
+      });
+    });
+
+    $(".search-filter").keyup( function(){
+      searchFromTable(
+              $("#search-pelanggan-id").val(),
+              $("#search-pelanggan-nama").val(),
+              $("#search-pelanggan-telp").val(),
+              $("#search-pelanggan-alamat").val()
+      );
+    });
+
+    function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
+    {
+      var PelangganTable = $('#PelangganTable').DataTable();
+      var StrId;
+      var queryID2 = parseInt(queryID);
+      if (!isNaN(queryID2))
+      {
+        var pad ="0000";
+        var id = "" + queryID2;
+        StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+      }
+      else
+        StrId ="";
+
+
+      PelangganTable.
+      columns(".table-id").search(StrId).
+      columns(".table-nama").search(queryNama).
+      columns(".table-telp").search(queryTelp).
+      columns(".table-alamat").search(queryAlamat).
+      draw();
+    }
   });
 </script>
 </body>

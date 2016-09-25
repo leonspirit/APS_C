@@ -3,42 +3,50 @@
  */
 
 
-var baseUrl = "http://localhost:3000/"
+var baseUrl = "http://localhost:3000/";
 
-function getQueryKaryawanData(id, nama, noTelp, alamat, userName, hakAkses, fn) {
-
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"karyawan/list_karyawan";//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-function getAllKaryawanData(fn)
+function GetAllKaryawanData(fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"karyawan/list_karyawan";
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    $.get( baseUrl+"karyawan/list_karyawan", function( data ) {
+        fn(data);
+    });
 }
 
-function updateDataKaryawan(id, nama, noTelp, alamat, userName, hakAkses, fn)
+function DeleteKaryawan(karyawanID, fn)
 {
-
+    $.post( baseUrl + "karyawan/hapus_karyawan/", {"karyawanID": karyawanID}, function(  data ) {
+        fn(data);
+    }, "json");
 }
 
-//connection.end();
+function UpdateDataKaryawan(Id, nama, telp, alamat, username, hak_akses, fn)
+{
+    $.post( baseUrl + "karyawan/update_karyawan/",
+        {
+            karyawanID: Id,
+            nama: nama,
+            telp: telp,
+            alamat: alamat,
+            username: username,
+            hak_akses: hak_akses
+        }
+        , function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function AddKaryawan( nama, telp, alamat, username, password, hak_akses, fn)
+{
+    $.post( baseUrl + "karyawan/tambah_karyawan/",
+        {
+            nama: nama,
+            telp: telp,
+            alamat: alamat,
+            username: username,
+            password: password,
+            hak_akses: hak_akses
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}
