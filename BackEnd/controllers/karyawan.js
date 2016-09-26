@@ -23,7 +23,7 @@ router.post('/tambah_karyawan', function(req,res){
 router.post('/list_karyawan', function(req,res){
 
     var resp = {}
-
+    res.type('application/json');
     token_auth.check_token(req.body.token, function(result){
         if(result == null){
             resp['token_status'] = 'failed'
