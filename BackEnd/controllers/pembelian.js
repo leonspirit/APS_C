@@ -2,18 +2,10 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'tokokohong'
-});
-connection.connect();
+var connection = require('../database')
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
-
 
 router.post('/tambah_pembelian', function(req,res){
 
