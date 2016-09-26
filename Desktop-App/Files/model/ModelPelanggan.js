@@ -4,24 +4,32 @@
 
 var baseUrl = "http://localhost:3000/";
 
-function GetAllPelangganData(fn)
+function GetAllPelangganData(token, fn)
 {
-    $.get( baseUrl+"pelanggan/list_pelanggan", function( data ) {
-        fn(data);
-    });
+    $.post( baseUrl+"pelanggan/list_pelanggan",
+        {
+            token:token
+        },function( data ) {
+            fn(data);
+        }, "json");
 }
 
-function DeletePelanggan(pelangganID, fn)
+function DeletePelanggan(token, pelangganID, fn)
 {
-    $.post( baseUrl + "pelanggan/hapus_pelanggan/", {"pelangganID": pelangganID}, function(  data ) {
-        fn(data);
-    }, "json");
+    $.post( baseUrl + "pelanggan/hapus_pelanggan/",
+        {
+            token: token,
+            pelangganID: pelangganID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
 }
 
-function UpdateDataPelanggan(Id, nama, telp, alamat, fn)
+function UpdateDataPelanggan(token, Id, nama, telp, alamat, fn)
 {
     $.post( baseUrl + "pelanggan/update_pelanggan/",
         {
+            token: token,
             pelangganID: Id,
             nama: nama,
             telp: telp,
@@ -32,10 +40,11 @@ function UpdateDataPelanggan(Id, nama, telp, alamat, fn)
         }, "json");
 }
 
-function AddPelanggan( nama, telp, alamat, fn)
+function AddPelanggan(token, nama, telp, alamat, fn)
 {
     $.post( baseUrl + "pelanggan/tambah_pelanggan/",
         {
+            token: token,
             nama: nama,
             telp: telp,
             alamat: alamat

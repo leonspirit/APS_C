@@ -257,18 +257,44 @@
           <div class="box box-primary">
 
               <div class="box-header">
-                  <button id="searchButton" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+                  <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
                   <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
               </div>
             <div class="box-body">
+                <div id="collapseOne" class="panel-collapse collapse">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>ID</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">K</div>
+                                    <input class="form-control search-filter" id="search-karyawan-id" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Nama</label>
+                            <input class="form-control search-filter" id="search-karyawan-nama" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label>No Telp</label>
+                            <input class="form-control search-filter" id="search-karyawan-telp" type="text">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Alamat</label>
+                            <input class="form-control search-filter" id="search-karyawan-alamat" type="text">
+                        </div>
+                    </div>
+                </div>
               <table id="KaryawanTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th >ID</th>
-                  <th>Nama</th>
-                  <th >No. Telp</th>
-                  <th >Alamat</th>
-                    <th>Username</th>
+                  <th id="table-id">ID</th>
+                  <th id="table-nama">Nama</th>
+                  <th id="table-telp">No. Telp</th>
+                  <th id="table-alamat">Alamat</th>
+                    <th id="table-username">Username</th>
                     <th>Hak Akses</th>
                     <th></th>
                 </tr>
@@ -328,37 +354,48 @@
 
       function populateKaryawanData()
       {
-          GetAllKaryawanData(function(result){
-              var i;
-              var KaryawanTable = $('#KaryawanTable').DataTable({
-                  "paging": true,
-                  "lengthChange": true,
-                  "searching": false,
-                  "ordering": true,
-                  "info": true,
-                  "autoWidth": false
-              });
-              for (i = 0; i < result.length; i++) {
+          var curToken = "1234567890";
+          GetAllKaryawanData(curToken, function(result){
+              if (result.token_status == "success")
+              {
+                  var i;
+                  var KaryawanTable = $('#KaryawanTable').DataTable({
+                      "paging": true,
+                      "lengthChange": true,
+                      "searching": true,
+                      "ordering": true,
+                      "info": true,
+                      "autoWidth": false
+                  });
+                  console.log(result);
+                  for (i = 0; i < result.data.length; i++) {
 
-                  var pad ="00000";
-                  var id = "" + result[i].karyawanID;
-                  var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
-                  var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                          id+
-                          "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                  var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
-                          id+
-                          "'><i class='glyphicon glyphicon-trash'></i></a>";
-                  KaryawanTable.row.add([
-                      StrId,
-                      result[i].nama,
-                      result[i].telp,
-                      result[i].alamat,
-                      result[i].username,
-                      result[i].hak_akses,
-                      editButton+" "+delButton
-                  ]).draw();
+                      var pad ="00000";
+                      var id = "" + result.data[i].karyawanID;
+                      var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
+                      var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                              id+
+                              "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                      var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
+                              id+
+                              "'><i class='glyphicon glyphicon-trash'></i></a>";
+                      KaryawanTable.row.add([
+                          StrId,
+                          result.data[i].nama,
+                          result.data[i].telp,
+                          result.data[i].alamat,
+                          result.data[i].username,
+                          result.data[i].hak_akses,
+                          editButton+" "+delButton
+                      ]).draw();
+                  }
               }
+              else
+              {
+                  console.log("token status failed");
+              }
+
+
           });
       }
       populateKaryawanData();
@@ -371,17 +408,25 @@
 
         $(document).on("click", "#delete-modal-yes", function()
         {
-            karID = $(this).data('id');
-            DeleteKaryawan(karID, function(result)
+            var curToken = "1234567890";
+            var karID = $(this).data('id');
+            DeleteKaryawan(curToken, karID, function(result)
             {
-                console.log(result['affectedRows']);
-                if (result['affectedRows'] == 1)
+                if (result.token_status=="success")
                 {
-                    console.log("delete success");
-                    window.location.reload();
+                    console.log(result.affectedRows);
+                    if (result.affectedRows == 1)
+                    {
+                        console.log("delete success");
+                        window.location.reload();
+                    }
+                    else
+                        console.log("delete failed");
                 }
-                else
-                    console.log("delete failed");
+                else{
+                    console.log("token failed");
+                }
+
             });
         });
 
@@ -392,6 +437,7 @@
       });
 
           $(document).on("click", "#edit-modal-save", function() {
+              var curToken = "1234567890";
               var Id = $(this).data('id');
               var formData = $("#edit-modal-form").serializeArray();
               var nama = formData[0].value.toString();
@@ -399,7 +445,7 @@
               var alamat = formData[2].value.toString();
               var username = formData[3].value.toString();
               var hak_akses = formData[4].value.toString();
-              UpdateDataKaryawan(Id, nama, telp, alamat, username, hak_akses, function (result) {
+              UpdateDataKaryawan(curToken, Id, nama, telp, alamat, username, hak_akses, function (result) {
                   if (result['affectedRows'] == 1) {
                       console.log("update karyawan success");
                       window.location.reload();
@@ -425,6 +471,7 @@
        }
 
       $(document).on("click", "#create-modal-save", function(){
+          var curToken = "1234567890";
           var formData = $("#create-modal-form").serializeArray();
           var nama = formData[0].value.toString();
           var telp = formData[1].value.toString();
@@ -432,11 +479,42 @@
           var username = formData[3].value.toString();
           var hak_akses = formData[4].value.toString();
           var password = "sementara";//TODO:ganti password
-          AddKaryawan(nama,telp,alamat,username, password, hak_akses,function(result){
+          AddKaryawan(curToken, nama,telp,alamat,username, password, hak_akses,function(result){
               console.log("Add Karyawan success");
               window.location.reload();
           });
       });
+      $(".search-filter").keyup( function(){
+          searchFromTable(
+                  $("#search-karyawan-id").val(),
+                  $("#search-karyawan-nama").val(),
+                  $("#search-karyawan-telp").val(),
+                  $("#search-karyawan-alamat").val(),
+                  ""
+          );
+      });
+
+      function searchFromTable(queryID, queryNama, queryTelp, queryAlamat, queryUsername)
+      {
+          var KaryawanTable = $('#KaryawanTable').DataTable();
+          var StrId;
+          var queryID2 = parseInt(queryID);
+          if (!isNaN(queryID2))
+          {
+              var pad ="00000";
+              var id = "" + queryID2;
+              StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
+          }
+          else
+              StrId ="";
+          KaryawanTable.
+          columns("#table-id").search(StrId).
+          columns("#table-nama").search(queryNama).
+          columns("#table-telp").search(queryTelp).
+          columns("#table-alamat").search(queryAlamat).
+          columns("#table-username").search(queryUsername).
+          draw();
+      }
   });
 </script>
 </body>

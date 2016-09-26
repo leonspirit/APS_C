@@ -5,24 +5,33 @@
 
 var baseUrl = "http://localhost:3000/";
 
-function GetAllKaryawanData(fn)
+function GetAllKaryawanData(token, fn)
 {
-    $.get( baseUrl+"karyawan/list_karyawan", function( data ) {
-        fn(data);
-    });
+    $.post( baseUrl+"karyawan/list_karyawan",
+        {
+            token:token
+        },
+        function( data ) {
+            fn(data);
+        }, "json");
 }
 
-function DeleteKaryawan(karyawanID, fn)
+function DeleteKaryawan(token, karyawanID, fn)
 {
-    $.post( baseUrl + "karyawan/hapus_karyawan/", {"karyawanID": karyawanID}, function(  data ) {
-        fn(data);
-    }, "json");
+    $.post( baseUrl + "karyawan/hapus_karyawan/",
+        {
+            token:token,
+            karyawanID: karyawanID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
 }
 
-function UpdateDataKaryawan(Id, nama, telp, alamat, username, hak_akses, fn)
+function UpdateDataKaryawan(token, Id, nama, telp, alamat, username, hak_akses, fn)
 {
     $.post( baseUrl + "karyawan/update_karyawan/",
         {
+            token:token,
             karyawanID: Id,
             nama: nama,
             telp: telp,
@@ -35,10 +44,11 @@ function UpdateDataKaryawan(Id, nama, telp, alamat, username, hak_akses, fn)
         }, "json");
 }
 
-function AddKaryawan( nama, telp, alamat, username, password, hak_akses, fn)
+function AddKaryawan(token,  nama, telp, alamat, username, password, hak_akses, fn)
 {
     $.post( baseUrl + "karyawan/tambah_karyawan/",
         {
+            token:token,
             nama: nama,
             telp: telp,
             alamat: alamat,

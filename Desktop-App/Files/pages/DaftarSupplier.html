@@ -190,6 +190,33 @@
           <h4 class="modal-title">Edit Data Supplier</h4>
         </div>
         <div class="modal-body">
+          <div id="collapseOne" class="panel-collapse collapse">
+
+            <div class="row">
+              <div class="col-md-2">
+                <label>ID</label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">S</div>
+                    <input class="form-control search-filter" id="search-supplier-id" type="number">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label>Nama</label>
+                <input class="form-control search-filter"  id="search-supplier-nama" type="text">
+              </div>
+              <div class="col-md-3">
+                <label>No Telp</label>
+                <input class="form-control search-filter" id="search-supplier-telp" type="text">
+              </div>
+              <div class="col-md-4">
+                <label>Alamat</label>
+                <input class="form-control search-filter" id="search-pelanggan-alamat" type="text">
+              </div>
+            </div>
+          </div>
+
           <form id="edit-modal-form">
             <table class="table">
               <thead>
@@ -251,10 +278,10 @@
               <table id="SupplierTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th >ID</th>
-                  <th>Nama</th>
-                  <th >No. Telp</th>
-                  <th >Alamat</th>
+                  <th id="table-id">ID</th>
+                  <th id="table-nama">Nama</th>
+                  <th id="table-telp">No. Telp</th>
+                  <th id="table-alamat">Alamat</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -312,7 +339,8 @@
   $(function () {
       function populateSupplierData()
       {
-          GetAllSupplierData(function(result){
+        var curToken = "122345697890";
+          GetAllSupplierData(curToken, function(result){
               var i;
               var SupplierTable = $('#SupplierTable').DataTable({
                   "paging": true,
@@ -322,10 +350,10 @@
                   "info": true,
                   "autoWidth": false
               });
-              for (i = 0; i < result.length; i++) {
+              for (i = 0; i < result..datalength; i++) {
 
                 var pad ="00000";
-                var id = "" + result[i].supplierID;
+                var id = "" + result.data[i].supplierID;
                 var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
                   var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
@@ -336,9 +364,9 @@
                           "'><i class='glyphicon glyphicon-trash'></i></a>";
                   SupplierTable.row.add([
                       StrId,
-                      result[i].nama,
-                      result[i].telp,
-                      result[i].alamat,
+                      result.data[i].nama,
+                      result.data[i].telp,
+                      result.data[i].alamat,
                       editButton+" "+delButton
                   ]).draw();
 
@@ -357,7 +385,8 @@
     $(document).on("click", "#delete-modal-yes", function() {
       var supplierID = $(this).data('id');
       console.log(supplierID);
-      DeleteSupplier(supplierID, function(result)
+      var curToken = "122345697890";
+      DeleteSupplier(curToken, supplierID, function(result)
       {
         console.log(result['affectedRows']);
         if (result['affectedRows'] == 1)
@@ -377,12 +406,13 @@
 
     });
     $(document).on("click", "#edit-modal-save", function(){
+      var curToken = "122345697890";
       var Id = $(this).data('id');
       var formData = $("#edit-modal-form").serializeArray();
       var nama = formData[0].value.toString();
       var telp = formData[1].value.toString();
       var alamat = formData[2].value.toString();
-      UpdateDataSupplier(Id, nama, telp, alamat, function(result){
+      UpdateDataSupplier(curToken, Id, nama, telp, alamat, function(result){
         if (result['affectedRows'] == 1)
         {
           console.log("update supplier success");
@@ -407,15 +437,46 @@
     }
 
     $(document).on("click", "#create-modal-save", function(){
+      var curToken = "122345697890";
       var formData = $("#create-modal-form").serializeArray();
       var nama = formData[0].value.toString();
       var telp = formData[1].value.toString();
       var alamat = formData[2].value.toString();
-      AddSupplier(nama, telp, alamat, function(result){
+      AddSupplier(curToken, nama, telp, alamat, function(result){
         console.log("Add Supplier success");
         window.location.reload();
       });
     });
+
+    $(".search-filter").keyup( function(){
+      searchFromTable(
+              $("#search-pelanggan-id").val(),
+              $("#search-pelanggan-nama").val(),
+              $("#search-pelanggan-telp").val(),
+              $("#search-pelanggan-alamat").val()
+      );
+    });
+
+    function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
+    {
+      var PelangganTable = $('#PelangganTable').DataTable();
+      var StrId;
+      var queryID2 = parseInt(queryID);
+      if (!isNaN(queryID2))
+      {
+        var pad ="00000";
+        var id = "" + queryID2;
+        StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+      }
+      else
+        StrId ="";
+      PelangganTable.
+      columns("#table-id").search(StrId).
+      columns("#table-nama").search(queryNama).
+      columns("#table-telp").search(queryTelp).
+      columns("#table-alamat").search(queryAlamat).
+      draw();
+    }
   });
 </script>
 </body>
