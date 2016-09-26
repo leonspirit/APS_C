@@ -3,6 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 
 var connection = require('../database')
+var token_auth = require('../token')
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
@@ -19,13 +20,25 @@ router.post('/tambah_karyawan', function(req,res){
     });
 });
 
-router.get('/list_karyawan', function(req,res){
+router.post('/list_karyawan', function(req,res){
 
-    var querystring = 'SELECT karyawanID, nama, telp, alamat, username, hak_akses FROM karyawan';
-    connection.query(querystring, function(err, result){
-        if(err) throw err;
-        res.status(200).send(result);
-    });
+    var resp = {}
+
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'SELECT karyawanID, nama, telp, alamat, username, hak_akses FROM karyawan';
+            connection.query(querystring, function(err, result){
+                if(err) throw err;
+                resp['data'] = result;
+                res.status(200).send(resp);
+            });
+        }
+    })
 });
 
 router.post('/hapus_karyawan', function(req,res){
@@ -51,6 +64,33 @@ router.post('/update_karyawan', function(req,res){
         res.status(200).send(resp);
     });
 });
+
+router.post('/login', function(req,res){
+
+    var querystring = 'SELECT karyawanID, hak_akses FROM karyawan WHERE username = ? AND password = ?';
+    var karyawan = [req.body.username, req.body.password];
+    connection.query(querystring, karyawan, function(err, result){
+        if(err) throw err;
+        var resp = {num_rows:result.length};
+        res.type('application/json');
+
+        if(result.length == 0){
+            res.status(200).send(resp);
+        }
+        else{
+            resp['karyawanID'] = result[0].karyawanID;
+            resp['hak_akses'] = result[0].hak_akses;
+            resp['token'] = token_auth.new_token();
+
+            var querystring2 = 'INSERT INTO token SET karyawanID = ?, token = ?, statusToken = ?';
+            var token = [resp['karyawanID'], resp['token'], 'aktif'];
+            connection.query(querystring2, token, function(err2, result2){
+                if(err2) throw err2;
+                res.status(200).send(resp);
+            })
+        }
+    })
+})
 
 
 module.exports = router
