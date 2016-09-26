@@ -24,5 +24,15 @@ module.exports = {
                 })
             }
         })
+    },
+
+    // UNTESTED
+    destroy_token: function destroy_token(token_string, callback){
+        var querystring = 'UPDATE token SET statusToken = ? WHERE token = ?';
+        var token = ["inaktif", token_string];
+        connection.query(querystring, token, function(err, result){
+            if(err) throw err;
+            return callback(result.affectedRows)
+        })
     }
 }

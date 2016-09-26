@@ -92,5 +92,21 @@ router.post('/login', function(req,res){
     })
 })
 
+router.post('/logout', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.destroy_token(req.body.token, function(result){
+        if(result == 0){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            res.status(200).send(resp)
+        }
+    })
+})
+
 
 module.exports = router
