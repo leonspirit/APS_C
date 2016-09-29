@@ -13,7 +13,7 @@ router.post('/tambah_pelanggan', function(req,res){
     var resp = {}
     res.type('application/json');
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -35,7 +35,7 @@ router.post('/list_pelanggan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -57,7 +57,7 @@ router.post('/hapus_pelanggan', function(req,res){
     res.type('application/json')
 
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -80,7 +80,7 @@ router.post('/update_pelanggan', function(req,res){
     res.type('application/json')
 
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }

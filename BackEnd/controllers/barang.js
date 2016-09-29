@@ -13,7 +13,7 @@ router.post('/tambah_barang', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -35,7 +35,7 @@ router.post('/tambah_satuan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -57,7 +57,7 @@ router.post('/list_barang', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -78,7 +78,7 @@ router.post('/list_satuan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -100,7 +100,7 @@ router.post('/update_satuan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -122,7 +122,7 @@ router.post('/update_barang', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -144,7 +144,7 @@ router.post('/hapus_satuan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -166,7 +166,7 @@ router.post('/hapus_barang', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result == null){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
