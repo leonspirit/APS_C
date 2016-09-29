@@ -139,14 +139,53 @@ router.post('/update_barang', function(req,res){
     })
 })
 
-// router.post('/hapus_satuan', function(req,res){
-//
-//     var resp = {}
-//     res.type('application/json')
-//     token_auth.check_token(req.body.token, function(result){
-//         if(result == null)
-//     })
-// })
+router.post('/hapus_satuan', function(req,res){
 
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'DELETE FROM satuanbarang WHERE satuanID = ?'
+            var satuan = [req.body.satuanID]
+            connection.query(querystring, satuan, function(err, result){
+                if(err) throw err;
+                resp['affectedRows'] = result.affectedRows
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/hapus_barang', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'DELETE FROM satuanbarang WHERE barangID = ?'
+            var satuan = [req.body.barangID]
+            connection.query(querystring, satuan, function(err, result){
+                if(err) throw err;
+                var querystring2 = 'DELETE FROM barang WHERE barangID = ?'
+                var barang = [req.body.barangID]
+                connection.query(querystring2, barang, function(err2, result2){
+                    if(err2) throw err2;
+                    resp['affectedRows'] = result2.affectedRows
+                    res.status(200).send(resp)
+                })
+            })
+        }
+    })
+})
 
 module.exports = router
