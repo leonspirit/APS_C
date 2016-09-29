@@ -8,11 +8,11 @@ var baseUrl = "http://localhost:3000/";
 
 function GetAllSupplierData(token, fn)
 {
-    $.get( baseUrl+"supplier/list_supplier", {
+    $.post( baseUrl+"supplier/list_supplier", {
         token: token,
     },function( data ) {
         fn(data);
-    });
+    },"json");
 }
 
 function DeleteSupplier(token, supplierID, fn)

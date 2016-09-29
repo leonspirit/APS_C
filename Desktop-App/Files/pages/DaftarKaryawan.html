@@ -356,43 +356,44 @@
       {
           var curToken = "1234567890";
           GetAllKaryawanData(curToken, function(result){
-              if (result.token_status == "success")
+              if(result.token_status == "success")
               {
                   var i;
                   var KaryawanTable = $('#KaryawanTable').DataTable({
                       "paging": true,
                       "lengthChange": true,
                       "searching": true,
+                      //"sDom":"lrtp",
                       "ordering": true,
                       "info": true,
                       "autoWidth": false
                   });
-                  console.log(result);
                   for (i = 0; i < result.data.length; i++) {
-
                       var pad ="00000";
                       var id = "" + result.data[i].karyawanID;
-                      var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
+                      var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+
                       var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
                               id+
                               "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                      var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
+                      var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
                               id+
                               "'><i class='glyphicon glyphicon-trash'></i></a>";
+
                       KaryawanTable.row.add([
                           StrId,
                           result.data[i].nama,
                           result.data[i].telp,
                           result.data[i].alamat,
                           result.data[i].username,
-                          result.data[i].hak_akses,
                           editButton+" "+delButton
                       ]).draw();
                   }
               }
               else
               {
-                  console.log("token status failed");
+                  console.log("token failed");
+                  createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
               }
 
 
@@ -401,100 +402,172 @@
       populateKaryawanData();
 
       $(document).on("click", ".delete-modal-toggle", function() {
-          var karyawanID = $(this).data('id');
           populateDeleteModal(this);
-          document.getElementById("delete-modal-yes").setAttribute("data-id", karyawanID);
+
       });
 
-        $(document).on("click", "#delete-modal-yes", function()
-        {
-            var curToken = "1234567890";
-            var karID = $(this).data('id');
-            DeleteKaryawan(curToken, karID, function(result)
-            {
-                if (result.token_status=="success")
-                {
-                    console.log(result.affectedRows);
-                    if (result.affectedRows == 1)
-                    {
-                        console.log("delete success");
-                        window.location.reload();
-                    }
-                    else
-                        console.log("delete failed");
-                }
-                else{
-                    console.log("token failed");
-                }
-
-            });
-        });
-
-      $(document).on("click", ".edit-modal-toggle", function() {
-          var karyawanID = $(this).data('id');
-          populateEditModal(this);
-          document.getElementById("edit-modal-save").setAttribute("data-id", karyawanID);
-      });
-
-          $(document).on("click", "#edit-modal-save", function() {
-              var curToken = "1234567890";
-              var Id = $(this).data('id');
-              var formData = $("#edit-modal-form").serializeArray();
-              var nama = formData[0].value.toString();
-              var telp = formData[1].value.toString();
-              var alamat = formData[2].value.toString();
-              var username = formData[3].value.toString();
-              var hak_akses = formData[4].value.toString();
-              UpdateDataKaryawan(curToken, Id, nama, telp, alamat, username, hak_akses, function (result) {
-                  if (result['affectedRows'] == 1) {
-                      console.log("update karyawan success");
-                      window.location.reload();
+      $(document).on("click", "#delete-modal-yes", function() {
+          var curToken ="1234567890";
+          var karyawanID = $(this).attr('data-id');
+          var rowNum = $(this).attr('data-row-num');
+          DeleteKaryawan(curToken, karyawanID, function(result)
+          {
+              if (result.token_status=="success")
+              {
+                  console.log(result.affectedRows);
+                  if (result.affectedRows== 1)
+                  {
+                      console.log("delete success");
+                      var KaryawanTable = $('#KaryawanTable').DataTable();
+                      KaryawanTable.row(rowNum).remove().draw();
+                      $("#deleteModal").modal('toggle');
+                      createAlert("success", "Data karyawan berhasil dihapus");
                   }
                   else
-                      console.log("update karyawan failed");
-              });
-          });
+                  {
+                      console.log("delete failed");
+                      createAlert("danger", "Data karyawan gagal dihapus, mohon coba kembali");
+                  }
 
-      function populateEditModal(karyawanButton)
+              }
+              else
+              {
+                  console.log("Token Failed");
+                  createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+              }
+
+          });
+      });
+
+      $(document).on("click", ".edit-modal-toggle", function() {
+          populateEditModal(this);
+      });
+
+      $(document).on("click", "#edit-modal-save", function(){
+          var curToken = "1234567890";
+          var pad ="00000";
+          var Id = $(this).attr('data-id');
+          var StrId  = "K"+ pad.substring(0, pad.length - Id.length)+Id;
+
+          var rowNum = $(this).attr('data-row-num');
+          var formData = $("#edit-modal-form").serializeArray();
+          var nama = formData[0].value.toString();
+          var telp = formData[1].value.toString();
+          var alamat = formData[2].value.toString();
+          var username = formData[3].value.toString();
+
+          UpdateDataKaryawan(curToken, Id, nama, telp, alamat, username, function(result){
+              if (result.token_status=="success")
+              {
+                  if (result['affectedRows'] == 1)
+                  {
+                      console.log("update karyawan success");
+                      var KaryawanTable = $('#KaryawanTable').DataTable();
+                      KaryawanTable.cell(rowNum, 1).data(nama);
+                      KaryawanTable.cell(rowNum, 2).data(telp);
+                      KaryawanTable.cell(rowNum, 3).data(alamat);
+                      $("#editModal").modal('toggle');
+                      createAlert("success", "Data karyawan "+StrId+" - "+nama +" berhasil dirubah");
+                  }
+                  else
+                  {
+                      console.log("update karyawan failed");
+                      createAlert("danger", "Data karyawan gagal dirubah, mohon coba kembali");
+                  }
+              }
+              else
+              {
+                  console.log("token failed");
+                  createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+              }
+          });
+      });
+
+      function populateEditModal(Button)
       {
-          document.getElementById("edit-modal-id").innerHTML = $(karyawanButton).closest('tr').find('td:eq(0)').html();
-          $("#edit-modal-field-nama").val($(karyawanButton).closest('tr').find('td:eq(1)').html());
-          $("#edit-modal-field-telp").val($(karyawanButton).closest('tr').find('td:eq(2)').html());
-          $("#edit-modal-field-alamat").val($(karyawanButton).closest('tr').find('td:eq(3)').html());
-          $("#edit-modal-field-username").val($(karyawanButton).closest('tr').find('td:eq(4)').html());
-          $("#edit-modal-field-hak-akses").val($(karyawanButton).closest('tr').find('td:eq(5)').html());
+          document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+          $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
+          $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
+          $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+          $("#edit-modal-field-username").val($(Button).closest('tr').find('td:eq(3)').html());
+          var karyawanID = $(Button).attr('data-id');
+          document.getElementById("edit-modal-save").setAttribute("data-id", karyawanID);
+          var KaryawanTable = $('#KaryawanTable').DataTable();
+          var rowNumber = KaryawanTable.row($(Button).closest('tr')).index();
+          document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
+          console.log("delete "+karyawanID+" "+rowNumber);
+
       }
 
-      function populateDeleteModal(karyawanButton) {
-          document.getElementById("delete-modal-id").innerHTML = $(karyawanButton).closest('tr').find('td:eq(0)').html();
-          document.getElementById("delete-modal-nama").innerHTML = $(karyawanButton).closest('tr').find('td:eq(1)').html();
-       }
-
-      $(document).on("click", "#create-modal-save", function(){
+      function populateDeleteModal(Button) {
+          document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+          document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+          var karyawanID = $(Button).attr('data-id');
+          document.getElementById("delete-modal-yes").setAttribute("data-id", karyawanID);
+          var KaryawanTable = $('#KaryawanTable').DataTable();
+          var rowNumber = KaryawanTable.row($(Button).closest('tr')).index();
+          document.getElementById("delete-modal-yes").setAttribute("data-row-num", rowNumber);
+          console.log("delete "+karyawanID+" "+rowNumber);
+      }
+      $(document).on("click", "#create-modal-save", function()
+      {
           var curToken = "1234567890";
           var formData = $("#create-modal-form").serializeArray();
           var nama = formData[0].value.toString();
           var telp = formData[1].value.toString();
           var alamat = formData[2].value.toString();
           var username = formData[3].value.toString();
-          var hak_akses = formData[4].value.toString();
-          var password = "sementara";//TODO:ganti password
-          AddKaryawan(curToken, nama,telp,alamat,username, password, hak_akses,function(result){
-              console.log("Add Karyawan success");
-              window.location.reload();
+          var passwordHash = "1234567890".hashCode();
+          AddKaryawan(curToken, nama, telp, alamat, username, passwordHash,function(result){
+              if (result.token_status=="success")
+              {
+                  if  (result.karyawanID != null)
+                  {
+                      console.log("Add karyawan success "+ result.karyawanID);
+                      var KaryawanTable = $('#KaryawanTable').DataTable();
+                      var pad ="00000";
+                      var id = "" + result.karyawanID;
+                      var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+
+                      var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                              id+
+                              "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                      var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                              id+
+                              "'><i class='glyphicon glyphicon-trash'></i></a>";
+                      KaryawanTable.row.add([
+                          StrId,
+                          nama,
+                          telp,
+                          alamat,
+                          editButton+" "+delButton
+                      ]).draw();
+                      $("#createModal").modal('toggle');
+                      createAlert("success", "Karyawan baru "+StrId+" - "+nama +" berhasil ditambahkan");
+                  }
+                  else
+                      console.log("Add Karyawan failed");
+              }
+              else
+              {
+                  console.log("Token failed");
+                  createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+              }
+
           });
       });
+
       $(".search-filter").keyup( function(){
           searchFromTable(
                   $("#search-karyawan-id").val(),
                   $("#search-karyawan-nama").val(),
                   $("#search-karyawan-telp").val(),
                   $("#search-karyawan-alamat").val(),
-                  ""
+                  $("#search-karyawan-username").val()
           );
       });
 
-      function searchFromTable(queryID, queryNama, queryTelp, queryAlamat, queryUsername)
+      function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat, queryUsername)
       {
           var KaryawanTable = $('#KaryawanTable').DataTable();
           var StrId;
@@ -506,7 +579,7 @@
               StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
           }
           else
-              StrId ="";
+              StrId = "";
           KaryawanTable.
           columns("#table-id").search(StrId).
           columns("#table-nama").search(queryNama).
@@ -514,6 +587,24 @@
           columns("#table-alamat").search(queryAlamat).
           columns("#table-username").search(queryUsername).
           draw();
+      }
+
+      function createAlert(type, message)
+      {
+          var container = document.createElement("div");
+          container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
+          var closeButton  = document.createElement("Button");
+          closeButton.setAttribute("type", "button");
+          closeButton.setAttribute("class", "close");
+          closeButton.setAttribute("data-dismiss", "alert");
+          closeButton.setAttribute("arie-hidden", "true");
+          closeButton.innerHTML="&times;";
+          container.appendChild(closeButton);
+          container.innerHTML += message;
+          var placeholder = document.getElementById("alert-placeholder");
+          if (placeholder.hasChildNodes())
+              placeholder.removeChild(placeholder.childNodes[0]);
+          placeholder.appendChild(container);
       }
   });
 </script>

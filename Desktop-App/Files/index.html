@@ -25,7 +25,6 @@
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to your account</p>
 
-    <form action="pages/Stok.html" method="post">
       <div class="form-group has-feedback">
         <input name ="user" type="text" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -36,11 +35,10 @@
       </div>
       <div class="row">
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
       </div>
-    </form>
 
 
   </div>
@@ -48,6 +46,7 @@
 </div>
 <!-- /.login-box -->
 
+<script src="model/ModelLogin.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -56,11 +55,34 @@
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
+      function Login()
+      {
+          var formData = $("#login-form").serializeArray();
+          var userName = formData[0].value.toString();
+          var password = formData[1].value.toString();
+          var passwordHash = password.hashCode();
+          console.log("passwordbaru".hashCode());
+
+          UserLogin(userName, password, function(result){
+
+          //    console.log(userName+" "+passwordHash);
+              var karID = result.karyawanID;
+              var akses = result.hak_akses;
+              var token = result.token;
+              localStorage.setItem("karyawanID", karID);
+              localStorage.setItem("hak_akses", akses);
+              localStorage.setItem("token", token);
+             // console.log("aa");
+             // window.location.pathname = "/pages/Stok.html";
+          });
+      }
+
+      $("#LoginButton").on("click", function (){
+          Login();
+      });
+
+
+
   });
 </script>
 </body>

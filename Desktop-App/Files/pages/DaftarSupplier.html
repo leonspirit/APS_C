@@ -190,32 +190,6 @@
           <h4 class="modal-title">Edit Data Supplier</h4>
         </div>
         <div class="modal-body">
-          <div id="collapseOne" class="panel-collapse collapse">
-
-            <div class="row">
-              <div class="col-md-2">
-                <label>ID</label>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-addon">S</div>
-                    <input class="form-control search-filter" id="search-supplier-id" type="number">
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label>Nama</label>
-                <input class="form-control search-filter"  id="search-supplier-nama" type="text">
-              </div>
-              <div class="col-md-3">
-                <label>No Telp</label>
-                <input class="form-control search-filter" id="search-supplier-telp" type="text">
-              </div>
-              <div class="col-md-4">
-                <label>Alamat</label>
-                <input class="form-control search-filter" id="search-pelanggan-alamat" type="text">
-              </div>
-            </div>
-          </div>
 
           <form id="edit-modal-form">
             <table class="table">
@@ -250,8 +224,6 @@
       </div>
     </div>
   </div>
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -260,7 +232,7 @@
         Data Supplier
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Home</li>
         <li class="active">Data Supplier</li>
       </ol>
     </section>
@@ -271,10 +243,40 @@
 
           <div class="box box-primary">
             <div class="box-header">
-              <button id="searchButton" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+
+              <div id="alert-placeholder"></div>
+              <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
               <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
             </div>
             <div class="box-body">
+
+              <div id="collapseOne" class="panel-collapse collapse">
+
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>ID</label>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">S</div>
+                        <input class="form-control search-filter" id="search-supplier-id" type="number">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Nama</label>
+                    <input class="form-control search-filter"  id="search-supplier-nama" type="text">
+                  </div>
+                  <div class="col-md-3">
+                    <label>No Telp</label>
+                    <input class="form-control search-filter" id="search-supplier-telp" type="text">
+                  </div>
+                  <div class="col-md-4">
+                    <label>Alamat</label>
+                    <input class="form-control search-filter" id="search-supplier-alamat" type="text">
+                  </div>
+                </div>
+              </div>
+
               <table id="SupplierTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -286,7 +288,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                    
                 <!--<tr>
                     <td>X001</td>
                     <td>PT. Perusahaan1</td>
@@ -337,89 +338,133 @@
 <!-- page script -->
 <script>
   $(function () {
-      function populateSupplierData()
-      {
-        var curToken = "122345697890";
-          GetAllSupplierData(curToken, function(result){
-              var i;
-              var SupplierTable = $('#SupplierTable').DataTable({
-                  "paging": true,
-                  "lengthChange": true,
-                  "searching": false,
-                  "ordering": true,
-                  "info": true,
-                  "autoWidth": false
-              });
-              for (i = 0; i < result..datalength; i++) {
-
-                var pad ="00000";
-                var id = "" + result.data[i].supplierID;
-                var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
-
-                  var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                          id+
-                          "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                  var delButton = "<a style='color:red;' class='delete-modal-toggle' data-toggle='modal' href='#deleteModal' data-id='" +
-                          id+
-                          "'><i class='glyphicon glyphicon-trash'></i></a>";
-                  SupplierTable.row.add([
-                      StrId,
-                      result.data[i].nama,
-                      result.data[i].telp,
-                      result.data[i].alamat,
-                      editButton+" "+delButton
-                  ]).draw();
-
-              }
-
+    function populateSupplierData()
+    {
+      var curToken = "1234567890";
+      GetAllSupplierData(curToken, function(result){
+        if(result.token_status=="success")
+        {
+          var i;
+          var SupplierTable = $('#SupplierTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            //"sDom":"lrtp",
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
           });
-      }
-      populateSupplierData();
+          for (i = 0; i < result.data.length; i++) {
+            var pad ="00000";
+            var id = "" + result.data[i].supplierID;
+            var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
+
+            var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                    id+
+                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
+            var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                    id+
+                    "'><i class='glyphicon glyphicon-trash'></i></a>";
+
+            SupplierTable.row.add([
+              StrId,
+              result.data[i].nama,
+              result.data[i].telp,
+              result.data[i].alamat,
+              editButton+" "+delButton
+            ]).draw();
+          }
+        }
+        else
+        {
+          console.log("token failed");
+          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+        }
+
+
+      });
+    }
+    populateSupplierData();
 
     $(document).on("click", ".delete-modal-toggle", function() {
       populateDeleteModal(this);
-      var supplierID = $(this).data('id');
-      document.getElementById("delete-modal-yes").setAttribute("data-id", supplierID);
+
     });
 
     $(document).on("click", "#delete-modal-yes", function() {
-      var supplierID = $(this).data('id');
-      console.log(supplierID);
-      var curToken = "122345697890";
+      var curToken ="1234567890";
+      var supplierID = $(this).attr('data-id');
+      var rowNum = $(this).attr('data-row-num');
       DeleteSupplier(curToken, supplierID, function(result)
       {
-        console.log(result['affectedRows']);
-        if (result['affectedRows'] == 1)
+        if (result.token_status=="success")
         {
-          console.log("delete success");
-          window.location.reload();
+          console.log(result.affectedRows);
+          if (result.affectedRows== 1)
+          {
+            console.log("delete success");
+            var SupplierTable = $('#SupplierTable').DataTable();
+            SupplierTable.row(rowNum).remove().draw();
+            $("#deleteModal").modal('toggle');
+            createAlert("success", "Data supplier berhasil dihapus");
+          }
+          else
+          {
+            console.log("delete failed");
+            createAlert("danger", "Data supplier gagal dihapus, mohon coba kembali");
+          }
+
         }
         else
-          console.log("delete failed");
+        {
+          console.log("Token Failed");
+          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+        }
+
       });
     });
 
     $(document).on("click", ".edit-modal-toggle", function() {
       populateEditModal(this);
-      var supplierID = $(this).data('id');
-      document.getElementById("edit-modal-save").setAttribute("data-id", supplierID);
-
     });
+
     $(document).on("click", "#edit-modal-save", function(){
-      var curToken = "122345697890";
-      var Id = $(this).data('id');
+      var curToken = "1234567890";
+      var pad ="00000";
+      var Id = $(this).attr('data-id');
+      var StrId  = "S"+ pad.substring(0, pad.length - Id.length)+Id;
+
+      var rowNum = $(this).attr('data-row-num');
       var formData = $("#edit-modal-form").serializeArray();
       var nama = formData[0].value.toString();
       var telp = formData[1].value.toString();
       var alamat = formData[2].value.toString();
       UpdateDataSupplier(curToken, Id, nama, telp, alamat, function(result){
-        if (result['affectedRows'] == 1)
+        if (result.token_status=="success")
         {
-          console.log("update supplier success");
-          window.location.reload();
+          if (result['affectedRows'] == 1)
+          {
+            console.log("update supplier success");
+            var SupplierTable = $('#SupplierTable').DataTable();
+            SupplierTable.cell(rowNum, 1).data(nama);
+            SupplierTable.cell(rowNum, 2).data(telp);
+            SupplierTable.cell(rowNum, 3).data(alamat);
+            $("#editModal").modal('toggle');
+            createAlert("success", "Data supplier "+StrId+" - "+nama +" berhasil dirubah");
+          }
+          else
+          {
+            console.log("update supplier failed");
+            createAlert("danger", "Data supplier gagal dirubah, mohon coba kembali");
+          }
+
         }
         else
-          console.log("update Supplier failed");
+        {
+          console.log("token failed");
+          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+        }
+
       });
     });
 
@@ -429,53 +474,117 @@
       $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
       $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
       $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+      var supplierID = $(Button).attr('data-id');
+      document.getElementById("edit-modal-save").setAttribute("data-id", supplierID);
+      var SupplierTable = $('#SupplierTable').DataTable();
+      var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
+      document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
+      console.log("delete "+supplierID+" "+rowNumber);
+
     }
 
     function populateDeleteModal(Button) {
       document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
       document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+      var supplierID = $(Button).attr('data-id');
+      document.getElementById("delete-modal-yes").setAttribute("data-id", supplierID);
+      var SupplierTable = $('#SupplierTable').DataTable();
+      var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
+      document.getElementById("delete-modal-yes").setAttribute("data-row-num", rowNumber);
+      console.log("delete "+supplierID+" "+rowNumber);
     }
 
     $(document).on("click", "#create-modal-save", function(){
-      var curToken = "122345697890";
+      var curToken = "1234567890";
       var formData = $("#create-modal-form").serializeArray();
       var nama = formData[0].value.toString();
       var telp = formData[1].value.toString();
       var alamat = formData[2].value.toString();
       AddSupplier(curToken, nama, telp, alamat, function(result){
-        console.log("Add Supplier success");
-        window.location.reload();
+        if (result.token_status=="success")
+        {
+          if  (result.supplierID != null)
+          {
+            console.log("Add supplier success "+ result.supplierID);
+            var SupplierTable = $('#SupplierTable').DataTable();
+            var pad ="00000";
+            var id = "" + result.supplierID;
+            var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+
+            var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                    id+
+                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
+            var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                    id+
+                    "'><i class='glyphicon glyphicon-trash'></i></a>";
+            SupplierTable.row.add([
+              StrId,
+              nama,
+              telp,
+              alamat,
+              editButton+" "+delButton
+            ]).draw();
+            $("#createModal").modal('toggle');
+            createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
+          }
+          else
+            console.log("Add Supplier failed");
+        }
+        else
+        {
+          console.log("Token failed");
+          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+        }
+
       });
     });
 
     $(".search-filter").keyup( function(){
       searchFromTable(
-              $("#search-pelanggan-id").val(),
-              $("#search-pelanggan-nama").val(),
-              $("#search-pelanggan-telp").val(),
-              $("#search-pelanggan-alamat").val()
+              $("#search-supplier-id").val(),
+              $("#search-supplier-nama").val(),
+              $("#search-supplier-telp").val(),
+              $("#search-supplier-alamat").val()
       );
     });
 
     function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
     {
-      var PelangganTable = $('#PelangganTable').DataTable();
+      var SupplierTable = $('#SupplierTable').DataTable();
       var StrId;
       var queryID2 = parseInt(queryID);
       if (!isNaN(queryID2))
       {
         var pad ="00000";
         var id = "" + queryID2;
-        StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+        StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
       }
       else
         StrId ="";
-      PelangganTable.
+      SupplierTable.
       columns("#table-id").search(StrId).
       columns("#table-nama").search(queryNama).
       columns("#table-telp").search(queryTelp).
       columns("#table-alamat").search(queryAlamat).
       draw();
+    }
+
+    function createAlert(type, message)
+    {
+      var container = document.createElement("div");
+      container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
+      var closeButton  = document.createElement("Button");
+      closeButton.setAttribute("type", "button");
+      closeButton.setAttribute("class", "close");
+      closeButton.setAttribute("data-dismiss", "alert");
+      closeButton.setAttribute("arie-hidden", "true");
+      closeButton.innerHTML="&times;";
+      container.appendChild(closeButton);
+      container.innerHTML += message;
+      var placeholder = document.getElementById("alert-placeholder");
+      if (placeholder.hasChildNodes())
+        placeholder.removeChild(placeholder.childNodes[0]);
+      placeholder.appendChild(container);
     }
   });
 </script>

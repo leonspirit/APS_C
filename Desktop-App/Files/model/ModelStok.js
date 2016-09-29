@@ -11,54 +11,104 @@ function numberWithCommas(x) {
     return parts.join(".");
 }
 
-function getKodeStokData(kode, fn) {
-
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"barang/"+kode;//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
-function getQueryStokData(kode, nama, stokMin, stokMax, hJualMin, hJualMax, hPokokMin, hPokokMax, fn) {
-
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl+"barang/list_barang/";//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-
-
-function getAllStokData(fn)
+function GetAllStokData(token, fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl + "barang/list_barang/";
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    $.post( baseUrl+"barang/list_barang/",
+        {
+            token:token
+        },function( data ) {
+            fn(data);
+        }, "json");
 }
-function updateDataStok(kode, nama, stokMin, stokMax, hJualMin, hJualMax, hPokokMin, hPokokMax, fn)
-{
 
+function DeleteStok(token, barangID, fn)
+{
+    $.post( baseUrl + "barang/hapus_barang/",
+        {
+            token: token,
+            barangID: barangID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function UpdateDataStok(token, barangID, nama, stok, fn)
+{
+    $.post( baseUrl + "barang/update_barang/",
+        {
+            token: token,
+            barangID: barangID,
+            nama:nama,
+            stok:stok
+        }
+        , function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function AddStok(token, nama, stok)
+{
+    $.post( baseUrl + "barang/tambah_barang/",
+        {
+            token: token,
+            nama:nama,
+            stok:stok
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}
+
+
+function GetAllSatuanData(token, fn)
+{
+    $.post( baseUrl+"barang/list_satuan",
+        {
+            token:token
+        },function( data ) {
+            fn(data);
+        }, "json");
+}
+
+function DeleteSatuan(token, satuanbarangID, fn)
+{
+    $.post( baseUrl + "barang/hapus_satuan/",
+        {
+            token: token,
+            satuanbarangID: satuanbarangID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function UpdateDataSatuan(token, satuanbarangID, harga_jual, satuan, konversi, fn)
+{
+    $.post( baseUrl + "barang/update_satuan/",
+        {
+            token: token,
+            satuanbarangID: satuanbarangID,
+            harga_jual: harga_jual,
+            satuan: satuan,
+            konversi :konversi,
+        }
+        , function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function AddSatuan(token, barangID, harga_jual, satuan, konversi, fn)
+{
+    $.post( baseUrl + "barang/tambah_satuan/",
+        {
+            token: token,
+            barangID: barangID,
+            harga_jual:harga_jual,
+            satuan:satuan,
+            konversi:konversi
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
 }
 
 //connection.end();
