@@ -85,9 +85,9 @@ router.post('/update_karyawan', function(req,res){
             if(karyID == req.body.karyawanID){
                 var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, password = ? WHERE karyawanID = ?'
                 var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.password, req.body.karyawanID]
-                connection.query(querystring, karyawan, function(err, result){
-                    if(err) throw err;
-                    resp['affectedRows'] = result.affectedRows
+                connection.query(querystring, karyawan, function(err2, result2){
+                    if(err2) throw err2;
+                    resp['affectedRows'] = result2.affectedRows
                     res.status(200).send(resp)
                 })
             }
