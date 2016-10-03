@@ -75,14 +75,32 @@ router.post('/hapus_karyawan', function(req,res){
 
 router.post('/update_karyawan', function(req,res){
 
-    var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, username = ?, hak_akses = ? WHERE karyawanID = ?';
-    var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.username, req.body.hak_akses, req.body.karyawanID];
-    connection.query(querystring, karyawan, function(err, result){
-        if(err) throw err;
-        var resp = {affectedRows:result.affectedRows};
-        res.type('application/json');
-        res.status(200).send(resp);
-    });
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_user(req.body.token, function(result){
+
+        if(result['hak_akses'] == 'admin' || result['hak_akses'] == 'karyawan'){
+            var karyID = result['karyawanID']
+            resp['token_status'] = 'success';
+            if(karyID == req.body.karyawanID){
+                var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, password = ? WHERE karyawanID = ?'
+                var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.password, req.body.karyawanID]
+                connection.query(querystring, karyawan, function(err, result){
+                    if(err) throw err;
+                    resp['affectedRows'] = result.affectedRows
+                    res.status(200).send(resp)
+                })
+            }
+            else{
+                resp['affectedRows'] = 0
+                res.status(200).send(resp)
+            }
+        }
+        else{
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+    })
 });
 
 router.post('/login', function(req,res){
