@@ -21,9 +21,9 @@ router.post('/tambah_karyawan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'INSERT INTO karyawan SET nama = ?, telp = ?, alamat = ?, username = ?, password = ?, hak_akses = ?';
             var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.username, req.body.password, req.body.hak_akses];
-            connection.query(querystring, karyawan, function(err,result){
-                if(err) throw err;
-                resp['karyawanID'] = result.insertId
+            connection.query(querystring, karyawan, function(err2,result2){
+                if(err2) throw err2;
+                resp['karyawanID'] = result2.insertId
                 res.status(200).send(resp);
             });
         }
@@ -42,9 +42,9 @@ router.post('/list_karyawan', function(req,res){
         else{
             resp['token_status'] = 'success'
             var querystring = 'SELECT karyawanID, nama, telp, alamat, username, hak_akses FROM karyawan';
-            connection.query(querystring, function(err, result){
-                if(err) throw err;
-                resp['data'] = result;
+            connection.query(querystring, function(err2, result2){
+                if(err2) throw err2;
+                resp['data'] = result2;
                 res.status(200).send(resp);
             });
         }
@@ -64,9 +64,9 @@ router.post('/hapus_karyawan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'UPDATE karyawan SET hak_akses = ? WHERE karyawanID = ?'
             var karyawan = ["inaktif", req.body.karyawanID]
-            connection.query(querystring, karyawan, function(err, result){
-                if(err) throw err
-                resp['affectedRows'] = result.affectedRows
+            connection.query(querystring, karyawan, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
                 res.status(200).send(resp)
             })
         }
@@ -159,9 +159,9 @@ router.post('/update_akses', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'UPDATE karyawan SET hak_akses = ? WHERE karyawanID = ?'
             var karyawan = [req.body.hak_akses, req.body.karyawanID]
-            connection.query(querystring, karyawan, function(err,result){
-                if(err) throw err
-                resp['affectedRows'] = result.affectedRows
+            connection.query(querystring, karyawan, function(err2,result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
                 res.status(200).send(resp)
             })
         }
