@@ -256,9 +256,13 @@
 
           <div class="box box-primary">
 
+
               <div class="box-header">
+                  <div id="alert-placeholder">
+
+                  </div>
                   <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
-                  <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+                  <button id="addButton" class="create-modal-toggle btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
               </div>
             <div class="box-body">
                 <div id="collapseOne" class="panel-collapse collapse">
@@ -295,7 +299,6 @@
                   <th id="table-telp">No. Telp</th>
                   <th id="table-alamat">Alamat</th>
                     <th id="table-username">Username</th>
-                    <th>Hak Akses</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -489,7 +492,7 @@
           $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
           $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
           $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
-          $("#edit-modal-field-username").val($(Button).closest('tr').find('td:eq(3)').html());
+          $("#edit-modal-field-username").val($(Button).closest('tr').find('td:eq(4)').html());
           var karyawanID = $(Button).attr('data-id');
           document.getElementById("edit-modal-save").setAttribute("data-id", karyawanID);
           var KaryawanTable = $('#KaryawanTable').DataTable();

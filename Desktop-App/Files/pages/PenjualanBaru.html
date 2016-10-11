@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="../plugins/select2/select2.min.css">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../plugins/iCheck/all.css">
 
@@ -24,145 +26,18 @@
 
     <script>
         window.$ =window.jQuery = require('jquery');
-
-        function RemoveRow(r)
-        {
-            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
-
-            var i = r.parentNode.parentNode.rowIndex;
-            console.log(i);
-
-            var rowCount = tableBody.rows.length;
-            var rowNum = rowCount-1;
-
-            tableBody.deleteRow(i-1);
-
-            var j;
-            for (j=i;j<rowNum;j++)
-            {
-                console.log(j);
-                tableBody.rows[j].cells[0].innerHTML = j.toString();
-                tableBody.rows[j].cells[1].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-1");
-                tableBody.rows[j].cells[2].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-2");
-                tableBody.rows[j].cells[3].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-3");
-                tableBody.rows[j].cells[6].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-4");
-            }
-        }
-
-        function AddRow()
-        {
-            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
-
-            var rowCount = tableBody.rows.length;
-            var row = tableBody.insertRow(rowCount);
-            var rowNum = rowCount+1;
-
-            var cell1 = row.insertCell(0);
-            cell1.innerHTML = rowNum.toString();//nanti ganti
-
-            var cell2 = row.insertCell(1);
-            cell2.setAttribute("style", "padding:0");
-            var inputBarang = document.createElement("input");
-            inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
-            inputBarang.setAttribute("list", "DataListBarang");
-            inputBarang.setAttribute("style", "width:100%;");
-            inputBarang.setAttribute("class", "form-control input-data-"+rowNum.toString());
-            cell2.appendChild(inputBarang);
-
-            var cell3 = row.insertCell(2);
-            cell3.setAttribute("style", "padding:0");
-            var inputJumlah = document.createElement("input");
-            inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
-            inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
-            inputJumlah.setAttribute("type", "number");
-            inputJumlah.setAttribute("min", "0");
-            inputJumlah.setAttribute("style", "width:100%;");
-            cell3.appendChild(inputJumlah);
-
-            var cell4 = row.insertCell(3);
-            cell4.setAttribute("style", "padding:0");
-            var inputSatuan = document.createElement("input");
-            inputSatuan.setAttribute("list", "DataListSatuan");
-            inputSatuan.setAttribute("style", "width:100%");
-            inputSatuan.setAttribute("class", "form-control input-data"+rowNum.toString());
-            inputSatuan.setAttribute("id", "input-"+rowNum.toString()+"-3");
-            cell4.appendChild(inputSatuan);
-
-            var cell5 = row.insertCell(4);
-
-            var cell6 = row.insertCell(5);
-            var totalIsi = document.createElement("span");
-            totalIsi.setAttribute("class", "pull-right");
-            totalIsi.innerHTML =  " pcs";
-            cell6.appendChild(totalIsi);
-
-            var cell7 = row.insertCell(6);
-            cell7.innerHTML = "Rp. 0";
-
-            var cell8 = row.insertCell(7);
-            cell8.setAttribute("style", "padding:0");
-            var inputDiscGroup = document.createElement("div");
-            inputDiscGroup.setAttribute("style", "width:100%;");
-            inputDiscGroup.setAttribute("class", "input-group");
-            var inputDiscAddOn = document.createElement("span");
-            inputDiscAddOn.setAttribute("class","input-group-addon");
-            inputDiscAddOn.innerHTML="%";
-            var inputDisc= document.createElement("input");
-            inputDisc.setAttribute("type", "number");
-            inputDisc.setAttribute("min", "0");
-            inputDisc.setAttribute("max", "100");
-            inputDisc.setAttribute("class", "form-control input-data"+rowNum.toString());
-            inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-4");
-            inputDiscGroup.appendChild(inputDisc);
-            inputDiscGroup.appendChild(inputDiscAddOn);
-            cell8.appendChild(inputDiscGroup);
-
-            var cell9 = row.insertCell(8);
-            var subtotal = document.createElement("span");
-            subtotal.setAttribute("class", "pull-right");
-            subtotal.innerHTML = "Rp. 0";
-            cell9.appendChild(subtotal);
-
-            //if admin
-            var cell10 = row.insertCell(9);
-            var hPokok = document.createElement("span");
-            hPokok.setAttribute("class", "pull-right");
-            hPokok.innerHTML = "Rp. 0";
-            cell10.appendChild(hPokok);
-
-            var cell11 = row.insertCell(10);
-            var untung = document.createElement("span");
-            untung.setAttribute("class", "pull-right");
-            untung.innerHTML = "Rp. 0";
-            cell11.appendChild(untung);
-
-            var cell12 = row.insertCell(11);
-            var delButton = document.createElement("a");
-            delButton.setAttribute("class", "del-row")
-            delButton.setAttribute("onclick", "RemoveRow(this);")
-            delButton.setAttribute("style", "color:red;")
-            var delIcon = document.createElement("i");
-            delIcon.setAttribute("class", "glyphicon glyphicon-remove");
-            delButton.appendChild(delIcon);
-            cell12.appendChild(delButton);
-        }
-        function ResetTable() {
-            var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
-
-            while (true) {
-                if (tableBody.rows.length==1)
-                    break;
-                tableBody.deleteRow(-1);
-            }
-            tableBody.rows[0].cells[7].innerHTML = "Rp. 0";
-            tableBody.rows[0].cells[8].innerHTML = "Rp. 0";
-            tableBody.rows[0].cells[9].innerHTML = "Rp. 0";
-        }
-
-
     </script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin:0;
+        }
+    </style>
 </head>
-<body class="hold-transition skin-blue-light sidebar-mini">
+<body class="hold-transition skin-green-light sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -312,28 +187,26 @@
             </div>-->
 
             <div class="box-body">
-                
+
                 <form role="form">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Pelanggan</label>
-                            <input  style="width: 100%;" class="form-control" list="DataListPelanggan">
-                            <datalist id="DataListPelanggan" >
-                                <select>
-                                    <option value="andi">
-                                    <option value="budi">
-                                    <option value="cici">
-                                </select>
-                            </datalist>
-
+                            <input  style="width: 100%;" class="form-control select2" id="inputPelanggan">
                         </div>
-                         <div class="form-group">
-                            <label>Kirim Ke</label>
-                              <input type="text" class="form-control pull-right">
-                          </div>
+
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pembayaran</label>
+                            <select class="form-control pull-right" id="pilihanPembayaran">
+                                <option value="cash">Cash</option>
+                                <option value="bon">Bon</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Tanggal Penjualan</label>
 
@@ -345,107 +218,79 @@
                             </div>
                             <!-- /.input group -->
                           </div>
-                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
                         <div class="form-group">
+                            <label>Kirim Ke</label>
+                            <input type="text" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-md-4" id="containerJatuhTempo" >
+                        <div  class="form-group" id="form-field-jatuh-tempo">
                             <label>Jatuh Tempo</label>
                             <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" id="tanggalJatuhTempo">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="tanggalJatuhTempo">
                             </div>
                         </div>
                     </div>
-                    
                 </div>
                                         
                 </form>
                   <!-- /.box-body -->
             </div>
             <div class="box-header">
-              <h3 class="box-title">Item</h3>
+              <h3 class="box-title">List Item</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <datalist  id="DataListBarang">
-                    <option value="B001 - Buku Cerita">
-                    <option value="S001 - TV">
-                    <option value="C002 - Handphone">
-                </datalist>
-                <datalist id="DataListSatuan">
-                    <option value="butir">
-                    <option value="Lusin">
-                    <option value="Gros">
-                </datalist>
               <table id="itemTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>#</th>
-                  <th>Barang</th>
-                  <th>Qty</th>
-                  <th>Satuan</th>
-                    <th>Konversi</th>
-                    <th>Total Isi</th>
-                    
-                    <th>Harga</th>
-                    <th>Disc</th>
+                    <th style="width:10px">No</th>
+                  <th style="width:300px">Barang</th>
+                  <th style="width:60px">Qty</th>
+                  <th style="width:60px">Unit</th>
+                    <th>Isi/Carton</th>
+             <!--       <th>Total Isi</th>-->
+
+                    <th style="width:150px">H.Satuan</th>
+                    <th style="width:100px">Disc</th>
                     <th>Subtotal</th>
                  <!--   <?php if (isset($_GET['stat']) && $_GET['stat']=='admin') { ?>-->
                     <th>H.Pokok</th>
-                    <th>Untung</th>
+                    <th>Lb</th>
                  <!--   <?php  } ?>-->
                     <th ></th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <!--<tr>
-                    <td>1</td>
-                    <td  style="padding:0;">
-                        <input type="text" class="form-control input-data-1" id="input-data-1-1" style="width: 100%;" list="DataListBarang">
-                    </td>
-                    <td  style="padding:0;">
-                      <input  id="input-data-1-2" type="number" min=0 style="width: 100%;" class="input-data-1 form-control">
-                    </td>
-                    <td  style="padding:0;">
-                        <input id="input-data-1-3" style="width: 100%;" class="input-data-1 form-control" list="DataListSatuan" >
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Rp. 0
-                   </td>
-                    <td style="padding:0;">
-                        <div class="input-group">
-                        <input id="input-data-1-4" type="Number" class="input-data-1 form-control" >
-                        <span class="input-group-addon">%</span>
-                      </div>
-                     </td>
-                    <td>Rp. 0</td>
-                    <td>Rp. 0</td>
-                    <td>Rp. 0</td>
-                    <td>
-                        <a onclick="RemoveRow(this);" style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
-                    </td>
-                </tr>-->
-                    
+
                 </tbody>
-                    
+
                 <tfoot>
                 <tr>
                     <th></th>
-                  <th colspan="6">Total Harga</th>
-                  <th colspan=2>Rp. 20.500.000</th>
+                  <th colspan="6"><span class="pull-right">Total Harga</span></th>
+                  <th><span class="pull-right">Rp. 0</span></th>
+                    <th>Total Lb</th>
+                    <th><span class="pull-right">Rp. 0</span></th>
+                    <th>
                 </tr>
                 </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <Button id ="resetButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Reset</Button>
-                 <Button id="addButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Tambah</Button>
-                <Button class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
-                
+                <Button id ="resetButton" class="btn btn-primary"><i class="glyphicon glyphicon-minus"></i> Reset</Button>
+                 <Button id="addButton" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</Button>
+                <Button id="saveButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
+                <Button id="printButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-print"></i> Print</Button>
+
             </div>
              
           </div>
@@ -479,7 +324,9 @@
     
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    
+
+<!-- Select2 -->
+<script src="../plugins/select2/select2.full.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
@@ -490,8 +337,25 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <!--<script src="../plugins/jquery-autotab/js/jquery.autotab.min.js"></script>-->
+
+<script src="../model/ModelPelanggan.js"></script>
+<script src="../model/ModelStok.js"></script>
+<script src="../js/PenjualanBaruFunction.js"></script>
 <script>
   $(function () {
+
+      //function format(item) { return item.nama; };
+      GetPelanggan();
+      GetBarang();
+      HideJatuhTempo();
+
+      $("#pilihanPembayaran").select2({
+          minimumResultsForSearch:Infinity,
+          placeholder:"-- Pilih cara pembayaran --",
+          allowClear:true
+      }).on("change", function(){
+          HideJatuhTempo();
+      });
       //Date picker
     $('#tanggalPenjualan').datepicker({
       autoclose: true
@@ -499,12 +363,6 @@
       $('#tanggalJatuhTempo').datepicker({
       autoclose: true
     });
-      //iCheck for checkbox and radio inputs
-    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-blue',
-      radioClass: 'iradio_minimal-blue'
-    });
-
 
       AddRow();
       document.getElementById("addButton").onclick = function()
@@ -516,38 +374,6 @@
       {
           ResetTable();
       }
-
-      $(".js-data-example-ajax").select2({
-          ajax: {
-              url: "https://api.github.com/search/repositories",
-              dataType: 'json',
-              delay: 250,
-              data: function (params) {
-                  return {
-                      q: params.term, // search term
-                      page: params.page
-                  };
-              },
-              processResults: function (data, params) {
-                  params.page = params.page || 1;
-                  return {
-                      results: data.items,
-                      pagination: {
-                          more: (params.page * 30) < data.total_count
-                      }
-                  };
-              },
-              cache: true
-          },
-          escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-          minimumInputLength: 1,
-          templateResult: formatRepo, // omitted for brevity, see the source of this page
-          templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-      });
-
-
-      
-
 
   });
 </script>

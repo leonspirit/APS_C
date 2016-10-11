@@ -19,18 +19,18 @@ String.prototype.hashCode = function()
     return hash;
 };
 
-function UserLogin(username, password, fn)
+function myUserLogin(username, password, fn)
 {
     $.post( baseUrl+"karyawan/login/",
         {
-            username:username,
-            password:password
+            "username":username,
+            "password":password
         },function( data ) {
             fn(data);
         }, "json");
 }
 
-function UserLogout(token, fn)
+function myUserLogout(token, fn)
 {
     $.post( baseUrl + "karyawan/logout/",
         {

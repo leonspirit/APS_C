@@ -20,6 +20,15 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
     <script>window.$ =window.jQuery = require('jQuery');</script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin:0;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -137,8 +146,73 @@
         <li class="active">Stok Barang</li>
       </ol>
     </section>
+
+      <div class="modal fade"  id="createModal">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Detail Item</h4>
+                  </div>
+                  <div class="modal-body">
+                      <table id="addBarangSatuanTable" class="table">
+                          <tr>
+                              <td><b>Nama</b></td>
+                              <td colspan=3 style="padding:0">
+                                  <input type="text" class="form-control" value="" id="create-modal-nama-item">
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><b>Stok</b></td>
+                              <td colspan=3 style="padding:0">
+                                  <input type="number" class="form-control" value="" id="create-modal-stok-item">
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><b>Harga Pokok</b></td>
+                              <td colspan=3 style="padding:0">
+                                  <div class="input-group" style="width:100%;">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input type="number" class="form-control" value="" id="create-modal-harga-pokok-item">
+                                  </div>
+
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><b>Satuan</b></td>
+                              <td style="padding:0">
+                                  <Button id="create-table-reset-satuan" class="btn btn-primary">
+                                      <i class="glyphicon glyphicon-minus"></i> Reset
+                                  </Button>
+                                  <Button id="create-table-add-satuan" class="btn btn-primary">
+                                      <i class="glyphicon glyphicon-plus"></i> Tambah
+                                  </Button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <th>Satuan</th>
+                              <th>Isi/Satuan</th>
+                              <th>Harga Jual</th>
+                              <th></th>
+                          </tr>
+                          <tr>
+                              <!--tempat satuan-->
+                          </tr>
+                      </table>
+                      <!-- /.box -->
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">OK</button>
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+      </div>
+
         <div class="modal fade"  id="editModal">
-          <div class="modal-dialog"role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -214,9 +288,9 @@
 
           <div class="box box-primary">
               <div class="box-header">
+                  <div id="alert-placeholder"></div>
                   <button  data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary"> <i class="glyphicon glyphicon-search"></i> Search</button>
-                  <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
-
+                  <button data-toggle="modal" href="#createModal" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
               </div>
             <div class="box-body">
 
@@ -226,17 +300,23 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Kode</label>
-                                    <input name="search-kode" id="search-kode" type="text" class="form-control">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            C
+                                        </div>
+                                        <input name="search-kode" id="search-barang-kode" type="number" class="search-filter form-control">
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <label>Nama</label>
-                                    <input name="search-nama" id="search-nama" type="text" class="form-control">
+                                    <input name="search-nama" id="search-barang-nama" type="text" class="search-filter form-control">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                      <!--  <div class="row">
                             <div class="col-md-3">
                                 <label>Stok</label>
                             </div>
@@ -376,38 +456,23 @@
                                     <Button type="submit" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-search"></i> Search</Button>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </form>
                 </div>
 
 
-              <table id="StokTable"   class="table table-bordered table-hover">
+              <table id="BarangTable"   class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                      <th >Kode</th>
-                      <th >Nama Barang</th>
-                      <th >Stok</th>
-                      <th>H.Jual</th>
-                      <th>H.Pokok</th>
+                      <th id="table-kode">Kode</th>
+                      <th id="table-nama">Nama Barang</th>
+                      <th id="table-stok">Stok</th>
+                      <th id="table-harga-jual">H.Jual</th>
+                      <th id="table-harga-pokok">H.Pokok</th>
                       <th ></th>
                     </tr>
                     </thead>
                 <tbody>
-                   <!-- <tr>
-                        <td>B00004</td>
-                        <td>Barang Dummy</td>
-                        <td>10</td>
-                        <td class="pull-right">
-                           Rp.10.000
-                        </td>
-                        <td >
-                           Rp. 10.000
-                        </td>
-                        <td>
-                            <a data-toggle="modal" data-target="#editModal"><i class="glyphicon glyphicon-edit"></i></a>
-                            <a ><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                        </td>
-                    </tr>-->
                 </tbody>
                     
               </table>
@@ -428,6 +493,8 @@
 
 </div>
 <!-- ./wrapper -->
+<script src="../js/StokFunction.js"></script>
+
 <script src="../model/ModelStok.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -447,80 +514,26 @@
 <!-- page script -->
 <script>
   $(function () {
-      function ClearSearchForm()
-      {
-          document.getElementById("search-form").reset();
-      }
-    function populateStokData()
-    {
-        var StokTable = $('#StokTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
-        getAllStokData(function(result){
-            if (result!=null) {
-                var i;
-                for (i = 0; i < result.length; i++) {
 
-                    var pad ="00000";
-                    var id = "" + result[i].barangID;
-                    var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
-
-                    var HargaJual =
-                            '<span class="pull-right">' +
-                            'Rp. ' + numberWithCommas(0) +
-                            '</span>';
-
-                    var HargaPokok =
-                            '<span class="pull-right">' +
-                            'Rp. ' + numberWithCommas(0) +
-                            '</span>';
-
-                    var StokReady = '<span class="pull-right">' +
-                            numberWithCommas(result[i].stok) +
-                            '</span>';
-
-                    var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='" +
-                            id +
-                            "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                    var delButton = "<a class='delete-modal-toggle' href='#deleteModal' data-toggle='modal'  style='color:red;' data-id='" +
-                            id +
-                            "'><i class='glyphicon glyphicon-trash'></i></a>";
-                    StokTable.row.add([
-                        StrId,
-                        result[i].nama,
-                        StokReady,
-                        HargaJual,
-                        HargaPokok,
-                        editButton + " " + delButton
-                    ]).draw();
-
-                }
-            }
-
-        });
-    }
     populateStokData();
-
-    $(document).on("click", ".edit-modal-toggle", function() {
-      var itemId = $(this).data('id');
-      getKodeStokData( itemId, function(result)
-        {
-        if (result!= null) {
-          console.log("print");
-          $("#edit-modal-nama-item").val(result[0].nama);
-          document.getElementById("edit-modal-kode-item").innerHTML = result[0].barangId;
-          document.getElementById("edit-modal-stok-item").innerHTML = numberWithCommas(result[0].stok);
-         // document.getElementById("edit-modal-hpokok-item").innerHTML = "Rp. "+numberWithCommas(result[0].harga_pokok);
-          //$("#edit-modal-hjual-item").val(result[0].harga_jual);
-        }
+    $(document).on("click", ".edit-modal-toggle", function() { populateEditModal(this);});
+      $(".search-filter").keyup( function(){
+          searchFromTable(
+                  $("#search-barang-kode").val(),
+                  $("#search-barang-nama").val()
+          );
       });
+      AddCreateTableRow();
 
-    });
+
+      $(".select-satuan").onchange = function(){ ConvertSatuan(this); };
+
+      $("#create-table-add-satuan").on("click", function(){ AddCreateTableRow(); });
+      $("#create-table-reset-satuan").on("click", function(){ ResetCreateTableSatuan(); });
+
+
+
+
   });
 </script>
 </body>

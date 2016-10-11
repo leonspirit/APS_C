@@ -25,120 +25,17 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-    <script>window.$ =window.jQuery = require('jquery');
-    function AddRow()
-    {
-        var tableBody = document.getElementById('itemTable').getElementsByTagName("tbody")[0];
+    <script>window.$ =window.jQuery = require('jquery');</script>
 
-        var rowCount = tableBody.rows.length;
-        var row = tableBody.insertRow(rowCount);
-        var rowNum = rowCount+1;
-
-        var cell1 = row.insertCell(0);
-        cell1.innerHTML = rowNum.toString();
-
-        var cell2 = row.insertCell(1);
-        cell2.setAttribute("style", "padding:0");
-        var inputBarang = document.createElement("input");
-        inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
-        inputBarang.setAttribute("list", "DataListBarang");
-        inputBarang.setAttribute("style", "width:100%;");
-        inputBarang.setAttribute("class", "form-control input-data-"+rowNum.toString());
-        cell2.appendChild(inputBarang);
-
-        var cell3 = row.insertCell(2);
-        cell3.setAttribute("style", "padding:0");
-        var inputJumlah = document.createElement("input");
-        inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
-        inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
-        inputJumlah.setAttribute("type", "number");
-        inputJumlah.setAttribute("min", "0");
-        inputJumlah.setAttribute("style", "width:100%;");
-        cell3.appendChild(inputJumlah);
-
-        var cell4 = row.insertCell(3);
-
-        var cell5  =row.insertCell(4);
-        cell5.setAttribute("style", "padding:0;");
-        var  inputHargaContainer = document.createElement("div");
-        inputHargaContainer.setAttribute("class", "input-group");
-        inputHargaContainer.setAttribute("style", "width:100%");
-        var inputHargaLabel = document.createElement("span");
-        inputHargaLabel.setAttribute("class", "input-group-addon")
-        inputHargaLabel.innerHTML = "Rp.";
-        var inputHarga = document.createElement("input");
-        inputHarga.setAttribute("type", "number");
-        inputHarga.setAttribute("class", "form-control");
-        inputHargaContainer.appendChild(inputHargaLabel);
-        inputHargaContainer.appendChild(inputHarga);
-        cell5.appendChild(inputHargaContainer);
-
-        var cell6 = row.insertCell(5);
-        var totalIsi = document.createElement("span");
-        totalIsi.setAttribute("class", "pull-right");
-        totalIsi.innerHTML =  " pcs";
-        cell6.appendChild(totalIsi);
-
-        var cell7 = row.insertCell(6);
-        cell7.setAttribute("style", "padding:0;");
-        var  inputDiscContainer1 = document.createElement("div");
-        inputDiscContainer1.setAttribute("class", "input-group");
-        inputDiscContainer1.setAttribute("style", "width:100%");
-        var inputDisc1 = document.createElement("input");
-        inputDisc1.setAttribute("type", "number");
-        inputDisc1.setAttribute("class", "form-control");
-        var inputDiscLabel1 = document.createElement("span");
-        inputDiscLabel1.setAttribute("class", "input-group-addon");
-        inputDiscLabel1.innerHTML = "%";
-        inputDiscContainer1.appendChild(inputDisc1);
-        inputDiscContainer1.appendChild(inputDiscLabel1);
-        cell7.appendChild(inputDiscContainer1);
-
-        var cell8 = row.insertCell(7);
-        cell8.setAttribute("style", "padding:0;");
-        var  inputDiscContainer2 = document.createElement("div");
-        inputDiscContainer2.setAttribute("class", "input-group");
-        inputDiscContainer2.setAttribute("style", "width:100%");
-        var inputDisc2 = document.createElement("input");
-        inputDisc2.setAttribute("type", "number");
-        inputDisc2.setAttribute("class", "form-control");
-        var inputDiscLabel2 = document.createElement("span");
-        inputDiscLabel2.setAttribute("class", "input-group-addon");
-        inputDiscLabel2.innerHTML = "%";
-        inputDiscContainer2.appendChild(inputDisc2);
-        inputDiscContainer2.appendChild(inputDiscLabel2);
-        cell8.appendChild(inputDiscContainer2);
-
-        var cell9 = row.insertCell(8);
-        cell9.setAttribute("style", "padding:0;");
-        var  inputDiscContainer3 = document.createElement("div");
-        inputDiscContainer3.setAttribute("class", "input-group");
-        inputDiscContainer3.setAttribute("style", "width:100%");
-        var inputDisc3 = document.createElement("input");
-        inputDisc3.setAttribute("type", "number");
-        inputDisc3.setAttribute("class", "form-control");
-        var inputDiscLabel3 = document.createElement("span");
-        inputDiscLabel3.setAttribute("class", "input-group-addon");
-        inputDiscLabel3.innerHTML = "%";
-        inputDiscContainer3.appendChild(inputDisc3);
-        inputDiscContainer3.appendChild(inputDiscLabel3);
-        cell9.appendChild(inputDiscContainer3);
-
-        var cell10 = row.insertCell(9);
-        cell10.innerHTML = "Rp. 0";
-
-        var cell11 = row.insertCell(10);
-        var delButton = document.createElement("a");
-        delButton.setAttribute("class", "del-row")
-       // delButton.setAttribute("onclick", "RemoveRow(this);")
-        delButton.setAttribute("style", "color:red;")
-        var delIcon = document.createElement("i");
-        delIcon.setAttribute("class", "glyphicon glyphicon-remove");
-        delButton.appendChild(delIcon);
-        cell11.appendChild(delButton);
-    }
-
-    </script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin:0;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -290,18 +187,23 @@
                 
                 <form role="form">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Supplier</label>
-                            <select class="form-control select2" style="width: 100%;">
-                              <option selected="selected">PT. Perusahaan1</option>
-                              <option>PT. Perusahaan2</option>
-                              <option>PT. Perusahaan3</option>
-                            </select>
+                            <input class="form-control select2" style="width: 100%;" id="inputSupplier">
                         </div>
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pembayaran</label>
+                            <select class="form-control pull-right" id="pilihanPembayaran">
+                                <option value="cash">Cash</option>
+                                <option value="bon">Bon</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Tanggal Pembelian</label>
 
@@ -314,7 +216,7 @@
                             <!-- /.input group -->
                           </div>
                         
-                        <div class="form-group">
+                        <div class="form-group" id="containerJatuhTempo">
                             <label>Tanggal Jatuh Tempo</label>
                             <div class="input-group date">
                               <div class="input-group-addon">
@@ -335,85 +237,30 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <datalist id="DataListBarang">
-                    <option selected="selected">B001 - Buku Cerita</option>
-                    <option>S001 - TV</option>
-                    <option>C002 - Handphone</option>
-                </datalist>
-                <datalist id="DataListSatuan">
-                    <option selected="selected">Butir</option>
-                    <option>Lusin</option>
-                    <option>Gros</option>
-                </datalist>
               <table id="itemTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                     <th style="width:20px">#</th>
                   <th>Barang</th>
-                  <th style="width:40px">Jumlah</th>
-                  <th>Satuan</th>
-                  <th>Harga</th>
-                    <th>Total isi</th>
-                    <th >Disc 1</th>
-                    <th >Disc 2</th>
-                    <th >Disc 3</th>
+                  <th style="width:50px">Qty</th>
+                  <th>Unit</th>
+                  <th>Isi/Carton</th>
+                    <th style="width:150px">H.Satuan</th>
+                    <th style="width:100px" >Disc 1</th>
+                    <th style="width:100px" >Disc 2</th>
+                    <th  style="width:100px">Disc 3</th>
                   <th>Subtotal</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <!--<tr>
-                    <td>1</td>
-                    <td  style="padding:0;">
-                        <input list="DataListBarang" class="form-control" style="width: 100%;">
-                    </td>
-                    <td  style="padding:0;">
-                      <input type="number" style="width: 100%;" class="form-control">
-                    </td>
-                    <td  style="padding:0;">
-                        <input list="DataListSatuan" class="form-control" style="width: 100%;">
-                    </td>
-                    <td  style="padding:0;">
-                        <div class="input-group" style="width: 100%;">
-                            <span class="input-group-addon">Rp.</span>
-                            <input type="number" class="form-control">
-                          </div>
-                    </td>
-                    <TD></TD>
-                    <td style="padding:0;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td style="padding:0;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td style="padding:0;">
-                        <div class="input-group">
-                        
-                        <input type="Number" class="form-control">
-                            <span class="input-group-addon">%</span>
-                      </div>
-                    </td>
-                    <td>Rp. 0</td>
-                    <td>
-                        <a style="color:red"><i class="glyphicon glyphicon-remove"> </i></a>
-                    </td>
-                    </tr>-->
                   </tbody>
                     
                 <tfoot>
                 <tr>
                     <th colspan=5></th>
                      <th>Discount</th>
-                    <th colspan=2 style="padding:0px;">
+                    <th colspan=2 style="padding:0;">
                         <div class="input-group" style="width:100%">
                         
                         <input type="Number" class="form-control">
@@ -454,6 +301,11 @@
 <!-- ./wrapper -->
 
 <script src="../model/ModelPembelian.js"></script>
+
+<script src="../model/ModelStok.js"></script>
+<script src="../model/ModelSupplier.js"></script>
+<script src="../js/PembelianBaruFunction.js"></script>
+
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -469,9 +321,7 @@
     
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    
-<!-- iCheck 1.0.1 -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
+
 <!-- FastClick -->
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -481,24 +331,29 @@
 <!-- page script -->
 <script>
   $(function () {
-      $(".testHidden").hide();
-    $(".select2").select2();
-      //Date picker
+
+      GetSupplier();
+      GetBarang();
+      HideJatuhTempo();
+
+      $("#pilihanPembayaran").select2({
+          minimumResultsForSearch:Infinity,
+          placeholder:"-- Pilih cara pembayaran --",
+          allowClear:true
+      }).on("change", function(){
+          HideJatuhTempo();
+      });
+
     $('#datepicker').datepicker({
       autoclose: true
     });
-      $('#datepicker2').datepicker({
-          autoclose: true
-      });
-      //iCheck for checkbox and radio inputs
-    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-blue',
-      radioClass: 'iradio_minimal-blue'
+    $('#datepicker2').datepicker({
+      autoclose: true
     });
     document.getElementById("addButton").onclick = function()
     {
         AddRow();
-    }
+    };
     AddRow();
   });
 </script>

@@ -24,18 +24,18 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to your account</p>
-
       <div class="form-group has-feedback">
-        <input name ="user" type="text" class="form-control" placeholder="Username">
+        <input id ="login-username" name ="user" type="text" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input name="pass" type="password" class="form-control" placeholder="Password">
+        <input name="pass" id="login-password" type="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-4">
-          <button type="submit" id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            <a href="pages/Stok.html">lala</a>
         </div>
         <!-- /.col -->
       </div>
@@ -55,33 +55,30 @@
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
-      function Login()
+      function myLogin()
       {
-          var formData = $("#login-form").serializeArray();
-          var userName = formData[0].value.toString();
-          var password = formData[1].value.toString();
-          var passwordHash = password.hashCode();
-          console.log("passwordbaru".hashCode());
+          var userName = $("#login-username").val().toString();
+          var password = $("#login-password").val().toString();
 
-          UserLogin(userName, password, function(result){
+          console.log(userName+" "+password);
+          myUserLogin(userName, password, function(result){
 
-          //    console.log(userName+" "+passwordHash);
-              var karID = result.karyawanID;
-              var akses = result.hak_akses;
-              var token = result.token;
-              localStorage.setItem("karyawanID", karID);
-              localStorage.setItem("hak_akses", akses);
-              localStorage.setItem("token", token);
-             // console.log("aa");
-             // window.location.pathname = "/pages/Stok.html";
+              console.log(result['num_rows']);
+              if(result['num_rows']==1)
+              {
+                  var karID = result['karyawanID'].toString();
+                  var akses = result['hak_akses'].toString();
+                  var token = result['token'].toString();
+
+                  localStorage.setItem("karyawanID", karID);
+                  localStorage.setItem("hak_akses", akses);
+                  localStorage.setItem("token", token);
+
+                  window.open ("/pages/Stok.html/");
+              }
           });
       }
-
-      $("#LoginButton").on("click", function (){
-          Login();
-      });
-
-
+      document.getElementById("LoginButton").onclick = function (){myLogin();};
 
   });
 </script>
