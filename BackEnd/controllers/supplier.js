@@ -21,9 +21,9 @@ router.post('/tambah_supplier', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'INSERT INTO supplier SET nama = ?, telp = ?, alamat = ?';
             var supplier = [req.body.nama, req.body.telp, req.body.alamat];
-            connection.query(querystring, supplier, function(err,result){
-                if(err) throw err;
-                resp['supplierID'] = result.insertId;
+            connection.query(querystring, supplier, function(err2,result2){
+                if(err2) throw err2;
+                resp['supplierID'] = result2.insertId;
                 res.status(200).send(resp);
             });
         }
@@ -42,9 +42,9 @@ router.post('/list_supplier', function(req,res){
         else{
             resp['token_status'] = 'success'
             var querystring = 'SELECT * FROM supplier';
-            connection.query(querystring, function(err, result){
-                if(err) throw err;
-                resp['data'] = result
+            connection.query(querystring, function(err2, result2){
+                if(err2) throw err2;
+                resp['data'] = result2
                 res.status(200).send(resp);
             });
         }
@@ -64,9 +64,9 @@ router.post('/hapus_supplier', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'DELETE FROM supplier WHERE supplierID = ?';
             var supplier = [req.body.supplierID];
-            connection.query(querystring, supplier, function(err, result){
-                if(err) throw err;
-                resp['affectedRows'] = result.affectedRows;
+            connection.query(querystring, supplier, function(err2, result2){
+                if(err2) throw err2;
+                resp['affectedRows'] = result2.affectedRows;
                 res.status(200).send(resp);
             });
         }
@@ -86,9 +86,9 @@ router.post('/update_supplier', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'UPDATE supplier SET nama = ?, telp = ?, alamat = ? WHERE supplierID = ?';
             var supplier = [req.body.nama, req.body.telp, req.body.alamat, req.body.supplierID];
-            connection.query(querystring, supplier, function(err, result){
-                if(err) throw err;
-                resp['affectedRows'] = result.affectedRows
+            connection.query(querystring, supplier, function(err2, result2){
+                if(err2) throw err2;
+                resp['affectedRows'] = result2.affectedRows
                 res.status(200).send(resp);
             });
         }

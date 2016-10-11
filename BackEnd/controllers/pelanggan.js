@@ -21,9 +21,9 @@ router.post('/tambah_pelanggan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'INSERT INTO pelanggan SET nama = ?, telp = ?, alamat = ?';
             var pelanggan = [req.body.nama, req.body.telp, req.body.alamat];
-            connection.query(querystring, pelanggan, function(err,result){
-                if(err) throw err;
-                resp['pelangganID'] = result.insertId;
+            connection.query(querystring, pelanggan, function(err2,result2){
+                if(err2) throw err2;
+                resp['pelangganID'] = result2.insertId;
                 res.status(200).send(resp);
             });
         }
@@ -42,9 +42,9 @@ router.post('/list_pelanggan', function(req,res){
         else{
             resp['token_status'] = 'success'
             var querystring = 'SELECT * FROM pelanggan';
-            connection.query(querystring, function(err, result){
-                if(err) throw err;
-                resp['data'] = result
+            connection.query(querystring, function(err2, result2){
+                if(err2) throw err2;
+                resp['data'] = result2
                 res.status(200).send(resp);
             });
         }
@@ -65,9 +65,9 @@ router.post('/hapus_pelanggan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'DELETE FROM pelanggan WHERE pelangganID = ?';
             var pelanggan = [req.body.pelangganID];
-            connection.query(querystring, pelanggan, function(err, result){
-                if(err) throw err;
-                resp['affectedRows'] = result.affectedRows
+            connection.query(querystring, pelanggan, function(err2, result2){
+                if(err2) throw err2;
+                resp['affectedRows'] = result2.affectedRows
                 res.status(200).send(resp);
             });
         }
@@ -88,9 +88,9 @@ router.post('/update_pelanggan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'UPDATE pelanggan SET nama = ?, telp = ?, alamat = ? WHERE pelangganID = ?';
             var pelanggan = [req.body.nama, req.body.telp, req.body.alamat, req.body.pelangganID];
-            connection.query(querystring, pelanggan, function(err, result){
-                if(err) throw err;
-                resp['affectedRows'] = result.affectedRows
+            connection.query(querystring, pelanggan, function(err2, result2){
+                if(err2) throw err2;
+                resp['affectedRows'] = result2.affectedRows
                 res.status(200).send(resp);
             });
         }

@@ -5,6 +5,6 @@ router.use('/barang', require('./barang'))
 router.use('/pelanggan', require('./pelanggan'))
 router.use('/karyawan', require('./karyawan'))
 router.use('/supplier', require('./supplier'))
-router.use('/pembelian', require('./pembelian'))
+router.use('/penjualan', require('./penjualan'))
 
 module.exports = router
