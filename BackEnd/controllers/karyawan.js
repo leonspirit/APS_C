@@ -8,40 +8,57 @@ var token_auth = require('../token')
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
+function add_hak_akses_karyawan(req, i, karyawanID){
+
+    var nama = req.body.hak_akses[i]['nama']
+
+    var querystring = 'INSERT INTO hakakses SET karyawanID = ?, nama = ?'
+    var hak_akses = [karyawanID, nama]
+    connection.query(querystring, hak_akses, function(err, result){
+        if(err) throw err
+    })
+}
+
 router.post('/tambah_karyawan', function(req,res){
 
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result != 'admin'){
+        if(result != 'aktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'INSERT INTO karyawan SET nama = ?, telp = ?, alamat = ?, username = ?, password = ?, hak_akses = ?';
-            var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.username, req.body.password, req.body.hak_akses];
+            var querystring = 'INSERT INTO karyawan SET nama = ?, telp = ?, alamat = ?, username = ?, password = ?, status = ?';
+            var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.username, req.body.password, "aktif"];
             connection.query(querystring, karyawan, function(err2,result2){
                 if(err2) throw err2;
                 resp['karyawanID'] = result2.insertId
+
+                var len = req.body.hak_akses.length
+                for(var i=0; i<len; i++){
+                    add_hak_akses_karyawan(req, i, result2.insertId)
+                }
                 res.status(200).send(resp);
             });
         }
     })
 });
 
+
 router.post('/list_karyawan', function(req,res){
 
     var resp = {}
     res.type('application/json');
     token_auth.check_token(req.body.token, function(result){
-        if(result != 'admin'){
+        if(result != 'aktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT karyawanID, nama, telp, alamat, username, hak_akses FROM karyawan';
+            var querystring = 'SELECT karyawanID, nama, telp, alamat, username, status FROM karyawan';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2;
                 resp['data'] = result2;
@@ -56,13 +73,13 @@ router.post('/hapus_karyawan', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result != 'admin'){
+        if(result != 'aktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE karyawan SET hak_akses = ? WHERE karyawanID = ?'
+            var querystring = 'UPDATE karyawan SET status = ? WHERE karyawanID = ?'
             var karyawan = ["inaktif", req.body.karyawanID]
             connection.query(querystring, karyawan, function(err2, result2){
                 if(err2) throw err2
@@ -79,7 +96,7 @@ router.post('/update_karyawan', function(req,res){
     res.type('application/json')
     token_auth.check_user(req.body.token, function(result){
 
-        if(result['hak_akses'] == 'admin' || result['hak_akses'] == 'karyawan'){
+        if(result['status'] == 'aktif'){
             var karyID = result['karyawanID']
             resp['token_status'] = 'success';
             if(karyID == req.body.karyawanID){
@@ -105,7 +122,7 @@ router.post('/update_karyawan', function(req,res){
 
 router.post('/login', function(req,res){
 
-    var querystring = 'SELECT karyawanID, hak_akses FROM karyawan WHERE username = ? AND password = ? AND hak_akses != ?';
+    var querystring = 'SELECT karyawanID FROM karyawan WHERE username = ? AND password = ? AND status != ?';
     var karyawan = [req.body.username, req.body.password, "inaktif"];
     connection.query(querystring, karyawan, function(err, result){
         if(err) throw err;
@@ -117,14 +134,20 @@ router.post('/login', function(req,res){
         }
         else{
             resp['karyawanID'] = result[0].karyawanID;
-            resp['hak_akses'] = result[0].hak_akses;
             resp['token'] = token_auth.new_token();
 
             var querystring2 = 'INSERT INTO token SET karyawanID = ?, token = ?, statusToken = ?';
             var token = [resp['karyawanID'], resp['token'], 'aktif'];
             connection.query(querystring2, token, function(err2, result2){
                 if(err2) throw err2;
-                res.status(200).send(resp);
+            })
+
+            var querystring3 = 'SELECT nama FROM hakakses WHERE karyawanID = ?'
+            var hakakses = [resp['karyawanID']]
+            connection.query(querystring3, hakakses, function(err3, result3){
+                if(err3) throw err3;
+                resp['hak_akses'] = result3
+                res.status(200).send(resp)
             })
         }
     })
@@ -146,12 +169,13 @@ router.post('/logout', function(req,res){
     })
 })
 
+/*
 router.post('/update_akses', function(req,res){
 
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result != 'admin'){
+        if(result != 'aktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -167,5 +191,6 @@ router.post('/update_akses', function(req,res){
         }
     })
 })
+*/
 
 module.exports = router
