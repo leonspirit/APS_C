@@ -16,11 +16,11 @@ module.exports = {
                 return callback(null);
             }
             else{
-                var querystring2 = 'SELECT hak_akses FROM karyawan WHERE karyawanID = ?';
+                var querystring2 = 'SELECT status FROM karyawan WHERE karyawanID = ?';
                 var karyawan = [result[0].karyawanID];
                 connection.query(querystring2, karyawan, function(err2, result2){
                     if(err2) throw err2;
-                    return callback(result2[0].hak_akses);
+                    return callback(result2[0].status);
                 })
             }
         })
@@ -33,15 +33,15 @@ module.exports = {
         connection.query(querystring, token, function(err, result){
             if(err) throw err
             if(result.length == 0){
-                resp['hak_akses'] = null
+                resp['status'] = null
                 return callback(resp)
             }
             else{
-                var querystring2 = 'SELECT hak_akses FROM karyawan WHERE karyawanID = ?';
+                var querystring2 = 'SELECT status FROM karyawan WHERE karyawanID = ?';
                 var karyawan = [result[0].karyawanID]
                 connection.query(querystring2, karyawan, function(err2, result2){
                     if(err2) throw err2
-                    resp['hak_akses'] = result2[0].hak_akses
+                    resp['status'] = result2[0].status
                     resp['karyawanID'] = result[0].karyawanID
                     return callback(resp)
                 })
