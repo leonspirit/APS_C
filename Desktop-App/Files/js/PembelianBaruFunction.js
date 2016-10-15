@@ -3,13 +3,17 @@
  */
 
 
+console.log(localStorage.getItem("karyawanID"));
+console.log(localStorage.getItem("hak_akses"));
+console.log(localStorage.getItem("token"));
+var currentToken = localStorage.getItem("token");
+
 var DataSupplier = [];
 var DataBarang = [];
 
 function GetSupplier()
 {
-    var token = "1234567890";
-    GetAllSupplierData(token, function(result){
+    GetAllSupplierData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
@@ -41,8 +45,7 @@ function GetSupplier()
 
 function GetBarang()
 {
-    var token = "1234567890";
-    GetAllStokData(token, function(result){
+    GetAllStokData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
@@ -190,9 +193,9 @@ function AddRow()
 
     var cell11 = row.insertCell(10);
     var delButton = document.createElement("a");
-    delButton.setAttribute("class", "del-row")
+    delButton.setAttribute("class", "del-row");
     // delButton.setAttribute("onclick", "RemoveRow(this);")
-    delButton.setAttribute("style", "color:red;")
+    delButton.setAttribute("style", "color:red;");
     var delIcon = document.createElement("i");
     delIcon.setAttribute("class", "glyphicon glyphicon-remove");
     delButton.appendChild(delIcon);
