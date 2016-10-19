@@ -27,7 +27,7 @@ CREATE TABLE `barang` (
   `nama` varchar(50) DEFAULT NULL,
   `harga_pokok` int(11) DEFAULT NULL,
   PRIMARY KEY (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `barang` (
 
 LOCK TABLES `barang` WRITE;
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
-INSERT INTO `barang` VALUES (26,'sendok',1000),(27,'garpu',990),(28,'piring',2980),(29,'piringrino',0);
+INSERT INTO `barang` VALUES (26,'sendok',1000),(27,'garpu',990),(28,'piring',2980),(29,'piringrino',0),(30,'sendokrino',0);
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +323,6 @@ CREATE TABLE `penjualanbarang` (
 
 LOCK TABLES `penjualanbarang` WRITE;
 /*!40000 ALTER TABLE `penjualanbarang` DISABLE KEYS */;
-INSERT INTO `penjualanbarang` VALUES (17,18,7,10,50,0,1500,NULL),(18,18,9,15,10,0,6500,NULL),(19,19,7,10,50,0,1500,NULL),(20,19,9,15,10,0,6500,NULL),(21,20,7,10,50,1000,1500,NULL),(22,20,9,15,10,2980,6500,NULL);
 /*!40000 ALTER TABLE `penjualanbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -401,11 +400,11 @@ CREATE TABLE `satuanbarang` (
   `satuan` varchar(20) DEFAULT NULL,
   `konversi` int(11) DEFAULT NULL,
   `satuan_acuan` varchar(20) DEFAULT NULL,
-  `konversi_satuan` int(11) DEFAULT NULL,
+  `konversi_acuan` int(11) DEFAULT NULL,
   PRIMARY KEY (`satuanID`),
   KEY `BARANG_FK` (`barangID`),
   CONSTRAINT `BARANG_FK` FOREIGN KEY (`barangID`) REFERENCES `barang` (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,7 +413,7 @@ CREATE TABLE `satuanbarang` (
 
 LOCK TABLES `satuanbarang` WRITE;
 /*!40000 ALTER TABLE `satuanbarang` DISABLE KEYS */;
-INSERT INTO `satuanbarang` VALUES (7,26,1500,'pieces',1,NULL,NULL),(8,27,1500,'pieces',1,NULL,NULL),(9,28,6500,'pieces',1,NULL,NULL),(10,29,0,'pieces',1,NULL,NULL),(11,29,50000,'biji',1,NULL,NULL),(12,29,2500000,'hampir kardus',30,NULL,NULL),(13,29,7500000,'truk',150,NULL,NULL);
+INSERT INTO `satuanbarang` VALUES (14,30,10000,'boks',5,'lusin',12);
 /*!40000 ALTER TABLE `satuanbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -539,4 +538,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-19 17:51:58
+-- Dump completed on 2016-10-19 18:07:20
