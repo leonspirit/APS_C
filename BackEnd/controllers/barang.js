@@ -8,6 +8,37 @@ var token_auth = require('../token')
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
+function asyncLoop(iterations, func, callback) {
+    var index = 0;
+    var done = false;
+    var loop = {
+        next: function() {
+            if (done) {
+                return;
+            }
+
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback();
+            }
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback();
+        }
+    };
+    loop.next();
+    return loop;
+}
+
 router.post('/tambah_barang', function(req,res){
 
     var resp = {}
@@ -52,6 +83,59 @@ router.post('/tambah_satuan', function(req,res){
     })
 });
 
+function add_harga_stok(index, res_query, data, callback){
+
+    var stok = res_query[index]['stok_skrg']
+    var harga = res_query[index]['harga_beli']
+
+    if(data['stok']){
+        data['stok'] = data['stok'] + stok
+    }
+    else{
+        data['stok'] = stok
+    }
+
+    if(data['harga_pokok']){
+        data['harga_pokok'] = data['harga_pokok'] + (harga * stok)
+    }
+    else{
+        data['harga_pokok'] = harga * stok
+    }
+    callback()
+}
+
+function get_stok_harga_barang(index, data, callback){
+
+    var barangID = data[index]['barangID']
+
+    var qrstring = 'SELECT harga_beli, stok_skrg FROM stok WHERE barangID = ?'
+    var barang = [barangID]
+    connection.query(qrstring, barang, function(err, result){
+        if(err) throw err
+
+        var len = result.length
+        asyncLoop(len, function(loop) {
+            add_harga_stok(loop.iteration(), result, data[index], function(result) {
+                loop.next();
+            })},
+            function(){
+                if(data[index]['stok']){
+                    data[index]['harga_pokok'] = data[index]['harga_pokok'] / data[index]['stok']
+                }
+                else{
+                    data[index]['stok'] = 0
+                }
+
+                if(!data[index]['harga_pokok']){
+                    data[index]['harga_pokok'] = 0
+                }
+                data[index]['harga_pokok'] = Math.round(data[index]['harga_pokok'])
+                callback()
+            }
+        );
+    })
+}
+
 router.post('/list_barang', function(req,res){
 
     var resp = {}
@@ -63,11 +147,17 @@ router.post('/list_barang', function(req,res){
         }
         else {
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM barang';
+            var querystring = 'SELECT barangID, nama FROM barang';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2;
-                resp['data'] = result2
-                res.status(200).send(resp);
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    get_stok_harga_barang(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             });
         }
     })
@@ -106,8 +196,8 @@ router.post('/update_satuan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE satuanbarang SET harga_jual = ?, satuan = ?, konversi = ?, acuan_satuan = ? WHERE satuanID = ?'
-            var satuanbarang = [req.body.harga_jual, req.body.satuan, req.body.konversi, req.body.acuan_satuan, req.body.satuanID]
+            var querystring = 'UPDATE satuanbarang SET harga_jual = ?, satuan = ?, konversi = ?, satuan_acuan = ?, konversi_acuan = ? WHERE satuanID = ?'
+            var satuanbarang = [req.body.harga_jual, req.body.satuan, req.body.konversi, req.body.satuan_acuan, req.body.konversi_acuan, req.body.satuanID]
             connection.query(querystring, satuanbarang, function(err2, result2){
                 if(err2) throw err2;
                 resp['affectedRows'] = result2.affectedRows
