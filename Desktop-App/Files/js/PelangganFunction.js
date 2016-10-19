@@ -3,11 +3,15 @@
  */
 
 
+console.log(localStorage.getItem("karyawanID"));
+console.log(localStorage.getItem("hak_akses"));
+console.log(localStorage.getItem("token"));
+var currentToken = localStorage.getItem("token");
+
 
 function populatePelangganData()
 {
-    var curToken = "1234567890";
-    GetAllPelangganData(curToken, function(result){
+    GetAllPelangganData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
@@ -52,10 +56,9 @@ function populatePelangganData()
 }
 
 function deletePelangganConfirm(Button){
-    var curToken ="1234567890";
     var pelangganID = $(Button).attr('data-id');
     var rowNum = $(Button).attr('data-row-num');
-    DeletePelanggan(curToken, pelangganID, function(result)
+    DeletePelanggan(currentToken, pelangganID, function(result)
     {
         if (result.token_status=="success")
         {
@@ -83,9 +86,8 @@ function deletePelangganConfirm(Button){
     });
 }
 
-function updatePelangganConfirm()
+function updatePelangganConfirm(Button)
 {
-    var curToken = "1234567890";
     var pad ="00000";
     var Id = $(Button).attr('data-id');
     var StrId  = "P"+ pad.substring(0, pad.length - Id.length)+Id;
@@ -95,7 +97,7 @@ function updatePelangganConfirm()
     var nama = formData[0].value.toString();
     var telp = formData[1].value.toString();
     var alamat = formData[2].value.toString();
-    UpdateDataPelanggan(curToken, Id, nama, telp, alamat, function(result){
+    UpdateDataPelanggan(currentToken, Id, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
             if (result['affectedRows'] == 1)
@@ -124,12 +126,11 @@ function updatePelangganConfirm()
 
 function createPelangganConfirm()
 {
-    var curToken = "1234567890";
     var formData = $("#create-modal-form").serializeArray();
     var nama = formData[0].value.toString();
     var telp = formData[1].value.toString();
     var alamat = formData[2].value.toString();
-    AddPelanggan(curToken, nama, telp, alamat, function(result){
+    AddPelanggan(currentToken, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
             if  (result.pelangganID != null)

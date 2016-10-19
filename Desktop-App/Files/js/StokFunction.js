@@ -5,6 +5,7 @@
 console.log(localStorage.getItem("karyawanID"));
 console.log(localStorage.getItem("hak_akses"));
 console.log(localStorage.getItem("token"));
+var currentToken = localStorage.getItem("token");
 
 function populateStokData() {
     var BarangTable = $('#BarangTable').DataTable({
@@ -15,8 +16,7 @@ function populateStokData() {
         "info": true,
         "autoWidth": false
     });
-    var token = "1234567890";
-    GetAllStokData(token, function (result) {
+    GetAllStokData(currentToken, function (result) {
         if (result.token_status == "success") {
             var i;
             for (i = 0; i < result.data.length; i++) {
@@ -82,9 +82,9 @@ function populateStokData() {
         draw();
     }
 
-    function AddCreateTableRow()
+    function AddCreateModalSatuanRow()
     {
-        var tableBody = document.getElementById('addBarangSatuanTable')
+        var tableBody = document.getElementById('addBarangSatuanTable');
 
         var rowCount = tableBody.rows.length;
         var row = tableBody.insertRow(rowCount);
@@ -95,7 +95,7 @@ function populateStokData() {
 
         var selectSatuan = document.createElement("select");
         selectSatuan.setAttribute("class", "form-control select-satuan");
-        var ListSatuan = ["Box", "Gros", "Kod", "Lsn", "Pcs"];
+        var ListSatuan = ["Box", "Grs", "Kod", "Lsn", "Pcs"];
         for (var i =0;i<ListSatuan.length ; i++)
         {
             var optionSatuan = document.createElement("option");
@@ -172,9 +172,9 @@ function populateStokData() {
         var tdContainer4 = row.insertCell(3);
 
         var delButton = document.createElement("a");
-        delButton.setAttribute("style", "color:red;")
+        delButton.setAttribute("style", "color:red;");
         var delIcon = document.createElement("i");
-        delIcon.setAttribute("class", "glyphicon glyphicon-trash");
+        delIcon.setAttribute("class", "glyphicon glyphicon-remove");
         delButton.appendChild(delIcon);
 
         tdContainer4.appendChild(delButton);
@@ -222,7 +222,7 @@ function populateStokData() {
         }
 
     }
-    function ResetCreateTableSatuan()
+    function ResetCreateModalSatuan()
     {
         var tableBody = document.getElementById('addBarangSatuanTable');
 
@@ -231,6 +231,9 @@ function populateStokData() {
                 break;
             tableBody.deleteRow(-1);
         }
+    }
+    function RemoveCreateModalSatuanRow(){
+
     }
 
 function createAlert(type, message)

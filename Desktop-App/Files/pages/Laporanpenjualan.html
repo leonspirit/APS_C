@@ -10,12 +10,26 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+
+    <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
     <script>window.$ =window.jQuery = require('jquery');</script>
+
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin:0;
+        }
+         #cicilan-tanggal-transaksi{z-index:1151 !important;}
+         #cicilan-tanggal-pencairan{z-index:1151 !important;}
+    </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -40,38 +54,57 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-           <li class="dropdown messages-menu">
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/LaporanPembelian.png">
+                    <span class="label label-danger">5</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <ul class="menu">
+                            <li>
+                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                            </li>
+                            <li>
+                                <a data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                            </li>
+                            <li>
+                                <a  data-toggle="modal" data-target="#modalNotification">Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                            </li>
+                            <li>
+                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                            </li>
+                            <li>
+                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="glyphicon glyphicon-bell"></i>
-              <span class="label label-warning">10</span>
+             <!-- <i class="glyphicon glyphicon-bell"></i>-->
+                <img src="../icons/LaporanPenjualan.png">
+              <span class="label label-danger">5</span>
             </a>
             <ul class="dropdown-menu">
-              
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                       Andi - 10/09/16 Jatuh Tempo pada 12/09/16
-                    </a>
+                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
                   </li>
                   <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                        Andi - 10/09/16 Jatuh Tempo pada 12/09/16
-                    </a>
+                    <a data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
                   </li>
                     <li>
-                    <a  data-toggle="modal" data-target="#modalNotification">
-                        Andi - 10/09/16 Jatuh Tempo pada 12/09/16
-                    </a>
-                  </li><li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                        Andi - 10/09/16 Jatuh Tempo pada 12/09/16
-                    </a>
-                  </li><li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                        Andi - 10/09/16 Jatuh Tempo pada 12/09/16
-                    </a>
+                    <a  data-toggle="modal" data-target="#modalNotification">Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                  </li>
+                    <li>
+                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
+                  </li>
+                    <li>
+                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
                   </li>
                 </ul>
               </li>
@@ -81,10 +114,7 @@
             
           <li class="user user-menu">
             <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  
-                  </span>
+              <span class="hidden-xs">Welcome, Admin</span>
             </a>
             
           </li>
@@ -172,8 +202,6 @@
                 <h4 class="modal-title">Detail Item</h4>
               </div>
               <div class="modal-body">
-                
-                
                  
                       <table class="table">
                         <tr>
@@ -231,10 +259,9 @@
           </div>
         <!-- /.modal -->
       </div>
-    
-    <div class="itemDetail-modal">
+
         <div class="modal fade"  id="modalNotification">
-          <div class="modal-dialog"role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -242,9 +269,7 @@
                 <h4 class="modal-title">Notifikasi</h4>
               </div>
               <div class="modal-body">
-                
-                
-                 <h3><a href="detailTransaksi.html">Andi - 10 Sep 16</a> Jatuh Tempo Pada 12 Sep 16</h3>
+                 <h4><span id="notificationType">Pembelian</span> <a href="detailTransaksi.html">Andi - 10 Sep 16</a> Jatuh Tempo Pada 12 Sep 16 sejumlah Rp. 1.000.000.000</h4>
                   
                 <form role="form">
                     <div class="row">
@@ -260,48 +285,55 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Tanggal</label>
-                                <div>
+                                <label>Tanggal Transaksi</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="cicilan-tanggal-transaksi">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="cara-transfer">
+                    <div class="row cara-transfer" hidden>
                         <div class="col-md-12">
                             <div class="form-group">  
                                 <label>Bank</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control">
-                                </div>
+                                <input type="text" class="form-control">
                             </div>
                             
                         </div>
                     </div>
-                    <div class="row" id="cara-giro">
-                            <div class="col-md-12">
-                            <div class="form-group">  
-                                <label>Bank</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control">
+                    <div class="row cara-giro">
+                        <div class="col-md-6">
+                            <label>Bank</label>
+                            <input type="text" class="form-control">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tanggal Pencairan</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="cicilan-tanggal-pencairan">
                                 </div>
                             </div>
-                            <div class="form-group">  
-                                <label>Nomor Giro</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                
+                        </div>
+                    </div>
+                    <div class="row cara-giro">
+                        <div class="col-md-12">
+                            <label>Nomor Giro</label>
+                            <input type="text" class="form-control">
                         </div>
                     </div>
                     <div class="row nominal">
                         <div class="col-md-12">
-                            <div class="form-group">  
-                                <label>Nominal</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Rp</span>
-                                    <input type="number" class="form-control">
-                                </div>
+                            <label>Nominal</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">Rp</span>
+                                <input type="number" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -317,7 +349,9 @@
           <!-- /.modal-dialog -->
           </div>
         <!-- /.modal -->
-      </div>
+
+
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -350,6 +384,7 @@
                     <th>Pembeli</th>
                     <th>Tanggal</th>
                     <th>Subtotal</th>
+                    <th>Laba</th>
                     <th>Jatuh Tempo</th>
                     <TH>Detail</TH>
                 </tr>
@@ -360,7 +395,8 @@
                   <td>T001</td>
                     <td>Andi</td>
                     <td>1 Januari 2016</td>
-                    <td>Rp.18.500.000</td>
+                    <td><span class="pull-right">Rp.18.500.000</span></td>
+                    <td><span class="pull-right">Rp.10.000.000</span></td>
                     <td>22 September 2016</td>
                     <td><a href="DetailPenjualan.html" ><i class="glyphicon glyphicon-new-window"></i></a></td>
 
@@ -369,7 +405,8 @@
                   <td>T002</td>
                         <td>Budi</td>
                     <td>2 Januari 2016</td>
-                    <td>Rp. 1.000.000</td>
+                        <td><span class="pull-right">Rp.10.000.000</span></td>
+                        <td><span class="pull-right">Rp.1.000.000</span></td>
                     <td>23 September 2016</td>
                     <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
 
@@ -378,7 +415,9 @@
                   <td>T003</td>
                         <td>Cici</td>
                     <td>3 Januari 2016</td>
-                        <td>Rp. 5.000.000</td>
+
+                        <td><span class="pull-right">Rp.10.000.000</span></td>
+                        <td><span class="pull-right">Rp.1000.000</span></td>
                         <td>21 September 2016</td>
                         <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
 
@@ -387,7 +426,8 @@
                   <td>T004</td>
                         <td>Doni</td>
                     <td>5 Januari 2016</td>
-                    <td>Rp. 2.000.000</td>
+                        <td><span class="pull-right">Rp.10.000.000</span></td>
+                        <td><span class="pull-right">Rp.1.000.000</span></td>
                         <td>21 September 2016</td>
                         <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
                 </tr>
@@ -423,6 +463,7 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="../js/NotificationFunction.js"></script>
 <script src="../model/ModelPenjualan.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -431,6 +472,8 @@
 <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -444,27 +487,7 @@
   $(function () {
 
 
-
-    $('#cara-pilih').on('change', function(){
-        if (this.value=="giro")
-        {
-            $('#cara-giro').show();
-            $('#cara-transfer').hide();
-            $('#cara-tunai').hide();
-        }
-        else if (this.value=="transfer")
-        {
-            $('#cara-giro').hide();
-            $('#cara-transfer').show();
-            $('#cara-tunai').hide();
-        }
-        else if (this.value="tunai")
-        {
-            $('#cara-giro').hide();
-            $('#cara-transfer').hide();
-            $('cara-tunai').show();
-        }
-    });
+        InitNotification();
 
       function populatePenjualanData()
       {

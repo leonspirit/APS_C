@@ -2,13 +2,18 @@
  * Created by Billy on 06-Oct-16.
  */
 
+
+console.log(localStorage.getItem("karyawanID"));
+console.log(localStorage.getItem("hak_akses"));
+console.log(localStorage.getItem("token"));
+var currentToken = localStorage.getItem("token");
+
 var DataPelanggan = [];
 var DataBarang = [];
 
 function GetPelanggan()
 {
-    var token = "1234567890";
-    GetAllPelangganData(token, function(result){
+    GetAllPelangganData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
@@ -40,8 +45,7 @@ function GetPelanggan()
 
 function GetBarang()
 {
-    var token = "1234567890";
-    GetAllStokData(token, function(result){
+    GetAllStokData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
@@ -114,7 +118,7 @@ function AddRow()
     var inputBarang = document.createElement("input");
     inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
     inputBarang.setAttribute("style", "width:100%;");
-    inputBarang.setAttribute("class", "barang-select2 form-control input-data-"+rowNum.toString());
+    inputBarang.setAttribute("class", "barang-select2 form-control input-sm input-data-"+rowNum.toString());
     cell2.appendChild(inputBarang);
     $("#input-"+rowNum.toString()+"-1").select2({
         data: DataBarang,
@@ -126,7 +130,7 @@ function AddRow()
     cell3.setAttribute("style", "padding:0");
     var inputJumlah = document.createElement("input");
     inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
-    inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
+    inputJumlah.setAttribute("class", "form-control input-sm input-data"+rowNum.toString());
     inputJumlah.setAttribute("type", "number");
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
@@ -135,9 +139,9 @@ function AddRow()
 
     var cell4 = row.insertCell(3);
     cell4.setAttribute("style", "padding:0");
-    var inputSatuan = document.createElement("select");
+    var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
-    inputSatuan.setAttribute("class", "form-control input-data"+rowNum.toString());
+    inputSatuan.setAttribute("class", "form-control input-sm input-data"+rowNum.toString());
     inputSatuan.setAttribute("id", "input-"+rowNum.toString()+"-3");
     cell4.appendChild(inputSatuan);
     $("#input-"+rowNum.toString()+"-3").select2({
@@ -159,7 +163,7 @@ function AddRow()
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
     inputHarga.setAttribute("onchange", "DrawTable("+ rowNum+",true);");
-    inputHarga.setAttribute("class", "form-control input-data"+rowNum.toString());
+    inputHarga.setAttribute("class", "input-sm form-control input-data"+rowNum.toString());
     inputHarga.setAttribute("id", "input-"+rowNum.toString()+"-4");
     inputHargaGroup.appendChild(inputHargaAddOn);
     inputHargaGroup.appendChild(inputHarga);
@@ -177,7 +181,7 @@ function AddRow()
     inputDisc.setAttribute("type", "number");
     inputDisc.setAttribute("min", "0");
     inputDisc.setAttribute("max", "100");
-    inputDisc.setAttribute("class", "form-control input-data"+rowNum.toString());
+    inputDisc.setAttribute("class", "input-sm form-control input-data"+rowNum.toString());
     inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-4");
     inputDisc.setAttribute("onchange", "DrawTable("+ rowNum.toString()+",true);");
     inputDiscGroup.appendChild(inputDisc);
