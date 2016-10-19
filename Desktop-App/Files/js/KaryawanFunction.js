@@ -238,4 +238,40 @@ function CreateKaryawanConfirm(Button){
         }
 
     });
+
+}
+function ListHakAksesCreateModal()
+{
+    var akses=[
+        "Stok Barang",
+        "Laporan Penjualan",
+        "Laporan Pembelian",
+        "Penjualan Baru",
+        "Pembelian Baru",
+        "Hutang",
+        "Piutang",
+        "Daftar Pelanggan",
+        "Daftar Karyawan",
+        "Daftar Supplier"
+    ];
+    var i;
+    var TableHakAkses =  document.getElementById("CreateModalHakAksesTable").getElementsByTagName("tbody")[0];
+    for (i=0;i<akses.length;i++)
+    {
+        //var aksesRow = TableHakAkses.
+        var rowCount = TableHakAkses.rows.length;
+        var row = TableHakAkses.insertRow(rowCount);
+
+        var rowAksesName = row.insertCell(0);
+        rowAksesName.innerHTML = akses[i];
+
+        var rowAksesStatus = row.insertCell(1);
+        var checkBox  = document.createElement("input");
+        checkBox.setAttribute("type", "checkbox");
+        checkBox.setAttribute("class", "minimal");
+        rowAksesStatus.appendChild(checkBox);
+    }
+    $('input[type="checkbox"].minimal').iCheck({
+        checkboxClass:"icheckbox_minimal-green"
+    });
 }

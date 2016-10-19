@@ -60,11 +60,12 @@ function AddStok(token, nama, stok)
 }
 
 
-function GetAllSatuanData(token, fn)
+function GetAllSatuanData(token, barangID, fn)
 {
     $.post( baseUrl+"barang/list_satuan",
         {
-            token:token
+            token:token,
+            barangID: barangID
         },function( data ) {
             fn(data);
         }, "json");
