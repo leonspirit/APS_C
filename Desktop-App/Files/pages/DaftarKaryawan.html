@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="../plugins/iCheck/all.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -161,7 +162,7 @@
                   </div>
                   <div class="modal-body">
                       <form id="create-modal-form">
-                      <table class="table">
+                      <table id="CreateModalHakAksesTable" class="table">
                           <thead>
                           <tr>
                               <th colspan="2">Masukkan data karyawan baru</th>
@@ -185,8 +186,7 @@
                               <td style="padding:0"><input class="form-control" name="username" id="create-modal-field-username"></td>
                           </tr>
                           <tr>
-                              <td>Hak Akses</td>
-                              <td style="padding:0"><input class="form-control" name="hak_akses" id="create-modal-field-hak-akses"></td>
+                              <td colspan="2"><b>Hak Akses</b></td>
                           </tr>
                           </tbody>
                       </table>
@@ -332,6 +332,7 @@
 <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -375,6 +376,7 @@
                   $("#search-karyawan-username").val()
           );
       });
+      ListHakAksesCreateModal();
 
 
   });

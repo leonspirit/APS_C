@@ -9,6 +9,7 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="../plugins/iCheck/all.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -153,46 +154,119 @@
                   <div class="modal-body">
                       <table id="addBarangSatuanTable" class="table">
                           <tr>
-                              <td><b>Nama</b></td>
-                              <td colspan=3 style="padding:0">
+                              <td colspan =2><b>Nama</b></td>
+                              <td style="padding:0">
                                   <input type="text" class="form-control" value="" id="create-modal-nama-item">
                               </td>
                           </tr>
                           <tr>
-                              <td><b>Stok</b></td>
-                              <td colspan=3 style="padding:0">
+                              <td colspan=2><b>Stok</b></td>
+                              <td style="padding:0">
                                   <input type="number" class="form-control" value="" id="create-modal-stok-item">
                               </td>
                           </tr>
                           <tr>
-                              <td><b>Harga Pokok</b></td>
-                              <td colspan=3 style="padding:0">
+                              <td colspan =2><b>Isi/Carton</b></td>
+                              <td style="padding:0">
+                                  <div class="input-group" style="width:100%;">
+
+                                      <input type="number" class="form-control" value="" id="create-modal-isi-carton">
+
+                                      <!--<div class="input-group-addon"  style="padding:0">
+                                          <select class="form-control">
+                                              <option>Grs</option>
+                                              <option>Lsn</option>
+                                              <option>Kod</option>
+                                              <option>Pcs</option>
+                                          </select>
+                                      </div>-->
+                                     <div class="input-group-btn">
+                                         <!-- <Button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Grs</Button>
+                                          <ul class="dropdown-menu">
+                                              <li><a>Grs</a></li>
+                                              <li><a>Kod</a></li>
+                                              <li><a>Lsn</a></li>
+                                              <li><a>Pcs</a></li>
+                                          </ul>-->
+                                         <select style="width:100px" class="form-control">
+                                             <option>Grs</option>
+                                             <option>Lsn</option>
+                                             <option>Kod</option>
+                                             <option>Pcs</option>
+                                         </select>
+                                      </div>
+                                  </div>
+
+
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan="2"><b>Harga Pokok</b></td>
+                              <td style="padding:0">
                                   <div class="input-group" style="width:100%;">
                                       <div class="input-group-addon">Rp.</div>
                                       <input type="number" class="form-control" value="" id="create-modal-harga-pokok-item">
+                                      <div class="input-group-addon">/ Carton</div>
                                   </div>
 
                               </td>
                           </tr>
                           <tr>
-                              <td><b>Satuan</b></td>
-                              <td style="padding:0">
-                                  <Button id="create-table-reset-satuan" class="btn btn-primary">
-                                      <i class="glyphicon glyphicon-minus"></i> Reset
-                                  </Button>
-                                  <Button id="create-table-add-satuan" class="btn btn-primary">
-                                      <i class="glyphicon glyphicon-plus"></i> Tambah
-                                  </Button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <th>Satuan</th>
-                              <th>Isi/Satuan</th>
+                              <th></th>
+                              <th>Unit</th>
+                            <!--  <th>Isi/Satuan</th>-->
                               <th>Harga Jual</th>
                               <th></th>
                           </tr>
                           <tr>
-                              <!--tempat satuan-->
+                              <td><input type="checkbox" class="minimal" checked disabled></td>
+                              <td>Box</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input type="checkbox" class="minimal"></td>
+                              <td>Grz</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input type="checkbox" class="minimal"></td>
+                              <td>Kod</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input type="checkbox" class="minimal"></td>
+                              <td>Lsn</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input type="checkbox" class="minimal"></td>
+                              <td>Pcs</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input class="form-control" type="number">
+                                  </div>
+                              </td>
                           </tr>
                       </table>
                       <!-- /.box -->
@@ -311,147 +385,68 @@
                                 </div>
                             </div>
                         </div>
-                      <!--  <div class="row">
-                            <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <label>Stok</label>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label>Harga Jual</label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label>Harga Pokok</label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">min</div>
                                         <input name="search-stok-min" id="search-stok-min" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">Carton</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">max</div>
                                         <input name="search-stok-max" id="search-stok-max" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">Carton</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">min Rp.</div>
                                         <input  name="search-harga-jual-min" id="search-harga-jual-min" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">/Carton</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">max Rp.</div>
                                         <input name="search-harga-jual-max" id="search-harga-jual-max" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">/Carton</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">min Rp.</div>
                                        <input name="search-harga-pokok-min" id="search-harga-pokok-min" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">/Carton</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">max Rp.</div>
                                         <input name="search-harga-pokok-max" id="search-harga-pokok-max" class="form-control" type="number">
-                                        <div class="input-group-btn">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">An
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <div class="input-group-addon">/Carton</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <Button onclick="ClearSearchForm()" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-remove"></i> Reset</Button>
-                                </div>
-                                <div class="form-group">
-                                    <Button type="submit" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-search"></i> Search</Button>
-                                </div>
-                            </div>
-                        </div>-->
+
+                        </div>
                     </form>
                 </div>
 
@@ -498,6 +493,8 @@
 <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../plugins/iCheck/icheck.min.js"></script>
+
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -518,12 +515,15 @@
                   $("#search-barang-nama").val()
           );
       });
-      AddCreateTableRow();
+     //AddCreateModalSatuanRow();
 
-      $(".select-satuan").onchange = function(){ ConvertSatuan(this); };
 
-      $("#create-table-add-satuan").on("click", function(){ AddCreateModalSatuanRow(); });
-      $("#create-table-reset-satuan").on("click", function(){ ResetCreateModalSatuan(); });
+      $('input[type="checkbox"].minimal').iCheck({
+          checkboxClass:"icheckbox_minimal-green"
+      });
+
+     /* $("#create-table-add-satuan").on("click", function(){ AddCreateModalSatuanRow(); });
+      $("#create-table-reset-satuan").on("click", function(){ ResetCreateModalSatuan(); });*/
 
 
 
