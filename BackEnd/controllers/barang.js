@@ -112,8 +112,8 @@ router.post('/update_satuan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE satuanbarang SET harga_jual = ?, satuan = ?, konversi = ? WHERE satuanID = ?'
-            var satuanbarang = [req.body.harga_jual, req.body.satuan, req.body.konversi, req.body.satuanID]
+            var querystring = 'UPDATE satuanbarang SET harga_jual = ?, satuan = ?, konversi = ?, acuan_satuan = ? WHERE satuanID = ?'
+            var satuanbarang = [req.body.harga_jual, req.body.satuan, req.body.konversi, req.body.acuan_satuan, req.body.satuanID]
             connection.query(querystring, satuanbarang, function(err2, result2){
                 if(err2) throw err2;
                 resp['affectedRows'] = result2.affectedRows
