@@ -33,7 +33,7 @@ module.exports = {
         connection.query(querystring, token, function(err, result){
             if(err) throw err
             if(result.length == 0){
-                resp['status'] = null
+                resp['hak_akses'] = null
                 return callback(resp)
             }
             else{
@@ -41,7 +41,7 @@ module.exports = {
                 var karyawan = [result[0].karyawanID]
                 connection.query(querystring2, karyawan, function(err2, result2){
                     if(err2) throw err2
-                    resp['status'] = result2[0].status
+                    resp['hak_akses'] = result2[0].status
                     resp['karyawanID'] = result[0].karyawanID
                     return callback(resp)
                 })
