@@ -30,7 +30,7 @@ function populateStokDataEntry(BarangTable, barangEntry)
                     '</span>';
 
                 var StokReady = '<span class="pull-right">' +
-                    numberWithCommas(0) +
+                    numberWithCommas(barangEntry.stok) +
                     '</span>';
 
                 var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='" +
@@ -209,48 +209,6 @@ function populateEditModal(Button)
     console.log("delete "+barangID+" "+rowNumber);
 }
 
-function ConvertSatuan(field)
-{
-
-    var resultField = $(field).closest('tr').find('td:eq(1)');
-    var satuan = field.value;
-    if (satuan=="Pcs")
-    {
-        resultField.val(1);
-        resultField.setAttribute("disabled");
-    }
-    else if (satuan == "Lsn")
-    {
-        resultField.val(12);
-        resultField.setAttribute("disabled");
-    }
-    else if (satuan == "Grs")
-    {
-        resultField.val(144);
-        resultField.setAttribute("disabled");
-    }
-    else if (satuan == "Kod")
-    {
-        resultField.val(20);
-        resultField.setAttribute("disabled");
-    }
-
-}
-/*
-function ResetCreateModalSatuan()
-{
-    var tableBody = document.getElementById('addBarangSatuanTable');
-
-    while (true) {
-        if (tableBody.rows.length==6)
-            break;
-        tableBody.deleteRow(-1);
-    }
-}
-function RemoveCreateModalSatuanRow(){
-
-}
-*/
 function createAlert(type, message)
 {
     var container = document.createElement("div");
@@ -270,4 +228,44 @@ function createAlert(type, message)
 
 }
 
+
+function CreateModalDisableHargaJualInput()
+{
+    var satuan =["grs", "kod", "lsn", "pcs"];
+    var i;
+    for (i=0;i<satuan.length;i++)
+    {
+        if ($("#check-harga-jual-"+satuan[i]).prop("checked"))
+        {
+            $("#harga-jual-"+satuan[i]).prop("disabled", false);
+        }
+        else
+        {
+            $("#harga-jual-"+satuan[i]).prop("disabled", true);
+        }
+    }
+
+}
+
+function createBarangConfirm()
+{
+    var formData = $("#create-barang-form").serializeArray();
+    console.log(formData);
+
+
+    AddBarang(currentToken, formData[0].value.toString());
+    var satuan =["grs", "kod", "lsn", "pcs"];
+    var i;
+    for (i=0;i<satuan.length;i++)
+    {
+        if ($("#check-harga-jual-"+satuan[i]).prop("checked"))
+        {
+         //   AddSatuan(currentToken, )
+            console.log($("#harga-jual-"+satuan[i]).val());
+        }
+    }
+
+
+    // AddBarang(currentToken, )
+}
 

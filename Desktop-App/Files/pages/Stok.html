@@ -152,17 +152,18 @@
                       <h4 class="modal-title">Detail Item</h4>
                   </div>
                   <div class="modal-body">
+                      <form id="create-barang-form">
                       <table id="addBarangSatuanTable" class="table">
                           <tr>
                               <td colspan =2><b>Nama</b></td>
                               <td style="padding:0">
-                                  <input type="text" class="form-control" value="" id="create-modal-nama-item">
+                                  <input type="text" name="nama" class="form-control" value="" id="create-modal-nama-item">
                               </td>
                           </tr>
                           <tr>
                               <td colspan=2><b>Stok</b></td>
                               <td style="padding:0">
-                                  <input type="number" class="form-control" value="" id="create-modal-stok-item">
+                                  <input type="number" name="stok" class="form-control" value="" id="create-modal-stok-item">
                               </td>
                           </tr>
                           <tr>
@@ -171,28 +172,12 @@
                                   <div class="input-group" style="width:100%;">
 
                                       <input type="number" class="form-control" value="" id="create-modal-isi-carton">
-
-                                      <!--<div class="input-group-addon"  style="padding:0">
-                                          <select class="form-control">
-                                              <option>Grs</option>
-                                              <option>Lsn</option>
-                                              <option>Kod</option>
-                                              <option>Pcs</option>
-                                          </select>
-                                      </div>-->
                                      <div class="input-group-btn">
-                                         <!-- <Button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Grs</Button>
-                                          <ul class="dropdown-menu">
-                                              <li><a>Grs</a></li>
-                                              <li><a>Kod</a></li>
-                                              <li><a>Lsn</a></li>
-                                              <li><a>Pcs</a></li>
-                                          </ul>-->
-                                         <select style="width:100px" class="form-control">
-                                             <option>Grs</option>
-                                             <option>Lsn</option>
-                                             <option>Kod</option>
-                                             <option>Pcs</option>
+                                         <select id="create-modal-konversi-carton-select" style="width:100px" class="form-control">
+                                             <option value="grs">Grs</option>
+                                             <option value="lsn">Lsn</option>
+                                             <option value="kod">Kod</option>
+                                             <option value="pcs">Pcs</option>
                                          </select>
                                       </div>
                                   </div>
@@ -224,55 +209,57 @@
                               <td style="padding:0">
                                   <div class="input-group">
                                       <div class="input-group-addon">Rp.</div>
-                                      <input class="form-control" type="number">
+                                      <input name="harga-jual-box" id="harga-jual-box" class="form-control" type="number">
                                   </div>
                               </td>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" class="minimal"></td>
-                              <td>Grz</td>
+                              <td><input id="check-harga-jual-grs" type="checkbox" class="minimal check-satuan"></td>
+                              <td>Grs</td>
                               <td style="padding:0">
                                   <div class="input-group">
                                       <div class="input-group-addon">Rp.</div>
-                                      <input class="form-control" type="number">
+                                      <input name="harga-jual-grs" id="harga-jual-grs" class="form-control" type="number">
                                   </div>
                               </td>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" class="minimal"></td>
+                              <td><input id="check-harga-jual-kod" type="checkbox" class="minimal check-satuan"></td>
                               <td>Kod</td>
                               <td style="padding:0">
                                   <div class="input-group">
                                       <div class="input-group-addon">Rp.</div>
-                                      <input class="form-control" type="number">
+                                      <input name="harga-jual-kod" id="harga-jual-kod" class="form-control" type="number">
                                   </div>
                               </td>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" class="minimal"></td>
+                              <td><input id="check-harga-jual-lsn" type="checkbox" class="minimal check-satuan"></td>
                               <td>Lsn</td>
                               <td style="padding:0">
                                   <div class="input-group">
                                       <div class="input-group-addon">Rp.</div>
-                                      <input class="form-control" type="number">
+                                      <input name="harga-jual-lsn" id="harga-jual-lsn" class="form-control" type="number">
                                   </div>
                               </td>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" class="minimal"></td>
+                              <td><input id="check-harga-jual-pcs" type="checkbox" class="minimal check-satuan"></td>
                               <td>Pcs</td>
                               <td style="padding:0">
                                   <div class="input-group">
                                       <div class="input-group-addon">Rp.</div>
-                                      <input class="form-control" type="number">
+                                      <input nama="harga-jual-pcs" id="harga-jual-pcs" class="form-control" type="number">
                                   </div>
                               </td>
                           </tr>
                       </table>
+                      </form>
                       <!-- /.box -->
                   </div>
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">OK</button>
+                      <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+                      <button id="create-barang-confirm" type="button" class="btn btn-primary  pull-right">OK</button>
                   </div>
               </div>
               <!-- /.modal-content -->
@@ -520,6 +507,16 @@
 
       $('input[type="checkbox"].minimal').iCheck({
           checkboxClass:"icheckbox_minimal-green"
+      });
+
+      CreateModalDisableHargaJualInput();
+      $(".check-satuan").on("ifChanged",  function(){
+          CreateModalDisableHargaJualInput();
+      });
+
+      $(document).on("click", "#create-barang-confirm", function()
+      {
+         createBarangConfirm();
       });
 
      /* $("#create-table-add-satuan").on("click", function(){ AddCreateModalSatuanRow(); });

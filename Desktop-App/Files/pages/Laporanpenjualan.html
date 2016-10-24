@@ -57,26 +57,12 @@
             <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="../icons/LaporanPembelian.png">
-                    <span class="label label-danger">5</span>
+                    <span id="PembelianNotifLabel" class="label label-danger">5</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <ul class="menu">
-                            <li>
-                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                            </li>
-                            <li>
-                                <a data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                            </li>
-                            <li>
-                                <a  data-toggle="modal" data-target="#modalNotification">Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                            </li>
-                            <li>
-                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                            </li>
-                            <li>
-                                <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                            </li>
+                        <ul id="PembelianNotif" class="menu">
+
                         </ul>
                     </li>
                 </ul>
@@ -84,48 +70,45 @@
 
             <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-             <!-- <i class="glyphicon glyphicon-bell"></i>-->
                 <img src="../icons/LaporanPenjualan.png">
-              <span class="label label-danger">5</span>
+              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
             </a>
             <ul class="dropdown-menu">
+                <li class="header">6 Penjualan Jatuh Tempo dalam waktu 3 Hari ke depan</li>
               <li>
-                <ul class="menu">
-                  <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                  </li>
-                  <li>
-                    <a data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                  </li>
-                    <li>
-                    <a  data-toggle="modal" data-target="#modalNotification">Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                  </li>
-                    <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                  </li>
-                    <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >Andi - 10/09/16 Jatuh Tempo pada 12/09/16</a>
-                  </li>
+                <ul id="PenjualanNotif" class="menu">
+
+
                 </ul>
               </li>
               
             </ul>
-          </li>   
-            
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">Welcome, Admin</span>
-            </a>
-            
           </li>
-            <li class="user user-menu">
-            <a href="index.html">
-              
-              <span class="hidden-xs">Log Out</span>
-            </a>
-            
-          </li>
-          <!-- Control Sidebar Toggle Button -->
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+                    <span class="hidden-xs">Alexander Pierce</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+
+                        <p id="CurrentKaryawanName">
+                            Alexander Pierce
+                          <!--  <small>Member since Nov. 2012</small>-->
+                        </p>
+                    </li>
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                        </div>
+                        <div class="pull-right">
+                            <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
 
         </ul>
       </div>
@@ -463,8 +446,9 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="../js/NotificationFunction.js"></script>
+<script src="../js/GlobalFunction.js"></script>
 <script src="../model/ModelPenjualan.js"></script>
+<script src="../model/ModelLogin.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -487,7 +471,9 @@
   $(function () {
 
 
-        InitNotification();
+      InitNotification();
+
+      InitUserPanel();
 
       function populatePenjualanData()
       {
@@ -531,6 +517,8 @@
           });
       }
       populatePenjualanData();
+
+
 
 });
 </script>

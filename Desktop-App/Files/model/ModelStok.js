@@ -21,7 +21,7 @@ function GetAllStokData(token, fn)
         }, "json");
 }
 
-function DeleteStok(token, barangID, fn)
+function DeleteBarang(token, barangID, fn)
 {
     $.post( baseUrl + "barang/hapus_barang/",
         {
@@ -46,7 +46,7 @@ function UpdateDataStok(token, barangID, nama, stok, fn)
         }, "json");
 }
 
-function AddStok(token, nama, stok)
+function AddBarang(token, nama, stok)
 {
     $.post( baseUrl + "barang/tambah_barang/",
         {
