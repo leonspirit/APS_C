@@ -23,6 +23,8 @@ function populateStokDataEntry(BarangTable, barangEntry)
                     '<span class="pull-right">' +
                     'Rp. ' + numberWithCommas(result2.data[i2].harga_jual) +
                     '</span>';
+                console.log(result2.data[i2].konversi);
+                console.log(barangEntry.harga_pokok);
 
                 var HargaPokok =
                     '<span class="pull-right">' +
