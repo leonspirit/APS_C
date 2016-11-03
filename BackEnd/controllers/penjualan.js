@@ -286,4 +286,30 @@ router.post('/list_penjualan_not_printed', function(req,res){
     })
 })
 
+router.post('/tambah_cicilan_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_user(req.body.token, function(result){
+        if(result['hak_akses'] == null || result['hak_akses'] == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'INSERT INTO cicilanpenjualan SET penjualanID = ?, tanggal_cicilan = ?, nominal = ?, notes = ?, cara_pembayaran = ?, bank = ?, nomor_giro = ?, tanggal_pencairan = ?, karyawanID = ?'
+            var cicilanpenjualan = [req.body.penjualanID, req.body.tanggal_cicilan, req.body.nominal, req.body.notes, req.body.cara_pembayaran, req.body.bank, req.body.nomor_giro, req.body.tanggal_pencairan, result['karyawanID']]
+            connection.query(querystring, cicilanpenjualan, function(err2, result2){
+                if(err2) throw err2;
+                resp['cicilanpenjualanID'] = result2.insertId;
+
+                token_auth.update_status_penjualan(req.body.penjualanID, function(result){
+                    res.status(200).send(resp)
+                })
+            })
+        }
+    })
+})
+
 module.exports = router
