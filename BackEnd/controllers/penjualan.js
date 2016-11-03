@@ -41,6 +41,37 @@ function asyncStok(sisa_item, func, callback){
     return loop;
 }
 
+function asyncLoop(iterations, func, callback) {
+    var index = 0;
+    var done = false;
+    var loop = {
+        next: function() {
+            if (done) {
+                return;
+            }
+
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback();
+            }
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback();
+        }
+    };
+    loop.next();
+    return loop;
+}
+
 function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, callback){
 
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
@@ -107,6 +138,19 @@ function add_penjualan_barang(req, i, penjualanID){
     })
 }
 
+function add_nama_pelanggan(index, data, callback){
+
+    var pelangganID = data[index]['pelangganID']
+
+    var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
+    var pelanggan = [pelangganID]
+    connection.query(qrstring, pelanggan, function(err, result){
+        if(err) throw err
+        data[index]['nama'] = result[0]['nama']
+        callback()
+    })
+}
+
 router.post('/tambah_penjualan', function(req,res){
 
     var resp = {}
@@ -148,8 +192,14 @@ router.post('/list_penjualan', function(req,res){
             var querystring = 'SELECT * FROM penjualan';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             });
         }
     })
@@ -169,8 +219,14 @@ router.post('/list_piutang_penjualan', function(req,res){
             var querystring = 'SELECT * FROM penjualan WHERE status != "lunas"'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
@@ -190,8 +246,14 @@ router.post('/list_lunas_penjualan', function(req,res){
             var querystring = 'SELECT * FROM penjualan WHERE status = "lunas"'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
@@ -211,8 +273,14 @@ router.post('/list_penjualan_not_printed', function(req,res){
             var querystring = 'SELECT * FROM penjualan WHERE isPrinted = 0'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
