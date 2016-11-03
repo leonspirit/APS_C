@@ -72,14 +72,18 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
-function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, callback){
+function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, callback){
+
+
 
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
     var stok = [barangID]
     connection.query(querystring, stok, function(err, result){
         if(err) throw err;
+
         var stokID = result[0]['stokID']
         var stok_skrg = result[0]['stok_skrg']
+        var harga_jual_saat_ini = result[0]['harga_jual_saat_ini']
 
         var kurang = 0
         if(stok_skrg >= item){
@@ -99,16 +103,11 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, call
 
             token_auth.get_stok_harga_pokok(barangID, function(result3){
                 var harga_pokok_saat_ini = result3['harga_pokok']
-
-                token_auth.get_harga_jual(satuanID, function(result4){
-                    var harga_jual_saat_ini = result4['harga_jual']
-
-                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
-                    var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
-                    connection.query(querystring3, penjualanbarang, function(err5, result5){
-                        if(err5) throw err5
-                        return callback(resp)
-                    })
+                var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
+                var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
+                connection.query(querystring3, penjualanbarang, function(err5, result5){
+                    if(err5) throw err5
+                    return callback(resp)
                 })
             })
         })
@@ -120,6 +119,7 @@ function add_penjualan_barang(req, i, penjualanID){
     var satuanID = req.body.satuan[i]['satuanID']
     var quantity = req.body.satuan[i]['quantity']
     var disc = req.body.satuan[i]['disc']
+    var harga_jual_saat_ini = req.body.satuan[i]['harga_jual_saat_ini']
 
     var querystring = 'SELECT barangID, konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
     var satuanbarang = [satuanID]
@@ -129,7 +129,7 @@ function add_penjualan_barang(req, i, penjualanID){
         var konversi = result[0]['konversi'] * result[0]['konversi_acuan']
 
         asyncStok(quantity*konversi, function(loop){
-            update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, function(result){
+            update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, function(result){
                 loop.next(result['stok']);
             })},
             function(){

@@ -220,6 +220,48 @@ router.post('/list_pembelian_not_printed', function(req,res){
     })
 })
 
+router.post('/detail_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'SELECT * FROM pembelian WHERE pembelianID = ?'
+            var pembelian = [req.body.pembelianID]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2)throw err2
+                if(result2.length == 0){
+                    resp['num_rows'] = 0
+                    res.status(200).send(resp)
+                }
+                else{
+                    resp['num_rows'] = 1
+                    var len = result2.length
+                    asyncLoop(len, function(loop) {
+                        add_nama_supplier(loop.iteration(), result2, function(result) {
+                            loop.next();
+                        })},
+                        function(){
+                            resp['data'] = result2
+                            var querystring2 = 'SELECT * FROM pembelianbarang WHERE pembelianID = ?'
+                            connection.query(querystring2, pembelian, function(err3, result3){
+                                if(err3)throw err3
+                                resp['data'][0]['barang'] = result3
+                                res.status(200).send(resp)
+                            })
+                        }
+                    );
+                }
+            })
+        }
+    })
+})
+
 router.post('/tambah_cicilan_pembelian', function(req,res){
 
     var resp = {}
