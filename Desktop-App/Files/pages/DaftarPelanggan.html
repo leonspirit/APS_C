@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+
+  <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -17,6 +19,16 @@
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
   <![endif]-->
     <script>window.$ =window.jQuery = require('jquery');</script>
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin:0;
+    }
+    .datepicker{z-index:1151 !important;}
+  </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -42,21 +54,59 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  </span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPembelian.png">
+              <span id="PembelianNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PembelianNotif" class="menu">
+
+                </ul>
+              </li>
+            </ul>
           </li>
-            <li class="user user-menu">
-            <a href="../index.html">
-              
-              <span class="hidden-xs">Log Out</span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPenjualan.png">
+              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PenjualanNotif" class="menu">
+
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">Alexander Pierce</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+
+                <p id="CurrentKaryawanName">
+                  Alexander Pierce
+                  <!--  <small>Member since Nov. 2012</small>-->
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <!--<li>
@@ -72,57 +122,7 @@
     <section class="sidebar">
 
       <ul class="sidebar-menu">
-        <li>
-          <a href="Stok.html">
-            <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpenjualan.html">
-            <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpembelian.html">
-            <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-          </a>
-        </li>
-        <li>
-          <a href="PenjualanBaru.html">
-            <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-          </a>
-        </li>
-        <li>
-          <a href="PembelianBaru.html">
-            <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
 
-          </a>
-        </li>
-        <li>
-          <a href="Hutang.html">
-            <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Piutang.html">
-            <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-          </a>
-        </li>
-        <li class="active">
-          <a href="DaftarPelanggan.html">
-            <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarKaryawan.html">
-            <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarSupplier.html">
-            <img src="../icons/Supplier.png" style="margin-right:10px;" > <span>Daftar Supplier</span>
-          </a>
-        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -242,6 +242,95 @@
         </div>
       </div>
     </div>
+    <div class="modal fade"  id="modalNotification">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Notifikasi</h4>
+          </div>
+          <div class="modal-body">
+            <h4><span id="notificationType">Pembelian</span> <a href="detailTransaksi.html">Andi - 10 Sep 16</a> Jatuh Tempo Pada 12 Sep 16 sejumlah Rp. 1.000.000.000</h4>
+
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Pembayaran</label>
+                    <select class="form-control" id="cara-pilih">
+                      <option value="giro">Giro</option>
+                      <option value="transfer">Transfer</option>
+                      <option value="tunai">Tunai</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tanggal Transaksi</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </div>
+                      <input type="text" class="form-control pull-right" id="cicilan-tanggal-transaksi">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row cara-transfer" hidden>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Bank</label>
+                    <input type="text" class="form-control">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row cara-giro">
+                <div class="col-md-6">
+                  <label>Bank</label>
+                  <input type="text" class="form-control">
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tanggal Pencairan</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </div>
+                      <input type="text" class="form-control pull-right" id="cicilan-tanggal-pencairan">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row cara-giro">
+                <div class="col-md-12">
+                  <label>Nomor Giro</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="row nominal">
+                <div class="col-md-12">
+                  <label>Nominal</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">Rp</span>
+                    <input type="number" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button id="btn-DismissNotif" type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Accept</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
     <!-- Main content -->
     <section class="content">
@@ -326,6 +415,8 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="../js/GlobalFunction.js"></script>
+
 <script src="../js/PelangganFunction.js"></script>
 <script src="../model/ModelPelanggan.js"></script>
 <!-- jQuery 2.2.3 -->
@@ -333,6 +424,8 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
+
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -346,6 +439,11 @@
 <!-- page script -->
 <script>
   $(function () {
+    var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+    generateMenu("DaftarPelanggan", currentHakAkses);
+    InitNotification();
+
+    InitUserPanel();
 
     populatePelangganData();
 

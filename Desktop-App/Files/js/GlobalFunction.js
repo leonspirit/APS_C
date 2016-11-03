@@ -1,10 +1,13 @@
 /**
  * Created by Billy on 24-Oct-16.
  */
-
-
-
 var currentToken = localStorage.getItem("token");
+//konversi
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
 //Notification
 function UpdateUICicilan(Dropdown)
 {
@@ -27,18 +30,18 @@ function UpdateUICicilan(Dropdown)
         $('.cara-tunai').show();
     }
 }
-
 function InitNotification()
 {
-
     $('#cara-pilih').on('change', function(){
         UpdateUICicilan(this);
     });
     UpdateUICicilan($('#cara-pilih'));
     $("#cicilan-tanggal-pencairan").datepicker({
+        dateFormat:'yy-mm-dd',
         autoclose:true
     });
     $("#cicilan-tanggal-transaksi").datepicker({
+        dateFormat:'yy-mm-dd',
         autoclose:true
     });
     FillPenjualanNotificationList();
@@ -86,7 +89,7 @@ function FillPembelianNotificationList()
         pembelianNotif.appendChild(li);
     }
 }
-
+//user
 function Logout(token)
 {
     myUserLogout(token, function(result){
@@ -99,6 +102,62 @@ function InitUserPanel()
     $(document).on("click", "#ButtonUserLogout", function(){
         Logout(currentToken);
     });
+}
+//alert
+function createAlert(type, message)
+{
+    var container = document.createElement("div");
+    container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
+    var closeButton  = document.createElement("Button");
+    closeButton.setAttribute("type", "button");
+    closeButton.setAttribute("class", "close");
+    closeButton.setAttribute("data-dismiss", "alert");
+    closeButton.setAttribute("arie-hidden", "true");
+    closeButton.innerHTML="&times;";
+    container.appendChild(closeButton);
+    container.innerHTML += message;
+    var placeholder = document.getElementById("alert-placeholder");
+    if (placeholder.hasChildNodes())
+        placeholder.removeChild(placeholder.childNodes[0]);
+    placeholder.appendChild(container);
+
+}
+function generateMenu(curPage, HakAksesList)
+{
+    console.log(HakAksesList);
+    var FullPages= ["StokBarang", "LaporanPenjualan", "LaporanPembelian", "PenjualanBaru", "PembelianBaru", "Piutang", "Hutang", "DaftarPelanggan", "DaftarKaryawan", "DaftarSupplier"];
+    var li, a, img, span, i;
+
+    var sidebarMenu = document.getElementsByClassName("sidebar-menu")[0];
+
+    for (i=0;i<FullPages.length;i++)
+    {
+        if ($.inArray(FullPages[i], HakAksesList)!=-1)
+        {
+            li = document.createElement("li");
+            if (curPage == FullPages[i])
+                li.setAttribute("class", "active");
+            a = document.createElement("a");
+            a.setAttribute("href", FullPages[i]+".html");
+            img = document.createElement("img");
+            img.setAttribute("style", "margin-right:10px");
+            img.setAttribute("src", "../icons/"+FullPages[i]+".png");
+            span = document.createElement("span");
+            var PageName = FullPages[i]
+                .match(/^(?:[^A-Z]+)|[A-Z](?:[^A-Z]*)+/g)
+                .join(" ")
+                .toLowerCase()
+                .replace(/^[a-z]/, function(v) {
+                    return v.toUpperCase();
+                });
+            span.innerHTML = PageName;
+            a.appendChild(img);
+            a.appendChild(span);
+            li.appendChild(a);
+            sidebarMenu.appendChild(li);
+
+        }
+    }
 }
 
 

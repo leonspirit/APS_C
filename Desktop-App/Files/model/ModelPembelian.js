@@ -4,43 +4,50 @@
 
 var baseUrl = "http://localhost:3000/"
 
-function numberWithCommas(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
-
-
-function getQueryPembelianData(kode, nama, stokMin, stokMax, hJualMin, hJualMax, hPokokMin, hPokokMax, fn) {
-
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-function getAllPembelianData(fn)
+function getLunasPembelianData(token, fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;
+    $.post( baseUrl + "pembelian/list_lunas_pembelian/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function getHutangPembelianData(token, fn)
+{
+    $.post( baseUrl + "pembelian/list_hutang_pembelian/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function getAllPembelianData(token, fn)
+{
+    $.post( baseUrl + "pembelian/list_pembelian/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-           // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, satuan, fn)
+{
+    $.post( baseUrl + "pembelian/tambah_pembelian/",
+        {
+            token: token,
+            supplierID: supplierID,
+            tanggal_transaksi:tanggal_transaksi,
+            jatuh_tempo:jatuh_tempo,
+            subtotal:subtotal,
+            disc:disc,
+            isPrinted:isPrinted,
+            status:status,
+            satuan:satuan
+        }, function(  data ) {
+            fn(data);
+        }, "json");
 }
 
 //connection.end();

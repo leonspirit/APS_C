@@ -42,21 +42,59 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  </span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPembelian.png">
+              <span id="PembelianNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PembelianNotif" class="menu">
+
+                </ul>
+              </li>
+            </ul>
           </li>
-            <li class="user user-menu">
-            <a href="index.php">
-              
-              <span class="hidden-xs">Log Out</span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPenjualan.png">
+              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PenjualanNotif" class="menu">
+
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">Alexander Pierce</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+
+                <p id="CurrentKaryawanName">
+                  Alexander Pierce
+                  <!--  <small>Member since Nov. 2012</small>-->
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <!--<li>
@@ -306,10 +344,13 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
+<script src="../js/GlobalFunction.js"></script>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
+
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -323,6 +364,11 @@
 <!-- page script -->
 <script>
   $(function () {
+    var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+    generateMenu("Piutang", currentHakAkses);
+    InitNotification();
+
+    InitUserPanel();
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,

@@ -3,7 +3,7 @@
  */
 
 console.log(localStorage.getItem("karyawanID"));
-console.log(localStorage.getItem("hak_akses"));
+var currentHakAkses = localStorage.getItem("hak_akses");
 console.log(localStorage.getItem("token"));
 var currentToken = localStorage.getItem("token");
 
@@ -18,13 +18,10 @@ function populateStokDataEntry(BarangTable, barangEntry)
                 var id = "" + barangEntry.barangID;
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
-
                 var HargaJual =
                     '<span class="pull-right">' +
                     'Rp. ' + numberWithCommas(result2.data[i2].harga_jual) +
                     '</span>';
-                console.log(result2.data[i2].konversi);
-                console.log(barangEntry.harga_pokok);
 
                 var HargaPokok =
                     '<span class="pull-right">' +
@@ -211,26 +208,6 @@ function populateEditModal(Button)
     console.log("delete "+barangID+" "+rowNumber);
 }
 
-function createAlert(type, message)
-{
-    var container = document.createElement("div");
-    container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
-    var closeButton  = document.createElement("Button");
-    closeButton.setAttribute("type", "button");
-    closeButton.setAttribute("class", "close");
-    closeButton.setAttribute("data-dismiss", "alert");
-    closeButton.setAttribute("arie-hidden", "true");
-    closeButton.innerHTML="&times;";
-    container.appendChild(closeButton);
-    container.innerHTML += message;
-    var placeholder = document.getElementById("alert-placeholder");
-    if (placeholder.hasChildNodes())
-        placeholder.removeChild(placeholder.childNodes[0]);
-    placeholder.appendChild(container);
-
-}
-
-
 function CreateModalDisableHargaJualInput()
 {
     var satuan =["grs", "kod", "lsn", "pcs"];
@@ -246,28 +223,43 @@ function CreateModalDisableHargaJualInput()
             $("#harga-jual-"+satuan[i]).prop("disabled", true);
         }
     }
-
 }
 
 function createBarangConfirm()
 {
+    var satuan =["grs", "kod", "lsn", "pcs"];
+    var konversiSatuan = [144, 20, 12, 1];
+
     var formData = $("#create-barang-form").serializeArray();
     console.log(formData);
-
-
-    AddBarang(currentToken, formData[0].value.toString());
-    var satuan =["grs", "kod", "lsn", "pcs"];
     var i;
-    for (i=0;i<satuan.length;i++)
+    AddBarang(currentToken, formData[0].value.toString(), function(result)
     {
-        if ($("#check-harga-jual-"+satuan[i]).prop("checked"))
+        console.log(result.barangID);
+        var konversiAcuanBox;
+        var acuanBox = $("#create-modal-konversi-carton-select").val();
+        console.log(acuanBox);
+        for (i=0;i<satuan.length;i++)
         {
-         //   AddSatuan(currentToken, )
-            console.log($("#harga-jual-"+satuan[i]).val());
+            if (acuanBox==satuan[i])
+            {
+                konversiAcuanBox = konversiSatuan[i];
+                break;
+            }
         }
-    }
+        AddSatuan(currentToken, result.barangID, $("#harga-jual-box").val(), "box", formData[2].value*konversiAcuanBox, acuanBox, konversiAcuanBox,function(result3){
+            console.log(result3.satuanID);
+        });
+        for (i=0;i<satuan.length;i++)
+        {
+            if ($("#check-harga-jual-"+satuan[i]).prop("checked"))
+            {
+                AddSatuan(currentToken, result.barangID, $("#harga-jual-"+satuan[i]).val(), satuan[i], konversiSatuan[i], "pcs", 1, function(result2){
+                    console.log(result2.satuanID);
+                });
+            }
+        }
+    });
 
-
-    // AddBarang(currentToken, )
 }
 

@@ -7,9 +7,12 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
+
+  <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -17,6 +20,16 @@
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
     <script>window.$ =window.jQuery = require('jquery');</script>
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin:0;
+    }
+    .datepicker{z-index:1151 !important;}
+  </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -42,21 +55,59 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  </span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPembelian.png">
+              <span id="PembelianNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PembelianNotif" class="menu">
+
+                </ul>
+              </li>
+            </ul>
           </li>
-            <li class="user user-menu">
-            <a href="index.php">
-              
-              <span class="hidden-xs">Log Out</span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPenjualan.png">
+              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PenjualanNotif" class="menu">
+
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">Alexander Pierce</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+
+                <p id="CurrentKaryawanName">
+                  Alexander Pierce
+                  <!--  <small>Member since Nov. 2012</small>-->
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -68,56 +119,7 @@
     <section class="sidebar">
 
       <ul class="sidebar-menu">
-        <li>
-          <a href="Stok.html">
-            <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpenjualan.html">
-            <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpembelian.html">
-            <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-          </a>
-        </li>
-        <li>
-          <a href="PenjualanBaru.html">
-            <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-          </a>
-        </li>
-        <li>
-          <a href="PembelianBaru.html">
-            <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
-          </a>
-        </li>
-        <li>
-          <a href="Hutang.html">
-            <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Piutang.html">
-            <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarPelanggan.html">
-            <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarKaryawan.html">
-            <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-          </a>
-        </li>
-        <li class="active">
-          <a href="DaftarSupplier.html">
-            <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-          </a>
-        </li>
+
       </ul>
       </section>
     <!-- /.sidebar -->
@@ -224,6 +226,97 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade"  id="modalNotification">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Notifikasi</h4>
+        </div>
+        <div class="modal-body">
+          <h4><span id="notificationType">Pembelian</span> <a href="detailTransaksi.html">Andi - 10 Sep 16</a> Jatuh Tempo Pada 12 Sep 16 sejumlah Rp. 1.000.000.000</h4>
+
+          <form role="form">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Pembayaran</label>
+                  <select class="form-control" id="cara-pilih">
+                    <option value="giro">Giro</option>
+                    <option value="transfer">Transfer</option>
+                    <option value="tunai">Tunai</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tanggal Transaksi</label>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right" id="cicilan-tanggal-transaksi">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row cara-transfer" hidden>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Bank</label>
+                  <input type="text" class="form-control">
+                </div>
+
+              </div>
+            </div>
+            <div class="row cara-giro">
+              <div class="col-md-6">
+                <label>Bank</label>
+                <input type="text" class="form-control">
+
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tanggal Pencairan</label>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right" id="cicilan-tanggal-pencairan">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row cara-giro">
+              <div class="col-md-12">
+                <label>Nomor Giro</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row nominal">
+              <div class="col-md-12">
+                <label>Nominal</label>
+                <div class="input-group">
+                  <span class="input-group-addon">Rp</span>
+                  <input type="number" class="form-control">
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button id="btn-DismissNotif" type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Accept</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -288,17 +381,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!--<tr>
-                    <td>X001</td>
-                    <td>PT. Perusahaan1</td>
-                    <td>081111111111</td>
-                    <td>Jalan satu no 1</td>
-                    <td>
-                        <a><i class="glyphicon glyphicon-edit"></i></a>
-                        <a><i style="color:red;" class="glyphicon glyphicon-remove"></i></a>
-                    </td>
-                  </tr>-->
-                  </tbody>
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -319,12 +402,17 @@
 </div>
 <!-- ./wrapper -->
 
+
+<script src="../js/GlobalFunction.js"></script>
 <script src="../model/ModelSupplier.js"></script>
+<script src="../js/SupplierFunction.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
+
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -338,207 +426,27 @@
 <!-- page script -->
 <script>
   $(function () {
-    function populateSupplierData()
-    {
-      var curToken = "1234567890";
-      GetAllSupplierData(curToken, function(result){
-        if(result.token_status=="success")
-        {
-          var i;
-          var SupplierTable = $('#SupplierTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            //"sDom":"lrtp",
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-          });
-          for (i = 0; i < result.data.length; i++) {
-            var pad ="00000";
-            var id = "" + result.data[i].supplierID;
-            var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
-            var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                    id+
-                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
-            var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
-                    id+
-                    "'><i class='glyphicon glyphicon-trash'></i></a>";
-
-            SupplierTable.row.add([
-              StrId,
-              result.data[i].nama,
-              result.data[i].telp,
-              result.data[i].alamat,
-              editButton+" "+delButton
-            ]).draw();
-          }
-        }
-        else
-        {
-          console.log("token failed");
-          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
-
-
-      });
-    }
+    var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+    generateMenu("DaftarSupplier", currentHakAkses);
+    InitNotification();
+    InitUserPanel();
     populateSupplierData();
-
     $(document).on("click", ".delete-modal-toggle", function() {
       populateDeleteModal(this);
-
     });
-
     $(document).on("click", "#delete-modal-yes", function() {
-      var curToken ="1234567890";
-      var supplierID = $(this).attr('data-id');
-      var rowNum = $(this).attr('data-row-num');
-      DeleteSupplier(curToken, supplierID, function(result)
-      {
-        if (result.token_status=="success")
-        {
-          console.log(result.affectedRows);
-          if (result.affectedRows== 1)
-          {
-            console.log("delete success");
-            var SupplierTable = $('#SupplierTable').DataTable();
-            SupplierTable.row(rowNum).remove().draw();
-            $("#deleteModal").modal('toggle');
-            createAlert("success", "Data supplier berhasil dihapus");
-          }
-          else
-          {
-            console.log("delete failed");
-            createAlert("danger", "Data supplier gagal dihapus, mohon coba kembali");
-          }
-
-        }
-        else
-        {
-          console.log("Token Failed");
-          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
-
-      });
+      deleteSupplierConfirm(this);
     });
-
     $(document).on("click", ".edit-modal-toggle", function() {
       populateEditModal(this);
     });
-
     $(document).on("click", "#edit-modal-save", function(){
-      var curToken = "1234567890";
-      var pad ="00000";
-      var Id = $(this).attr('data-id');
-      var StrId  = "S"+ pad.substring(0, pad.length - Id.length)+Id;
-
-      var rowNum = $(this).attr('data-row-num');
-      var formData = $("#edit-modal-form").serializeArray();
-      var nama = formData[0].value.toString();
-      var telp = formData[1].value.toString();
-      var alamat = formData[2].value.toString();
-      UpdateDataSupplier(curToken, Id, nama, telp, alamat, function(result){
-        if (result.token_status=="success")
-        {
-          if (result['affectedRows'] == 1)
-          {
-            console.log("update supplier success");
-            var SupplierTable = $('#SupplierTable').DataTable();
-            SupplierTable.cell(rowNum, 1).data(nama);
-            SupplierTable.cell(rowNum, 2).data(telp);
-            SupplierTable.cell(rowNum, 3).data(alamat);
-            $("#editModal").modal('toggle');
-            createAlert("success", "Data supplier "+StrId+" - "+nama +" berhasil dirubah");
-          }
-          else
-          {
-            console.log("update supplier failed");
-            createAlert("danger", "Data supplier gagal dirubah, mohon coba kembali");
-          }
-
-        }
-        else
-        {
-          console.log("token failed");
-          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
-
-      });
+      UpdateSupplierConfirm(this);
     });
-
-    function populateEditModal(Button)
-    {
-      document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-      $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
-      $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
-      $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
-      var supplierID = $(Button).attr('data-id');
-      document.getElementById("edit-modal-save").setAttribute("data-id", supplierID);
-      var SupplierTable = $('#SupplierTable').DataTable();
-      var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
-      document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
-      console.log("delete "+supplierID+" "+rowNumber);
-
-    }
-
-    function populateDeleteModal(Button) {
-      document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-      document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
-      var supplierID = $(Button).attr('data-id');
-      document.getElementById("delete-modal-yes").setAttribute("data-id", supplierID);
-      var SupplierTable = $('#SupplierTable').DataTable();
-      var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
-      document.getElementById("delete-modal-yes").setAttribute("data-row-num", rowNumber);
-      console.log("delete "+supplierID+" "+rowNumber);
-    }
-
     $(document).on("click", "#create-modal-save", function(){
-      var curToken = "1234567890";
-      var formData = $("#create-modal-form").serializeArray();
-      var nama = formData[0].value.toString();
-      var telp = formData[1].value.toString();
-      var alamat = formData[2].value.toString();
-      AddSupplier(curToken, nama, telp, alamat, function(result){
-        if (result.token_status=="success")
-        {
-          if  (result.supplierID != null)
-          {
-            console.log("Add supplier success "+ result.supplierID);
-            var SupplierTable = $('#SupplierTable').DataTable();
-            var pad ="00000";
-            var id = "" + result.supplierID;
-            var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
-
-            var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                    id+
-                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
-            var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
-                    id+
-                    "'><i class='glyphicon glyphicon-trash'></i></a>";
-            SupplierTable.row.add([
-              StrId,
-              nama,
-              telp,
-              alamat,
-              editButton+" "+delButton
-            ]).draw();
-            $("#createModal").modal('toggle');
-            createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
-          }
-          else
-            console.log("Add Supplier failed");
-        }
-        else
-        {
-          console.log("Token failed");
-          createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
-
-      });
+      createSupplierConfirm();
     });
-
     $(".search-filter").keyup( function(){
       searchFromTable(
               $("#search-supplier-id").val(),
@@ -547,45 +455,6 @@
               $("#search-supplier-alamat").val()
       );
     });
-
-    function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
-    {
-      var SupplierTable = $('#SupplierTable').DataTable();
-      var StrId;
-      var queryID2 = parseInt(queryID);
-      if (!isNaN(queryID2))
-      {
-        var pad ="00000";
-        var id = "" + queryID2;
-        StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
-      }
-      else
-        StrId ="";
-      SupplierTable.
-      columns("#table-id").search(StrId).
-      columns("#table-nama").search(queryNama).
-      columns("#table-telp").search(queryTelp).
-      columns("#table-alamat").search(queryAlamat).
-      draw();
-    }
-
-    function createAlert(type, message)
-    {
-      var container = document.createElement("div");
-      container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
-      var closeButton  = document.createElement("Button");
-      closeButton.setAttribute("type", "button");
-      closeButton.setAttribute("class", "close");
-      closeButton.setAttribute("data-dismiss", "alert");
-      closeButton.setAttribute("arie-hidden", "true");
-      closeButton.innerHTML="&times;";
-      container.appendChild(closeButton);
-      container.innerHTML += message;
-      var placeholder = document.getElementById("alert-placeholder");
-      if (placeholder.hasChildNodes())
-        placeholder.removeChild(placeholder.childNodes[0]);
-      placeholder.appendChild(container);
-    }
   });
 </script>
 </body>
