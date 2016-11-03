@@ -171,7 +171,7 @@ router.post('/update_karyawan', function(req,res){
 
 router.post('/login', function(req,res){
 
-    var querystring = 'SELECT karyawanID FROM karyawan WHERE username = ? AND password = ? AND status != ?';
+    var querystring = 'SELECT karyawanID, nama FROM karyawan WHERE username = ? AND password = ? AND status != ?';
     var karyawan = [req.body.username, req.body.password, "inaktif"];
     connection.query(querystring, karyawan, function(err, result){
         if(err) throw err;
@@ -182,7 +182,9 @@ router.post('/login', function(req,res){
             res.status(200).send(resp);
         }
         else{
+            resp['username'] = req.body.username;
             resp['karyawanID'] = result[0].karyawanID;
+            resp['nama'] = result[0].nama;
             resp['token'] = token_auth.new_token();
 
             var querystring2 = 'INSERT INTO token SET karyawanID = ?, token = ?, statusToken = ?';

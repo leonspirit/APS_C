@@ -1,5 +1,57 @@
 var connection = require('./database');
 
+function asyncLoop(iterations, func, callback) {
+    var index = 0;
+    var done = false;
+    var loop = {
+        next: function() {
+            if (done) {
+                return;
+            }
+
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback();
+            }
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback();
+        }
+    };
+    loop.next();
+    return loop;
+}
+
+function add_harga_stok(index, res_query, data, callback){
+
+    var stok = res_query[index]['stok_skrg']
+    var harga = res_query[index]['harga_beli']
+
+    if(data['stok']){
+        data['stok'] = data['stok'] + stok
+    }
+    else{
+        data['stok'] = stok
+    }
+
+    if(data['harga_pokok']){
+        data['harga_pokok'] = data['harga_pokok'] + (harga * stok)
+    }
+    else{
+        data['harga_pokok'] = harga * stok
+    }
+    callback()
+}
+
 module.exports = {
 
     new_token: function new_token(){
@@ -55,6 +107,47 @@ module.exports = {
         connection.query(querystring, token, function(err, result){
             if(err) throw err;
             return callback(result.affectedRows)
+        })
+    },
+
+    get_stok_harga_pokok: function get_harga_pokok(barangID, callback){
+
+        var qrstring = 'SELECT harga_beli, stok_skrg FROM stok WHERE barangID = ?'
+        var barang = [barangID]
+        connection.query(qrstring, barang, function(err, result){
+            if(err) throw err
+
+            var len = result.length
+            var data = {}
+            asyncLoop(len, function(loop) {
+                add_harga_stok(loop.iteration(), result, data, function(result) {
+                    loop.next();
+                })},
+                function(){
+                    if(data['stok']){
+                        data['harga_pokok'] = data['harga_pokok'] / data['stok']
+                    }
+                    else{
+                        data['stok'] = 0
+                    }
+
+                    if(!data['harga_pokok']){
+                        data['harga_pokok'] = 0
+                    }
+                    data['harga_pokok'] = Math.round(data['harga_pokok'])
+                    return callback(data)
+                }
+            );
+        })
+    },
+
+    get_harga_jual: function get_harga_jual(satuanID, callback){
+
+        var qrstring = 'SELECT harga_jual FROM satuanbarang WHERE satuanID = ?'
+        var satuan = [satuanID]
+        connection.query(qrstring, satuan, function(err, result){
+            if(err)throw err
+            return callback(result[0])
         })
     }
 }

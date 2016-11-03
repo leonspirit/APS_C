@@ -99,6 +99,19 @@ router.post('/tambah_pembelian', function(req,res){
     })
 })
 
+function add_nama_supplier(index, data, callback){
+
+    var supplierID = data[index]['supplierID']
+
+    var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
+    var supplier = [supplierID]
+    connection.query(qrstring, supplier, function(err, result){
+        if(err) throw err
+        data[index]['nama'] = result[0]['nama']
+        callback()
+    })
+}
+
 router.post('/list_pembelian', function(req,res){
 
     var resp = {}
@@ -113,8 +126,14 @@ router.post('/list_pembelian', function(req,res){
             var querystring = 'SELECT * FROM pembelian';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             });
         }
     })
@@ -134,8 +153,14 @@ router.post('/list_hutang_pembelian', function(req,res){
             var querystring = 'SELECT * FROM pembelian WHERE status != "lunas"'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
@@ -155,8 +180,14 @@ router.post('/list_lunas_pembelian', function(req,res){
             var querystring = 'SELECT * FROM pembelian WHERE status = "lunas"'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
@@ -176,8 +207,14 @@ router.post('/list_pembelian_not_printed', function(req,res){
             var querystring = 'SELECT * FROM pembelian WHERE isPrinted = 0'
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
-                res.status(200).send(resp)
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                );
             })
         }
     })
