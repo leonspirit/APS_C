@@ -149,5 +149,55 @@ module.exports = {
             if(err)throw err
             return callback(result[0])
         })
+    },
+
+    update_status_pembelian: function update_status_pembelian(pembelianID, callback){
+
+        var qrstring = 'SELECT SUM(nominal) FROM cicilanpembelian WHERE pembelianID = ?'
+        var cicilan = [pembelianID]
+        connection.query(qrstring, cicilan, function(err, result){
+            if(err) throw err;
+            var terbayar = result[0]['SUM(nominal)']
+            var qrstring2 = 'SELECT subtotal FROM pembelian WHERE pembelianID = ?'
+            connection.query(qrstring2, cicilan, function(err2, result2){
+                if(err2)throw err2;
+                var subtotal = result2[0]['subtotal']
+                if(terbayar >= subtotal){
+                    var qrstring3 = 'UPDATE pembelian SET status = "lunas" WHERE pembelianID = ?'
+                    connection.query(qrstring3, cicilan, function(err3, result3){
+                        if(err3)throw err3;
+                        callback()
+                    })
+                }
+                else{
+                    callback()
+                }
+            })
+        })
+    },
+
+    update_status_penjualan: function update_status_penjualan(penjualanID, callback){
+
+        var qrstring = 'SELECT SUM(nominal) FROM cicilanpenjualan WHERE penjualanID = ?'
+        var cicilan = [penjualanID]
+        connection.query(qrstring, cicilan, function(err, result){
+            if(err)throw err;
+            var terbayar = result[0]['SUM(nominal)']
+            var qrstring2 = 'SELECT subtotal FROM penjualan WHERE penjualanID = ?'
+            connection.query(qrstring2, cicilan, function(err2, result2){
+                if(err2)throw err2;
+                var subtotal = result2[0]['subtotal']
+                if(terbayar >= subtotal){
+                    var qrstring3 = 'UPDATE penjualan SET status = "lunas" WHERE penjualanID = ?'
+                    connection.query(qrstring3, cicilan, function(err3, result3){
+                        if(err3)throw err3;
+                        callback()
+                    })
+                }
+                else{
+                    callback()
+                }
+            })
+        })
     }
 }

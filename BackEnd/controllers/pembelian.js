@@ -220,4 +220,72 @@ router.post('/list_pembelian_not_printed', function(req,res){
     })
 })
 
+router.post('/detail_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'SELECT * FROM pembelian WHERE pembelianID = ?'
+            var pembelian = [req.body.pembelianID]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2)throw err2
+                if(result2.length == 0){
+                    resp['num_rows'] = 0
+                    res.status(200).send(resp)
+                }
+                else{
+                    resp['num_rows'] = 1
+                    var len = result2.length
+                    asyncLoop(len, function(loop) {
+                        add_nama_supplier(loop.iteration(), result2, function(result) {
+                            loop.next();
+                        })},
+                        function(){
+                            resp['data'] = result2
+                            var querystring2 = 'SELECT * FROM pembelianbarang WHERE pembelianID = ?'
+                            connection.query(querystring2, pembelian, function(err3, result3){
+                                if(err3)throw err3
+                                resp['data'][0]['barang'] = result3
+                                res.status(200).send(resp)
+                            })
+                        }
+                    );
+                }
+            })
+        }
+    })
+})
+
+router.post('/tambah_cicilan_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_user(req.body.token, function(result){
+        if(result['hak_akses'] == null || result['hak_akses'] == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, notes = ?, cara_pembayaran = ?, bank = ?, nomor_giro = ?, tanggal_pencairan = ?, karyawanID = ?'
+            var cicilanpembelian = [req.body.pembelianID, req.body.tanggal_cicilan, req.body.nominal, req.body.notes, req.body.cara_pembayaran, req.body.bank, req.body.nomor_giro, req.body.tanggal_pencairan, result['karyawanID']]
+            connection.query(querystring, cicilanpembelian, function(err2, result2){
+                if(err2) throw err2;
+                resp['cicilanpembelianID'] = result2.insertId;
+
+                token_auth.update_status_pembelian(req.body.pembelianID, function(result){
+                    res.status(200).send(resp)
+                })
+            })
+        }
+    })
+})
+
 module.exports = router

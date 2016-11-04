@@ -72,14 +72,18 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
-function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, callback){
+function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, callback){
+
+
 
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
     var stok = [barangID]
     connection.query(querystring, stok, function(err, result){
         if(err) throw err;
+
         var stokID = result[0]['stokID']
         var stok_skrg = result[0]['stok_skrg']
+        var harga_jual_saat_ini = result[0]['harga_jual_saat_ini']
 
         var kurang = 0
         if(stok_skrg >= item){
@@ -99,16 +103,11 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, call
 
             token_auth.get_stok_harga_pokok(barangID, function(result3){
                 var harga_pokok_saat_ini = result3['harga_pokok']
-
-                token_auth.get_harga_jual(satuanID, function(result4){
-                    var harga_jual_saat_ini = result4['harga_jual']
-
-                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
-                    var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
-                    connection.query(querystring3, penjualanbarang, function(err5, result5){
-                        if(err5) throw err5
-                        return callback(resp)
-                    })
+                var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
+                var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
+                connection.query(querystring3, penjualanbarang, function(err5, result5){
+                    if(err5) throw err5
+                    return callback(resp)
                 })
             })
         })
@@ -120,6 +119,7 @@ function add_penjualan_barang(req, i, penjualanID){
     var satuanID = req.body.satuan[i]['satuanID']
     var quantity = req.body.satuan[i]['quantity']
     var disc = req.body.satuan[i]['disc']
+    var harga_jual_saat_ini = req.body.satuan[i]['harga_jual_saat_ini']
 
     var querystring = 'SELECT barangID, konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
     var satuanbarang = [satuanID]
@@ -129,7 +129,7 @@ function add_penjualan_barang(req, i, penjualanID){
         var konversi = result[0]['konversi'] * result[0]['konversi_acuan']
 
         asyncStok(quantity*konversi, function(loop){
-            update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, function(result){
+            update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, function(result){
                 loop.next(result['stok']);
             })},
             function(){
@@ -281,6 +281,32 @@ router.post('/list_penjualan_not_printed', function(req,res){
                     })},
                     function(){resp['data'] = result2; res.status(200).send(resp);}
                 );
+            })
+        }
+    })
+})
+
+router.post('/tambah_cicilan_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_user(req.body.token, function(result){
+        if(result['hak_akses'] == null || result['hak_akses'] == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'INSERT INTO cicilanpenjualan SET penjualanID = ?, tanggal_cicilan = ?, nominal = ?, notes = ?, cara_pembayaran = ?, bank = ?, nomor_giro = ?, tanggal_pencairan = ?, karyawanID = ?'
+            var cicilanpenjualan = [req.body.penjualanID, req.body.tanggal_cicilan, req.body.nominal, req.body.notes, req.body.cara_pembayaran, req.body.bank, req.body.nomor_giro, req.body.tanggal_pencairan, result['karyawanID']]
+            connection.query(querystring, cicilanpenjualan, function(err2, result2){
+                if(err2) throw err2;
+                resp['cicilanpenjualanID'] = result2.insertId;
+
+                token_auth.update_status_penjualan(req.body.penjualanID, function(result){
+                    res.status(200).send(resp)
+                })
             })
         }
     })
