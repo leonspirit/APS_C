@@ -50,4 +50,15 @@ function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtota
         }, "json");
 }
 
+function GetDetailPembelian(token, pembelianID)
+{
+    $.post( baseUrl + "pembelian/detail_pembelian/",
+        {
+            token: token,
+            pembelianID: pembelianID,
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
 //connection.end();

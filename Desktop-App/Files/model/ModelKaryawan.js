@@ -60,3 +60,15 @@ function AddKaryawan(token,  nama, telp, alamat, username, password, hak_akses, 
             fn(data);
         }, "json");
 }
+function DetailKaryawan(token, karyawanID, fn)
+{
+    $.post( baseUrl + "karyawan/detil_karyawan/",
+        {
+            token:token,
+            karyawanID: karyawanID
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+
+}

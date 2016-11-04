@@ -60,7 +60,6 @@ function GetBarang()
                         text: StrId+" - "+result.data[i].nama.toString(),
                         nama: result.data[i].nama.toString(),
                         harga_pokok : result.data[i].harga_pokok
-
                     });
             }
             $(".barang-select2").select2({
@@ -95,9 +94,10 @@ function RemoveRow(r)
         console.log(j);
         tableBody.rows[j].cells[0].innerHTML = j.toString();
         tableBody.rows[j].cells[1].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-1");
-        tableBody.rows[j].cells[2].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-2");
-        tableBody.rows[j].cells[3].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-3");
-        tableBody.rows[j].cells[6].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-4");
+        tableBody.rows[j].cells[3].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-2");
+        tableBody.rows[j].cells[4].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-3");
+        tableBody.rows[j].cells[5].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-4");
+        tableBody.rows[j].cells[6].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-5");
     }
     DrawTable(0, true)
 }
@@ -118,6 +118,7 @@ function AddRow()
     var inputBarang = document.createElement("input");
     inputBarang.setAttribute("id", "input-"+rowNum.toString()+"-1");
     inputBarang.setAttribute("style", "width:100%;");
+    inputBarang.setAttribute("onchange", "getSatuanBarangList(this);DrawTable("+ rowNum.toString()+",true);");
     inputBarang.setAttribute("class", "barang-select2 form-control input-sm input-data-"+rowNum.toString());
     cell2.appendChild(inputBarang);
     $("#input-"+rowNum.toString()+"-1").select2({
@@ -126,31 +127,34 @@ function AddRow()
         allowClear:true
     });
 
-    var cell3 = row.insertCell(2);
+    var cell5 = row.insertCell(2);
+    cell5.setAttribute("id", "isi-karton-"+rowNum.toString());
+
+    var cell3 = row.insertCell(3);
     cell3.setAttribute("style", "padding:0");
     var inputJumlah = document.createElement("input");
     inputJumlah.setAttribute("id", "input-"+rowNum.toString()+"-2");
-    inputJumlah.setAttribute("class", "form-control input-sm input-data"+rowNum.toString());
+    inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
     inputJumlah.setAttribute("type", "number");
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
     inputJumlah.setAttribute("onchange", "DrawTable("+ rowNum.toString()+",true);");
     cell3.appendChild(inputJumlah);
 
-    var cell4 = row.insertCell(3);
+    var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
     var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
-    inputSatuan.setAttribute("class", "form-control input-sm input-data"+rowNum.toString());
+    inputSatuan.setAttribute("onchange", "getHargaUnitSatuan(this);");
+    inputSatuan.setAttribute("class", "form-control input-sm input-data-"+rowNum.toString());
     inputSatuan.setAttribute("id", "input-"+rowNum.toString()+"-3");
     cell4.appendChild(inputSatuan);
     $("#input-"+rowNum.toString()+"-3").select2({
         minimumResultsForSearch:Infinity,
-        placeholder:"-- pilih unit --",
+        placeholder:"-- Pilih Unit --",
         allowClear:true
     });
 
-    var cell5 = row.insertCell(4);
 
     var cell7 = row.insertCell(5);
     cell7.setAttribute("style", "padding:0");
@@ -163,7 +167,7 @@ function AddRow()
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
     inputHarga.setAttribute("onchange", "DrawTable("+ rowNum+",true);");
-    inputHarga.setAttribute("class", "input-sm form-control input-data"+rowNum.toString());
+    inputHarga.setAttribute("class", "form-control input-data-"+rowNum.toString());
     inputHarga.setAttribute("id", "input-"+rowNum.toString()+"-4");
     inputHargaGroup.appendChild(inputHargaAddOn);
     inputHargaGroup.appendChild(inputHarga);
@@ -181,8 +185,8 @@ function AddRow()
     inputDisc.setAttribute("type", "number");
     inputDisc.setAttribute("min", "0");
     inputDisc.setAttribute("max", "100");
-    inputDisc.setAttribute("class", "input-sm form-control input-data"+rowNum.toString());
-    inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-4");
+    inputDisc.setAttribute("class", "form-control input-data-"+rowNum.toString());
+    inputDisc.setAttribute("id", "input-"+rowNum.toString()+"-5");
     inputDisc.setAttribute("onchange", "DrawTable("+ rowNum.toString()+",true);");
     inputDiscGroup.appendChild(inputDisc);
     inputDiscGroup.appendChild(inputDiscAddOn);
@@ -245,7 +249,7 @@ function DrawTable(indexChanged, countLaba)
     }
     if(indexChanged!=0){
         var curRow =  itemTable.rows[indexChanged];
-        var qty = curRow.cells[2].children[0].value;
+        var qty = curRow.cells[3].children[0].value;
         var hargaSatuan = curRow.cells[5].children[0].children[1].value;
         var disc = curRow.cells[6].children[0].children[0].value;
 
@@ -294,5 +298,57 @@ function HideJatuhTempo()
     else
     {
         $("#containerJatuhTempo").show();
+    }
+}
+
+
+function getSatuanBarangList(selectBox)
+{
+    var rowIndex = selectBox.parentNode.parentNode.rowIndex;
+    var barangID = selectBox.value;
+    console.log(rowIndex);
+    GetAllSatuanData(currentToken, barangID, function(result)
+    {
+        var i;
+        var data =[];
+        for (i=0;i<result.data.length;i++)
+        {
+            data.push({
+                "id":result.data[i].satuanID,
+                "text":result.data[i].satuan,
+                "harga_jual":result.data[i].harga_jual
+            });
+            if(result.data[i].satuan=="box")
+            {
+                document.getElementById("isi-karton-"+rowIndex.toString()).innerHTML = "@ "+result.data[i].konversi.toString()+" "+result.data[i].satuan_acuan;
+            }
+        }
+        $("#input-"+rowIndex.toString()+"-3").select2({
+            data:data,
+            minimumResultsForSearch:Infinity,
+            placeholder:"-- Pilih Unit --",
+            allowClear:true
+        });
+    })
+}
+function getHargaUnitSatuan(selectBox)
+{
+    var rowIndex = selectBox.parentNode.parentNode.rowIndex;
+    document.getElementById("input-"+rowIndex.toString()+"-4").value = $("#input-"+rowIndex.toString()+"-3").select2('data')[0].harga_jual;
+}
+
+function SavePenjualan()
+{
+    var satuan = [];
+    var itemTable= document.getElementById("itemTable");
+    var i;
+    for (i=1;i<itemTable.rows.length-1;i++){
+        var curRow =  itemTable.rows[i];
+        satuan.push({
+            "satuanID":$("#input-"+i.toString()+"-3").val(),
+            "quantity":$("#input-"+i.toString()+"-2").val(),
+            "disc":$("#input-"+i.toString()+"-5").val(),
+            "harga_per_biji":curRow.cells[5].children[0].children[1].value
+        });
     }
 }

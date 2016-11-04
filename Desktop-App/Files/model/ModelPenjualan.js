@@ -6,36 +6,33 @@
 var baseUrl = "http://localhost:3000/"
 
 
-function getQueryPenjualanData(kode, nama, stokMin, stokMax, hJualMin, hJualMax, hPokokMin, hPokokMax, fn) {
 
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;//todo: ganti url
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-}
-function getAllPenjualanData(fn)
+function getLunasPenjualanData(token, fn)
 {
-    var xmlhttp = new XMLHttpRequest();
-    var url = baseUrl;
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-           // myFunction(myArr);
-            fn(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    $.post( baseUrl + "penjualan/list_lunas_penjualan/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function getPiutangPenjualanData(token, fn)
+{
+    $.post( baseUrl + "penjualan/list_piutang_penjualan/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function getAllpenjualanData(token, fn)
+{
+    $.post( baseUrl + "penjualan/list_penjualan/",
+        {
+            token: token
+        }, function(  data ) {
+            fn(data);
+        }, "json");
 }
 
 //connection.end();

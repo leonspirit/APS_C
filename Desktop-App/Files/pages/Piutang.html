@@ -74,21 +74,18 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span id ="NameRightTop" class="hidden-xs"></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
                 <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
-
                 <p id="CurrentKaryawanName">
-                  Alexander Pierce
-                  <!--  <small>Member since Nov. 2012</small>-->
                 </p>
               </li>
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                  <a href="MyProfile.html" class="btn btn-default btn-flat">My Profile</a>
                 </div>
                 <div class="pull-right">
                   <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -110,57 +107,7 @@
     <section class="sidebar">
 
       <ul class="sidebar-menu">
-        <li>
-          <a href="Stok.html">
-            <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpenjualan.html">
-            <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpembelian.html">
-            <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-          </a>
-        </li>
-        <li>
-          <a href="PenjualanBaru.html">
-            <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-          </a>
-        </li>
-        <li>
-          <a href="PembelianBaru.html">
-            <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
 
-          </a>
-        </li>
-        <li>
-          <a href="Hutang.html">
-            <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-          </a>
-        </li>
-        <li class="active">
-          <a href="Piutang.html">
-            <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarPelanggan.html">
-            <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarKaryawan.html">
-            <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarSupplier.html">
-            <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-          </a>
-        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -251,78 +198,28 @@
         <div class="col-xs-12">
 
           <div class="box">
-            <!--<div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>-->
+
+            <div class="box-header">
+
+              <div id="alert-placeholder"></div>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-hover">
+              <table id="PiutangTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Kode</th>
-                    <th>Supplier</th>
-                  
-                  <th>Tempat</th>
-                    <th>Tanggal</th>
-                    <th>Barang</th>
-                    <th>Subtotal</th>
-                    <th>Jatuh tempo</th>
+                  <th>Pembeli</th>
+                  <th>Tanggal</th>
+                  <th>Pembayaran</th>
+                  <th>Jatuh tempo</th>
+                  <th>Subtotal</th>
+                  <th>Print</th>
+                  <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <tr>
-                  <td>T001</td>
-                 <td>PT. Perusahaan1</td>
-                    
-                    <td>Toko A</td>
-                    <td>1 Januari 2016</td>
-                    <td><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                    <td>Rp.18.500.000</td>
-                    <td>18 September 2016</td>
-                </tr>
-                    <tr>
-                  <td>T002</td>
-                        <td>PT. Perusahaan2</td>
-                  
-                    <td>Toko A</td>
-                    <td>2 Januari 2016</td>
-                        <td><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                    <td>Rp. 1.000.000</td>
-                        <td>19 September 2016</td>
-                </tr>
-                    <tr>
-                  <td>T003</td>
-                        <td>PT. Perusahaan3</td>
-                  
-                    <td>Toko B</td>
-                    <td>3 Januari 2016</td>
-                        <td><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                    <td>Rp. 5.000.000</td>
-                        <td>20 September 2016</td>
-                </tr>
-                    <tr>
-                  <td>T004</td>
-                        <td>PT. Perusahaan4</td>
-                    <td>Toko B</td>
-                    <td>5 Januari 2016</td>
-                    <td><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                    <td>Rp. 2.000.000</td>
-                        <td>19 September 2016</td>
-                </tr>
-                  </tbody>
-                    
-                <!--<tfoot>
-                <tr>
-                  <th>Kode</th>
-                  
-                  <th>Tempat</th>
-                    <th>Tanggal</th>
-                    <th>Barang</th>
-                    <th>Subtotal</th>
-                    <th>Status</th>
-                </tr>
-                </tfoot>-->
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -341,43 +238,25 @@
 
 
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.3 -->
+<script src="../model/ModelPenjualan.js"></script>
+<script src="../js/PiutangFunction.js"></script>
 <script src="../js/GlobalFunction.js"></script>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
 <script src="../plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<!-- page script -->
 <script>
   $(function () {
     var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
     generateMenu("Piutang", currentHakAkses);
     InitNotification();
-
     InitUserPanel();
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
+    populateLaporanPiutangData();
   });
 </script>
 </body>

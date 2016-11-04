@@ -2,6 +2,8 @@
  * Created by Billy on 24-Oct-16.
  */
 var currentToken = localStorage.getItem("token");
+var currentName = localStorage.getItem("namaKaryawan");
+var currentUsername = localStorage.getItem("usernameKaryawan");
 //konversi
 function numberWithCommas(x) {
     var parts = x.toString().split(".");
@@ -93,12 +95,21 @@ function FillPembelianNotificationList()
 function Logout(token)
 {
     myUserLogout(token, function(result){
-        console.log("success Logout")
+        console.log("success Logout");
+        window.location.href= "../index.html/";
     });
 }
 
 function InitUserPanel()
 {
+
+    var NamaText = document.createElement("span");
+    NamaText.innerHTML = currentName;
+    var UsernameText = document.createElement("small");
+    UsernameText.innerHTML=currentUsername;
+    document.getElementById("CurrentKaryawanName").appendChild(NamaText);
+    document.getElementById("CurrentKaryawanName").appendChild(UsernameText);
+    document.getElementById("NameRightTop").innerHTML=currentName;
     $(document).on("click", "#ButtonUserLogout", function(){
         Logout(currentToken);
     });

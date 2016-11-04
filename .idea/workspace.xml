@@ -23,40 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PembelianBaru.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/PembelianBaru.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="147" column="20" selection-start-line="147" selection-start-column="20" selection-end-line="147" selection-end-column="20" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#0;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#3;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#5;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#6;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#7;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#th#8;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#th#2;n#tr#0;n#tfoot#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1445">
-              <caret line="85" column="56" selection-start-line="85" selection-start-column="56" selection-end-line="85" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PembelianBaruFunction.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PembelianBaruFunction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
-              <caret line="360" column="18" selection-start-line="360" selection-start-column="18" selection-end-line="360" selection-end-column="18" />
+            <state relative-caret-position="391">
+              <caret line="378" column="54" selection-start-line="378" selection-start-column="54" selection-end-line="378" selection-end-column="54" />
               <folding>
                 <element signature="e#0#41#0" expanded="false" />
               </folding>
@@ -64,41 +35,51 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PenjualanBaruFunction.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js">
+      <file leaf-file-name="LaporanPembelianFunction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/LaporanPembelianFunction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="248" column="45" selection-start-line="248" selection-start-column="45" selection-end-line="248" selection-end-column="45" />
-              <folding />
+            <state relative-caret-position="493">
+              <caret line="69" column="165" selection-start-line="69" selection-start-column="165" selection-end-line="69" selection-end-column="165" />
+              <folding>
+                <marker date="1478275857744" expanded="true" signature="1095:1106" ph="..." />
+                <marker date="1478275857744" expanded="true" signature="1208:1217" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pembelian.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BackEnd/controllers/pembelian.js">
+      <file leaf-file-name="DetailPembelian.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DetailPembelian.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="82" column="9" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
-              <folding />
+            <state relative-caret-position="2439">
+              <caret line="349" column="5" selection-start-line="349" selection-start-column="5" selection-end-line="349" selection-end-column="5" />
+              <folding>
+                <element signature="n#style#0;n#th#5;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#6;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#7;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#8;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Laporanpembelian.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpembelian.html">
+      <file leaf-file-name="DetailPembelianFunction.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/DetailPembelianFunction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="331" column="20" selection-start-line="331" selection-start-column="20" selection-end-line="332" selection-end-column="35" />
-              <folding />
+            <state relative-caret-position="360">
+              <caret line="30" column="22" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#41#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Hutang.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Hutang.html">
+      <file leaf-file-name="SupplierFunction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/SupplierFunction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-70">
-              <caret line="282" column="50" selection-start-line="282" selection-start-column="50" selection-end-line="282" selection-end-column="50" />
+            <state relative-caret-position="374">
+              <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -107,38 +88,42 @@
       <file leaf-file-name="ModelPembelian.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="26" column="38" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+            <state relative-caret-position="595">
+              <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LaporanPembelianFunction.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/LaporanPembelianFunction.js">
+      <file leaf-file-name="GlobalFunction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/GlobalFunction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+            <state relative-caret-position="-476">
+              <caret line="114" column="7" selection-start-line="114" selection-start-column="7" selection-end-line="114" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KaryawanFunction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/KaryawanFunction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="52" column="8" selection-start-line="51" selection-start-column="12" selection-end-line="52" selection-end-column="8" />
               <folding>
-                <element signature="e#0#41#0" expanded="false" />
-                <marker date="1478146021406" expanded="true" signature="919:930" ph="..." />
-                <marker date="1478146021406" expanded="true" signature="1032:1041" ph="..." />
+                <marker date="1477989237546" expanded="true" signature="1166:1176" ph="..." />
+                <marker date="1477989237546" expanded="true" signature="8700:8710" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HutangFunction.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/HutangFunction.js">
+      <file leaf-file-name="DaftarPelanggan.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarPelanggan.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="59" column="30" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
-              <folding>
-                <element signature="e#0#41#0" expanded="false" />
-                <element signature="e#2356#2397#0" expanded="false" />
-                <marker date="1478146650071" expanded="true" signature="911:922" ph="..." />
-                <marker date="1478146650071" expanded="true" signature="1024:1033" ph="..." />
-              </folding>
+            <state relative-caret-position="1700">
+              <caret line="100" column="42" selection-start-line="100" selection-start-column="42" selection-end-line="100" selection-end-column="42" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -155,11 +140,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Files/pages/Laporanpembelian.html" />
-        <option value="$PROJECT_DIR$/Files/pages/PembelianBaru.html" />
-        <option value="$PROJECT_DIR$/Files/pages/DaftarKaryawan.html" />
-        <option value="$PROJECT_DIR$/Files/package.json" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/Files/index.html" />
         <option value="$PROJECT_DIR$/Files/pages/Hutang.html" />
         <option value="$PROJECT_DIR$/main.js" />
@@ -170,10 +150,7 @@
         <option value="$PROJECT_DIR$/Files/model/ModelTest.js" />
         <option value="$PROJECT_DIR$/Files/pages/Stok.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelTest.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DetailPenjualan.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DetailPembelian.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelKaryawan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPelanggan.js" />
         <option value="$PROJECT_DIR$/BackEnd/controllers/pelanggan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelSupplier.js" />
@@ -181,31 +158,39 @@
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelLogin.js" />
         <option value="$PROJECT_DIR$/BackEnd/controllers/karyawan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/PelangganFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/NotificationFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/package.json" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/PenjualanBaru.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Stok.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/index.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarKaryawan.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarPelanggan.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpenjualan.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Piutang.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarSupplier.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/SupplierFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/StokBarang.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/StokFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelStok.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/GlobalFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/KaryawanFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpembelian.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/PembelianBaru.html" />
         <option value="$PROJECT_DIR$/Desktop-App/main.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/HutangFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/LaporanPenjualan.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/PiutangFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/index.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/SupplierFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/StokFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/GlobalFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarSupplier.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelKaryawan.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/MyProfileFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/MyProfile.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarPelanggan.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DaftarKaryawan.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/StokBarang.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Piutang.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Hutang.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpembelian.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpenjualan.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/PenjualanBaru.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/PembelianBaru.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/PembelianBaruFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/LaporanPembelianFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/Hutang.html" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/HutangFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/PembelianBaruFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/pages/DetailPembelian.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/DetailPembelianFunction.js" />
       </list>
     </option>
   </component>
@@ -217,6 +202,7 @@
   </component>
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/BackEnd/node_modules" />
+    <handled-path value="$PROJECT_DIR$/Desktop-App/Files/node_modules" />
     <handled-path value="$PROJECT_DIR$/Desktop-App/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
@@ -250,6 +236,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -260,7 +247,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -570,17 +556,22 @@
       <workItem from="1478100068483" duration="2356000" />
       <workItem from="1478111908664" duration="609000" />
       <workItem from="1478142169111" duration="4952000" />
+      <workItem from="1478147979509" duration="11633000" />
+      <workItem from="1478164583129" duration="6962000" />
+      <workItem from="1478174992723" duration="72000" />
+      <workItem from="1478175249340" duration="252000" />
+      <workItem from="1478271853170" duration="6340000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="508492000" />
+    <option name="totallyTimeSpent" value="533751000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18960468" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18740849" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -634,25 +625,12 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Files/pages/Hutang.html" />
-    <entry file="file://$PROJECT_DIR$/Files/pages/PenjualanBaru.html" />
-    <entry file="file://$PROJECT_DIR$/Files/model/ModelPelanggan.js" />
-    <entry file="file://$PROJECT_DIR$/Files/pages/Laporanpenjualan.html" />
-    <entry file="file://$PROJECT_DIR$/Files/pages/DaftarPelanggan.html" />
-    <entry file="file://$PROJECT_DIR$/Files/model/ModelTest.js" />
     <entry file="file://$PROJECT_DIR$/Files/pages/Stok.html" />
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelTest.js" />
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DetailPenjualan.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="22" column="69" selection-start-line="22" selection-start-column="69" selection-end-line="22" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DetailPembelian.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -712,13 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelKaryawan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/BackEnd/controllers/karyawan.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1666">
@@ -733,24 +704,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/NotificationFunction.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/PenjualanBaru.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-60">
-          <caret line="362" column="29" selection-start-line="362" selection-start-column="29" selection-end-line="363" selection-end-column="69" />
         </state>
       </provider>
     </entry>
@@ -762,52 +719,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarKaryawan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2006">
-          <caret line="118" column="33" selection-start-line="118" selection-start-column="33" selection-end-line="118" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpenjualan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2023">
-          <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Piutang.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6239">
-          <caret line="367" column="25" selection-start-line="367" selection-start-column="25" selection-end-line="367" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarPelanggan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="456" column="0" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarSupplier.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5268">
-          <caret line="383" column="16" selection-start-line="383" selection-start-column="16" selection-end-line="383" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelStok.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/StokBarang.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="167" column="77" selection-start-line="167" selection-start-column="77" selection-end-line="167" selection-end-column="77" />
         </state>
       </provider>
     </entry>
@@ -825,41 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/SupplierFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="191" column="50" selection-start-line="191" selection-start-column="50" selection-end-line="191" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/GlobalFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/KaryawanFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <marker date="1477989237546" expanded="true" signature="1166:1176" ph="..." />
-            <marker date="1477989237546" expanded="true" signature="8700:8710" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/StokFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-          <folding>
-            <marker date="1477892518233" expanded="true" signature="1555:1565" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -874,103 +754,226 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/HutangFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="25" column="39" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/LaporanPenjualan.js" />
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/LaporanPenjualanFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PiutangFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/StokFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="184" column="29" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelKaryawan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="65" column="9" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/MyProfileFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="52" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/MyProfile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1045">
+          <caret line="196" column="47" selection-start-line="196" selection-start-column="47" selection-end-line="196" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1445">
-          <caret line="85" column="56" selection-start-line="85" selection-start-column="56" selection-end-line="85" selection-end-column="56" />
-          <folding />
+        <state relative-caret-position="433">
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarSupplier.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="103" column="40" selection-start-line="103" selection-start-column="40" selection-end-line="103" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarKaryawan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="100" column="41" selection-start-line="100" selection-start-column="41" selection-end-line="100" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/StokBarang.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="96" column="52" selection-start-line="96" selection-start-column="52" selection-end-line="96" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Piutang.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="508">
+          <caret line="87" column="42" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Hutang.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="86" column="42" selection-start-line="86" selection-start-column="42" selection-end-line="86" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpembelian.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="331" column="20" selection-start-line="331" selection-start-column="20" selection-end-line="332" selection-end-column="35" />
+        <state relative-caret-position="416">
+          <caret line="99" column="42" selection-start-line="99" selection-start-column="42" selection-end-line="99" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Laporanpenjualan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/PenjualanBaru.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="108" column="52" selection-start-line="108" selection-start-column="52" selection-end-line="108" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/PembelianBaru.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-264">
+          <caret line="98" column="52" selection-start-line="98" selection-start-column="52" selection-end-line="98" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DaftarPelanggan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1700">
+          <caret line="100" column="42" selection-start-line="100" selection-start-column="42" selection-end-line="100" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BackEnd/controllers/pembelian.js">
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js" />
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/KaryawanFunction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="82" column="9" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+        <state relative-caret-position="476">
+          <caret line="52" column="8" selection-start-line="51" selection-start-column="12" selection-end-line="52" selection-end-column="8" />
+          <folding>
+            <marker date="1477989237546" expanded="true" signature="1166:1176" ph="..." />
+            <marker date="1477989237546" expanded="true" signature="8700:8710" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/GlobalFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-476">
+          <caret line="114" column="7" selection-start-line="114" selection-start-column="7" selection-end-line="114" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="26" column="38" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+        <state relative-caret-position="595">
+          <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/Hutang.html">
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/SupplierFunction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-70">
-          <caret line="282" column="50" selection-start-line="282" selection-start-column="50" selection-end-line="282" selection-end-column="50" />
+        <state relative-caret-position="374">
+          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/HutangFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="59" column="30" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#41#0" expanded="false" />
-            <element signature="e#2356#2397#0" expanded="false" />
-            <marker date="1478146650071" expanded="true" signature="911:922" ph="..." />
-            <marker date="1478146650071" expanded="true" signature="1024:1033" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/LaporanPembelianFunction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+        <state relative-caret-position="493">
+          <caret line="69" column="165" selection-start-line="69" selection-start-column="165" selection-end-line="69" selection-end-column="165" />
           <folding>
-            <element signature="e#0#41#0" expanded="false" />
-            <marker date="1478146021406" expanded="true" signature="919:930" ph="..." />
-            <marker date="1478146021406" expanded="true" signature="1032:1041" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/PembelianBaru.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="147" column="20" selection-start-line="147" selection-start-column="20" selection-end-line="147" selection-end-column="20" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#0;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#3;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#5;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#6;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#7;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#8;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#th#2;n#tr#0;n#tfoot#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1478275857744" expanded="true" signature="1095:1106" ph="..." />
+            <marker date="1478275857744" expanded="true" signature="1208:1217" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PembelianBaruFunction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="360" column="18" selection-start-line="360" selection-start-column="18" selection-end-line="360" selection-end-column="18" />
+        <state relative-caret-position="391">
+          <caret line="378" column="54" selection-start-line="378" selection-start-column="54" selection-end-line="378" selection-end-column="54" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js">
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/pages/DetailPembelian.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="248" column="45" selection-start-line="248" selection-start-column="45" selection-end-line="248" selection-end-column="45" />
+        <state relative-caret-position="2439">
+          <caret line="349" column="5" selection-start-line="349" selection-start-column="5" selection-end-line="349" selection-end-column="5" />
+          <folding>
+            <element signature="n#style#0;n#th#5;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#6;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#7;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#8;n#tr#0;n#thead#0;n#table#0;n#div#3;n#div#0;n#div#0;n#div#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BackEnd/controllers/pembelian.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1768">
+          <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/DetailPembelianFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="30" column="22" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

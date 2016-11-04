@@ -23,6 +23,11 @@ function populateLaporanPembelianData()
         {
             for (i = 0; i < result.data.length; i++) {
 
+
+                var pad = "0000";
+                var id = "" + result.data[i].pembelianID;
+                var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
+
                 var subtotal = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].subtotal)+"</span>";
 
                 var isPrinted="";
@@ -31,7 +36,7 @@ function populateLaporanPembelianData()
                 else
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
-                var detailButton = "<a><i class='glyphicon glyphicon-new-window'></i></a>";
+                var detailButton = "<a data-pembeliadID="+id+" href='DetailPembelian.html'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
                 var tglTransaksi = d.getDate()+" "+NamaBulan[d.getMonth()]+" "+d.getFullYear();
@@ -46,13 +51,10 @@ function populateLaporanPembelianData()
                 else {
                     pembayaran = "Cash";
                 }
-                var pad = "0000";
-                var id = "" + result.data[i].pembelianID;
-                var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
 
                 PembelianTable.row.add([
                     StrId,
-                    result.data[i].supplierID,
+                    result.data[i].nama,
                     tglTransaksi,
                     pembayaran,
                     tglJatuhTempo,
@@ -65,6 +67,7 @@ function populateLaporanPembelianData()
         }
         else
         {
+            createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
 }

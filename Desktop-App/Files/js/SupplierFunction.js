@@ -158,8 +158,10 @@ function createSupplierConfirm()
                 $("#createModal").modal('toggle');
                 createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
             }
-            else
+            else {
                 console.log("Add Supplier failed");
+                createAlert("danger", "Data supplier gagal ditambahkan, mohon coba kembali");
+            }
         }
         else
         {

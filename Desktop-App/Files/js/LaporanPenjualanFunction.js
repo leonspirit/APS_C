@@ -7,11 +7,11 @@ var currentToken = localStorage.getItem("token");
 
 var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-function populateLaporanHutangData()
+function populateLaporanPenjualanData()
 {
-    getHutangPembelianData(currentToken, function(result){
+    getLunasPenjualanData(currentToken, function(result){
         var i;
-        var HutangTable = $('#HutangTable').DataTable({
+        var PenjualanTable = $('#PenjualanTable').DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": false,
@@ -47,10 +47,10 @@ function populateLaporanHutangData()
                     pembayaran = "Cash";
                 }
                 var pad = "0000";
-                var id = "" + result.data[i].pembelianID;
-                var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
+                var id = "" + result.data[i].penjualanID;
+                var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
 
-                HutangTable.row.add([
+                PenjualanTable.row.add([
                     StrId,
                     result.data[i].nama,
                     tglTransaksi,
@@ -64,10 +64,6 @@ function populateLaporanHutangData()
         }
         else
         {
-
         }
     });
 }
-/**
- * Created by Billy on 03-Nov-16.
- */

@@ -1,4 +1,5 @@
 /Desktop-App/node_modules
+/Desktop-App/Files/node_modules
 /BackEnd/node_modules
 /node_modules
 /.idea

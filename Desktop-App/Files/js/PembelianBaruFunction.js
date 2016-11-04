@@ -118,7 +118,7 @@ function AddRow()
 
     var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
-    var  inputSatuan = document.createElement("select");
+    var  inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("class", "form-control satuan-select2");
     inputSatuan.setAttribute("id", "input-"+rowNum.toString()+"-3");
     inputSatuan.setAttribute("style", "width:100%;");
@@ -274,10 +274,9 @@ function getSatuanBarangList(selectBox)
             if(result.data[i].satuan=="box")
             {
                 console.log("lali");
-                document.getElementById("isi-karton-"+rowIndex.toString()).innerHTML = "@ "+(result.data[i].konversi/result.data[i].konversi_acuan).toString()+" "+result.data[i].satuan_acuan;
+                document.getElementById("isi-karton-"+rowIndex.toString()).innerHTML = "@ "+result.data[i].konversi.toString()+" "+result.data[i].satuan_acuan;
             }
         }
-        //$("#input-"+rowIndex.toString()+"-3").select2.defaults.reset();
         $("#input-"+rowIndex.toString()+"-3").select2({
             data:data,
             minimumResultsForSearch:Infinity,
@@ -344,12 +343,11 @@ function SavePembelian(isPrinted)//PENTING
     }
     else
     {
-
         tglJatuhTempoTemp = new Date($("#tglJatuhTempo").datepicker().val());
         tglJatuhTempo = tglJatuhTempoTemp.getFullYear()+"-"+tglJatuhTempoTemp.getMonth()+"-"+tglJatuhTempoTemp.getDate();
         status = "belum lunas"
     }
-    var tglTransaksiTemp = new Date($("#tglJatuhTempo").datepicker().val());
+    var tglTransaksiTemp = new Date($("#tglTransaksi").datepicker().val());
     var tglTransaksi = tglTransaksiTemp.getFullYear()+"-"+tglTransaksiTemp.getMonth()+"-"+tglTransaksiTemp.getDate();
     AddPembelian(
         currentToken,
@@ -362,7 +360,15 @@ function SavePembelian(isPrinted)//PENTING
         status,
         satuan,
         function(result){
-            console.log(result.pembelianID);
+            if (result.token_status=="success")
+            {
+                console.log(result.pembelianID);
+                ResetTable();
+            }
+            else
+            {
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
         }
     );
     console.log(tglJatuhTempo+tglTransaksi);
