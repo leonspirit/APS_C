@@ -35,7 +35,7 @@
       <div class="row">
         <div class="col-xs-4">
           <button id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
-            <a href="pages/Stok.html">lala</a>
+            <a href="pages/StokBarang.html">lala</a>
         </div>
         <!-- /.col -->
       </div>
@@ -67,12 +67,25 @@
               if(result['num_rows']==1)
               {
                   var karID = result['karyawanID'].toString();
-                  var akses = result['hak_akses'].toString();
+                  var i;
+
+                  var hak_akses = [];
+                  var akses = result['hak_akses'];
+                  console.log(akses);
+                console.log(akses.length);
+                  for (i=0;i<akses.length;i++)
+                  {
+                    hak_akses.push(akses[i].nama);
+                  }
+                  console.log(hak_akses);
+
                   var token = result['token'].toString();
 
                   localStorage.setItem("karyawanID", karID);
-                  localStorage.setItem("hak_akses", akses);
+                  localStorage.setItem("hak_akses", JSON.stringify(hak_akses));
                   localStorage.setItem("token",  token);
+                  localStorage.setItem("namaKaryawan",  result['nama']);
+                  localStorage.setItem("usernameKaryawan",  result['username']);
 
                 //  window.location.href= "pages/Stok.html/";
               }

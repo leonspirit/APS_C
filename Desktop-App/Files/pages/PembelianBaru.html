@@ -12,10 +12,6 @@
   <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../plugins/iCheck/all.css">
-  
-  
-    
-    <!-- DataTables -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
     
     <!-- Select2 -->
@@ -61,22 +57,53 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  </span>
-            </a>
-            
-          </li>
-            <li class="user user-menu">
-            <a href="../index.html">
-              
-              <span class="hidden-xs">Log Out</span>
-            </a>
-            
-          </li>
+
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/LaporanPembelian.png">
+                    <span id="PembelianNotifLabel" class="label label-danger">5</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <ul id="PembelianNotif" class="menu">
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/LaporanPenjualan.png">
+                    <span id="PenjualanNotifLabel" class="label label-danger">5</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <ul id="PenjualanNotif" class="menu">
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+                    <span id="NameRightTop" class="hidden-xs">Alexander Pierce</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+                        <p id="CurrentKaryawanName">
+                        </p>
+                    </li>
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="MyProfile.html" class="btn btn-default btn-flat">My Profile</a>
+                        </div>
+                        <div class="pull-right">
+                            <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
         </ul>
       </div>
     </nav>
@@ -85,59 +112,7 @@
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
         <ul class="sidebar-menu">
-            <li>
-                <a href="Stok.html">
-                    <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-                </a>
-            </li>
-            <li>
-                <a href="Laporanpenjualan.html">
-                    <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-                </a>
-            </li>
-            <li>
-                <a href="Laporanpembelian.html">
-                    <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-                </a>
-            </li>
-            <li>
-                <a href="PenjualanBaru.html">
-                    <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-                </a>
-            </li>
-            <li class="active">
-                <a href="PembelianBaru.html">
-                    <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
-
-                </a>
-            </li>
-            <li>
-                <a href="Hutang.html">
-                    <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-                </a>
-            </li>
-            <li>
-                <a href="Piutang.html">
-                    <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarPelanggan.html">
-                    <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarKaryawan.html">
-                    <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarSupplier.html">
-                    <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-                </a>
-            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
@@ -183,6 +158,11 @@
         <div class="col-xs-12">
 
         <div class="box box-primary">
+            <div class="box-header">
+
+                <div id="alert-placeholder"></div>
+
+            </div>
             <div class="box-body">
                 
                 <form role="form">
@@ -211,7 +191,7 @@
                               <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                               </div>
-                              <input type="text" class="form-control pull-right" id="datepicker">
+                              <input type="text" class="form-control pull-right" id="tglTransaksi">
                             </div>
                             <!-- /.input group -->
                           </div>
@@ -222,7 +202,7 @@
                               <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                               </div>
-                              <input type="text" class="form-control pull-right" id="datepicker2">
+                              <input type="text" class="form-control pull-right" id="tglJatuhTempo">
                             </div>
                         </div>
                     </div>
@@ -242,9 +222,9 @@
                 <tr>
                     <th style="width:20px">#</th>
                   <th>Barang</th>
+                    <th>Isi/Carton</th>
                   <th style="width:50px">Qty</th>
                   <th>Unit</th>
-                  <th>Isi/Carton</th>
                     <th style="width:150px">H.Satuan</th>
                     <th style="width:100px" >Disc 1</th>
                     <th style="width:100px" >Disc 2</th>
@@ -259,16 +239,20 @@
                 <tfoot>
                 <tr>
                     <th colspan=5></th>
-                     <th>Discount</th>
+                    <th>Discount</th>
                     <th colspan=2 style="padding:0;">
                         <div class="input-group" style="width:100%">
-                        
-                        <input type="Number" class="form-control">
+                            <input type="Number" class="form-control" onchange="DrawTable(-1);">
                             <span class="input-group-addon">%</span>
-                      </div>
+                          </div>
                     </th>
                     <th >Total</th>
-                  <th colspan=2>Rp. 0</th>
+                    <th>
+                        <span class="pull-right">
+                            Rp. 0
+                        </span>
+                    </th>
+                    <th></th>
                 </tr>
                 </tfoot>
               </table>
@@ -277,12 +261,11 @@
             
             <!-- /.box-body -->
             <div class="box-footer">
-                <Button class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Reset</Button>
+                <Button id="resetButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Reset</Button>
                  <Button id="addButton" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Tambah</Button>
-                <Button class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
-                
+                 <Button id="printButton" class="btn btn-primary pull-right"><i class="fa fa-fw fa-plus"></i>Print</Button>
+                <Button id="saveButton" class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
             </div>
-             
           </div>
           <!-- /.box -->
         </div>
@@ -300,6 +283,8 @@
 </div>
 <!-- ./wrapper -->
 
+
+<script src="../js/GlobalFunction.js"></script>
 <script src="../model/ModelPembelian.js"></script>
 
 <script src="../model/ModelStok.js"></script>
@@ -312,16 +297,13 @@
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!--Select2-->
 <script src="../plugins/select2/select2.full.min.js"></script>
-    
 <!-- bootstrap datepicker -->
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
-    
 <!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-
 <!-- FastClick -->
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -332,10 +314,13 @@
 <script>
   $(function () {
 
+      var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+      generateMenu("PembelianBaru", currentHakAkses);
+      InitNotification();
+      InitUserPanel();
       GetSupplier();
       GetBarang();
       HideJatuhTempo();
-
       $("#pilihanPembayaran").select2({
           minimumResultsForSearch:Infinity,
           placeholder:"-- Pilih cara pembayaran --",
@@ -344,17 +329,28 @@
           HideJatuhTempo();
       });
 
-    $('#datepicker').datepicker({
-      autoclose: true
-    });
-    $('#datepicker2').datepicker({
-      autoclose: true
-    });
-    document.getElementById("addButton").onclick = function()
-    {
+        $('#tglTransaksi').datepicker({
+            dateFormat: "yyyy-mm-dd",
+            autoclose: true
+        });
+        $('#tglJatuhTempo').datepicker({
+            dateFormat: "yyyy-mm-dd",
+            altFormat: "yyyy-mm-dd",
+            autoclose: true
+        });
+          document.getElementById("saveButton").onclick=function()
+          {
+              SavePembelian(0);
+          };
+        document.getElementById("addButton").onclick = function()
+        {
+            AddRow();
+        };
+        document.getElementById("resetButton").onclick = function()
+        {
+            ResetTable();
+        };
         AddRow();
-    };
-    AddRow();
   });
 </script>
 </body>

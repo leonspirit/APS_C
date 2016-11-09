@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
     <script>window.$ =window.jQuery = require('jquery');</script>
+
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -41,59 +42,55 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-           <li class="dropdown messages-menu">
+          <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <img src="../icons/LaporanPembelian.png">
+              <span id="PembelianNotifLabel" class="label label-danger">5</span>
             </a>
             <ul class="dropdown-menu">
-              
               <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                       T001 Jatuh Tempo 10 September 2016
-                    </a>
-                  </li>
-                  <li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                       T005 Jatuh Tempo 11 September 2016
-                    </a>
-                  </li>
-                    <li>
-                    <a  data-toggle="modal" data-target="#modalNotification">
-                       T004 Jatuh Tempo 09 September 2016
-                    </a>
-                  </li><li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                       T002 Jatuh Tempo 08 September 2016
-                    </a>
-                  </li><li>
-                    <a  data-toggle="modal" data-target="#modalNotification" >
-                       T003 Jatuh Tempo 08 September 2016
-                    </a>
-                  </li>
+                <ul id="PembelianNotif" class="menu">
+
                 </ul>
               </li>
-              
             </ul>
-          </li>   
-            
-          <li class="user user-menu">
-            <a  class="dropdown-toggle" data-toggle="dropdown">
-              
-              <span class="hidden-xs">Welcome, Admin
-                  </span>
-            </a>
-            
           </li>
-            <li class="user user-menu">
-            <a href="index.php">
-              
-              <span class="hidden-xs">Log Out</span>
+
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/LaporanPenjualan.png">
+              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
             </a>
-            
+            <ul class="dropdown-menu">
+              <li>
+                <ul id="PenjualanNotif" class="menu">
+
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
+              <span id ="NameRightTop" class="hidden-xs">Alexander Pierce</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
+                <p id="CurrentKaryawanName">
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="MyProfile.html" class="btn btn-default btn-flat">My Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <!--<li>
@@ -108,57 +105,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <ul class="sidebar-menu">
-        <li>
-          <a href="Stok.html">
-            <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpenjualan.html">
-            <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-          </a>
-        </li>
-        <li>
-          <a href="Laporanpembelian.html">
-            <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-          </a>
-        </li>
-        <li>
-          <a href="PenjualanBaru.html">
-            <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-          </a>
-        </li>
-        <li>
-          <a href="PembelianBaru.html">
-            <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
 
-          </a>
-        </li>
-        <li class="active">
-          <a href="Hutang.html">
-            <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="Piutang.html">
-            <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarPelanggan.html">
-            <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarKaryawan.html">
-            <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-          </a>
-        </li>
-        <li>
-          <a href="DaftarSupplier.html">
-            <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-          </a>
-        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -173,9 +120,9 @@
                 <h4 class="modal-title">Detail Item</h4>
               </div>
               <div class="modal-body">
-                
-                
-                 
+
+
+
                       <table class="table">
                         <tr>
                           <th>Kode Barang</th>
@@ -206,7 +153,7 @@
                           <td>Komputer</td>
                           <td>4</td>
                             <td>Unit</td>
-                            
+
                             <td>Rp 6.000.000</td>
                             <td>Rp 6.000.000</td>
                         </tr>
@@ -217,9 +164,9 @@
                                   </th>
                                 <th>Rp. 18.500.000</th>
                               </tr>
-                          
+
                           </tfoot>
-                          
+
                       </table>
                 </div>
               <div class="modal-footer">
@@ -276,11 +223,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Laporan Penjualan
+        Laporan Hutang
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Laporan Penjualan</li>
+        <li class="active">Laporan Hutang</li>
       </ol>
     </section>
 
@@ -288,82 +235,26 @@
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-
           <div class="box">
-            <!--<div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>-->
-            <!-- /.box-header -->
+            <div class="box-header">
+              <div id="alert-placeholder"></div>
+            </div>
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-hover">
+              <table id="HutangTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Kode</th>
-                    <th>Pembeli</th>
-                  
-                  <th>Tempat</th>
-                    <th>Tanggal</th>
-                    <th>Subtotal</th>
-                    <th>Jatuh Tempo</th>
-                    <th>Detail</th>
+                  <th>Supplier</th>
+                  <th>Tanggal</th>
+                  <th>Pembayaran</th>
+                  <th>Jatuh tempo</th>
+                  <th>Subtotal</th>
+                  <th>Print</th>
+                  <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>
-                    
-                <tr>
-                  <td>T001</td>
-                    <td>Andi</td>
-                 
-                    
-                    <td>Toko A</td>
-                    <td>1 Januari 2016</td>
-                    <td>Rp.18.500.000</td>
-                    <td>22 September 2016</td>
-                    <td><a href="DetailPembelian.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-
-                </tr>
-                    <tr>
-                  <td>T002</td>
-                        <td>Budi</td>
-                  
-                    <td>Toko A</td>
-                    <td>2 Januari 2016</td>
-                    <td>Rp. 1.000.000</td>
-                        <td>23 September 2016</td>
-                        <td><a href="DetailPembelian.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                </tr>
-                    <tr>
-                  <td>T003</td>
-                        <td>Cici</td>
-                  
-                    <td>Toko B</td>
-                    <td>3 Januari 2016</td>
-                     <td>Rp. 5.000.000</td>
-                        <td>21 September 2016</td>
-                        <td><a href="DetailPembelian.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                </tr>
-                    <tr>
-                  <td>T004</td>
-                        <td>Doni</td>
-                    <td>Toko B</td>
-                    <td>5 Januari 2016</td>
-                    <td>Rp. 2.000.000</td>
-                        <td>21 September 2016</td>
-                        <td><a href="DetailPembelian.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                </tr>
-                  </tbody>
-                    
-                <!--<tfoot>
-                <tr>
-                  <th>Kode</th>
-                  
-                  <th>Tempat</th>
-                    <th>Tanggal</th>
-                    <th>Barang</th>
-                    <th>Subtotal</th>
-                    <th>Status</th>
-                </tr>
-                </tfoot>-->
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -379,30 +270,31 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
   </footer>
-
-
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
+<script src="../js/GlobalFunction.js"></script>
+<script src="../js/HutangFunction.js"></script>
+<script src="../model/ModelPembelian.js"></script>
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
 <script src="../plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+
+    var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+    generateMenu("Hutang", currentHakAkses);
+    InitNotification();
+
+    InitUserPanel();
+
+    populateLaporanHutangData();
+    /*$("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -410,7 +302,7 @@
       "ordering": true,
       "info": true,
       "autoWidth": false
-    });
+    });*/
   });
 </script>
 </body>

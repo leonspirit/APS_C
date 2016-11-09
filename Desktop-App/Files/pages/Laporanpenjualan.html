@@ -27,8 +27,7 @@
             appearance: none;
             margin:0;
         }
-         #cicilan-tanggal-transaksi{z-index:1151 !important;}
-         #cicilan-tanggal-pencairan{z-index:1151 !important;}
+         .datepicker{z-index:1151 !important;}
     </style>
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -69,39 +68,33 @@
             </li>
 
             <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="../icons/LaporanPenjualan.png">
-              <span id="PenjualanNotifLabel" class="label label-danger">5</span>
-            </a>
-            <ul class="dropdown-menu">
-                <li class="header">6 Penjualan Jatuh Tempo dalam waktu 3 Hari ke depan</li>
-              <li>
-                <ul id="PenjualanNotif" class="menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="../icons/LaporanPenjualan.png">
+                  <span id="PenjualanNotifLabel" class="label label-danger">5</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <ul id="PenjualanNotif" class="menu">
 
+                    </ul>
+                  </li>
 
                 </ul>
-              </li>
-              
-            </ul>
-          </li>
+            </li>
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="../icons/avatar_big.png" class="user-image" alt="User Image">
-                    <span class="hidden-xs">Alexander Pierce</span>
+                    <span id ="NameRightTop" class="hidden-xs"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <!-- User image -->
                     <li class="user-header">
                         <img src="../icons/avatar_big.png" class="img-circle" alt="User Image">
-
                         <p id="CurrentKaryawanName">
-                            Alexander Pierce
-                          <!--  <small>Member since Nov. 2012</small>-->
                         </p>
                     </li>
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="#" class="btn btn-default btn-flat">My Profile</a>
+                            <a href="MyProfile.html" class="btn btn-default btn-flat">My Profile</a>
                         </div>
                         <div class="pull-right">
                             <a id="ButtonUserLogout" href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -120,57 +113,7 @@
     <section class="sidebar">
 
         <ul class="sidebar-menu">
-            <li>
-                <a href="Stok.html?stat=admin">
-                    <img src="../icons/Stok.png" style="margin-right:10px;"> <span>Stok Barang</span>
-                </a>
-            </li>
-            <li class="active">
-                <a href="Laporanpenjualan.html?stat=admin">
-                    <img src="../icons/LaporanPenjualan.png" style="margin-right:10px;"> <span>Laporan Penjualan</span>
-                </a>
-            </li>
-            <li>
-                <a href="Laporanpembelian.html?stat=admin">
-                    <img src="../icons/LaporanPembelian.png" style="margin-right:10px;"> <span>Laporan Pembelian</span>
-                </a>
-            </li>
-            <li>
-                <a href="PenjualanBaru.html?stat=admin">
-                    <img src="../icons/PenjualanBaru.png" style="margin-right:10px;"> <span>Penjualan Baru</span>
-                </a>
-            </li>
-            <li>
-                <a href="PembelianBaru.html?stat=admin">
-                    <img src="../icons/PembelianBaru.png" style="margin-right:10px;"><span>Pembelian Baru</span>
 
-                </a>
-            </li>
-            <li>
-                <a href="Hutang.html?stat=admin">
-                    <img src="../icons/Hutang.png" style="margin-right:10px;"> <span>Hutang</span>
-                </a>
-            </li>
-            <li>
-                <a href="Piutang.html?stat=admin">
-                    <img src="../icons/Piutang.png" style="margin-right:10px;"> <span>Piutang</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarPelanggan.html?stat=admin">
-                    <img src="../icons/Pelanggan.png" style="margin-right:10px;"> <span>Daftar Pelanggan</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarKaryawan.html?stat=admin">
-                    <img src="../icons/Karyawan.png" style="margin-right:10px;"> <span>Daftar Karyawan</span>
-                </a>
-            </li>
-            <li>
-                <a href="DaftarSupplier.html?stat=admin">
-                    <img src="../icons/Supplier.png"style="margin-right:10px;" > <span>Daftar Supplier</span>
-                </a>
-            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
@@ -355,79 +298,28 @@
         <div class="col-xs-12">
 
           <div class="box">
-            <!--<div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>-->
+            <div class="box-header">
+
+                <div id="alert-placeholder"></div>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="PenjualanTable" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                  <th>Kode</th>
-                    <th>Pembeli</th>
-                    <th>Tanggal</th>
-                    <th>Subtotal</th>
-                    <th>Laba</th>
-                    <th>Jatuh Tempo</th>
-                    <TH>Detail</TH>
-                </tr>
-                </thead>
-                <tbody>
-                    
-                <tr>
-                  <td>T001</td>
-                    <td>Andi</td>
-                    <td>1 Januari 2016</td>
-                    <td><span class="pull-right">Rp.18.500.000</span></td>
-                    <td><span class="pull-right">Rp.10.000.000</span></td>
-                    <td>22 September 2016</td>
-                    <td><a href="DetailPenjualan.html" ><i class="glyphicon glyphicon-new-window"></i></a></td>
-
-                </tr>
+                <table id="PenjualanTable" class="table table-bordered table-hover">
+                    <thead>
                     <tr>
-                  <td>T002</td>
-                        <td>Budi</td>
-                    <td>2 Januari 2016</td>
-                        <td><span class="pull-right">Rp.10.000.000</span></td>
-                        <td><span class="pull-right">Rp.1.000.000</span></td>
-                    <td>23 September 2016</td>
-                    <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-
+                        <th>Kode</th>
+                        <th>Pembeli</th>
+                        <th>Tanggal</th>
+                        <th>Pembayaran</th>
+                        <th>Jatuh tempo</th>
+                        <th>Subtotal</th>
+                        <th>Print</th>
+                        <th>Detail</th>
                     </tr>
-                    <tr>
-                  <td>T003</td>
-                        <td>Cici</td>
-                    <td>3 Januari 2016</td>
-
-                        <td><span class="pull-right">Rp.10.000.000</span></td>
-                        <td><span class="pull-right">Rp.1000.000</span></td>
-                        <td>21 September 2016</td>
-                        <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-
-                    </tr>
-                    <tr>
-                  <td>T004</td>
-                        <td>Doni</td>
-                    <td>5 Januari 2016</td>
-                        <td><span class="pull-right">Rp.10.000.000</span></td>
-                        <td><span class="pull-right">Rp.1.000.000</span></td>
-                        <td>21 September 2016</td>
-                        <td><a href="DetailPenjualan.html"><i class="glyphicon glyphicon-new-window"></i></a></td>
-                </tr>
-                  </tbody>
-                    
-                <!--<tfoot>
-                <tr>
-                  <th>Kode</th>
-                  
-                  <th>Tempat</th>
-                    <th>Tanggal</th>
-                    <th>Barang</th>
-                    <th>Subtotal</th>
-                    <th>Status</th>
-                </tr>
-                </tfoot>-->
-              </table>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <!-- /.box-body -->
           </div>
@@ -446,8 +338,10 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="../js/GlobalFunction.js"></script>
+
 <script src="../model/ModelPenjualan.js"></script>
+<script src="../js/LaporanPenjualanFunction.js"></script>
+<script src="../js/GlobalFunction.js"></script>
 <script src="../model/ModelLogin.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -469,57 +363,11 @@
 <!-- page script -->
 <script>
   $(function () {
-
-
+      var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+      generateMenu("LaporanPenjualan", currentHakAkses);
       InitNotification();
-
       InitUserPanel();
-
-      function populatePenjualanData()
-      {
-          var PenjualanTable = $('#PenjualanTable').DataTable({
-              "paging": true,
-              "lengthChange": true,
-              "searching": false,
-              "ordering": true,
-              "info": true,
-              "autoWidth": false
-          });
-          getAllPenjualanData(function(result){
-
-              if (result!=null) {
-                  var i;
-                  for (i = 0; i < result.length; i++) {
-
-                      var Kode = result[i].kode;
-                      var pembeli = result[i].pembeli;
-
-                      var tanggal = result[i].tanggal;
-                      var subtotal = result[i].subtotal;
-                      var jatuhTempo = result[i].jatuhTempo;
-
-                      var detailButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='" +
-                              result[i].kode +
-                              "'><i class='glyphicon glyphicon-new-window'></i></a>";
-
-                      PenjualanTable.row.add([
-                          Kode,
-                          pembeli,
-                          tanggal,
-                          subtotal,
-                          jatuhTempo,
-                          detailButton
-                      ]).draw();
-
-                  }
-              }
-
-          });
-      }
-      populatePenjualanData();
-
-
-
+      populateLaporanPenjualanData();
 });
 </script>
 </body>

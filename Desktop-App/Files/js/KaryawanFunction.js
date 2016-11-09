@@ -12,18 +12,18 @@ var currentToken = localStorage.getItem("token");
 function populateKaryawanData()
 {
      GetAllKaryawanData(currentToken, function(result){
+         var i;
+         var KaryawanTable = $('#KaryawanTable').DataTable({
+             "paging": true,
+             "lengthChange": true,
+             "searching": true,
+             //"sDom":"lrtp",
+             "ordering": true,
+             "info": true,
+             "autoWidth": false
+         });
         if(result.token_status == "success")
         {
-            var i;
-            var KaryawanTable = $('#KaryawanTable').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                //"sDom":"lrtp",
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
             for (i = 0; i < result.data.length; i++) {
                 var pad ="00000";
                 var id = "" + result.data[i].karyawanID;

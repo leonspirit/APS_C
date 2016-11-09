@@ -5,11 +5,6 @@
 
 var baseUrl = "http://localhost:3000/"
 
-function numberWithCommas(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
 
 function GetAllStokData(token, fn)
 {
@@ -46,13 +41,12 @@ function UpdateDataStok(token, barangID, nama, stok, fn)
         }, "json");
 }
 
-function AddBarang(token, nama, stok)
+function AddBarang(token, nama, fn)
 {
     $.post( baseUrl + "barang/tambah_barang/",
         {
             token: token,
-            nama:nama,
-            stok:stok
+            nama:nama
         }
         ,function(data) {
             fn(data);
@@ -97,7 +91,7 @@ function UpdateDataSatuan(token, satuanbarangID, harga_jual, satuan, konversi, f
         }, "json");
 }
 
-function AddSatuan(token, barangID, harga_jual, satuan, konversi, fn)
+function AddSatuan(token, barangID, harga_jual, satuan, konversi, satuan_acuan, konversi_acuan, fn)
 {
     $.post( baseUrl + "barang/tambah_satuan/",
         {
@@ -105,7 +99,9 @@ function AddSatuan(token, barangID, harga_jual, satuan, konversi, fn)
             barangID: barangID,
             harga_jual:harga_jual,
             satuan:satuan,
-            konversi:konversi
+            konversi:konversi,
+            satuan_acuan:satuan_acuan,
+            konversi_acuan: konversi_acuan
         }
         ,function(data) {
             fn(data);
