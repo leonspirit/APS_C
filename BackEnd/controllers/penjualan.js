@@ -74,8 +74,6 @@ function asyncLoop(iterations, func, callback) {
 
 function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, callback){
 
-
-
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
     var stok = [barangID]
     connection.query(querystring, stok, function(err, result){
@@ -153,6 +151,7 @@ function add_nama_pelanggan(index, data, callback){
 
 router.post('/tambah_penjualan', function(req,res){
 
+    if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
     var resp = {}
     res.type('application/json')
     token_auth.check_user(req.body.token, function(result){
@@ -286,19 +285,6 @@ router.post('/list_penjualan_not_printed', function(req,res){
     })
 })
 
-function add_nama_pelanggan(index, data, callback){
-
-    var pelangganID = data[index]['pelangganID']
-
-    var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
-    var pelanggan = [pelangganID]
-    connection.query(qrstring, pelanggan, function(err, result){
-        if(err) throw err
-        data[index]['nama'] = result[0]['nama']
-        callback()
-    })
-}
-
 router.post('/detail_penjualan', function(req,res){
 
     var resp = {}
@@ -362,6 +348,87 @@ router.post('/tambah_cicilan_penjualan', function(req,res){
                 token_auth.update_status_penjualan(req.body.penjualanID, function(result){
                     res.status(200).send(resp)
                 })
+            })
+        }
+    })
+})
+
+function add_nama_pelanggan2(index, data, callback){
+
+    var pelangganID = data[index]['pelangganID']
+    var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
+    var pelanggan = [pelangganID]
+    connection.query(qrstring, pelanggan, function(err, result){
+        if(err) throw err
+        data[index]['pelangganNama'] = result[0]['nama']
+        callback()
+    })
+}
+
+function add_nama_karyawan(index, data, callback){
+
+    var karyawanID = data[index]['karyawanID']
+    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
+    var karyawan = [karyawanID]
+    connection.query(qrstring, karyawan, function(err, result){
+        if(err) throw err
+        data[index]['karyawanNama'] = result[0]['nama']
+        callback()
+    })
+}
+
+router.post('/list_penjualan_jatuh_tempo', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var today = new Date()
+            var last_n_day = new Date()
+            last_n_day.setDate(last_n_day.getDate() + req.body.n)
+
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}today = yyyy+'-'+mm+'-'+dd
+
+            dd = last_n_day.getDate()
+            mm = last_n_day.getMonth()+1
+            yyyy = last_n_day.getFullYear()
+            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}last_n_day = yyyy+'-'+mm+'-'+dd
+
+            var querystring = 'SELECT * FROM penjualan WHERE jatuh_tempo >= ? AND jatuh_tempo <= ? AND status!="lunas"'
+            var penjualan = [today, last_n_day]
+            connection.query(querystring, penjualan, function(err2, result2){
+                if(err2) throw err2
+                resp['data'] = result2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan2(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.jatuh_tempo).getTime() - new Date(b.jatuh_tempo).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
+                );
             })
         }
     })

@@ -74,6 +74,7 @@ function add_pembelian_barang(req, i, pembelianID){
 
 router.post('/tambah_pembelian', function(req,res){
 
+    if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
     var resp = {}
     res.type('application/json')
     token_auth.check_user(req.body.token, function(result){
@@ -357,7 +358,7 @@ router.post('/list_pembelian_jatuh_tempo', function(req,res){
                             function(){
                                 resp['data'] = result2
                                 resp['data'].sort(function(a,b){
-                                    return parseFloat(b['terjual'] - parseFloat(a['terjual']))
+                                    return new Date(a.jatuh_tempo).getTime() - new Date(b.jatuh_tempo).getTime()
                                 })
                                 res.status(200).send(resp)
                             }
