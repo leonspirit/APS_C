@@ -278,4 +278,58 @@ router.post('/hapus_barang', function(req,res){
     })
 })
 
+function add_nama_barang(index, data, callback){
+
+    var barangID = data[index]['barangID']
+
+    var qrstring = 'SELECT konversi, konversi_acuan FROM satuanbarang WHERE barangID = ? AND satuan = "box"'
+    var satuanbarang = [barangID]
+    connection.query(qrstring, satuanbarang, function(err, result){
+        if(err) throw err
+        data[index]['terjual'] = data[index]['terjual'] / (result[0]['konversi']*result[0]['konversi_acuan'])
+
+        var qrstring2 = 'SELECT nama FROM barang WHERE barangID = ?'
+        connection.query(qrstring2, satuanbarang, function(err2, result2){
+            if(err2) throw err2
+            data[index]['nama'] = result2[0]['nama']
+            callback()
+        })
+    })
+}
+
+router.post('/list_barang_paling_banyak_terjual', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring1 = 'SELECT penjualanID FROM penjualan WHERE tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var querystring2 = 'SELECT satuanID, SUM(quantity) as total FROM penjualanbarang WHERE penjualanID IN (' + querystring1 +') GROUP BY satuanID'
+            var querystring3 = 'SELECT s.barangID, SUM(p.total*s.konversi*s.konversi_acuan) as terjual FROM satuanbarang as s, ('+querystring2+') as p WHERE s.satuanID = p.satuanID GROUP BY s.barangID'
+
+            var barang = [req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring3, barang, function(err2, result2){
+                if(err2) throw err2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_barang(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        resp['data'] = result2
+                        res.status(200).send(resp)
+                    }
+                );
+
+            })
+        }
+    })
+})
+
 module.exports = router

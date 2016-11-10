@@ -286,6 +286,61 @@ router.post('/list_penjualan_not_printed', function(req,res){
     })
 })
 
+function add_nama_pelanggan(index, data, callback){
+
+    var pelangganID = data[index]['pelangganID']
+
+    var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
+    var pelanggan = [pelangganID]
+    connection.query(qrstring, pelanggan, function(err, result){
+        if(err) throw err
+        data[index]['nama'] = result[0]['nama']
+        callback()
+    })
+}
+
+router.post('/detail_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'SELECT * FROM penjualan WHERE penjualanID = ?'
+            var penjualan = [req.body.penjualanID]
+            connection.query(querystring, penjualan, function(err2, result2){
+                if(err2)throw err2
+                if(result2.length == 0){
+                    resp['num_rows'] = 0
+                    res.status(200).send(resp)
+                }
+                else{
+                    resp['num_rows'] = 1
+                    var len = result2.length
+                    asyncLoop(len, function(loop) {
+                        add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                            loop.next();
+                        })},
+                        function(){
+                            resp['data'] = result2
+                            var querystring2 = 'SELECT * FROM penjualanbarang WHERE penjualanID = ?'
+                            connection.query(querystring2, penjualan, function(err3, result3){
+                                if(err3)throw err3
+                                resp['data'][0]['barang'] = result3
+                                res.status(200).send(resp)
+                            })
+                        }
+                    );
+                }
+            })
+        }
+    })
+})
+
 router.post('/tambah_cicilan_penjualan', function(req,res){
 
     var resp = {}
