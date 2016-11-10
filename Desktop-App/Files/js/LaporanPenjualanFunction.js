@@ -2,26 +2,36 @@
  * Created by Billy on 01-Nov-16.
  */
 
-
 var currentToken = localStorage.getItem("token");
-
 var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
 function populateLaporanPenjualanData()
 {
-    getLunasPenjualanData(currentToken, function(result){
+    var PenjualanTable = $('#PenjualanTable').DataTable();
+    getLunasPenjualanData(currentToken, function(result) {
         var i;
-        var PenjualanTable = $('#PenjualanTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+        if (typeof PenjualanTable === 'undefined')
+        {
+            PenjualanTable = $('#PenjualanTable').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
+            });
+        }
+        else {
+            PenjualanTable.clear().draw();
+        }
         if (result.token_status=="success")
         {
             for (i = 0; i < result.data.length; i++) {
+
+                var pad = "0000";
+                var id = "" + result.data[i].penjualanID;
+                var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
 
                 var subtotal = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].subtotal)+"</span>";
 
@@ -31,7 +41,7 @@ function populateLaporanPenjualanData()
                 else
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
-                var detailButton = "<a><i class='glyphicon glyphicon-new-window'></i></a>";
+                var detailButton = "<a onclick='InitDetailPenjualanPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
                 var tglTransaksi = d.getDate()+" "+NamaBulan[d.getMonth()]+" "+d.getFullYear();
@@ -46,10 +56,6 @@ function populateLaporanPenjualanData()
                 else {
                     pembayaran = "Cash";
                 }
-                var pad = "0000";
-                var id = "" + result.data[i].penjualanID;
-                var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
-
                 PenjualanTable.row.add([
                     StrId,
                     result.data[i].nama,
@@ -59,11 +65,18 @@ function populateLaporanPenjualanData()
                     subtotal,
                     isPrinted,
                     detailButton
-                ]).draw();
+                ]);
             }
+            PenjualanTable.draw();
         }
         else
         {
+            createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
+}
+
+function InitLaporanPenjualanPage() {
+    setPage("LaporanPenjualan");
+    populateLaporanPenjualanData();
 }

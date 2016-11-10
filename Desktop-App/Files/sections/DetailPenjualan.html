@@ -1,0 +1,103 @@
+<template class="section-template">
+    <section class="content" id="section-DetailPenjualan">
+      <div class="row">
+        <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <div id="alert-placeholder"></div>
+            </div>
+            <div class="box-body">
+                <form role="form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pelanggan</label>
+                            <input  style="width: 100%;" class="form-control select2" id="inputPelanggan">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pembayaran</label>
+                            <select class="form-control pull-right" id="pilihanPembayaran">
+                                <option value="cash">Cash</option>
+                                <option value="bon">Bon</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tanggal Penjualan</label>
+                            <div class="input-group date">
+                              <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" id="tanggalPenjualan">
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Kirim Ke</label>
+                            <input type="text" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-md-4" id="containerJatuhTempo" >
+                        <div  class="form-group" id="form-field-jatuh-tempo">
+                            <label>Jatuh Tempo</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="tanggalJatuhTempo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="box-header">
+              <h3 class="box-title">List Item</h3>
+            </div>
+            <div class="box-body">
+              <table id="Detailpenjualan-ItemTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th style="width:10px">No</th>
+                    <th style="width:250px">Barang</th>
+                    <th>Isi/Carton</th>
+                    <th style="width:60px">Qty</th>
+                    <th style="width:100px">Unit</th>
+                    <th style="width:150px">H.Satuan</th>
+                    <th style="width:100px">Disc</th>
+                    <th>Subtotal</th>
+                    <th>H.Pokok</th>
+                    <th>Lb</th>
+                    <th ></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th colspan="6"><span class="pull-right">Total Harga</span></th>
+                    <th><span class="pull-right">Rp. 0</span></th>
+                    <th>Total Lb</th>
+                    <th><span class="pull-right">Rp. 0</span></th>
+                    <th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="box-footer">
+                <Button id="saveButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
+                <Button id="printButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-print"></i> Print</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel="import" data-path="js/DetailPenjualanFunction.js">

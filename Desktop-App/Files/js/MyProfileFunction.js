@@ -24,3 +24,9 @@ function populateKaryawanDetail()
         }
     });
 }
+function InitMyProfile()
+{
+    console.log("ini my profile");
+    setPage("MyProfile");
+    populateKaryawanDetail();
+}

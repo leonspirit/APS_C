@@ -1,0 +1,102 @@
+<template class="modal-template">
+  <div class="modal fade"  id="Daftarsupplier-DeleteModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Hapus Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <p><strong id="Daftarsupplier-DeleteModal-SupplierIDText"></strong> - <span id="Daftarsupplier-DeleteModal-SupplierNamaText"></span></p>
+          <p>Anda yakin ingin menghapus data supplier ini ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
+          <button type="button" class="btn btn-primary  pull-left" id="Daftarsupplier-DeleteModal-ConfirmButton">Ya</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade"  id="Daftarsupplier-CreateModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Tambah Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <form id="Daftarsupplier-CreateModal-CreateForm">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2">Masukkan data supplier baru</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Nama</td>
+                <td style="padding:0"><input class="form-control" name="nama"></td>
+              </tr>
+              <tr>
+                <td>No. Telp</td>
+                <td style="padding:0"><input class="form-control" name="telp"></td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td style="padding:0"><input class="form-control" name="alamat"></td>
+              </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary  pull-left" id="Daftarsupplier-CreateModal-SaveButton">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade"  id="Daftarsupplier-EditModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit Data Supplier</h4>
+        </div>
+        <div class="modal-body">
+          <form id="Daftarsupplier-EditModal-EditForm">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th id ="edit-modal-id"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Nama</td>
+                <td style="padding:0"><input class="form-control" name="nama"></td>
+              </tr>
+              <tr>
+                <td>No. Telp</td>
+                <td style="padding:0"><input class="form-control" name="telp"></td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td style="padding:0"><input class="form-control" name="alamat"></td>
+              </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary  pull-left" id="Daftarsupplier-EditModal-ConfirmButton">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

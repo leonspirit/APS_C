@@ -9,19 +9,30 @@ var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 
 function populateLaporanHutangData()
 {
+    var HutangTable = $('#HutangTable').DataTable();
     getHutangPembelianData(currentToken, function(result){
         var i;
-        var HutangTable = $('#HutangTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+        if (typeof HutangTable==="undefined")
+        {
+            HutangTable = $('#HutangTable').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
+            });
+        }
+        else {
+            HutangTable.clear().draw();
+        }
         if (result.token_status=="success")
         {
             for (i = 0; i < result.data.length; i++) {
+
+                var pad = "0000";
+                var id = "" + result.data[i].pembelianID;
+                var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
 
                 var subtotal = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].subtotal)+"</span>";
 
@@ -31,7 +42,7 @@ function populateLaporanHutangData()
                 else
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
-                var detailButton = "<a><i class='glyphicon glyphicon-new-window'></i></a>";
+                var detailButton = "<a onclick='InitDetailPembelianPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
                 var tglTransaksi = d.getDate()+" "+NamaBulan[d.getMonth()]+" "+d.getFullYear();
@@ -46,10 +57,6 @@ function populateLaporanHutangData()
                 else {
                     pembayaran = "Cash";
                 }
-                var pad = "0000";
-                var id = "" + result.data[i].pembelianID;
-                var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
-
                 HutangTable.row.add([
                     StrId,
                     result.data[i].nama,
@@ -59,8 +66,9 @@ function populateLaporanHutangData()
                     subtotal,
                     isPrinted,
                     detailButton
-                ]).draw();
+                ]);
             }
+            HutangTable.draw();
         }
         else
         {
@@ -68,6 +76,9 @@ function populateLaporanHutangData()
         }
     });
 }
-/**
- * Created by Billy on 03-Nov-16.
- */
+
+function InitHutangPage()
+{
+    setPage("Hutang");
+    populateLaporanHutangData();
+}

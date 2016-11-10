@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Log in</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+
+  <script>window.$ =window.jQuery = require('jquery');</script>
+
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="index.html"><b>SHOP</b> Prototype</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to your account</p>
+      <div class="form-group has-feedback">
+        <input id ="login-username" name ="user" type="text" class="form-control" placeholder="Username">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="pass" id="login-password" type="password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <button id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            <a href="pages/StokBarang.html">lala</a>
+        </div>
+        <!-- /.col -->
+      </div>
+
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<script src="model/ModelLogin.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+      function myLogin()
+      {
+          var userName = $("#login-username").val().toString();
+          var password = $("#login-password").val().toString();
+
+          console.log(userName+" "+password);
+          myUserLogin(userName, password, function(result){
+
+              console.log(result['num_rows']);
+              if(result['num_rows']==1)
+              {
+                  var karID = result['karyawanID'].toString();
+                  var i;
+
+                  var hak_akses = [];
+                  var akses = result['hak_akses'];
+                  console.log(akses);
+                console.log(akses.length);
+                  for (i=0;i<akses.length;i++)
+                  {
+                    hak_akses.push(akses[i].nama);
+                  }
+                  console.log(hak_akses);
+
+                  var token = result['token'].toString();
+
+                  localStorage.setItem("karyawanID", karID);
+                  localStorage.setItem("hak_akses", JSON.stringify(hak_akses));
+                  localStorage.setItem("token",  token);
+                  localStorage.setItem("namaKaryawan",  result['nama']);
+                  localStorage.setItem("usernameKaryawan",  result['username']);
+
+                //  window.location.href= "pages/Stok.html/";
+              }
+          });
+      }
+      document.getElementById("LoginButton").onclick = function (){myLogin();};
+
+  });
+</script>
+</body>
+</html>

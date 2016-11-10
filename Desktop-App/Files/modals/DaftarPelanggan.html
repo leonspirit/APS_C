@@ -1,0 +1,103 @@
+<template class="modal-template">
+    <div class="modal fade"  id="Daftarpelanggan-DeleteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Hapus Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <p><strong id="delete-modal-id"></strong> - <span id="delete-modal-nama"></span></p>
+            <p>Anda yakin ingin menghapus data pelanggan ini ?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary  pull-left" id="delete-modal-yes">Ya</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"  id="Daftarpelanggan-CreateModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Tambah Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <form id="create-modal-form">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th colspan="2">Masukkan data pelanggan baru</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Nama</td>
+                  <td style="padding:0"><input class="form-control" name="nama" id="create-modal-field-nama"></td>
+                </tr>
+                <tr>
+                  <td>No. Telp</td>
+                  <td style="padding:0"><input class="form-control" name="telp" id="create-modal-field-telp"></td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td style="padding:0"><input class="form-control" name="alamat" id="create-modal-field-alamat"></td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary  pull-left" id="create-modal-save">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"  id="Daftarpelanggan-EditModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Edit Data Pelanggan</h4>
+          </div>
+          <div class="modal-body">
+            <form id="edit-modal-form">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th id ="edit-modal-id"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Nama</td>
+                  <td style="padding:0"><input class="form-control" name="nama" id="edit-modal-field-nama"></td>
+                </tr>
+                <tr>
+                  <td>No. Telp</td>
+                  <td style="padding:0"><input class="form-control" name="telp" id="edit-modal-field-telp"></td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td style="padding:0"><input class="form-control" name="alamat" id="edit-modal-field-alamat"></td>
+                </tr>
+
+                </tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
