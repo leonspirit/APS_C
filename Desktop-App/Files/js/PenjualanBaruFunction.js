@@ -352,3 +352,39 @@ function SavePenjualan()
         });
     }
 }
+
+function InitPenjualanBaruPage()
+{
+    setPage("PenjualanBaru");
+    GetPelanggan();
+    GetBarang();
+    HideJatuhTempo();
+
+    var currentHakAkses = JSON.parse(localStorage.getItem("hak_akses"));
+    generateMenu("PenjualanBaru", currentHakAkses);
+
+    $("#pilihanPembayaran").select2({
+        minimumResultsForSearch:Infinity,
+        placeholder:"-- Pilih cara pembayaran --",
+        allowClear:true
+    }).on("change", function(){
+        HideJatuhTempo();
+    });
+    $('#tanggalPenjualan').datepicker({
+        autoclose: true
+    });
+    $('#tanggalJatuhTempo').datepicker({
+        autoclose: true
+    });
+
+    AddRow();
+    document.getElementById("addButton").onclick = function()
+    {
+        window.scrollTo(0, document.body.scrollHeight);
+        AddRow();
+    };
+    document.getElementById("resetButton").onclick = function()
+    {
+        ResetTable();
+    }
+}

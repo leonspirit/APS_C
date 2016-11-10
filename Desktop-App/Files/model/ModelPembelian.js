@@ -45,17 +45,17 @@ function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtota
             isPrinted:isPrinted,
             status:status,
             satuan:satuan
-        }, function(  data ) {
+        }, function(data) {
             fn(data);
         }, "json");
 }
 
-function GetDetailPembelian(token, pembelianID)
+function GetDetailPembelian(token, pembelianID, fn)
 {
     $.post( baseUrl + "pembelian/detail_pembelian/",
         {
             token: token,
-            pembelianID: pembelianID,
+            pembelianID: pembelianID
         }, function(  data ) {
             fn(data);
         }, "json");

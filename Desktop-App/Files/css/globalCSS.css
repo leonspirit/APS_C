@@ -1,0 +1,41 @@
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin:0;
+}
+.datepicker{z-index:1151 !important;}
+
+.content
+{
+    visibility: hidden;
+    display:none;
+}
+.content.is-shown
+{
+    visibility: visible;
+    display:block;
+}
+
+div.wrapper{
+    visibility: hidden;
+    display:none;
+}
+div.wrapper.is-shown{
+    visibility: visible;
+    display:block;
+}
+
+div.login-box{
+    visibility: hidden;
+    display:none;
+}
+div.login-box.is-shown{
+    visibility: visible;
+    display:block;
+}
+
+.navbar-nav>.notifications-menu>.dropdown-menu, .navbar-nav>.messages-menu>.dropdown-menu, .navbar-nav>.tasks-menu>.dropdown-menu{
+    width:350px;
+}

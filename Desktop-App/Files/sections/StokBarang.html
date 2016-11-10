@@ -1,0 +1,118 @@
+<template class="section-template">
+    <section class="content" id="section-StokBarang">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+              <div class="box-header">
+                  <div id="alert-placeholder"></div>
+                  <button  data-toggle="collapse" data-parent="#accordion" href="#Stokbarang-SearchField" class="btn btn-primary"> <i class="glyphicon glyphicon-search"></i> Search</button>
+                  <button data-toggle="modal" href="#Stokbarang-CreateModal" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+              </div>
+            <div class="box-body">
+                <div id="Stokbarang-SearchField" class="panel-collapse collapse">
+                    <form id="Stokbarang-SearchForm" role="form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Kode</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">C</div>
+                                        <input name="kode" type="number" class="search-filter form-control">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label>Nama</label>
+                                    <input name="nama" type="text" class="search-filter form-control">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Stok</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Harga Jual</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Harga Pokok</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">min</div>
+                                        <input name="search-stok-min" id="search-stok-min" class="form-control" type="number">
+                                        <div class="input-group-addon">Carton</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">max</div>
+                                        <input name="search-stok-max" id="search-stok-max" class="form-control" type="number">
+                                        <div class="input-group-addon">Carton</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">min Rp.</div>
+                                        <input  name="search-harga-jual-min" id="search-harga-jual-min" class="form-control" type="number">
+                                        <div class="input-group-addon">/Carton</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">max Rp.</div>
+                                        <input name="search-harga-jual-max" id="search-harga-jual-max" class="form-control" type="number">
+                                        <div class="input-group-addon">/Carton</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">min Rp.</div>
+                                       <input name="search-harga-pokok-min" id="search-harga-pokok-min" class="form-control" type="number">
+                                        <div class="input-group-addon">/Carton</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">max Rp.</div>
+                                        <input name="search-harga-pokok-max" id="search-harga-pokok-max" class="form-control" type="number">
+                                        <div class="input-group-addon">/Carton</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              <table id="BarangTable" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                      <th id="table-kode">Kode</th>
+                      <th id="table-nama">Nama Barang</th>
+                        <th id="table-isi-carton">Isi/Carton</th>
+                      <th id="table-stok">Stok</th>
+                      <th id="table-harga-jual">H.Jual</th>
+                      <th id="table-harga-pokok">H.Pokok</th>
+                      <th ></th>
+                    </tr>
+                    </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel="import" data-path="model/ModelStok.js">
+<link rel="import" data-path="js/StokFunction.js">

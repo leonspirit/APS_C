@@ -3,7 +3,7 @@
  */
 
 
-var baseUrl = "http://localhost:3000/"
+var baseUrl = "http://localhost:3000/";
 
 
 
@@ -25,7 +25,7 @@ function getPiutangPenjualanData(token, fn)
             fn(data);
         }, "json");
 }
-function getAllpenjualanData(token, fn)
+function getAllPenjualanData(token, fn)
 {
     $.post( baseUrl + "penjualan/list_penjualan/",
         {

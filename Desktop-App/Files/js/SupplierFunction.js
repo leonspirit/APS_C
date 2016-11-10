@@ -6,19 +6,26 @@ var currentToken = localStorage.getItem("token");
 
 function populateSupplierData()
 {
+    var SupplierTable = $('#SupplierTable').DataTable();
     GetAllSupplierData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
-            var SupplierTable = $('#SupplierTable').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                //"sDom":"lrtp",
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
+            if (typeof SupplierTable==='undefined')
+            {
+                SupplierTable = $('#SupplierTable').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+                });
+            }
+            else
+            {
+                SupplierTable.clear().draw();
+            }
             for (i = 0; i < result.data.length; i++) {
                 var pad ="00000";
                 var id = "" + result.data[i].supplierID;
@@ -50,17 +57,17 @@ function populateSupplierData()
 
 function populateEditModal(Button)
 {
+    var formdata = document.getElementById("Daftarsupplier-EditModal-EditForm");
     document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-    $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
-    $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
-    $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+    formdata.elements['nama'].value=($(Button).closest('tr').find('td:eq(1)').html());
+    formdata.elements['telp'].value=($(Button).closest('tr').find('td:eq(2)').html());
+    formdata.elements['alamat'].value=($(Button).closest('tr').find('td:eq(3)').html());
     var supplierID = $(Button).attr('data-id');
-    document.getElementById("edit-modal-save").setAttribute("data-id", supplierID);
+    document.getElementById("Daftarsupplier-EditModal-ConfirmButton").setAttribute("data-id", supplierID);
     var SupplierTable = $('#SupplierTable').DataTable();
     var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
-    document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
+    document.getElementById("Daftarsupplier-EditModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
     console.log("delete "+supplierID+" "+rowNumber);
-
 }
 
 function populateDeleteModal(Button) {
@@ -127,10 +134,14 @@ function deleteSupplierConfirm(Button)
 }
 function createSupplierConfirm()
 {
-    var formData = $("#create-modal-form").serializeArray();
-    var nama = formData[0].value.toString();
-    var telp = formData[1].value.toString();
-    var alamat = formData[2].value.toString();
+    var formData = document.getElementById("Daftarsupplier-CreateModal-CreateForm");
+    var nama = formData.elements['nama'];
+    var telp = formData.elements['telp'];
+    var alamat = formData.elements['alamat'];
+    if (nama=="" || nama==null)
+    {
+
+    }
     AddSupplier(currentToken, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
@@ -142,10 +153,10 @@ function createSupplierConfirm()
                 var id = "" + result.supplierID;
                 var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                var editButton = "<a class='Daftarsupplier-edit-modal-toggle' data-toggle='modal' href='#Daftarsupplier-EditModal' data-id='"+
                     id+
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                var delButton = "<a style='color:red;' class='Daftarsupplier-delete-modal-toggle' href='#Daftarsupplier-DeleteModal' data-toggle='modal' data-id='" +
                     id+
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
                 SupplierTable.row.add([
@@ -155,7 +166,7 @@ function createSupplierConfirm()
                     alamat,
                     editButton+" "+delButton
                 ]).draw();
-                $("#createModal").modal('toggle');
+                $("#DaftarSupplier-CreateModal").modal('toggle');
                 createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
             }
             else {
@@ -178,10 +189,10 @@ function UpdateSupplierConfirm(Button)
     var StrId  = "S"+ pad.substring(0, pad.length - Id.length)+Id;
 
     var rowNum = $(Button).attr('data-row-num');
-    var formData = $("#edit-modal-form").serializeArray();
-    var nama = formData[0].value.toString();
-    var telp = formData[1].value.toString();
-    var alamat = formData[2].value.toString();
+    var formData = document.getElementById("Daftarsupplier-EditModal-EditForm");
+    var nama = formData.elements['nama'];
+    var telp = formData.elements['telp'];
+    var alamat = formData.elements['alamat'];
     UpdateDataSupplier(currentToken, Id, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
@@ -206,6 +217,34 @@ function UpdateSupplierConfirm(Button)
             console.log("token failed");
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
+    });
+}
+function InitDaftarSupplierPage()
+{
+    setPage("DaftarSupplier");
 
+    populateSupplierData();
+    $(document).on("click", ".Daftarsupplier-delete-modal-toggle", function() {
+        populateDeleteModal(this);
+    });
+    $(document).on("click", "#Daftarsupplier-DeleteModal-ConfirmButton", function() {
+        deleteSupplierConfirm(this);
+    });
+    $(document).on("click", ".Daftarsupplier-edit-modal-toggle", function() {
+        populateEditModal(this);
+    });
+    $(document).on("click", "#Daftarsupplier-EditModal-ConfirmButton", function(){
+        UpdateSupplierConfirm(this);
+    });
+    $(document).on("click", "#Daftarsupplier-CreateModal-ConfirmButton", function(){
+        createSupplierConfirm();
+    });
+    $(".search-filter").keyup( function(){
+        searchFromTable(
+            $("#search-supplier-id").val(),
+            $("#search-supplier-nama").val(),
+            $("#search-supplier-telp").val(),
+            $("#search-supplier-alamat").val()
+        );
     });
 }

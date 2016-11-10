@@ -1,0 +1,72 @@
+<template class="section-template">
+    <section class="content" id="section-DetailPembelian">
+      <div class="row">
+        <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <div id="alert-placeholder"></div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="info-box-text">Kode</span>
+                        <span id="KodeText" class="info-box-number"></span>
+                        <span class="info-box-text">Supplier</span>
+                        <span id="SupplierText" class="info-box-number"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="info-box-text">Pembayaran</span>
+                        <span class="info-box-number" id="PembayaranText"></span>
+                        <span class="info-box-text">Status</span>
+                        <span class="info-box-number" id="StatusText"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="info-box-text">Tanggal Transaksi</span>
+                        <span class="info-box-number" id="TglTransaksiText"></span>
+                        <span class="info-box-text">Tanggal Jatuh Tempo</span>
+                        <span class="info-box-number" id="TglJatuhTempoText"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="box-header">
+              <h3 class="box-title">Item</h3>
+            </div>
+            <div class="box-body">
+              <table id="Detailpembelian-ItemTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Barang</th>
+                    <th>Isi/Box</th>
+                    <th>Qty</th>
+                    <th>Unit</th>
+                    <th>H.Satuan</th>
+                    <th>Disc 1</th>
+                    <th>Disc 2</th>
+                    <th>Disc 3</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan=6></th>
+                    <th>Discount</th>
+                    <th></th>
+                    <th >Total</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="box-footer">
+                <Button id="printButton" class="btn btn-primary pull-right"><i class="fa fa-fw fa-plus"></i>Print</Button>
+                <Button id="saveButton" class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel="import" data-path="js/DetailPembelianFunction.js">

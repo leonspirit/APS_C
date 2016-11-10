@@ -1,0 +1,57 @@
+<template class="section-template">
+    <section class="content" id="section-DaftarSupplier">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <div id="alert-placeholder"></div>
+              <button id="Daftarsupplier-SearchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+              <button id="Daftarsupplier-AddButton" class="btn btn-primary" data-toggle='modal' href='#Daftarsupplier-CreateModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+            </div>
+            <div class="box-body">
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>ID</label>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">S</div>
+                        <input class="form-control search-filter" id="search-supplier-id" type="number">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Nama</label>
+                    <input class="form-control search-filter"  id="search-supplier-nama" type="text">
+                  </div>
+                  <div class="col-md-3">
+                    <label>No Telp</label>
+                    <input class="form-control search-filter" id="search-supplier-telp" type="text">
+                  </div>
+                  <div class="col-md-4">
+                    <label>Alamat</label>
+                    <input class="form-control search-filter" id="search-supplier-alamat" type="text">
+                  </div>
+                </div>
+              </div>
+              <table id="SupplierTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th id="table-id">ID</th>
+                    <th id="table-nama">Nama</th>
+                    <th id="table-telp">No. Telp</th>
+                    <th id="table-alamat">Alamat</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel="import" data-path="model/ModelSupplier.js">
+<link rel="import" data-path="js/SupplierFunction.js">

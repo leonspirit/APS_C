@@ -5,20 +5,28 @@
 
 var currentToken = localStorage.getItem("token");
 
-var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function populateLaporanPembelianData()
 {
+
+    var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var PembelianTable =$('#PembelianTable').DataTable();
     getLunasPembelianData(currentToken, function(result){
         var i;
-        var PembelianTable = $('#PembelianTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+        if (typeof PembelianTable ==='undefined')
+        {
+            PembelianTable = $('#PembelianTable').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
+            });
+        }
+        else {
+            PembelianTable.clear().draw();
+        }
         if (result.token_status=="success")
         {
             for (i = 0; i < result.data.length; i++) {
@@ -36,12 +44,13 @@ function populateLaporanPembelianData()
                 else
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
-                var detailButton = "<a data-pembeliadID="+id+" href='DetailPembelian.html'><i class='glyphicon glyphicon-new-window'></i></a>";
+                var detailButton = "<a onclick='InitDetailPembelianPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
                 var tglTransaksi = d.getDate()+" "+NamaBulan[d.getMonth()]+" "+d.getFullYear();
                 var tglJatuhTempo = "-";
                 var pembayaran;
+
                 if (result.data[i].jatuh_tempo!=null)
                 {
                     d = new Date(result.data[i].jatuh_tempo);
@@ -62,12 +71,20 @@ function populateLaporanPembelianData()
                     subtotal,
                     isPrinted,
                     detailButton
-                ]).draw();
+                ]);
             }
+            PembelianTable.draw();
         }
         else
         {
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
+}
+
+
+function InitLaporanPembelianPage()
+{
+    setPage("LaporanPembelian");
+    populateLaporanPembelianData();
 }

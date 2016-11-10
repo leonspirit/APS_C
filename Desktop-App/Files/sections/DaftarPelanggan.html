@@ -1,0 +1,62 @@
+<template class="section-template">
+    <section class="content" id="section-DaftarPelanggan">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+              <div class="box-header">
+                <div id="alert-placeholder">
+                </div>
+              <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+              <button id="addButton" class="btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+            </div>
+
+            <div class="box-body">
+              <div id="collapseOne" class="panel-collapse collapse">
+
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>ID</label>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">P</div>
+                        <input class="form-control search-filter" id="search-pelanggan-id" type="number">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Nama</label>
+                    <input class="form-control search-filter"  id="search-pelanggan-nama" type="text">
+                  </div>
+                  <div class="col-md-3">
+                    <label>No Telp</label>
+                    <input class="form-control search-filter" id="search-pelanggan-telp" type="text">
+                  </div>
+                  <div class="col-md-4">
+                    <label>Alamat</label>
+                    <input class="form-control search-filter" id="search-pelanggan-alamat" type="text">
+                  </div>
+                </div>
+              </div>
+              <table id="PelangganTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th id="table-id">ID</th>
+                  <th id="table-nama">Nama</th>
+                  <th id="table-telp">No. Telp</th>
+                  <th id="table-alamat">Alamat</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+
+<link rel="import" data-path="model/ModelPelanggan.js">
+<link rel="import" data-path="js/PelangganFunction.js">

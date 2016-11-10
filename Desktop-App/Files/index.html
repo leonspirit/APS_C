@@ -1,99 +1,169 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Main Page</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-  <script>window.$ =window.jQuery = require('jquery');</script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="plugins/select2/select2.min.css">
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="plugins/iCheck/all.css">
+    <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+    <link rel="stylesheet" href="css/globalCSS.css">
+
+    <link rel="import" href="sections/MyProfile.html">
+    <link rel="import" href="sections/StokBarang.html">
+    <link rel="import" href="sections/Hutang.html">
+    <link rel="import" href="sections/Piutang.html">
+    <link rel="import" href="sections/LaporanPenjualan.html">
+    <link rel="import" href="sections/LaporanPembelian.html">
+    <link rel="import" href="sections/PembelianBaru.html">
+    <link rel="import" href="sections/PenjualanBaru.html">
+    <link rel="import" href="sections/DaftarKaryawan.html">
+    <link rel="import" href="sections/DaftarSupplier.html">
+    <link rel="import" href="sections/DaftarPelanggan.html">
+    <link rel="import" href="sections/DetailPembelian.html">
+    <link rel="import" href="sections/DetailPenjualan.html">
+
+    <link rel="import" href="modals/Global.html">
+    <link rel="import" href="modals/StokBarang.html">
+    <link rel="import" href="modals/DaftarKaryawan.html">
+    <link rel="import" href="modals/DaftarPelanggan.html">
+    <link rel="import" href="modals/DaftarSupplier.html">
+
+    <script>window.$ =window.jQuery = require('jQuery');</script>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="index.html"><b>SHOP</b> Prototype</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to your account</p>
-      <div class="form-group has-feedback">
-        <input id ="login-username" name ="user" type="text" class="form-control" placeholder="Username">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input name="pass" id="login-password" type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-4">
-          <button id="LoginButton" class="btn btn-primary btn-block btn-flat">Sign In</button>
-            <a href="pages/StokBarang.html">lala</a>
+    <div class="login-box is-shown">
+        <div class="login-logo">
+            <a href="index.html"><b>SHOP</b> Prototype</a>
         </div>
-        <!-- /.col -->
+        <div class="login-box-body">
+            <form id="LoginForm">
+            <p class="login-box-msg">Sign in to your account</p>
+            <div class="form-group has-feedback">
+                <input name="username" type="text" class="form-control" placeholder="Username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input name="password" type="password" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            </form>
+            <div class="row">
+                <div class="col-xs-4">
+                    <button id="LoginButton" class="btn btn-primary btn-flat">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+      <header class="main-header">
+        <a  class="logo">
+          <span class="logo-mini"><b>TOKO</b></span>
+          <span class="logo-lg"><b>TOKO</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="icons/LaporanPembelian.png">
+                        <span id="PembelianNotifLabel" class="label label-danger">5</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <ul id="PembelianNotif" class="menu">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="icons/LaporanPenjualan.png">
+                        <span id="PenjualanNotifLabel" class="label label-danger">5</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <ul id="PenjualanNotif" class="menu">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="icons/avatar_big.png" class="user-image" alt="User Image">
+                        <span id ="NameRightTop" class="hidden-xs">Alexander Pierce</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="icons/avatar_big.png" class="img-circle" alt="User Image">
+                            <p id="CurrentKaryawanName">
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a id="MyProfileBtn" class="btn btn-default btn-flat">My Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a id="LogOutBtn" href="#" class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <aside class="main-sidebar">
+        <section class="sidebar">
+          <ul class="sidebar-menu">
+          </ul>
+        </section>
+      </aside>
+      <div class="content-wrapper">
+            <section class="content-header">
+              <h1 id="page-title"></h1>
+            </section>
+          <section class="content-modal">
+          </section>
       </div>
+        <footer class="main-footer">
+        </footer>
+    </div>
+    <script src="model/ModelLogin.js"></script>
+    <script src="js/GlobalFunction.js"></script>
 
-
-  </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-<script src="model/ModelLogin.js"></script>
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-      function myLogin()
-      {
-          var userName = $("#login-username").val().toString();
-          var password = $("#login-password").val().toString();
-
-          console.log(userName+" "+password);
-          myUserLogin(userName, password, function(result){
-
-              console.log(result['num_rows']);
-              if(result['num_rows']==1)
+    <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="plugins/select2/select2.full.min.js"></script>
+    <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="plugins/iCheck/icheck.min.js"></script>
+    <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="plugins/fastclick/fastclick.js"></script>
+    <script src="dist/js/app.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script>
+      $(function () {
+              $(document).on("click", "#LoginButton", function()
               {
-                  var karID = result['karyawanID'].toString();
-                  var i;
-
-                  var hak_akses = [];
-                  var akses = result['hak_akses'];
-                  console.log(akses);
-                console.log(akses.length);
-                  for (i=0;i<akses.length;i++)
-                  {
-                    hak_akses.push(akses[i].nama);
-                  }
-                  console.log(hak_akses);
-
-                  var token = result['token'].toString();
-
-                  localStorage.setItem("karyawanID", karID);
-                  localStorage.setItem("hak_akses", JSON.stringify(hak_akses));
-                  localStorage.setItem("token",  token);
-                  localStorage.setItem("namaKaryawan",  result['nama']);
-                  localStorage.setItem("usernameKaryawan",  result['username']);
-
-                //  window.location.href= "pages/Stok.html/";
-              }
-          });
-      }
-      document.getElementById("LoginButton").onclick = function (){myLogin();};
-
-  });
-</script>
+                  myLogin();
+              });
+      });
+    </script>
 </body>
 </html>

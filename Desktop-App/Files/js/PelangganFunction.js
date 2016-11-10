@@ -12,18 +12,25 @@ var currentToken = localStorage.getItem("token");
 function populatePelangganData()
 {
     GetAllPelangganData(currentToken, function(result){
+        var PelangganTable = $('#PelangganTable').DataTable();
         if(result.token_status=="success")
         {
             var i;
-            var PelangganTable = $('#PelangganTable').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                //"sDom":"lrtp",
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
+            if (typeof PelangganTable ==='undefined')
+            {
+                PelangganTable = $('#PelangganTable').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+                });
+            }
+            else
+            {
+                PelangganTable.clear().draw();
+            }
             for (i = 0; i < result.data.length; i++) {
                 var pad ="00000";
                 var id = "" + result.data[i].pelangganID;
@@ -42,8 +49,9 @@ function populatePelangganData()
                     result.data[i].telp,
                     result.data[i].alamat,
                     editButton+" "+delButton
-                ]).draw();
+                ]);
             }
+            PelangganTable.draw();
         }
         else
         {
@@ -233,4 +241,39 @@ function createAlert(type, message)
         placeholder.removeChild(placeholder.childNodes[0]);
     placeholder.appendChild(container);
 
+}
+function InitDaftarPelangganPage()
+{
+    setPage("DaftarPelanggan");
+
+    populatePelangganData();
+
+    $(document).on("click", ".delete-modal-toggle", function(){
+        populateDeleteModal(this);
+    });
+
+    $(document).on("click", "#delete-modal-yes", function(){
+        deletePelangganConfirm(this);
+    });
+
+    $(document).on("click", ".edit-modal-toggle", function(){
+        populateEditModal(this);
+    });
+
+    $(document).on("click", "#edit-modal-save", function(){
+        updatePelangganConfirm(this);
+    });
+
+    $(document).on("click", "#create-modal-save", function(){
+        createPelangganConfirm();
+    });
+
+    $(".search-filter").keyup( function(){
+        searchFromTable(
+            $("#search-pelanggan-id").val(),
+            $("#search-pelanggan-nama").val(),
+            $("#search-pelanggan-telp").val(),
+            $("#search-pelanggan-alamat").val()
+        );
+    });
 }
