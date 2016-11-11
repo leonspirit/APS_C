@@ -323,6 +323,9 @@ router.post('/list_barang_paling_banyak_terjual', function(req,res){
                     })},
                     function(){
                         resp['data'] = result2
+                        resp['data'].sort(function(a,b){
+                            return parseFloat(b['terjual'] - parseFloat(a['terjual']))
+                        })
                         res.status(200).send(resp)
                     }
                 );

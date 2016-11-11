@@ -74,6 +74,7 @@ function add_pembelian_barang(req, i, pembelianID){
 
 router.post('/tambah_pembelian', function(req,res){
 
+    if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
     var resp = {}
     res.type('application/json')
     token_auth.check_user(req.body.token, function(result){
@@ -283,6 +284,87 @@ router.post('/tambah_cicilan_pembelian', function(req,res){
                 token_auth.update_status_pembelian(req.body.pembelianID, function(result){
                     res.status(200).send(resp)
                 })
+            })
+        }
+    })
+})
+
+function add_nama_supplier2(index, data, callback){
+
+    var supplierID = data[index]['supplierID']
+    var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
+    var supplier = [supplierID]
+    connection.query(qrstring, supplier, function(err, result){
+        if(err) throw err
+        data[index]['supplierNama'] = result[0]['nama']
+        callback()
+    })
+}
+
+function add_nama_karyawan(index, data, callback){
+
+    var karyawanID = data[index]['karyawanID']
+    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
+    var karyawan = [karyawanID]
+    connection.query(qrstring, karyawan, function(err, result){
+        if(err) throw err
+        data[index]['karyawanNama'] = result[0]['nama']
+        callback()
+    })
+}
+
+router.post('/list_pembelian_jatuh_tempo', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var today = new Date()
+            var last_n_day = new Date()
+            last_n_day.setDate(last_n_day.getDate() + req.body.n)
+
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}today = yyyy+'-'+mm+'-'+dd
+
+            dd = last_n_day.getDate()
+            mm = last_n_day.getMonth()+1
+            yyyy = last_n_day.getFullYear()
+            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}last_n_day = yyyy+'-'+mm+'-'+dd
+
+            var querystring = 'SELECT * FROM pembelian WHERE jatuh_tempo >= ? AND jatuh_tempo <= ? AND status!="lunas"'
+            var pembelian = [today, last_n_day]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2) throw err2
+                resp['data'] = result2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.jatuh_tempo).getTime() - new Date(b.jatuh_tempo).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
+                );
             })
         }
     })
