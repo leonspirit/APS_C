@@ -110,7 +110,9 @@
                     <ul class="dropdown-menu">
                         <li class="user-header">
                             <img src="icons/avatar_big.png" class="img-circle" alt="User Image">
-                            <p id="CurrentKaryawanName">
+                            <p >
+                                <span id="CurrentKaryawanName"></span>
+                                <small id="CurrentKaryawanUsername"></small>
                             </p>
                         </li>
                         <li class="user-footer">
@@ -141,6 +143,11 @@
           </section>
       </div>
         <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.3.6
+            </div>
+            <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+            reserved.
         </footer>
     </div>
     <script src="model/ModelLogin.js"></script>
@@ -159,10 +166,14 @@
     <script src="dist/js/demo.js"></script>
     <script>
       $(function () {
-              $(document).on("click", "#LoginButton", function()
+          var loggedIn = CheckLogin();
+          if (!loggedIn)
+          {
+              document.getElementById("LoginButton").onclick= function()
               {
                   myLogin();
-              });
+              };
+          }
       });
     </script>
 </body>

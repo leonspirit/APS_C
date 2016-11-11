@@ -4,24 +4,24 @@
 
 var currentToken = localStorage.getItem("token");
 
-var DataSupplier = [];
-var DataBarang = [];
-
+var DataBarang, DataSupplier;
 function PembelianBaruGetSupplier()
 {
+
     GetAllSupplierData(currentToken, function(result){
         if(result.token_status=="success")
         {
+            DataSupplier = [];
             var i;
             var pad ="00000";
             for (i=0;i<result.data.length;i++)
             {
-                var id = "" + result.data[i].supplierID;
-                var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
+               // var id = "" + result.data[i].supplierID;
+               // var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
                 DataSupplier.push(
                     {
                         id: result.data[i].supplierID,
-                        text: StrId+" - "+result.data[i].nama.toString()
+                        text: result.data[i].nama.toString()
                     });
             }
             $("#Pembelianbaru-SupplierSelect").select2({
@@ -44,16 +44,15 @@ function PembelianBaruGetBarang()
     GetAllStokData(currentToken, function(result){
         if(result.token_status=="success")
         {
+            DataBarang = [];
             var i;
             var pad ="00000";
             for (i=0;i<result.data.length;i++)
             {
-                var id = "" + result.data[i].barangID;
-                var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
-                DataBarang.push(
+               DataBarang.push(
                     {
                         id: result.data[i].barangID,
-                        text: StrId+" - "+result.data[i].nama.toString(),
+                        text: result.data[i].nama.toString(),
                         nama: result.data[i].nama.toString(),
                         harga_pokok : result.data[i].harga_pokok
                     });
@@ -92,7 +91,7 @@ function PembelianBaruAddRow()
     inputBarang.setAttribute("onchange", "PembelianBaruGetSatuanBarangList(this);");
     inputBarang.setAttribute("class", "barang-select2 form-control");
     cell2.appendChild(inputBarang);
-    $("#Pembelianbarang-Input-"+rowNum.toString()+"-1").select2({
+    $("#Pembelianbaru-Input-"+rowNum.toString()+"-1").select2({
         data: DataBarang,
         placeholder:"-- Pilih Barang --",
         allowClear:true
@@ -119,7 +118,7 @@ function PembelianBaruAddRow()
     inputSatuan.setAttribute("id", "Pembelianbaru-Input-"+rowNum.toString()+"-3");
     inputSatuan.setAttribute("style", "width:100%;");
     cell4.appendChild(inputSatuan);
-    $("#input-"+rowNum.toString()+"-3").select2({
+    $("#Pembelianbaru-Input-"+rowNum.toString()+"-3").select2({
         minimumResultsForSearch:Infinity,
         placeholder:"-- Pilih Unit --",
         allowClear:true
@@ -278,6 +277,8 @@ function PembelianBaruGetSatuanBarangList(selectBox)
             placeholder:"-- Pilih Unit --",
             allowClear:true
         });
+        console.log($("#Pembelianbaru-Input-"+rowIndex.toString()+"-3").val());
+
     })
 }
 
@@ -319,18 +320,9 @@ function PembelianBaruSave(isPrinted)//PENTING
     var satuan = [];
     var itemTable= document.getElementById("Pembelianbaru-ItemTable");
     var i;
-    for (i=1;i<itemTable.rows.length-1;i++){
-        var curRow =  itemTable.rows[i];
-        satuan.push({
-            "satuanID":$("#Pembelianbaru-Input-"+i.toString()+"-3").val(),
-            "quantity":curRow.cells[3].children[0].value,
-            "disc1":curRow.cells[6].children[0].children[0].value,
-            "disc2":curRow.cells[7].children[0].children[0].value,
-            "disc3":curRow.cells[8].children[0].children[0].value,
-            "harga_per_biji":curRow.cells[5].children[0].children[1].value
-        });
-    }
     var tglJatuhTempo, tglJatuhTempoTemp, status;
+    var tglTransaksiValue = $("#Pembelianbaru-TgltransaksiDate").datepicker().val();
+    var tglJatuhTempoValue= $("#Pembelianbaru-TgljatuhtempoDate").datepicker().val();
     if ($("#Pembelianbaru-PembayaranSelect").val()=="cash")
     {
         tglJatuhTempo=null;
@@ -338,36 +330,65 @@ function PembelianBaruSave(isPrinted)//PENTING
     }
     else
     {
-        tglJatuhTempoTemp = new Date($("#Pembelianbaru-TgljatuhtempoDate").datepicker().val());
+        tglJatuhTempoTemp = new Date(tglJatuhTempoValue);
         tglJatuhTempo = tglJatuhTempoTemp.getFullYear()+"-"+tglJatuhTempoTemp.getMonth()+"-"+tglJatuhTempoTemp.getDate();
         status = "belum lunas"
     }
-    var tglTransaksiTemp = new Date($("#Pembelianbaru-TgltransaksiDate").datepicker().val());
+    var tglTransaksiTemp = new Date(tglTransaksiValue);
     var tglTransaksi = tglTransaksiTemp.getFullYear()+"-"+tglTransaksiTemp.getMonth()+"-"+tglTransaksiTemp.getDate();
-    AddPembelian(
-        currentToken,
-        $("#Pembelianbaru-SupplierSelect").val(),
-        tglTransaksi,
-        tglJatuhTempo,
-        parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(',', '')),
-        itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value,
-        isPrinted,
-        status,
-        satuan,
-        function(result){
-            if (result.token_status=="success")
-            {
-                console.log(result.pembelianID);
-                PembelianBaruResetTable();
-            }
-            else
-            {
-                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-            }
+    var valid = true;
+    var SupplierSelectValue = $("#Pembelianbaru-SupplierSelect").val();
+    if (SupplierSelectValue==null ||SupplierSelectValue=='')
+    {
+        valid=false;
+        setWarning(document.getElementById("Pembelianbaru-SupplierSelect"), "Data supplier harus diisi");
+    }
+    if (tglTransaksiValue==null || tglTransaksiValue=='')
+    {
+        valid=false;
+        setWarning(document.getElementById("Pembelianbaru-TgltransaksiDate"), "Tanggal trransaksi harus diisi");
+    }
+    if (valid)
+    {
+        for (i=1;i<itemTable.rows.length-1;i++){
+            var curRow =  itemTable.rows[i];
+            satuan.push({
+                "satuanID":$("#Pembelianbaru-Input-"+i.toString()+"-3").val(),
+                "quantity":curRow.cells[3].children[0].value,
+                "disc1":curRow.cells[6].children[0].children[0].value,
+                "disc2":curRow.cells[7].children[0].children[0].value,
+                "disc3":curRow.cells[8].children[0].children[0].value,
+                "harga_per_biji":curRow.cells[5].children[0].children[1].value
+            });
         }
-    );
-    console.log(tglJatuhTempo+tglTransaksi);
-    console.log(satuan);
+        AddPembelian(
+            currentToken,
+            SupplierSelectValue,
+            tglTransaksi,
+            tglJatuhTempo,
+            parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(',', '')),
+            itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value,
+            isPrinted,
+            status,
+            "",//todo:notes
+            satuan,
+            function(result){
+                if (result.token_status=="success")
+                {
+                    console.log(result.pembelianID);
+                    PembelianBaruResetTable();
+                    var pad ="0000";
+                    var id = "" + result.pembelianID;
+                    var StrId  = "TB"+ pad.substring(0, pad.length - id.length)+id;
+                    createAlert("success", "Data Pembelian baru "+StrId+" berhasil ditambahkan");
+                }
+                else
+                {
+                    createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                }
+            }
+        );
+    }
 }
 function PembelianBaruResetTable()
 {
@@ -407,11 +428,14 @@ function InitPembelianBaruPage()
     };
     document.getElementById("Pembelianbaru-AddButton").onclick = function()
     {
+        window.scrollTo(0, document.body.scrollHeight);
         PembelianBaruAddRow();
     };
     document.getElementById("Pembelianbaru-ResetButton").onclick = function()
     {
         PembelianBaruResetTable();
     };
-    PembelianBaruAddRow();
+    var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
+    if (tableBody.rows.length<1)
+        PembelianBaruAddRow();
 }

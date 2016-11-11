@@ -4,43 +4,45 @@
         <div class="col-xs-12">
           <div class="box box-primary">
             <div class="box-header">
-              <div id="alert-placeholder"></div>
-              <button id="Daftarsupplier-SearchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+              <div class="alert-placeholder"></div>
+              <button id="Daftarsupplier-SearchButton" data-toggle="collapse" data-parent="#accordion" href="#Daftarsupplier-SearchField" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
               <button id="Daftarsupplier-AddButton" class="btn btn-primary" data-toggle='modal' href='#Daftarsupplier-CreateModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
             </div>
             <div class="box-body">
-              <div id="collapseOne" class="panel-collapse collapse">
+              <div id="Daftarsupplier-SearchField" class="panel-collapse collapse">
                 <div class="row">
+                  <form id="Daftarsupplier-SearchForm">
                   <div class="col-md-2">
                     <label>ID</label>
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-addon">S</div>
-                        <input class="form-control search-filter" id="search-supplier-id" type="number">
+                        <input class="form-control search-filter" name="id" type="number">
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <label>Nama</label>
-                    <input class="form-control search-filter"  id="search-supplier-nama" type="text">
+                    <input class="form-control search-filter"  name="nama" type="text">
                   </div>
                   <div class="col-md-3">
                     <label>No Telp</label>
-                    <input class="form-control search-filter" id="search-supplier-telp" type="text">
+                    <input class="form-control search-filter" name="telp" type="text">
                   </div>
                   <div class="col-md-4">
                     <label>Alamat</label>
-                    <input class="form-control search-filter" id="search-supplier-alamat" type="text">
+                    <input class="form-control search-filter" name="alamat" type="text">
                   </div>
+                  </form>
                 </div>
               </div>
               <table id="SupplierTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th id="table-id">ID</th>
-                    <th id="table-nama">Nama</th>
-                    <th id="table-telp">No. Telp</th>
-                    <th id="table-alamat">Alamat</th>
+                    <th id="SupplierTable-id">ID</th>
+                    <th id="SupplierTable-nama">Nama</th>
+                    <th id="SupplierTable-telp">No. Telp</th>
+                    <th id="SupplierTable-alamat">Alamat</th>
                     <th></th>
                 </tr>
                 </thead>
