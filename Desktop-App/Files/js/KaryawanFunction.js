@@ -4,7 +4,7 @@
 
 var currentToken = localStorage.getItem("token");
 
-function populateKaryawanData()
+function DaftarKaryawanPopulateKaryawanData()
 {
      var KaryawanTable = $('#KaryawanTable').DataTable();
      GetAllKaryawanData(currentToken, function(result){
@@ -31,10 +31,10 @@ function populateKaryawanData()
                 var id = "" + result.data[i].karyawanID;
                 var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                var editButton = "<a class='Daftarkaryawan-edit-modal-toggle' data-toggle='modal' href='#Daftarkaryawan-EditModal' data-id='"+
                     id+
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                var delButton = "<a style='color:red;' class='Daftarkaryawan-delete-modal-toggle' href='#Daftarkaryawan-DeleteModal' data-toggle='modal' data-id='" +
                     id+
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
 
@@ -57,7 +57,7 @@ function populateKaryawanData()
     });
 }
 
-function populateEditModal(Button)
+function DaftarKaryawanPopulateEditModal(Button)
 {
     var formData = document.getElementById("Daftarkaryawan-EditModal-EditForm");
     document.getElementById("Daftarkaryawan-EditModal-KaryawanIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
@@ -71,10 +71,9 @@ function populateEditModal(Button)
     var rowNumber = KaryawanTable.row($(Button).closest('tr')).index();
     document.getElementById("Daftarkaryawan-EditModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
     console.log("delete "+karyawanID+" "+rowNumber);
-
 }
 
-function populateDeleteModal(Button) {
+function DaftarKaryawanPopulateDeleteModal(Button) {
     document.getElementById("Daftarkaryawan-DeleteModal-KaryawanIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
     document.getElementById("Daftarkaryawan-DeleteModal-KaryawanNamaText").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
     var karyawanID = $(Button).attr('data-id');
@@ -85,7 +84,7 @@ function populateDeleteModal(Button) {
     console.log("delete "+karyawanID+" "+rowNumber);
 }
 
-function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat, queryUsername)
+function DaftarKaryawanSearchFromTable(queryID,  queryNama, queryTelp, queryAlamat, queryUsername)
 {
     var KaryawanTable = $('#KaryawanTable').DataTable();
     var StrId;
@@ -99,16 +98,16 @@ function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat, queryUsern
     else
         StrId = "";
     KaryawanTable.
-    columns("#table-id").search(StrId).
-    columns("#table-nama").search(queryNama).
-    columns("#table-telp").search(queryTelp).
-    columns("#table-alamat").search(queryAlamat).
-    columns("#table-username").search(queryUsername).
+    columns("#KaryawanTable-id").search(StrId).
+    columns("#KaryawanTable-nama").search(queryNama).
+    columns("#KaryawanTable-telp").search(queryTelp).
+    columns("#KaryawanTable-alamat").search(queryAlamat).
+    columns("#KaryawanTable-username").search(queryUsername).
     draw();
 }
 
 
-function DeleteKaryawanConfirm(Button)
+function DaftarKaryawanDeleteConfirm(Button)
 {
     var karyawanID = $(Button).attr('data-id');
     var rowNum = $(Button).attr('data-row-num');
@@ -122,7 +121,7 @@ function DeleteKaryawanConfirm(Button)
                 console.log("delete success");
                 var KaryawanTable = $('#KaryawanTable').DataTable();
                 KaryawanTable.row(rowNum).remove().draw();
-                $("#deleteModal").modal('toggle');
+                $("#Daftarkaryawan-DeleteModal").modal('toggle');
                 createAlert("success", "Data karyawan berhasil dihapus");
             }
             else
@@ -140,7 +139,7 @@ function DeleteKaryawanConfirm(Button)
 
     });
 }
-function EditKaryawanConfirm(Button)
+function DaftarKaryawanEditConfirm(Button)
 {
    var pad ="00000";
     var Id = $(Button).attr('data-id');
@@ -148,10 +147,10 @@ function EditKaryawanConfirm(Button)
 
     var rowNum = $(Button).attr('data-row-num');
     var formData = document.getElementById("Daftarkaryawan-EditModal-EditForm");
-    var nama = formData.elements['nama'];
-    var telp = formData.elements['telp'];
-    var alamat = formData.elements['alamat'];
-    var username = formData.elements['username'];
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
+    var username = formData.elements['username'].value;
 
     UpdateDataKaryawan(currentToken, Id, nama, telp, alamat, username, function(result){
         if (result.token_status=="success")
@@ -163,7 +162,7 @@ function EditKaryawanConfirm(Button)
                 KaryawanTable.cell(rowNum, 1).data(nama);
                 KaryawanTable.cell(rowNum, 2).data(telp);
                 KaryawanTable.cell(rowNum, 3).data(alamat);
-                $("#editModal").modal('toggle');
+                $("#Daftarkaryawan-EditModal").modal('toggle');
                 createAlert("success", "Data karyawan "+StrId+" - "+nama +" berhasil dirubah");
             }
             else
@@ -179,12 +178,12 @@ function EditKaryawanConfirm(Button)
         }
     });
 }
-function CreateKaryawanConfirm(Button){
+function DaftarKaryawanCreateConfirm(){
      var formData = document.getElementById("DaftarKaryawan-CreateModal-CreateForm");
-    var nama = formData.elements['nama'];
-    var telp = formData.elements['telp'];
-    var alamat = formData.elements['alamat'];
-    var username = formData.elements['username'];
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
+    var username = formData.elements['username'].value;
     var passwordHash = "password".hashCode();
     AddKaryawan(currentToken, nama, telp, alamat, username, passwordHash,function(result){
         if (result.token_status=="success")
@@ -197,10 +196,10 @@ function CreateKaryawanConfirm(Button){
                 var id = "" + result.karyawanID;
                 var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                var editButton = "<a class='Daftarkaryawan-edit-modal-toggle' data-toggle='modal' href='#Daftarkaryawan-EditModal' data-id='"+
                     id+
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                var delButton = "<a style='color:red;' class='Daftarkaryawan-delete-modal-toggle' href='#Daftarkaryawan-DeleteModal' data-toggle='modal' data-id='" +
                     id+
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
                 KaryawanTable.row.add([
@@ -262,37 +261,38 @@ function ListHakAksesCreateModal()
 function InitDaftarKaryawanPage()
 {
     setPage("DaftarKaryawan");
-    populateKaryawanData();
-    $(document).on("click", ".delete-modal-toggle", function() {
-        populateDeleteModal(this);
+    DaftarKaryawanPopulateKaryawanData();
+    $(document).on("click", ".Daftarkaryawan-delete-modal-toggle", function() {
+        DaftarKaryawanPopulateDeleteModal(this);
     });
 
-    $(document).on("click", "#Daftarkaryawan-DeleteModal-ConfirmButton", function() {
-        DeleteKaryawanConfirm(this);
+   document.getElementById("Daftarkaryawan-DeleteModal-ConfirmButton").onclick= function() {
+        DaftarKaryawanDeleteConfirm(this);
+    };
+
+    $(document).on("click", ".Daftarkaryawan-edit-modal-toggle", function() {
+        DaftarKaryawanPopulateEditModal(this);
     });
 
-    $(document).on("click", ".edit-modal-toggle", function() {
-        populateEditModal(this);
-    });
+    document.getElementById("Daftarkaryawan-EditModal-ConfirmButton").onclick= function(){
+        DaftarKaryawanEditConfirm(this);
+    };
 
-    $(document).on("click", "#Daftarkaryawan-EditModal-ConfirmButton", function(){
-        EditKaryawanConfirm(this);
-    });
-
-    $(document).on("click", "#Daftarkaryawan-CreateModal-ConfirmButton", function()
+    document.getElementById("Daftarkaryawan-CreateModal-ConfirmButton").onclick= function()
     {
-        CreateKaryawanConfirm(this);
-    });
+        DaftarKaryawanCreateConfirm();
+    };
 
     $(".search-filter").keyup( function(){
-        searchFromTable(
-            $("#search-karyawan-id").val(),
-            $("#search-karyawan-nama").val(),
-            $("#search-karyawan-telp").val(),
-            $("#search-karyawan-alamat").val(),
-            $("#search-karyawan-username").val()
+        var formdata=  document.getElementById("Daftarkaryawan-SearchForm");
+        DaftarKaryawanSearchFromTable(
+            formdata.elements['id'].value,
+            formdata.elements['nama'].value,
+            formdata.elements['telp'].value,
+            formdata.elements['alamat'].value,
+            ""
         );
     });
-    ListHakAksesCreateModal();
+ //   ListHakAksesCreateModal();
 
 }

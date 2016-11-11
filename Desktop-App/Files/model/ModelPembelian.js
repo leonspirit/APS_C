@@ -32,7 +32,7 @@ function getAllPembelianData(token, fn)
         }, "json");
 }
 
-function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, satuan, fn)
+function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, notes, satuan, fn)
 {
     $.post( baseUrl + "pembelian/tambah_pembelian/",
         {
@@ -44,6 +44,7 @@ function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtota
             disc:disc,
             isPrinted:isPrinted,
             status:status,
+            notes:notes,
             satuan:satuan
         }, function(data) {
             fn(data);

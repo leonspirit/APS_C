@@ -1,5 +1,5 @@
 
-var currentToken = localStorage.getItem("token");
+var currentToken;
 
 //konversi
 function numberWithCommas(x) {
@@ -49,6 +49,7 @@ function InitNotification()
 function FillPenjualanNotificationList()
 {
     var i;
+    currentToken  = localStorage.getItem("token");
     var pembelianNotif = document.getElementById("PejualanNotif");
     getAllPenjualanData(currentToken, function(result){
         if (result.token_status=="success")
@@ -80,6 +81,7 @@ function FillPenjualanNotificationList()
 function FillPembelianNotificationList()
 {
     var i;
+    currentToken  = localStorage.getItem("token");
     var pembelianNotif = document.getElementById("PembelianNotif");
     getAllPembelianData(currentToken, function(result){
         if (result.token_status=="success")
@@ -119,19 +121,32 @@ function Logout(token)
         document.body.classList.add("login-page");
         document.getElementsByClassName("wrapper")[0].classList.remove("is-shown");
         document.getElementsByClassName("login-box")[0].classList.add("is-shown");
+
         localStorage.clear();
+        $("section.content").remove();
+        var navigation = document.getElementsByClassName("sidebar-menu")[0];
+        while (navigation.hasChildNodes()) {
+            navigation.removeChild(navigation.lastChild);
+        }
+        $("script.optional-script").remove();
+        document.getElementById("LoginButton").onclick= function()
+        {
+            myLogin();
+        };
+
+        //todo: clear section sm navmenu di halaman
     });
 }
 function InitUserPanel()
 {
     var currentName = localStorage.getItem("namaKaryawan");
     var currentUsername = localStorage.getItem("usernameKaryawan");
-    var NamaText = document.createElement("span");
-    NamaText.innerHTML = currentName;
-    var UsernameText = document.createElement("small");
-    UsernameText.innerHTML=currentUsername;
-    document.getElementById("CurrentKaryawanName").appendChild(NamaText);
-    document.getElementById("CurrentKaryawanName").appendChild(UsernameText);
+   // var NamaText = document.createElement("span");
+   // NamaText.innerHTML = currentName;
+   // var UsernameText = document.createElement("small");
+    //UsernameText.innerHTML=currentUsername;
+    document.getElementById("CurrentKaryawanName").innerHTML = currentName;
+    document.getElementById("CurrentKaryawanUsername").innerHTML=currentUsername;
     document.getElementById("NameRightTop").innerHTML=currentName;
     $(document).on("click", "#LogOutBtn", function(){
         Logout(currentToken);
@@ -153,13 +168,14 @@ function createAlert(type, message)
     closeButton.innerHTML="&times;";
     container.appendChild(closeButton);
     container.innerHTML += message;
-    var placeholder = document.getElementById("alert-placeholder");
+    var placeholder = document.getElementsByClassName("alert-placeholder active")[0];
     if (placeholder.hasChildNodes())
         placeholder.removeChild(placeholder.childNodes[0]);
     placeholder.appendChild(container);
 }
 function InitNavMenu()
 {
+    console.log("initnav");
     var HakAksesList = JSON.parse(localStorage.getItem("hak_akses"));
     var FullPages= ["StokBarang", "LaporanPenjualan", "LaporanPembelian", "PenjualanBaru", "PembelianBaru", "Piutang", "Hutang", "DaftarPelanggan", "DaftarKaryawan", "DaftarSupplier"];
     var li, a, img, span, i;
@@ -168,6 +184,7 @@ function InitNavMenu()
     {
         if ($.inArray(FullPages[i], HakAksesList)!=-1)
         {
+            console.log("iiii"+i);
             li = document.createElement("li");
             a = document.createElement("a");
             li.setAttribute("class", "nav-section");
@@ -211,9 +228,17 @@ function setPage(page)
         .replace(/^[a-z]/, function(v) {
             return v.toUpperCase();
         });
+
+    var allAlertPlace = document.getElementsByClassName("alert-placeholder");
+    for (i=0;i<allAlertPlace.length;i++)
+        allAlertPlace[i].classList.remove("active");
+    document.getElementById("section-"+page).getElementsByClassName("alert-placeholder")[0].classList.add("active");
+
 }
 
 function ImportSectionsAndModals() {
+
+    console.log("initimport");
     var FullPages= ["StokBarang", "LaporanPenjualan", "LaporanPembelian", "PenjualanBaru", "PembelianBaru", "Piutang", "Hutang", "DaftarPelanggan", "DaftarKaryawan", "DaftarSupplier"];
 
     const links = document.querySelectorAll('link[rel="import"]');
@@ -225,7 +250,7 @@ function ImportSectionsAndModals() {
             clone = document.importNode(template.content, true);
             document.querySelector('.content-wrapper').appendChild(clone);
             var scripts = link.import.querySelectorAll('link');
-            console.log(scripts);
+          //  console.log(scripts);
 
             Array.prototype.forEach.call(scripts, function(script){
                 var scriptpath = script.getAttribute("data-path");
@@ -233,7 +258,7 @@ function ImportSectionsAndModals() {
                 if (existing == null)
                 {
                     var scripttag = document.createElement("script");
-                    console.log(scripttag+"  "+ scriptpath);
+                    scripttag.setAttribute("class", "optional-script");
                     scripttag.setAttribute("src", scriptpath);
                     document.body.appendChild(scripttag);
                 }
@@ -245,15 +270,64 @@ function ImportSectionsAndModals() {
             clone = document.importNode(template.content, true);
             document.querySelector('.content-modal').appendChild(clone);
         }
-        console.log(link.href);
     });
+}
+
+function setWarning(field, message)
+{
+    var FormGroup=field;
+    while(true)
+    {
+        FormGroup = FormGroup.parentNode;
+        if (FormGroup.classList.contains("form-group"))
+            break;
+    }
+    FormGroup.classList.add("has-error");
+    var span = document.createElement("span");
+    span.setAttribute("class", "help-block");
+    span.innerHTML = message;
+    FormGroup.appendChild(span);
+}
+
+function removeWarning(field)
+{
+    var FormGroup = field.parentNode;
+    FormGroup.classList.remove("has-error");
+    FormGroup.getElementsByClassName("help-block")[0].innerHTML = "";
 }
 function CheckLogin()
 {
-    if (localStorage.getItem("token")==null)
+
+    var ID = localStorage.getItem("karyawanID");
+    var hak_akses = localStorage.getItem("hak_akses");
+    var token = localStorage.getItem("token");
+    var nama = localStorage.getItem("namaKaryawan");
+    var username = localStorage.getItem("usernameKaryawan");
+    if (ID != null && hak_akses!=null && token!=null && nama!=null && username!=null)
     {
-        return false;
+        document.body.classList.add("skin-blue-light");
+        document.body.classList.add("sidebar-mini");
+        document.body.classList.remove("login-page");
+        document.getElementsByClassName("wrapper")[0].classList.add("is-shown");
+        document.getElementsByClassName("login-box")[0].classList.remove("is-shown");
+
+        var form = document.getElementById("LoginForm");
+        form.reset();
+
+        InitNavMenu();
+        InitUserPanel();
+        ImportSectionsAndModals();
+
+        setTimeout(function(){
+            InitNotification();
+            var allNav = document.getElementsByClassName("nav-section");
+            allNav[0].children[0].click();
+        }, 1000);
+        return true;
     }
+    else
+        return false;
+
 }
 
 function myLogin()
@@ -301,14 +375,7 @@ function myLogin()
                 InitNotification();
                 var allNav = document.getElementsByClassName("nav-section");
                 allNav[0].children[0].click();
-
             }, 1000);
-
-
-            $(window).on('load', function(){
-
-            });
-
 
         }
         else

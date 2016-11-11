@@ -1,164 +1,50 @@
 <template class="section-template">
     <section class="content" id="section-DaftarKaryawan">
-        <div class="modal fade"  id="deleteModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Hapus Karyawan</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong id="delete-modal-id"></strong> - <span id="delete-modal-nama"></span></p>
-                        <p>Anda yakin ingin menghapus data karyawan ini ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Tidak</button>
-                        <button type="button" class="btn btn-primary  pull-left" id="delete-modal-yes">Ya</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade"  id="createModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Tambah Karyawan</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="create-modal-form">
-                            <table id="CreateModalHakAksesTable" class="table">
-                                <thead>
-                                <tr>
-                                    <th colspan="2">Masukkan data karyawan baru</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Nama</td>
-                                    <td style="padding:0"><input class="form-control" name="nama" id="create-modal-field-nama"></td>
-                                </tr>
-                                <tr>
-                                    <td>No. Telp</td>
-                                    <td style="padding:0"><input class="form-control" name="telp" id="create-modal-field-telp"></td>
-                                </tr>
-                                <tr>
-                                    <td>Alamat</td>
-                                    <td style="padding:0"><input class="form-control" name="alamat" id="create-modal-field-alamat"></td>
-                                </tr>
-                                <tr>
-                                    <td>Username</td>
-                                    <td style="padding:0"><input class="form-control" name="username" id="create-modal-field-username"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><b>Hak Akses</b></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary  pull-left" id="create-modal-save">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade"  id="editModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Edit Data Karyawan</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="edit-modal-form">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th id ="edit-modal-id"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Nama</td>
-                                    <td style="padding:0"><input class="form-control" name="nama" id="edit-modal-field-nama"></td>
-                                </tr>
-                                <tr>
-                                    <td>No. Telp</td>
-                                    <td style="padding:0"><input class="form-control" name="telp" id="edit-modal-field-telp"></td>
-                                </tr>
-                                <tr>
-                                    <td>Alamat</td>
-                                    <td style="padding:0"><input class="form-control" name="alamat" id="edit-modal-field-alamat"></td>
-                                </tr>
-                                <tr>
-                                    <td>Username</td>
-                                    <td style="padding:0"><input class="form-control" name="username" id="edit-modal-field-username"></td>
-                                </tr>
-                                <tr>
-                                    <td>Hak Akses</td>
-                                    <td style="padding:0"><input class="form-control" name="hak_akses" id="edit-modal-field-hak-akses"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary  pull-left" id="edit-modal-save">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
       <div class="row">
         <div class="col-xs-12">
           <div class="box box-primary">
               <div class="box-header">
-                  <div id="alert-placeholder">
+                  <div class="alert-placeholder">
                   </div>
-                  <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
-                  <button id="addButton" class="create-modal-toggle btn btn-primary create-modal-toggle" data-toggle='modal' href='#createModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+                  <button id="searchButton" data-toggle="collapse" data-parent="#accordion" href="#Daftarkaryawan-SearchField" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
+                  <button id="addButton" class="create-modal-toggle btn btn-primary create-modal-toggle" data-toggle='modal' href='#Daftarkaryawan-CreateModal'><i class="glyphicon glyphicon-plus"></i> Tambah</button>
               </div>
             <div class="box-body">
-                <div id="collapseOne" class="panel-collapse collapse">
+                <div id="Daftarkaryawan-SearchField" class="panel-collapse collapse">
                     <div class="row">
+                        <form id="Daftarkaryawan-SearchForm">
                         <div class="col-md-2">
                             <label>ID</label>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">K</div>
-                                    <input class="form-control search-filter" id="search-karyawan-id" type="number">
+                                    <input class="form-control search-filter" name="id" type="number">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Nama</label>
-                            <input class="form-control search-filter" id="search-karyawan-nama" type="text">
+                            <input class="form-control search-filter" name="nama" type="text">
                         </div>
                         <div class="col-md-3">
                             <label>No Telp</label>
-                            <input class="form-control search-filter" id="search-karyawan-telp" type="text">
+                            <input class="form-control search-filter" name="telp" type="text">
                         </div>
                         <div class="col-md-4">
                             <label>Alamat</label>
-                            <input class="form-control search-filter" id="search-karyawan-alamat" type="text">
+                            <input class="form-control search-filter" name="alamat" type="text">
                         </div>
+                        </form>
                     </div>
                 </div>
                 <table id="KaryawanTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                          <th id="table-id">ID</th>
-                          <th id="table-nama">Nama</th>
-                          <th id="table-telp">No. Telp</th>
-                          <th id="table-alamat">Alamat</th>
-                            <th id="table-username">Username</th>
+                            <th id="KaryawanTable-id">ID</th>
+                            <th id="KaryawanTable-nama">Nama</th>
+                            <th id="KaryawanTable-telp">No. Telp</th>
+                            <th id="KaryawanTable-alamat">Alamat</th>
+                            <th id="KaryawanTable-username">Username</th>
                             <th></th>
                         </tr>
                     </thead>

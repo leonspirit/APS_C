@@ -2,14 +2,10 @@
  * Created by Billy on 29-Sep-16.
  */
 
-
-console.log(localStorage.getItem("karyawanID"));
-console.log(localStorage.getItem("hak_akses"));
-console.log(localStorage.getItem("token"));
-var currentToken = localStorage.getItem("token");
+var currentToken;
 
 
-function populatePelangganData()
+function DaftarPelangganPopulateData()
 {
     GetAllPelangganData(currentToken, function(result){
         var PelangganTable = $('#PelangganTable').DataTable();
@@ -36,10 +32,10 @@ function populatePelangganData()
                 var id = "" + result.data[i].pelangganID;
                 var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                var editButton = "<a class='Daftarpelanggan-edit-modal-toggle' data-toggle='modal' href='#Daftarpelanggan-EditModal' data-id='"+
                     id+
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                var delButton = "<a style='color:red;' class='Daftarpelanggan-delete-modal-toggle' href='#Daftarpelanggan-DeleteModal' data-toggle='modal' data-id='" +
                     id+
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
 
@@ -63,7 +59,7 @@ function populatePelangganData()
     });
 }
 
-function deletePelangganConfirm(Button){
+function DaftarPelangganDeleteConfirm(Button){
     var pelangganID = $(Button).attr('data-id');
     var rowNum = $(Button).attr('data-row-num');
     DeletePelanggan(currentToken, pelangganID, function(result)
@@ -76,7 +72,7 @@ function deletePelangganConfirm(Button){
                 console.log("delete success");
                 var PelangganTable = $('#PelangganTable').DataTable();
                 PelangganTable.row(rowNum).remove().draw();
-                $("#deleteModal").modal('toggle');
+                $("#Daftarpelanggan-DeleteModal").modal('toggle');
                 createAlert("success", "Data pelanggan berhasil dihapus");
             }
             else
@@ -94,17 +90,17 @@ function deletePelangganConfirm(Button){
     });
 }
 
-function updatePelangganConfirm(Button)
+function DaftarPelangganUpdateConfirm(Button)
 {
     var pad ="00000";
     var Id = $(Button).attr('data-id');
     var StrId  = "P"+ pad.substring(0, pad.length - Id.length)+Id;
 
     var rowNum = $(Button).attr('data-row-num');
-    var formData = $("#edit-modal-form").serializeArray();
-    var nama = formData[0].value.toString();
-    var telp = formData[1].value.toString();
-    var alamat = formData[2].value.toString();
+    var formData = document.getElementById("Daftarpelanggan-EditModal-EditForm");
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
     UpdateDataPelanggan(currentToken, Id, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
@@ -115,7 +111,7 @@ function updatePelangganConfirm(Button)
                 PelangganTable.cell(rowNum, 1).data(nama);
                 PelangganTable.cell(rowNum, 2).data(telp);
                 PelangganTable.cell(rowNum, 3).data(alamat);
-                $("#editModal").modal('toggle');
+                $("#Daftarpelanggan-EditModal").modal('toggle');
                 createAlert("success", "Data pelanggan "+StrId+" - "+nama +" berhasil dirubah");
             }
             else
@@ -132,78 +128,92 @@ function updatePelangganConfirm(Button)
     });
 }
 
-function createPelangganConfirm()
+function DaftarPelangganCreateConfirm()
 {
-    var formData = $("#create-modal-form").serializeArray();
-    var nama = formData[0].value.toString();
-    var telp = formData[1].value.toString();
-    var alamat = formData[2].value.toString();
-    AddPelanggan(currentToken, nama, telp, alamat, function(result){
-        if (result.token_status=="success")
-        {
-            if  (result.pelangganID != null)
-            {
-                console.log("Add pelanggan success "+ result.pelangganID);
-                var PelangganTable = $('#PelangganTable').DataTable();
-                var pad ="00000";
-                var id = "" + result.pelangganID;
-                var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+    var formData = document.getElementById("Daftarpelanggan-CreateModal-CreateForm");
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
+    var valid =true;
+    if (nama=='' || nama == null)
+    {
+        valid=false;
+        setWarning(formData.elements['nama'], "Nama pelanggan harus diisi");
+    }
+    if (valid)
+    {
+        setWarning(formData.elements['nama']);
+        AddPelanggan(currentToken, nama, telp, alamat, function(result){
+            if (result.token_status=="success") {
+                if (result.pelangganID != null)
+                {
+                    console.log("Add pelanggan success " + result.pelangganID);
+                    var PelangganTable = $('#PelangganTable').DataTable();
+                    var pad = "00000";
+                    var id = "" + result.pelangganID;
+                    var StrId = "P" + pad.substring(0, pad.length - id.length) + id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
-                    id+
-                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
-                    id+
-                    "'><i class='glyphicon glyphicon-trash'></i></a>";
-                PelangganTable.row.add([
-                    StrId,
-                    nama,
-                    telp,
-                    alamat,
-                    editButton+" "+delButton
-                ]).draw();
-                $("#createModal").modal('toggle');
-                createAlert("success", "Pelanggan baru "+StrId+" - "+nama +" berhasil ditambahkan");
+                    var editButton = "<a class='Daftarpelanggan-edit-modal-toggle' data-toggle='modal' href='#Daftarpelanggan-EditModal' data-id='" +
+                        id +
+                        "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                    var delButton = "<a style='color:red;' class='Daftarpelanggan-delete-modal-toggle' href='#Daftarpelanggan-DeleteModal' data-toggle='modal' data-id='" +
+                        id +
+                        "'><i class='glyphicon glyphicon-trash'></i></a>";
+                    PelangganTable.row.add([
+                        StrId,
+                        nama,
+                        telp,
+                        alamat,
+                        editButton + " " + delButton
+                    ]).draw();
+                    $("#Daftarpelanggan-CreateModal").modal('toggle');
+                    createAlert("success", "Pelanggan baru " + StrId + " - " + nama + " berhasil ditambahkan");
+                    formData.reset();
+                }
+                else
+                {
+                    console.log("Add Pelanggan failed");
+                    createAlert("danger", "Data pelanggan gagal ditambahkan, mohon coba kembali");
+                }
             }
             else
-                console.log("Add Pelanggan failed");
-        }
-        else
-        {
-            console.log("Token failed");
-            createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
+            {
+                console.log("Token failed");
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+        });
+    }
 
-    });
 }
 
-function populateEditModal(Button)
+function DaftarPelangganPopulateEditModal(Button)
 {
+    var formdata = document.getElementById("Dafttarpelanggan-EditModal-EditForm");
     document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-    $("#edit-modal-field-nama").val($(Button).closest('tr').find('td:eq(1)').html());
-    $("#edit-modal-field-telp").val($(Button).closest('tr').find('td:eq(2)').html());
-    $("#edit-modal-field-alamat").val($(Button).closest('tr').find('td:eq(3)').html());
+    formdata.elements['name'].value = $(Button).closest('tr').find('td:eq(1)').html();
+    formdata.elements['telp'].value = $(Button).closest('tr').find('td:eq(2)').html();
+    formdata.elements['alamat'].value = $(Button).closest('tr').find('td:eq(3)').html();
     var pelangganID = $(Button).attr('data-id');
-    document.getElementById("edit-modal-save").setAttribute("data-id", pelangganID);
+    document.getElementById("Daftarpelanggan-EditModal-ConfirmButton").setAttribute("data-id", pelangganID);
     var PelangganTable = $('#PelangganTable').DataTable();
     var rowNumber = PelangganTable.row($(Button).closest('tr')).index();
-    document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
+    document.getElementById("Daftarpelanggan-EditModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
     console.log("delete "+pelangganID+" "+rowNumber);
 
 }
 
-function populateDeleteModal(Button) {
-    document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-    document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+function DaftarPelangganPopulateDeleteModal(Button) {
+    document.getElementById("Daftarpelanggan-DeleteModal-PelangganIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+    document.getElementById("Daftarpelanggan-DeleteModal-PelangganNamaText").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
     var pelangganID = $(Button).attr('data-id');
-    document.getElementById("delete-modal-yes").setAttribute("data-id", pelangganID);
+    document.getElementById("Daftarpelanggan-DeleteModal-ConfirmButton").setAttribute("data-id", pelangganID);
     var PelangganTable = $('#PelangganTable').DataTable();
     var rowNumber = PelangganTable.row($(Button).closest('tr')).index();
-    document.getElementById("delete-modal-yes").setAttribute("data-row-num", rowNumber);
+    document.getElementById("Daftarpelanggan-DeleteModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
     console.log("delete "+pelangganID+" "+rowNumber);
 }
 
-function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
+function DaftarPelangganSearchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
 {
     var PelangganTable = $('#PelangganTable').DataTable();
     var StrId;
@@ -217,63 +227,48 @@ function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
     else
         StrId ="";
     PelangganTable.
-    columns("#table-id").search(StrId).
-    columns("#table-nama").search(queryNama).
-    columns("#table-telp").search(queryTelp).
-    columns("#table-alamat").search(queryAlamat).
+    columns("#PelangganTable-id").search(StrId).
+    columns("#PelangganTable-nama").search(queryNama).
+    columns("#PelangganTable-telp").search(queryTelp).
+    columns("#PelangganTable-alamat").search(queryAlamat).
     draw();
 }
 
-function createAlert(type, message)
-{
-    var container = document.createElement("div");
-    container.setAttribute("class", "alert alert-"+type+" alert-dismissable");
-    var closeButton  = document.createElement("Button");
-    closeButton.setAttribute("type", "button");
-    closeButton.setAttribute("class", "close");
-    closeButton.setAttribute("data-dismiss", "alert");
-    closeButton.setAttribute("arie-hidden", "true");
-    closeButton.innerHTML="&times;";
-    container.appendChild(closeButton);
-    container.innerHTML += message;
-    var placeholder = document.getElementById("alert-placeholder");
-    if (placeholder.hasChildNodes())
-        placeholder.removeChild(placeholder.childNodes[0]);
-    placeholder.appendChild(container);
-
-}
 function InitDaftarPelangganPage()
 {
     setPage("DaftarPelanggan");
 
-    populatePelangganData();
+    currentToken = localStorage.getItem("token");
 
-    $(document).on("click", ".delete-modal-toggle", function(){
-        populateDeleteModal(this);
+    DaftarPelangganPopulateData();
+
+    $(document).on("click", ".Daftarpelanggan-delete-modal-toggle", function(){
+        DaftarPelangganPopulateDeleteModal(this);
     });
 
-    $(document).on("click", "#delete-modal-yes", function(){
-        deletePelangganConfirm(this);
+    document.getElementById("Daftarpelanggan-DeleteModal-ConfirmButton").onclick= function(){
+        DaftarPelangganDeleteConfirm(this);
+    };
+
+    $(document).on("click", ".DaftarPelanggan-edit-modal-toggle", function(){
+        DaftarPelangganPopulateEditModal(this);
     });
 
-    $(document).on("click", ".edit-modal-toggle", function(){
-        populateEditModal(this);
-    });
+    document.getElementById("Daftarpelanggan-EditModal-ConfirmButton").onclick= function(){
+        DaftarPelangganUpdateConfirm(this);
+    };
 
-    $(document).on("click", "#edit-modal-save", function(){
-        updatePelangganConfirm(this);
-    });
-
-    $(document).on("click", "#create-modal-save", function(){
-        createPelangganConfirm();
-    });
+    document.getElementById("Daftarpelanggan-CreateModal-ConfirmButton").onclick= function(){
+        DaftarPelangganCreateConfirm();
+    };
 
     $(".search-filter").keyup( function(){
-        searchFromTable(
-            $("#search-pelanggan-id").val(),
-            $("#search-pelanggan-nama").val(),
-            $("#search-pelanggan-telp").val(),
-            $("#search-pelanggan-alamat").val()
+        var formdata= document.getElementById("Daftarpelanggan-SearchForm");
+        DaftarPelangganSearchFromTable(
+            formdata.elements['id'].value,
+            formdata.elements['nama'].value,
+            formdata.elements['telp'].value,
+            formdata.elements['alamat'].value
         );
     });
 }

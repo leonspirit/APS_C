@@ -2,9 +2,9 @@
  * Created by Billy on 30-Oct-16.
  */
 
-var currentToken = localStorage.getItem("token");
+var currentToken;
 
-function populateSupplierData()
+function DaftarSupplierPopulateSupplierData()
 {
     var SupplierTable = $('#SupplierTable').DataTable();
     GetAllSupplierData(currentToken, function(result){
@@ -31,10 +31,10 @@ function populateSupplierData()
                 var id = "" + result.data[i].supplierID;
                 var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='"+
+                var editButton = "<a class='Daftarsupplier-edit-modal-toggle' data-toggle='modal' href='#Daftarsupplier-EditModal' data-id='"+
                     id+
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='delete-modal-toggle' href='#deleteModal' data-toggle='modal' data-id='" +
+                var delButton = "<a style='color:red;' class='Daftarsupplier-delete-modal-toggle' href='#Daftarsupplier-DeleteModal' data-toggle='modal' data-id='" +
                     id+
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
 
@@ -55,10 +55,12 @@ function populateSupplierData()
     });
 }
 
-function populateEditModal(Button)
+function DaftarSupplierPopulateEditModal(Button)
 {
     var formdata = document.getElementById("Daftarsupplier-EditModal-EditForm");
-    document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+    console.log("lilo");
+    console.log(formdata);
+    document.getElementById("Daftarsupplier-EditModal-SupplierIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
     formdata.elements['nama'].value=($(Button).closest('tr').find('td:eq(1)').html());
     formdata.elements['telp'].value=($(Button).closest('tr').find('td:eq(2)').html());
     formdata.elements['alamat'].value=($(Button).closest('tr').find('td:eq(3)').html());
@@ -70,18 +72,18 @@ function populateEditModal(Button)
     console.log("delete "+supplierID+" "+rowNumber);
 }
 
-function populateDeleteModal(Button) {
-    document.getElementById("delete-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-    document.getElementById("delete-modal-nama").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
+function DaftarSupplierPopulateDeleteModal(Button) {
+    document.getElementById("Daftarsupplier-DeleteModal-SupplierIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+    document.getElementById("Daftarsupplier-DeleteModal-SupplierNamaText").innerHTML = $(Button).closest('tr').find('td:eq(1)').html();
     var supplierID = $(Button).attr('data-id');
-    document.getElementById("delete-modal-yes").setAttribute("data-id", supplierID);
+    document.getElementById("Daftarsupplier-DeleteModal-ConfirmButton").setAttribute("data-id", supplierID);
     var SupplierTable = $('#SupplierTable').DataTable();
     var rowNumber = SupplierTable.row($(Button).closest('tr')).index();
-    document.getElementById("delete-modal-yes").setAttribute("data-row-num", rowNumber);
+    document.getElementById("Daftarsupplier-DeleteModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
     console.log("delete "+supplierID+" "+rowNumber);
 }
 
-function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
+function DaftarSupplierSearchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
 {
     var SupplierTable = $('#SupplierTable').DataTable();
     var StrId;
@@ -95,14 +97,14 @@ function searchFromTable(queryID,  queryNama, queryTelp, queryAlamat)
     else
         StrId ="";
     SupplierTable.
-    columns("#table-id").search(StrId).
-    columns("#table-nama").search(queryNama).
-    columns("#table-telp").search(queryTelp).
-    columns("#table-alamat").search(queryAlamat).
+    columns("#SupplierTable-id").search(StrId).
+    columns("#SupplierTable-nama").search(queryNama).
+    columns("#SupplierTable-telp").search(queryTelp).
+    columns("#SupplierTable-alamat").search(queryAlamat).
     draw();
 }
 
-function deleteSupplierConfirm(Button)
+function DaftarSupplierDeleteSupplierConfirm(Button)
 {
     var supplierID = $(Button).attr('data-id');
     var rowNum = $(Button).attr('data-row-num');
@@ -116,7 +118,7 @@ function deleteSupplierConfirm(Button)
                 console.log("delete success");
                 var SupplierTable = $('#SupplierTable').DataTable();
                 SupplierTable.row(rowNum).remove().draw();
-                $("#deleteModal").modal('toggle');
+                $("#Daftarsupplier-DeleteModal").modal('toggle');
                 createAlert("success", "Data supplier berhasil dihapus");
             }
             else
@@ -132,7 +134,7 @@ function deleteSupplierConfirm(Button)
         }
     });
 }
-function createSupplierConfirm()
+function DaftarSupplierCreateSupplierConfirm()
 {
     var formData = document.getElementById("Daftarsupplier-CreateModal-CreateForm");
     var nama = formData.elements['nama'];
@@ -182,7 +184,7 @@ function createSupplierConfirm()
     });
 }
 
-function UpdateSupplierConfirm(Button)
+function DaftarSupplierUpdateSupplierConfirm(Button)
 {
     var pad ="00000";
     var Id = $(Button).attr('data-id');
@@ -190,9 +192,9 @@ function UpdateSupplierConfirm(Button)
 
     var rowNum = $(Button).attr('data-row-num');
     var formData = document.getElementById("Daftarsupplier-EditModal-EditForm");
-    var nama = formData.elements['nama'];
-    var telp = formData.elements['telp'];
-    var alamat = formData.elements['alamat'];
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
     UpdateDataSupplier(currentToken, Id, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
@@ -203,7 +205,7 @@ function UpdateSupplierConfirm(Button)
                 SupplierTable.cell(rowNum, 1).data(nama);
                 SupplierTable.cell(rowNum, 2).data(telp);
                 SupplierTable.cell(rowNum, 3).data(alamat);
-                $("#editModal").modal('toggle');
+                $("#DaftarSupplier-EditModal").modal('toggle');
                 createAlert("success", "Data supplier "+StrId+" - "+nama +" berhasil dirubah");
             }
             else
@@ -222,29 +224,30 @@ function UpdateSupplierConfirm(Button)
 function InitDaftarSupplierPage()
 {
     setPage("DaftarSupplier");
-
-    populateSupplierData();
-    $(document).on("click", ".Daftarsupplier-delete-modal-toggle", function() {
-        populateDeleteModal(this);
+    currentToken = localStorage.getItem("token");
+    DaftarSupplierPopulateSupplierData();
+    $(document).on("click",  ".Daftarsupplier-delete-modal-toggle",function() {
+        DaftarSupplierPopulateDeleteModal(this);
     });
-    $(document).on("click", "#Daftarsupplier-DeleteModal-ConfirmButton", function() {
-        deleteSupplierConfirm(this);
+    document.getElementById("Daftarsupplier-DeleteModal-ConfirmButton").onclick= function() {
+        DaftarSupplierDeleteSupplierConfirm(this);
+    };
+    $(document).on("click", ".Daftarsupplier-edit-modal-toggle",function() {
+        DaftarSupplierPopulateEditModal(this);
     });
-    $(document).on("click", ".Daftarsupplier-edit-modal-toggle", function() {
-        populateEditModal(this);
-    });
-    $(document).on("click", "#Daftarsupplier-EditModal-ConfirmButton", function(){
-        UpdateSupplierConfirm(this);
-    });
-    $(document).on("click", "#Daftarsupplier-CreateModal-ConfirmButton", function(){
-        createSupplierConfirm();
-    });
+    document.getElementById("Daftarsupplier-EditModal-ConfirmButton").onclick= function(){
+        DaftarSupplierUpdateSupplierConfirm(this);
+    };
+    document.getElementById("Daftarsupplier-CreateModal-ConfirmButton").onclick= function(){
+        DaftarSupplierCreateSupplierConfirm();
+    };
     $(".search-filter").keyup( function(){
-        searchFromTable(
-            $("#search-supplier-id").val(),
-            $("#search-supplier-nama").val(),
-            $("#search-supplier-telp").val(),
-            $("#search-supplier-alamat").val()
+        var SearchForm = document.getElementById("Daftarsupplier-SearchForm");
+        DaftarSupplierSearchFromTable(
+            SearchForm.elements['id'].value,
+            SearchForm.elements['nama'].value,
+            SearchForm.elements['telp'].value,
+            SearchForm.elements['alamat'].value
         );
     });
 }

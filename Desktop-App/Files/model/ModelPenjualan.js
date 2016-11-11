@@ -35,4 +35,24 @@ function getAllPenjualanData(token, fn)
         }, "json");
 }
 
+
+function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtotal, isPrinted, status, notes, alamat, satuan, fn)
+{
+    $.post( baseUrl + "penjualan/tambah_penjualan/",
+        {
+            token: token,
+            pelangganID: pelangganID,
+            tanggal_transaksi:tanggal_transaksi,
+            jatuh_tempo:jatuh_tempo,
+            subtotal:subtotal,
+            isPrinted:isPrinted,
+            status:status,
+            notes:notes,
+            alamat:alamat,
+            satuan:satuan
+        }, function(data) {
+            fn(data);
+        }, "json");
+}
+
 //connection.end();
