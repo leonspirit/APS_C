@@ -4,33 +4,51 @@
 
 var baseUrl = "http://localhost:3000/"
 
-function getLunasPembelianData(token, fn)
+function getLunasPembelianData(token, tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "pembelian/list_lunas_pembelian/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
         }, function(  data ) {
             fn(data);
         }, "json");
 }
-function getHutangPembelianData(token, fn)
+function getHutangPembelianData(token, tgl_awal, tgl_akhir,fn)
 {
     $.post( baseUrl + "pembelian/list_hutang_pembelian/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
         }, function(  data ) {
             fn(data);
         }, "json");
 }
-function getAllPembelianData(token, fn)
+function getAllPembelianData(token,tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "pembelian/list_pembelian/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
         }, function(  data ) {
             fn(data);
         }, "json");
 }
+
+function getJatuhTempoPembelianData(token,n, fn)
+{
+    $.post( baseUrl + "pembelian/list_pembelian_jatuh_tempo/",
+        {
+            token: token,
+            n:n
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
 
 function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, notes, satuan, fn)
 {
@@ -57,6 +75,23 @@ function GetDetailPembelian(token, pembelianID, fn)
         {
             token: token,
             pembelianID: pembelianID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function AddCicilanPembelian(token,pembelianID, tanggal_cicilan, nominal, notes, cara_pembayaran, bank, nomor_giro, tanggal_pencairan,fn )
+{
+    $.post( baseUrl + "pembelian/tambah_cicilan_pembelian/",
+        {
+            token: token,
+            pembelianID: pembelianID,
+            tanggal_cicilan:tanggal_cicilan,
+            nominal:nominal,
+            notes:notes,
+            cara_pembayaran:cara_pembayaran,
+            bank:bank,
+            nomor_giro:nomor_giro,
+            tanggal_pencairan:tanggal_pencairan
         }, function(  data ) {
             fn(data);
         }, "json");

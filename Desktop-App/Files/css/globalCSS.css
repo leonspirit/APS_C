@@ -37,5 +37,5 @@ div.login-box.is-shown{
 }
 
 .navbar-nav>.notifications-menu>.dropdown-menu, .navbar-nav>.messages-menu>.dropdown-menu, .navbar-nav>.tasks-menu>.dropdown-menu{
-    width:350px;
+    width:500px;
 }

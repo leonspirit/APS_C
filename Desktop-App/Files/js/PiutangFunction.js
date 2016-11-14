@@ -9,10 +9,10 @@ var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 
 function populateLaporanPiutangData()
 {
-    var PiutangTable = $('#PiutangTable').DataTable();
-    getPiutangPenjualanData(currentToken, function(result){
+    var PiutangTable;
+    getPiutangPenjualanData(currentToken, "2000-01-01", "2020-01-01", function(result){
         var i;
-        if (typeof PiutangTable ==='undefined')
+        if (!$.fn.DataTable.isDataTable("#PiutangTable"))
         {
             PiutangTable = $('#PiutangTable').DataTable({
                 "paging": true,
@@ -20,10 +20,12 @@ function populateLaporanPiutangData()
                 "searching": false,
                 "ordering": true,
                 "info": true,
-                "autoWidth": false
+                "autoWidth": false,
+                "dom":'<"row"<"col-sm-12"t>><"row"<"col-sm-12"i>>'
             });
         }
         else {
+            PiutangTable = $('#PiutangTable').DataTable();
             PiutangTable.clear().draw();
         }
         if (result.token_status=="success")

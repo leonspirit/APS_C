@@ -3,10 +3,10 @@
  */
 
 
-var currentToken = localStorage.getItem("token");
-var currentID = localStorage.getItem("karyawanID");
+var currentToken;// = localStorage.getItem("token");
+var currentID;// = localStorage.getItem("karyawanID");
 
-function populateKaryawanDetail()
+function MyProfilepopulateKaryawanDetail()
 {
     DetailKaryawan(currentToken, currentID, function(result)
     {
@@ -24,9 +24,38 @@ function populateKaryawanDetail()
         }
     });
 }
-function InitMyProfile()
+
+function MyProfileChangePassword()
 {
+
+}
+function MyProfileEditData()
+{
+    var nama = document.getElementById("ProfileNama").value;
+    var username = document.getElementById("ProfileUsername").value;
+    var notelp = document.getElementById("ProfileNoTelp").value;
+    var alamat = document.getElementById("ProfileAlamat").value;
+    var valid=true;
+    if (nama==null || nama=="")
+    {
+        valid=false;
+        setWarning(document.getElementById("ProfileNama"), "Nama Tidak Boleh Kosong");
+    }
+    if (username==null || username.isEmpty())
+    {
+        valid=false;
+        setWarning(document.getElementById("ProfileUsername"), "Username Tidak Boleh Kosong");
+    }
+    if (valid)
+    {
+        UpdateDataKaryawan(currentToken, currentID, nama, notelp, alamat, username, hakakses)
+    }
+}
+function InitMyProfilePage()
+{
+    currentToken = localStorage.getItem("token");
+    currentID = localStorage.getItem("karyawanID");
     console.log("ini my profile");
     setPage("MyProfile");
-    populateKaryawanDetail();
+    MyProfilepopulateKaryawanDetail();
 }

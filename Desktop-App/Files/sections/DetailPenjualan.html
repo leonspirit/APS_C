@@ -7,55 +7,36 @@
                 <div class="alert-placeholder"></div>
             </div>
             <div class="box-body">
-                <form role="form">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pelanggan</label>
-                            <input  style="width: 100%;" class="form-control select2" id="inputPelanggan">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pembayaran</label>
-                            <select class="form-control pull-right" id="pilihanPembayaran">
-                                <option value="cash">Cash</option>
-                                <option value="bon">Bon</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Tanggal Penjualan</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" id="tanggalPenjualan">
-                            </div>
-                          </div>
-                    </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="info-box-text">Kode</span>
+                    <span id="Detailpenjualan-KodeText" class="info-box-number"></span>
+                    <span class="info-box-text">Pelanggan</span>
+                    <span id="Detailpenjualan-PelangganText" class="info-box-number"></span>
                 </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Kirim Ke</label>
-                            <input type="text" class="form-control pull-right">
-                        </div>
-                    </div>
-                    <div class="col-md-4" id="containerJatuhTempo" >
-                        <div  class="form-group" id="form-field-jatuh-tempo">
-                            <label>Jatuh Tempo</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="tanggalJatuhTempo">
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <span class="info-box-text">Pembayaran</span>
+                    <span class="info-box-number" id="Detailpenjualan-PembayaranText"></span>
+                    <span class="info-box-text">Status</span>
+                    <span class="info-box-number" id="Detailpenjualan-StatusText"></span>
                 </div>
-                </form>
+                <div class="col-md-4">
+                    <span class="info-box-text">Tanggal Transaksi</span>
+                    <span class="info-box-number" id="Detailpenjualan-TglTransaksiText"></span>
+                    <span class="info-box-text">Tanggal Jatuh Tempo</span>
+                    <span class="info-box-number" id="Detailpenjualan-TglJatuhTempoText"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="info-box-text">Kirim Ke</span>
+                    <span class="info-box-number" id="Detailpenjualan-KirimkeText"></span>
+                </div>
+                <div class="col-md-12">
+                    <span class="info-box-text">Notes</span>
+                    <span class="info-box-number" id="Detailpenjualan-NotesText"></span>
+                </div>
+            </div>
             </div>
             <div class="box-header">
               <h3 class="box-title">List Item</h3>
@@ -90,6 +71,34 @@
                 </tr>
                 </tfoot>
               </table>
+            </div>
+            <div class="box-header">
+                <h3 class="box-title">Pembayaran</h3>
+            </div>
+            <div class="box-body">
+                <table id="Detailpenjualan-CicilanTable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Pembayaran</th>
+                        <th>Nominal</th>
+                        <th>Bank</th>
+                        <th>No. Giro</th>
+                        <th>Tgl. Pencairan</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="2"><span class="pull-right">Total</span></th>
+                        <th></th>
+                        <th><span class="pull-right">Kekurangan</span></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
             </div>
             <div class="box-footer">
                 <Button id="saveButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-save"></i> Simpan</Button>

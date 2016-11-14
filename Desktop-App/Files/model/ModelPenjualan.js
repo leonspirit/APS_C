@@ -7,29 +7,45 @@ var baseUrl = "http://localhost:3000/";
 
 
 
-function getLunasPenjualanData(token, fn)
+function getLunasPenjualanData(token, tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "penjualan/list_lunas_penjualan/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
         }, function(  data ) {
             fn(data);
         }, "json");
 }
-function getPiutangPenjualanData(token, fn)
+function getPiutangPenjualanData(token, tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "penjualan/list_piutang_penjualan/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
         }, function(  data ) {
             fn(data);
         }, "json");
 }
-function getAllPenjualanData(token, fn)
+function getAllPenjualanData(token, tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "penjualan/list_penjualan/",
         {
-            token: token
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+function getJatuhTempoPenjualanData(token, n, fn)
+{
+    $.post( baseUrl + "penjualan/list_penjualan_jatuh_tempo/",
+        {
+            token: token,
+            n:n
         }, function(  data ) {
             fn(data);
         }, "json");
@@ -54,5 +70,35 @@ function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtot
             fn(data);
         }, "json");
 }
+
+function GetDetailPenjualan(token, penjualanID, fn)
+{
+    $.post( baseUrl + "penjualan/detail_penjualan/",
+        {
+            token: token,
+            penjualanID: penjualanID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function AddCicilanPenjualan(token,penjualanID, tanggal_cicilan, nominal, notes, cara_pembayaran, bank, nomor_giro, tanggal_pencairan,fn )
+{
+    $.post( baseUrl + "penjualan/tambah_cicilan_penjualan/",
+        {
+            token: token,
+            penjualanID: penjualanID,
+            tanggal_cicilan:tanggal_cicilan,
+            nominal:nominal,
+            notes:notes,
+            cara_pembayaran:cara_pembayaran,
+            bank:bank,
+            nomor_giro:nomor_giro,
+            tanggal_pencairan:tanggal_pencairan
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
 
 //connection.end();

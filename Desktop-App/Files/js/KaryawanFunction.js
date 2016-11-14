@@ -6,22 +6,23 @@ var currentToken = localStorage.getItem("token");
 
 function DaftarKaryawanPopulateKaryawanData()
 {
-     var KaryawanTable = $('#KaryawanTable').DataTable();
+     var KaryawanTable;// = $('#KaryawanTable').DataTable();
      GetAllKaryawanData(currentToken, function(result){
          var i;
-         if (typeof KaryawanTable ==='undefined')
+         if (!$.fn.DataTable.isDataTable("#KaryawanTable"))
          {
              KaryawanTable = $('#KaryawanTable').DataTable({
                  "paging": true,
                  "lengthChange": true,
                  "searching": true,
-                 //"sDom":"lrtp",
                  "ordering": true,
                  "info": true,
-                 "autoWidth": false
+                 "autoWidth": false,
+                 "dom": '<"row"<"col-sm-6"l><"col-sm-6"p>><"row"<"col-sm-12"t>><"row"<"col-sm-6"i><"col-sm-6"p>>'
              });
          }
          else {
+             KaryawanTable = $('#KaryawanTable').DataTable();
              KaryawanTable.clear().draw();
          }
         if(result.token_status == "success")
@@ -29,7 +30,7 @@ function DaftarKaryawanPopulateKaryawanData()
             for (i = 0; i < result.data.length; i++) {
                 var pad ="00000";
                 var id = "" + result.data[i].karyawanID;
-                var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+                var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
 
                 var editButton = "<a class='Daftarkaryawan-edit-modal-toggle' data-toggle='modal' href='#Daftarkaryawan-EditModal' data-id='"+
                     id+
@@ -194,7 +195,7 @@ function DaftarKaryawanCreateConfirm(){
                 var KaryawanTable = $('#KaryawanTable').DataTable();
                 var pad ="00000";
                 var id = "" + result.karyawanID;
-                var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+                var StrId  = "K"+ pad.substring(0, pad.length - id.length)+id;
 
                 var editButton = "<a class='Daftarkaryawan-edit-modal-toggle' data-toggle='modal' href='#Daftarkaryawan-EditModal' data-id='"+
                     id+

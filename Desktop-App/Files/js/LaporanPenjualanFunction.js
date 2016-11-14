@@ -8,10 +8,10 @@ var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 
 function populateLaporanPenjualanData()
 {
-    var PenjualanTable = $('#PenjualanTable').DataTable();
-    getLunasPenjualanData(currentToken, function(result) {
+    var PenjualanTable;// = $('#PenjualanTable').DataTable();
+    getLunasPenjualanData(currentToken, "2000-01-01", "2020-01-01", function(result) {
         var i;
-        if (typeof PenjualanTable === 'undefined')
+        if (!$.fn.DataTable.isDataTable("#PenjualanTable"))
         {
             PenjualanTable = $('#PenjualanTable').DataTable({
                 "paging": false,
@@ -19,10 +19,12 @@ function populateLaporanPenjualanData()
                 "searching": false,
                 "ordering": true,
                 "info": true,
-                "autoWidth": false
+                "autoWidth": false,
+                "dom":'<"row"<"col-sm-12"t>><"row"<"col-sm-12"i>>'
             });
         }
         else {
+            PenjualanTable = $('#PenjualanTable').DataTable();
             PenjualanTable.clear().draw();
         }
         if (result.token_status=="success")

@@ -1,11 +1,15 @@
 
 var currentToken;
 
+var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 //konversi
 function numberWithCommas(x) {
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
+}
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 //Notification
 function UpdateUICicilan(Dropdown)
@@ -31,15 +35,15 @@ function UpdateUICicilan(Dropdown)
 }
 function InitNotification()
 {
-    $('#cara-pilih').on('change', function(){
+    $('#NotificationModal-PembayaranSelect').on('change', function(){
         UpdateUICicilan(this);
     });
-    UpdateUICicilan($('#cara-pilih'));
-    $("#cicilan-tanggal-pencairan").datepicker({
+    UpdateUICicilan($('#NotificationModal-PembayaranSelect'));
+    $("#NotificationModal-CicilanTanggalPencairanDate").datepicker({
         dateFormat:'yy-mm-dd',
         autoclose:true
     });
-    $("#cicilan-tanggal-transaksi").datepicker({
+    $("#NotificationModal-CicilanTanggalTransaksiDate").datepicker({
         dateFormat:'yy-mm-dd',
         autoclose:true
     });
@@ -50,17 +54,17 @@ function FillPenjualanNotificationList()
 {
     var i;
     currentToken  = localStorage.getItem("token");
-    var pembelianNotif = document.getElementById("PejualanNotif");
-    getAllPenjualanData(currentToken, function(result){
+    var penjualanNotif = document.getElementById("PenjualanNotif");
+    getJatuhTempoPenjualanData(currentToken, 3, function(result){
         if (result.token_status=="success")
         {
             var jumlahNotif = result.data.length;
             document.getElementById("PenjualanNotifLabel").innerHTML = jumlahNotif.toString();
             for (i = 0; i < result.data.length; i++)
             {
-                var TransaksiNama = result.data[i].nama;
+                var TransaksiNama = result.data[i].pelangganNama;
                 var d = new Date(result.data[i].tanggal_transaksi);
-                var TransaksiTanggalTrans = d.getDate()+" "+(d.getMonth()+1).toString()+" "+d.getFullYear();
+                var TransaksiTanggalTrans = d.getDate()+"/"+(d.getMonth()+1).toString()+"/"+d.getFullYear();
                 d = new Date(result.data[i].jatuh_tempo);
                 var TransaksiTanggalJatuh = d.getDate()+"/"+(d.getMonth()+1).toString()+"/"+d.getFullYear();
 
@@ -68,9 +72,10 @@ function FillPenjualanNotificationList()
                 var a = document.createElement("a");
                 a.setAttribute("data-toggle", "modal");
                 a.setAttribute("data-target", "#NotificationModal");
+                a.setAttribute("onclick", "PopulateNotificationModal('jual', "+result.data[i].penjualanID +")");
                 a.innerHTML = TransaksiNama +" - "+TransaksiTanggalTrans+" jatuh tempo pada "+TransaksiTanggalJatuh;
                 li.appendChild(a);
-                pembelianNotif.appendChild(li);
+                penjualanNotif.appendChild(li);
             }
         }
         else {
@@ -83,16 +88,16 @@ function FillPembelianNotificationList()
     var i;
     currentToken  = localStorage.getItem("token");
     var pembelianNotif = document.getElementById("PembelianNotif");
-    getAllPembelianData(currentToken, function(result){
+    getJatuhTempoPembelianData(currentToken, 3, function(result){
         if (result.token_status=="success")
         {
             var jumlahNotif = result.data.length;
             document.getElementById("PembelianNotifLabel").innerHTML = jumlahNotif.toString();
             for (i = 0; i < result.data.length; i++)
             {
-                var TransaksiNama = result.data[i].nama;
+                var TransaksiNama = result.data[i].supplierNama;
                 var d = new Date(result.data[i].tanggal_transaksi);
-                var TransaksiTanggalTrans = d.getDate()+" "+(d.getMonth()+1).toString()+" "+d.getFullYear();
+                var TransaksiTanggalTrans = d.getDate()+"/"+(d.getMonth()+1).toString()+"/"+d.getFullYear();
                 d = new Date(result.data[i].jatuh_tempo);
                 var TransaksiTanggalJatuh = d.getDate()+"/"+(d.getMonth()+1).toString()+"/"+d.getFullYear();
 
@@ -100,6 +105,7 @@ function FillPembelianNotificationList()
                 var a = document.createElement("a");
                 a.setAttribute("data-toggle", "modal");
                 a.setAttribute("data-target", "#NotificationModal");
+                a.setAttribute("onclick", "PopulateNotificationModal('beli', "+result.data[i].pembelianID +")");
                 a.innerHTML = TransaksiNama +" - "+TransaksiTanggalTrans+" jatuh tempo pada "+TransaksiTanggalJatuh;
                 li.appendChild(a);
                 pembelianNotif.appendChild(li);
@@ -110,6 +116,140 @@ function FillPembelianNotificationList()
         }
     });
 }
+function PopulateNotificationModal(jenis, id)
+{
+    $("#NotificationModal-PembayaranSelect").select2({
+        minimumResultsForSearch:Infinity
+    });
+    currentToken  = localStorage.getItem("token");
+    if (jenis=="jual")
+    {
+        document.getElementById("NotificationModalType").innerHTML = "Penjualan";
+        GetDetailPenjualan(currentToken, id, function(result){
+            if (result.token_status=="success")
+            {
+                var penjualan= result.data[0];
+                var TglTransaksi = new Date(penjualan.tanggal_transaksi);
+                var TglTransaksiText = TglTransaksi.getDate()+" "+NamaBulan[TglTransaksi.getMonth()]+" "+TglTransaksi.getFullYear();
+
+                var JatuhTempo = new Date(penjualan.jatuh_tempo);
+                var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
+                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =penjualan.nama+" "+TglTransaksiText;
+                document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
+                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(penjualan.subtotal);
+                document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
+                {
+                    InitDetailPenjualanPage(id);
+                    $("#NotificationModal").modal('toggle');
+                };
+            }
+            else {
+
+            }
+        })
+    }
+    else if (jenis=="beli")
+    {
+        document.getElementById("NotificationModalType").innerHTML = "Pembelian";
+        GetDetailPembelian(currentToken, id, function(result){
+            if (result.token_status=="success")
+            {
+                var pembelian = result.data[0];
+                var TglTransaksi = new Date(pembelian.tanggal_transaksi);
+                var TglTransaksiText = TglTransaksi.getDate()+" "+NamaBulan[TglTransaksi.getMonth()]+" "+TglTransaksi.getFullYear();
+
+                var JatuhTempo = new Date(pembelian.jatuh_tempo);
+                var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
+                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =pembelian.nama+" "+TglTransaksiText;
+                document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
+                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(pembelian.subtotal);
+                document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
+                {
+                    InitDetailPembelianPage(id);
+                    $("#NotificationModal").modal('toggle');
+                };
+            }
+            else {
+
+            }
+        })
+    }
+    document.getElementById("NotificationModal-ConfirmButton").onclick = function()
+    {
+        AddCicilan(jenis, id);
+    }
+}
+
+function AddCicilan(tipe, id)
+{
+    var formdata = document.getElementById("NotificationModal-CicilanForm");
+    var carabayar  =$("#NotificationModal-PembayaranSelect").val();
+    var nominal = formdata.elements['nominal'].value;
+    var notes=formdata.elements['notes'].value;
+    var tanggalTransTemp = new Date($("#NotificationModal-CicilanTanggalTransaksiDate").datepicker().val());
+    var tanggalTrans = tanggalTransTemp.getFullYear()+"-"+tanggalTransTemp.getMonth()+"-"+tanggalTransTemp.getDate();
+    var nomorgiro=null, bank=null, tanggalPencairan=null;
+    if (carabayar=='giro')
+    {
+        var tanggalpencariantemp = new Date($("#NotificationModal-CicilanTanggalPencarianDate").datepicker().val());
+        tanggalPencairan = tanggalpencariantemp.getFullYear()+"-"+(tanggalpencariantemp.getMonth()+1)+"-"+tanggalpencariantemp.getDate();
+        nomorgiro = formdata.elements['nomor-giro'].value;
+        bank = formdata.elements['bank-giro'].value;
+    }
+    else if (carabayar == 'transfer')
+    {
+        nomorgiro = null;
+        tanggalPencairan = null;
+        bank=formdata.elements['bank-transfer'].value;
+    }
+    else if (carabayar=='tunai')
+    {
+        bank=null;
+        nomorgiro=null;
+        tanggalPencairan = null;
+    }
+    if (tipe=='jual')
+    {
+        AddCicilanPenjualan(currentToken,
+            id,
+            tanggalTrans,
+            nominal,
+            notes,
+            carabayar,
+            bank,
+            nomorgiro,
+            tanggalPencairan, function(result)
+            {
+                if (result.token_status=="success")
+                {
+                    console.log(result.cicilanpenjualanID);
+                    $("#NotificationModal").modal('toggle');
+                }
+            }
+        )
+    }
+    else if (tipe=='beli')
+    {
+        AddCicilanPembelian(currentToken,
+            id,
+            tanggalTrans,
+            nominal,
+            notes,
+            carabayar,
+            bank,
+            nomorgiro,
+            tanggalPencairan, function(result)
+            {
+                if (result.token_status=="success")
+                {
+                    console.log(result.cicilanpembelianID);
+                    $("#NotificationModal").modal('toggle');
+                }
+            }
+        )
+    }
+}
+
 //user
 function Logout(token)
 {
@@ -133,7 +273,6 @@ function Logout(token)
         {
             myLogin();
         };
-
         //todo: clear section sm navmenu di halaman
     });
 }
@@ -148,12 +287,12 @@ function InitUserPanel()
     document.getElementById("CurrentKaryawanName").innerHTML = currentName;
     document.getElementById("CurrentKaryawanUsername").innerHTML=currentUsername;
     document.getElementById("NameRightTop").innerHTML=currentName;
-    $(document).on("click", "#LogOutBtn", function(){
+    document.getElementById("LogOutBtn").onclick = function(){
         Logout(currentToken);
-    });
-    $(document).on("click", "#MyProfileBtn", function(){
-        setPage("MyProfile");
-    });
+    };
+    document.getElementById("MyProfileBtn").onclick= function(){
+        InitMyProfilePage();
+    };
 }
 //alert
 function createAlert(type, message)
@@ -172,6 +311,11 @@ function createAlert(type, message)
     if (placeholder.hasChildNodes())
         placeholder.removeChild(placeholder.childNodes[0]);
     placeholder.appendChild(container);
+}
+
+function removeAllAlert()
+{
+    $("div.alert.alert-dismissable").remove();
 }
 function InitNavMenu()
 {
@@ -211,6 +355,8 @@ function InitNavMenu()
 function setPage(page)
 {
     var i;
+    removeAllAlert();
+    removeWarning();
     var allContent = document.getElementsByClassName("content");
     for (i=0;i<allContent.length;i++)
         allContent[i].classList.remove("is-shown");
@@ -250,7 +396,6 @@ function ImportSectionsAndModals() {
             clone = document.importNode(template.content, true);
             document.querySelector('.content-wrapper').appendChild(clone);
             var scripts = link.import.querySelectorAll('link');
-          //  console.log(scripts);
 
             Array.prototype.forEach.call(scripts, function(script){
                 var scriptpath = script.getAttribute("data-path");
@@ -273,27 +418,36 @@ function ImportSectionsAndModals() {
     });
 }
 
-function setWarning(field, message)
-{
-    var FormGroup=field;
-    while(true)
-    {
+function setWarning(field, message) {
+    var FormGroup = field;
+    while (true) {
         FormGroup = FormGroup.parentNode;
         if (FormGroup.classList.contains("form-group"))
             break;
     }
     FormGroup.classList.add("has-error");
-    var span = document.createElement("span");
-    span.setAttribute("class", "help-block");
-    span.innerHTML = message;
-    FormGroup.appendChild(span);
+    var spannya = FormGroup.getElementsByClassName("help-block");
+    if (spannya == null || spannya.length == 0)
+    {
+        var span = document.createElement("span");
+        span.setAttribute("class", "help-block");
+        span.innerHTML = message;
+        FormGroup.appendChild(span);
+
+    }
 }
 
-function removeWarning(field)
+function removeWarning()
 {
-    var FormGroup = field.parentNode;
-    FormGroup.classList.remove("has-error");
-    FormGroup.getElementsByClassName("help-block")[0].innerHTML = "";
+    var i, j;
+    var form_group = document.getElementsByClassName("form-group");
+    for (i=0;i<form_group.length;i++)
+    {
+        form_group[i].classList.remove("has-error");
+        var span = form_group[i].getElementsByClassName("help-block");
+        for (j=0;j<span.length;j++)
+            form_group[i].removeChild(span[j]);
+    }
 }
 function CheckLogin()
 {
@@ -383,6 +537,18 @@ function myLogin()
             console.log("login gagal");
         }
     });
+}
+
+function hasHakAkses(hakakses)
+{
+    var HakAksesList = JSON.parse(localStorage.getItem("hak_akses"));
+    if ($.inArray(hakakses, HakAksesList)!=-1)
+    {
+        return true;
+    }
+    else{
+        return false
+    }
 }
 
 

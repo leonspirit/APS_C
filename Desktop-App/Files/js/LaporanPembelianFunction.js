@@ -10,21 +10,23 @@ function populateLaporanPembelianData()
 {
 
     var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var PembelianTable =$('#PembelianTable').DataTable();
-    getLunasPembelianData(currentToken, function(result){
+    var PembelianTable;
+    getLunasPembelianData(currentToken, "2000-01-01", "2020-01-01", function(result){
         var i;
-        if (typeof PembelianTable ==='undefined')
+        if (!$.fn.DataTable.isDataTable( '#PembelianTable'))
         {
             PembelianTable = $('#PembelianTable').DataTable({
-                "paging": true,
+                "paging": false,
                 "lengthChange": true,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
-                "autoWidth": false
+                "autoWidth": false,
+                "dom":'<"row"<"col-sm-12"t>><"row"<"col-sm-12"i>>'
             });
         }
         else {
+            PembelianTable =$('#PembelianTable').DataTable();
             PembelianTable.clear().draw();
         }
         if (result.token_status=="success")
@@ -45,6 +47,8 @@ function populateLaporanPembelianData()
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
                 var detailButton = "<a onclick='InitDetailPembelianPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
+
+                var returButton = "<a onclick='InitReturPembelianPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
                 var tglTransaksi = d.getDate()+" "+NamaBulan[d.getMonth()]+" "+d.getFullYear();
@@ -70,7 +74,8 @@ function populateLaporanPembelianData()
 
                     subtotal,
                     isPrinted,
-                    detailButton
+                    detailButton,
+                    returButton
                 ]);
             }
             PembelianTable.draw();

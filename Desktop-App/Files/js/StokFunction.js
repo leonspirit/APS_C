@@ -60,18 +60,20 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
 
 function StokBarangPopulateData() {
 
-    var BarangTable=$("#BarangTable").DataTable();
-    if(typeof BarangTable==='undefined'){
+    var BarangTable;//=$("#BarangTable").DataTable();
+    if(!$.fn.DataTable.isDataTable("#BarangTable")){
         BarangTable = $('#BarangTable').DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": false
+            "autoWidth": false,
+            "dom": '<"row"<"col-sm-6"l><"col-sm-6"p>><"row"<"col-sm-12"t>><"row"<"col-sm-6"i><"col-sm-6"p>>'
         });
     }
     else {
+        BarangTable = $('#BarangTable').DataTable();
         BarangTable.clear().draw();
     }
     GetAllStokData(currentToken, function (result) {
@@ -130,11 +132,11 @@ function StokBarangCreateModalDisableHargaJualInput()
     {
         if ($("#StokBarang-CreateForm-harga-jual-"+satuan[i]+"-check").prop("checked"))
         {
-            form.elements["harga-jual-"+satuan[i]+"-input"].setAttribute("disabled", false);
+            form.elements["harga-jual-"+satuan[i]+"-input"].disabled =false;
         }
         else
         {
-            form.elements["harga-jual-"+satuan[i]+"-input"].setAttribute("disabled", true);
+            form.elements["harga-jual-"+satuan[i]+"-input"].disabled= true;
         }
     }
 }

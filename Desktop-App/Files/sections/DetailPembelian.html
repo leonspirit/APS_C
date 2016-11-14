@@ -10,21 +10,27 @@
                 <div class="row">
                     <div class="col-md-4">
                         <span class="info-box-text">Kode</span>
-                        <span id="KodeText" class="info-box-number"></span>
+                        <span id="Detailpembelian-KodeText" class="info-box-number"></span>
                         <span class="info-box-text">Supplier</span>
-                        <span id="SupplierText" class="info-box-number"></span>
+                        <span id="Detailpembelian-SupplierText" class="info-box-number"></span>
                     </div>
                     <div class="col-md-4">
                         <span class="info-box-text">Pembayaran</span>
-                        <span class="info-box-number" id="PembayaranText"></span>
+                        <span class="info-box-number" id="Detailpembelian-PembayaranText"></span>
                         <span class="info-box-text">Status</span>
-                        <span class="info-box-number" id="StatusText"></span>
+                        <span class="info-box-number" id="Detailpembelian-StatusText"></span>
                     </div>
                     <div class="col-md-4">
                         <span class="info-box-text">Tanggal Transaksi</span>
-                        <span class="info-box-number" id="TglTransaksiText"></span>
+                        <span class="info-box-number" id="Detailpembelian-TglTransaksiText"></span>
                         <span class="info-box-text">Tanggal Jatuh Tempo</span>
-                        <span class="info-box-number" id="TglJatuhTempoText"></span>
+                        <span class="info-box-number" id="Detailpembelian-TglJatuhTempoText"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="info-box-text">Notes</span>
+                        <span class="info-box-number" id="Detailpembelian-NotesText"></span>
                     </div>
                 </div>
             </div>
@@ -60,9 +66,37 @@
                 </tfoot>
               </table>
             </div>
+            <div class="box-header">
+                <h3 class="box-title">Pembayaran</h3>
+            </div>
+            <div class="box-body">
+                <table id="Detailpembelian-CicilanTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Pembayaran</th>
+                            <th>Nominal</th>
+                            <th>Bank</th>
+                            <th>No. Giro</th>
+                            <th>Tgl. Pencairan</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2"><span class="pull-right">Total</span></th>
+                            <th></th>
+                            <th><span class="pull-right">Kekurangan</span></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
             <div class="box-footer">
-                <Button id="printButton" class="btn btn-primary pull-right"><i class="fa fa-fw fa-plus"></i>Print</Button>
-                <Button id="saveButton" class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
+                <Button id="Detailpembelian-PrintButton" class="btn btn-primary pull-right"><i class="fa fa-fw fa-plus"></i>Print</Button>
+                <Button id="Detailpembelian-SaveButton" class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i>Simpan</Button>
             </div>
           </div>
         </div>

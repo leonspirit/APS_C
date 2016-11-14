@@ -8,11 +8,11 @@ var currentToken;
 function DaftarPelangganPopulateData()
 {
     GetAllPelangganData(currentToken, function(result){
-        var PelangganTable = $('#PelangganTable').DataTable();
+        var PelangganTable;// = $('#PelangganTable').DataTable();
         if(result.token_status=="success")
         {
             var i;
-            if (typeof PelangganTable ==='undefined')
+            if (!$.fn.DataTable.isDataTable("#PelangganTable"))
             {
                 PelangganTable = $('#PelangganTable').DataTable({
                     "paging": true,
@@ -20,11 +20,13 @@ function DaftarPelangganPopulateData()
                     "searching": true,
                     "ordering": true,
                     "info": true,
-                    "autoWidth": false
+                    "autoWidth": false,
+                    "dom": '<"row"<"col-sm-6"l><"col-sm-6"p>><"row"<"col-sm-12"t>><"row"<"col-sm-6"i><"col-sm-6"p>>'
                 });
             }
             else
             {
+                PelangganTable = $('#PelangganTable').DataTable();
                 PelangganTable.clear().draw();
             }
             for (i = 0; i < result.data.length; i++) {
@@ -142,7 +144,7 @@ function DaftarPelangganCreateConfirm()
     }
     if (valid)
     {
-        setWarning(formData.elements['nama']);
+        //removeWarning(formData.elements['nama']);
         AddPelanggan(currentToken, nama, telp, alamat, function(result){
             if (result.token_status=="success") {
                 if (result.pelangganID != null)
@@ -188,9 +190,9 @@ function DaftarPelangganCreateConfirm()
 
 function DaftarPelangganPopulateEditModal(Button)
 {
-    var formdata = document.getElementById("Dafttarpelanggan-EditModal-EditForm");
-    document.getElementById("edit-modal-id").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
-    formdata.elements['name'].value = $(Button).closest('tr').find('td:eq(1)').html();
+    var formdata = document.getElementById("Daftarpelanggan-EditModal-EditForm");
+    document.getElementById("Daftarpelanggan-EditModal-PelangganIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
+    formdata.elements['nama'].value = $(Button).closest('tr').find('td:eq(1)').html();
     formdata.elements['telp'].value = $(Button).closest('tr').find('td:eq(2)').html();
     formdata.elements['alamat'].value = $(Button).closest('tr').find('td:eq(3)').html();
     var pelangganID = $(Button).attr('data-id');
@@ -250,7 +252,7 @@ function InitDaftarPelangganPage()
         DaftarPelangganDeleteConfirm(this);
     };
 
-    $(document).on("click", ".DaftarPelanggan-edit-modal-toggle", function(){
+    $(document).on("click", ".Daftarpelanggan-edit-modal-toggle", function(){
         DaftarPelangganPopulateEditModal(this);
     });
 

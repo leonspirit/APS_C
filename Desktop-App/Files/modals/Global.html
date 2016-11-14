@@ -8,14 +8,14 @@
                     <h4 class="modal-title">Notifikasi</h4>
                 </div>
                 <div class="modal-body">
-                    <h4><span id="notificationType">Pembelian</span> <a href="detailTransaksi.html">Andi - 10 Sep 16</a> Jatuh Tempo Pada 12 Sep 16 sejumlah Rp. 1.000.000.000</h4>
+                    <h4><span id="NotificationModalType"></span> <a id="NotificationModal-NamatanggalLink"></a> Jatuh Tempo Pada <span id="NotificationModal-JatuhtempoText"></span> sejumlah <span id="NotificationModal-TotalText"></span></h4>
 
-                    <form role="form">
+                    <form id="NotificationModal-CicilanForm" role="form">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Pembayaran</label>
-                                    <select class="form-control" id="cara-pilih">
+                                    <select class="form-control select2" id="NotificationModal-PembayaranSelect">
                                         <option value="giro">Giro</option>
                                         <option value="transfer">Transfer</option>
                                         <option value="tunai">Tunai</option>
@@ -29,7 +29,7 @@
                                         <div class="input-group-addon">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="cicilan-tanggal-transaksi">
+                                        <input type="text" class="form-control pull-right" id="NotificationModal-CicilanTanggalTransaksiDate">
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Bank</label>
-                                    <input type="text" class="form-control">
+                                    <input name="bank-transfer" type="text" class="form-control">
                                 </div>
 
                             </div>
@@ -46,7 +46,7 @@
                         <div class="row cara-giro">
                             <div class="col-md-6">
                                 <label>Bank</label>
-                                <input type="text" class="form-control">
+                                <input name="bank-giro" type="text" class="form-control">
 
                             </div>
                             <div class="col-md-6">
@@ -56,7 +56,7 @@
                                         <div class="input-group-addon">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right" id="cicilan-tanggal-pencairan">
+                                        <input type="text" class="form-control pull-right" id="NotificationModal-CicilanTanggalPencairanDate">
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                         <div class="row cara-giro">
                             <div class="col-md-12">
                                 <label>Nomor Giro</label>
-                                <input type="text" class="form-control">
+                                <input name="nomor-giro" type="text" class="form-control">
                             </div>
                         </div>
                         <div class="row nominal">
@@ -72,14 +72,22 @@
                                 <label>Nominal</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">Rp</span>
-                                    <input type="number" class="form-control">
+                                    <input name="nominal" type="number" class="form-control">
                                 </div>
                             </div>
+
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Notes</label>
+                                    <input name="notes" class="form-control">
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btn-DismissNotif" type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Accept</button>
+                    <button id="NotificationModal-ConfirmButton" type="button" class="btn btn-primary  pull-right" data-dismiss="modal">Accept</button>
                 </div>
             </div>
         </div>

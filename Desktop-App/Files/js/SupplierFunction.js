@@ -6,12 +6,12 @@ var currentToken;
 
 function DaftarSupplierPopulateSupplierData()
 {
-    var SupplierTable = $('#SupplierTable').DataTable();
+    var SupplierTable;// = $('#SupplierTable').DataTable();
     GetAllSupplierData(currentToken, function(result){
         if(result.token_status=="success")
         {
             var i;
-            if (typeof SupplierTable==='undefined')
+            if (!$.fn.DataTable.isDataTable("#SupplierTable"))
             {
                 SupplierTable = $('#SupplierTable').DataTable({
                     "paging": true,
@@ -19,11 +19,13 @@ function DaftarSupplierPopulateSupplierData()
                     "searching": true,
                     "ordering": true,
                     "info": true,
-                    "autoWidth": false
+                    "autoWidth": false,
+                    "dom": '<"row"<"col-sm-6"l><"col-sm-6"p>><"row"<"col-sm-12"t>><"row"<"col-sm-6"i><"col-sm-6"p>>'
                 });
             }
             else
             {
+                SupplierTable = $('#SupplierTable').DataTable();
                 SupplierTable.clear().draw();
             }
             for (i = 0; i < result.data.length; i++) {
@@ -44,8 +46,9 @@ function DaftarSupplierPopulateSupplierData()
                     result.data[i].telp,
                     result.data[i].alamat,
                     editButton+" "+delButton
-                ]).draw();
+                ]);
             }
+            SupplierTable.draw();
         }
         else
         {
@@ -153,7 +156,7 @@ function DaftarSupplierCreateSupplierConfirm()
                 var SupplierTable = $('#SupplierTable').DataTable();
                 var pad ="00000";
                 var id = "" + result.supplierID;
-                var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
+                var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
                 var editButton = "<a class='Daftarsupplier-edit-modal-toggle' data-toggle='modal' href='#Daftarsupplier-EditModal' data-id='"+
                     id+
@@ -168,7 +171,8 @@ function DaftarSupplierCreateSupplierConfirm()
                     alamat,
                     editButton+" "+delButton
                 ]).draw();
-                $("#DaftarSupplier-CreateModal").modal('toggle');
+                $("#Daftarsupplier-CreateModal").modal('toggle');
+                formData.reset();
                 createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
             }
             else {
@@ -205,7 +209,7 @@ function DaftarSupplierUpdateSupplierConfirm(Button)
                 SupplierTable.cell(rowNum, 1).data(nama);
                 SupplierTable.cell(rowNum, 2).data(telp);
                 SupplierTable.cell(rowNum, 3).data(alamat);
-                $("#DaftarSupplier-EditModal").modal('toggle');
+                $("#Daftarsupplier-EditModal").modal('toggle');
                 createAlert("success", "Data supplier "+StrId+" - "+nama +" berhasil dirubah");
             }
             else

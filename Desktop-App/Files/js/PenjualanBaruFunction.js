@@ -5,6 +5,7 @@
 
 var currentToken, DataPelanggan, DataBarang;
 
+
 function PenjualanBaruGetPelanggan()
 {
     GetAllPelangganData(currentToken, function(result){
@@ -25,7 +26,9 @@ function PenjualanBaruGetPelanggan()
                 data: DataPelanggan,
                 placeholder:"-- Pilih Pelanggan --",
                 allowClear:true
-
+               /* matcher:function(term, text) {
+                    return text === 'Tambahkan pelanggan baru' || text.toUpperCase().includes(term.toString().toUpperCase())!=-1;
+                }*/
             });
         }
         else
@@ -69,7 +72,7 @@ function PenjualanBaruGetBarang()
 
 function PenjualanBaruRemoveRow(r)
 {
-    var tableBody = document.getElementById('Penjualabaru-ItemTable').getElementsByTagName("tbody")[0];
+    var tableBody = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tbody")[0];
 
     var i = r.parentNode.parentNode.rowIndex;
     console.log(i);
@@ -80,17 +83,18 @@ function PenjualanBaruRemoveRow(r)
     tableBody.deleteRow(i-1);
 
     var j;
-    for (j=i;j<rowNum;j++)
+    for (j=i-1;j<rowNum;j++)
     {
         console.log(j);
-        tableBody.rows[j].cells[0].innerHTML = j.toString();
-       /* tableBody.rows[j].cells[1].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-1");
-        tableBody.rows[j].cells[3].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-2");
-        tableBody.rows[j].cells[4].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-3");
-        tableBody.rows[j].cells[5].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-4");
-        tableBody.rows[j].cells[6].childNodes[0].setAttribute("id","input-"+rowNum.toString()+"-5");*/
+        tableBody.rows[j].cells[0].innerHTML = (j+1).toString();
+        tableBody.rows[j].cells[1].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-1");
+        tableBody.rows[j].cells[2].setAttribute("id", "Penjualanbaru-IsiboxText-"+(j+1).toString());
+        tableBody.rows[j].cells[3].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-2");
+        tableBody.rows[j].cells[4].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-3");
+        tableBody.rows[j].cells[5].children[0].children[1].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-4");
+        tableBody.rows[j].cells[6].children[0].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-5");
     }
-    DrawTable(0, true)
+    PenjualanBaruDrawTable(null, true)
 }
 
 function PenjualanBaruAddRow()
@@ -109,7 +113,7 @@ function PenjualanBaruAddRow()
     var inputBarang = document.createElement("input");
     inputBarang.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-1");
     inputBarang.setAttribute("style", "width:100%;");
-    inputBarang.setAttribute("onchange", "PenjualanBaruGetSatuanBarangList(this);PenjualanBaruDrawTable("+ rowNum.toString()+",true);");
+    inputBarang.setAttribute("onchange", "PenjualanBaruGetSatuanBarangList(this);PenjualanBaruDrawTable(this,true);");
     inputBarang.setAttribute("class", "barang-select2 form-control input-sm");
     cell2.appendChild(inputBarang);
     $("#Penjualanbaru-Input-"+rowNum.toString()+"-1").select2({
@@ -125,18 +129,18 @@ function PenjualanBaruAddRow()
     cell3.setAttribute("style", "padding:0");
     var inputJumlah = document.createElement("input");
     inputJumlah.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-2");
-    inputJumlah.setAttribute("class", "form-control input-data"+rowNum.toString());
+    inputJumlah.setAttribute("class", "form-control");
     inputJumlah.setAttribute("type", "number");
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
-    inputJumlah.setAttribute("onchange", "PenjualanBaruDrawTable("+ rowNum.toString()+",true);");
+    inputJumlah.setAttribute("onchange", "PenjualanBaruDrawTable(this,true);");
     cell3.appendChild(inputJumlah);
 
     var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
     var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
-    inputSatuan.setAttribute("onchange", "PenjualanBaruGetHargaUnitSatuan(this);");
+    inputSatuan.setAttribute("onchange", "PenjualanBaruGetHargaUnitSatuan(this);PenjualanBaruDrawTable(this,true);");
     inputSatuan.setAttribute("class", "form-control input-sm");
     inputSatuan.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-3");
     cell4.appendChild(inputSatuan);
@@ -156,7 +160,7 @@ function PenjualanBaruAddRow()
     inputHargaAddOn.innerHTML="Rp.";
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
-    inputHarga.setAttribute("onchange", "PenjualanBaruDrawTable("+ rowNum+",true);");
+    inputHarga.setAttribute("onchange", "PenjualanBaruDrawTable(this.parentNode,true);");
     inputHarga.setAttribute("class", "form-control");
     inputHarga.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-4");
     inputHargaGroup.appendChild(inputHargaAddOn);
@@ -177,7 +181,7 @@ function PenjualanBaruAddRow()
     inputDisc.setAttribute("max", "100");
     inputDisc.setAttribute("class", "form-control");
     inputDisc.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-5");
-    inputDisc.setAttribute("onchange", "PenjualanBaruDrawTable("+ rowNum.toString()+",true);");
+    inputDisc.setAttribute("onchange", "PenjualanBaruDrawTable(this.parentNode,true);");
     inputDiscGroup.appendChild(inputDisc);
     inputDiscGroup.appendChild(inputDiscAddOn);
     cell8.appendChild(inputDiscGroup);
@@ -191,6 +195,7 @@ function PenjualanBaruAddRow()
     //if admin
     var cell10 = row.insertCell(8);
     var hPokok = document.createElement("span");
+    hPokok.setAttribute("id", "Penjualanbaru-hpokok-"+rowNum.toString());
     hPokok.setAttribute("class", "pull-right");
     hPokok.innerHTML = "Rp. 0";
     cell10.appendChild(hPokok);
@@ -219,13 +224,21 @@ function PenjualanBaruResetTable() {
             break;
         tableBody.deleteRow(-1);
     }
-    tableBody.rows[0].cells[7].innerHTML = "Rp. 0";
-    tableBody.rows[0].cells[8].innerHTML = "Rp. 0";
-    tableBody.rows[0].cells[9].innerHTML = "Rp. 0";
+    tableBody.rows[0].cells[7].innerHTML = "<span class='pull-right'>Rp. 0</span>";
+    tableBody.rows[0].cells[8].innerHTML = "<span class='pull-right'>Rp. 0</span>";
+    tableBody.rows[0].cells[9].innerHTML = "<span class='pull-right'>Rp. 0</span>";
 }
 
-function PenjualanBaruDrawTable(indexChanged, countLaba)
-{
+function PenjualanBaruDrawTable(r, countLaba) {
+    var indexChanged;
+    console.log(r);
+    if (r != null){
+        indexChanged =r.parentNode.parentNode.rowIndex;
+        console.log(indexChanged);
+    }
+    else {
+        indexChanged = 0;
+    }
     var i;
     var itemTable= document.getElementById("Penjualanbaru-ItemTable");
     if (countLaba)
@@ -237,11 +250,11 @@ function PenjualanBaruDrawTable(indexChanged, countLaba)
         var hpokok;
         var laba;
     }
-    if(indexChanged!=0){
+    if(indexChanged!=0 && indexChanged!=null){
         var curRow =  itemTable.rows[indexChanged];
-        var qty = curRow.cells[3].children[0].value;
-        var hargaSatuan = curRow.cells[5].children[0].children[1].value;
-        var disc = curRow.cells[6].children[0].children[0].value;
+        var qty = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-2").value;
+        var hargaSatuan = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-4").value;
+        var disc = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-5").value;
         //subtotal
         var Subtotal = parseInt((qty * hargaSatuan*(100-disc))/100);
         curRow.cells[7].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
@@ -250,7 +263,7 @@ function PenjualanBaruDrawTable(indexChanged, countLaba)
         {
             hpokokStr = curRow.cells[8].children[0].innerHTML.toString().substring(4);
             hpokok = parseInt(hpokokStr.replace(',',''));
-            laba = Subtotal - hpokok;
+            laba = Subtotal - (hpokok*qty);
             curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(laba);
         }
     }
@@ -282,11 +295,12 @@ function PenjualanBaruHideJatuhTempo()
 {
     if ($("#Penjualanbaru-PembayaranSelect").val() == "cash")
     {
-        $("#Penjualanbaru-JatuhtempoContainer").hide();
+        document.getElementById("Penjualanbaru-TgljatuhtempoDate").value="";
+        document.getElementById("Penjualanbaru-TgljatuhtempoDate").disabled=true;
     }
     else
     {
-        $("#Penjualanbaru-JatuhtempoContainer").show();
+        document.getElementById("Penjualanbaru-TgljatuhtempoDate").disabled= false;
     }
 }
 
@@ -295,6 +309,8 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
 {
     var rowIndex = selectBox.parentNode.parentNode.rowIndex;
     var barangID = selectBox.value;
+    var hargaPokokPcs = $(selectBox).select2('data')[0].harga_pokok;
+        console.log(hargaPokokPcs);
     console.log(rowIndex);
     GetAllSatuanData(currentToken, barangID, function(result)
     {
@@ -304,8 +320,9 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
         {
             data.push({
                 "id":result.data[i].satuanID,
-                "text":result.data[i].satuan,
-                "harga_jual":result.data[i].harga_jual
+                "text":capitalizeFirstLetter(result.data[i].satuan),
+                "harga_jual":result.data[i].harga_jual,
+                "harga_pokok":result.data[i].konversi * result.data[i].konversi_acuan * hargaPokokPcs
             });
             if(result.data[i].satuan=="box")
             {
@@ -324,66 +341,65 @@ function PenjualanBaruGetHargaUnitSatuan(selectBox)
 {
     var rowIndex = selectBox.parentNode.parentNode.rowIndex;
     document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-4").value = $("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2('data')[0].harga_jual;
+    document.getElementById("Penjualanbaru-hpokok-"+rowIndex.toString()).innerHTML = "Rp. "+numberWithCommas($("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2('data')[0].harga_pokok);
 }
 
-function PenjualanBaruSave(isPrinted)
-{
-
-    console.log("mencret");
+function PenjualanBaruSave(isPrinted) {
+    var valid = true;
     var satuan = [];
-    var itemTable= document.getElementById("Penjualanbaru-ItemTable");
+    var itemTable = document.getElementById("Penjualanbaru-ItemTable");
     var i;
     var alamat = document.getElementById("Penjualanbaru-AlamatInput").value;
-    for (i=1;i<itemTable.rows.length-1;i++){
-        var curRow =  itemTable.rows[i];
+    var tglJatuhTempo, tglJatuhTempoTemp, status;
+    if ($("#Penjualanbaru-PembayaranSelect").val() == "cash") {
+        tglJatuhTempo = null;
+        status = "lunas"
+    }
+    else {
+        tglJatuhTempoTemp = new Date($("#Penjualanbaru-TgljatuhtempoDate").datepicker().val());
+        tglJatuhTempo = tglJatuhTempoTemp.getFullYear() + "-" + (tglJatuhTempoTemp.getMonth() + 1) + "-" + tglJatuhTempoTemp.getDate();
+        status = "belum lunas"
+    }
+    var tglTransaksiTemp = new Date($("#Penjualanbaru-TgltransaksiDate").datepicker().val());
+    var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
+    for (i = 1; i < itemTable.rows.length - 1; i++) {
         satuan.push({
-            "satuanID":$("#Penjualanbaru-Input-"+i.toString()+"-3").val(),
-            "quantity":$("Penjualanbaru-Input-"+i.toString()+"-2").val(),
-            "disc":$("#Penjualabaru-Input-"+i.toString()+"-5").val(),
-            "harga_per_biji":curRow.cells[5].children[0].children[1].value
+            "satuanID": $("#Penjualanbaru-Input-" + i.toString() + "-3").val(),
+            "quantity": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-2").value,
+            "disc": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-5").value,
+            "harga_jual_saat_ini": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-4").value
         });
-        var tglJatuhTempo, tglJatuhTempoTemp, status;
-        if ($("#Penjualanbaru-PembayaranSelect").val()=="cash")
-        {
-            tglJatuhTempo=null;
-            status = "lunas"
-        }
-        else
-        {
-            tglJatuhTempoTemp = new Date($("#Penjualanbaru-TgljatuhtempoDate").datepicker().val());
-            tglJatuhTempo = tglJatuhTempoTemp.getFullYear()+"-"+tglJatuhTempoTemp.getMonth()+"-"+tglJatuhTempoTemp.getDate();
-            status = "belum lunas"
-        }
-        var tglTransaksiTemp = new Date($("#Penjualanbaru-TgltransaksiDate").datepicker().val());
-        var tglTransaksi = tglTransaksiTemp.getFullYear()+"-"+tglTransaksiTemp.getMonth()+"-"+tglTransaksiTemp.getDate();
+
+    }
+    console.log(satuan);
+
+    if (valid) {
         AddPenjualan(
             currentToken,
             $("#Penjualanbaru-PelangganSelect").val(),
             tglTransaksi,
             tglJatuhTempo,
-            parseInt(itemTable.rows[itemTable.rows.length-1].cells[2].children[0].innerHTML.substring(4).replace(',', '')),
+            parseInt(itemTable.rows[itemTable.rows.length - 1].cells[2].children[0].innerHTML.substring(4).replace(',', '')),
             isPrinted,
             status,
-            "",//notes
+            $("#Penjualanbaru-NotesInput").val(),
             alamat,
             satuan,
-            function(result){
-                if (result!=null && result.token_status=="success")
-                {
+            function (result) {
+                if (result != null && result.token_status == "success") {
                     console.log(result.penjualanID);
                     PenjualanBaruResetTable();
-                    var pad ="0000";
+                    var pad = "0000";
                     var id = "" + result.penjualanID;
-                    var StrId  = "TJ"+ pad.substring(0, pad.length - id.length)+id;
-                    createAlert("success", "Data Penjualan baru "+StrId+" berhasil ditambahkan");
+                    var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
+                    createAlert("success", "Data Penjualan baru " + StrId + " berhasil ditambahkan");
                 }
-                else
-                {
+                else {
                     createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
                 }
             }
         );
-    }
+}
 }
 
 function InitPenjualanBaruPage()
@@ -407,8 +423,9 @@ function InitPenjualanBaruPage()
     $('#Penjualanbaru-TgljatuhtempoDate').datepicker({
         autoclose: true
     });
-
-    PenjualanBaruAddRow();
+    var tableBody = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tbody")[0];
+    if (tableBody.rows.length<1)
+        PenjualanBaruAddRow();
     document.getElementById("Penjualanbaru-AddButton").onclick = function()
     {
         window.scrollTo(0, document.body.scrollHeight);
@@ -422,4 +439,16 @@ function InitPenjualanBaruPage()
     {
         PenjualanBaruSave(0);
     };
+    /*document.getElementById("Penjualanbaru-PelangganSelect").onchange = function()
+    {
+        console.log("lala");
+        $("#Penjualanbaru-PelangganSelect option[value='add']").innerHTML = document.getElementById("Penjualanbaru-PelangganSelect").value;
+    }*/
+   /* $("#Penjualanbaru-PelangganSelect").live('change', function(){
+        alert(this.value)
+    });*/
+
+    /*$(document.body).on("change","#Penjualanbaru-PelangganSelect",function(){
+        alert(this.value);
+    });*/
 }

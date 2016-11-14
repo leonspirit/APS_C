@@ -9,21 +9,23 @@ var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 
 function populateLaporanHutangData()
 {
-    var HutangTable = $('#HutangTable').DataTable();
-    getHutangPembelianData(currentToken, function(result){
+    var HutangTable;
+    getHutangPembelianData(currentToken, "2000-01-01", "2020-01-01", function(result){
         var i;
-        if (typeof HutangTable==="undefined")
+        if (!$.fn.DataTable.isDataTable("#HutangTable"))
         {
             HutangTable = $('#HutangTable').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": false,
+                "paging": false,
+                "lengthChange": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
-                "autoWidth": false
+                "autoWidth": false,
+                "dom":'<"row"<"col-sm-12"t>><"row"<"col-sm-12"i>>'
             });
         }
         else {
+            HutangTable = $('#HutangTable').DataTable();
             HutangTable.clear().draw();
         }
         if (result.token_status=="success")
