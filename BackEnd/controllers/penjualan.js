@@ -81,7 +81,6 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
 
         var stokID = result[0]['stokID']
         var stok_skrg = result[0]['stok_skrg']
-        var harga_jual_saat_ini = result[0]['harga_jual_saat_ini']
 
         var kurang = 0
         if(stok_skrg >= item){
