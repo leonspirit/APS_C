@@ -81,7 +81,6 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
 
         var stokID = result[0]['stokID']
         var stok_skrg = result[0]['stok_skrg']
-        var harga_jual_saat_ini = result[0]['harga_jual_saat_ini']
 
         var kurang = 0
         if(stok_skrg >= item){
@@ -161,8 +160,8 @@ router.post('/tambah_penjualan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'INSERT INTO penjualan SET pelangganID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, subtotal = ?, karyawanID = ?, isPrinted = ?, status = ?, alamat = ?';
-            var pembelian = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.isPrinted, req.body.status, req.body.alamat]
+            var querystring = 'INSERT INTO penjualan SET pelangganID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, subtotal = ?, karyawanID = ?, isPrinted = ?, status = ?, alamat = ?, notes = ?';
+            var pembelian = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.isPrinted, req.body.status, req.body.alamat, req.body.notes]
             connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2;
                 resp['penjualanID'] = result2.insertId;

@@ -39,6 +39,30 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
+function add_nama_karyawan(index, data, callback){
+
+    var karyawanID = data[index]['karyawanID']
+    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
+    var karyawan = [karyawanID]
+    connection.query(qrstring, karyawan, function(err, result){
+        if(err) throw err
+        data[index]['karyawanNama'] = result[0]['nama']
+        callback()
+    })
+}
+
+function add_nama_supplier2(index, data, callback){
+
+    var supplierID = data[index]['supplierID']
+    var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
+    var supplier = [supplierID]
+    connection.query(qrstring, supplier, function(err, result){
+        if(err) throw err
+        data[index]['supplierNama'] = result[0]['nama']
+        callback()
+    })
+}
+
 function add_pembelian_barang(req, i, pembelianID){
 
     var satuanID = req.body.satuan[i]['satuanID']
@@ -84,8 +108,8 @@ router.post('/tambah_pembelian', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'INSERT INTO pembelian SET supplierID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, subtotal = ?, karyawanID = ?, disc = ?, isPrinted = ?, status = ?';
-            var pembelian = [req.body.supplierID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.disc, req.body.isPrinted, req.body.status]
+            var querystring = 'INSERT INTO pembelian SET supplierID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, subtotal = ?, karyawanID = ?, disc = ?, isPrinted = ?, status = ?, notes = ?';
+            var pembelian = [req.body.supplierID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.disc, req.body.isPrinted, req.body.status, req.body.notes]
             connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2;
                 resp['pembelianID'] = result2.insertId;
@@ -151,16 +175,30 @@ router.post('/list_hutang_pembelian', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM pembelian WHERE status != "lunas"'
-            connection.query(querystring, function(err2, result2){
+            var querystring = 'SELECT * FROM pembelian WHERE status != "lunas" AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var pembelian = [req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                    add_nama_supplier2(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
-                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
                 );
             })
         }
@@ -178,16 +216,30 @@ router.post('/list_lunas_pembelian', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM pembelian WHERE status = "lunas"'
-            connection.query(querystring, function(err2, result2){
+            var querystring = 'SELECT * FROM pembelian WHERE status = "lunas" AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var pembelian = [req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier(loop.iteration(), result2, function(result) {
+                    add_nama_supplier2(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
-                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
                 );
             })
         }
@@ -289,30 +341,6 @@ router.post('/tambah_cicilan_pembelian', function(req,res){
     })
 })
 
-function add_nama_supplier2(index, data, callback){
-
-    var supplierID = data[index]['supplierID']
-    var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
-    var supplier = [supplierID]
-    connection.query(qrstring, supplier, function(err, result){
-        if(err) throw err
-        data[index]['supplierNama'] = result[0]['nama']
-        callback()
-    })
-}
-
-function add_nama_karyawan(index, data, callback){
-
-    var karyawanID = data[index]['karyawanID']
-    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
-    var karyawan = [karyawanID]
-    connection.query(qrstring, karyawan, function(err, result){
-        if(err) throw err
-        data[index]['karyawanNama'] = result[0]['nama']
-        callback()
-    })
-}
-
 router.post('/list_pembelian_jatuh_tempo', function(req,res){
 
     var resp = {}
@@ -343,7 +371,6 @@ router.post('/list_pembelian_jatuh_tempo', function(req,res){
             var pembelian = [today, last_n_day]
             connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2
-                resp['data'] = result2
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
@@ -365,6 +392,155 @@ router.post('/list_pembelian_jatuh_tempo', function(req,res){
                         );
                     }
                 );
+            })
+        }
+    })
+})
+
+router.post('/list_pembelian_barang_A', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring1 = 'SELECT satuanID FROM satuanbarang WHERE barangID = ?'
+            var querystring2 = 'SELECT pembelianID, SUM(quantity*harga_per_biji) as subtotal FROM pembelianbarang WHERE satuanID IN ('+querystring1+') GROUP BY pembelianID'
+            var querystring3 = 'SELECT p.pembelianID, supplierID, tanggal_transaksi, jatuh_tempo, karyawanID, isPrinted, status, notes, t.subtotal as subtotal FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var pembelianbarang = [req.body.barangID, req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring3, pembelianbarang, function(err2, result2){
+                if(err2) throw err2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
+                );
+            })
+        }
+    })
+})
+
+router.post('/list_pembelian_supplier_A', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'SELECT * FROM pembelian WHERE supplierID = ? AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var pembelian = [req.body.supplierID, req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2) throw err2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
+                );
+            })
+        }
+    })
+})
+
+router.post('/change_printed_status', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE pembelian SET isPrinted = 1 - isPrinted WHERE pembelianID = ?'
+            var pembelian = [req.body.pembelianID]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2) throw err2
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/edit_pembelianbarang', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE pembelianbarang SET harga_per_biji = ?, disc_1 = ?, disc_2 = ?, disc_3 = ? WHERE pembelianbarangID = ?'
+            var pembelianbarang = [req.body.harga_per_biji, req.body.disc_1, req.body.disc_2, req.body.disc_3, req.body.pembelianbarangID]
+            connection.query(querystring, pembelianbarang, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/edit_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] ='failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE pembelian SET supplierID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, notes = ? WHERE pembelianID = ?'
+            var pembelian = [req.body.supplierID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.pembelianID]
+            connection.query(querystring, pembelian, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
             })
         }
     })
