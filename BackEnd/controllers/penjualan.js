@@ -135,15 +135,26 @@ function add_penjualan_barang(req, i, penjualanID){
     })
 }
 
+function add_nama_karyawan(index, data, callback){
+
+    var karyawanID = data[index]['karyawanID']
+    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
+    var karyawan = [karyawanID]
+    connection.query(qrstring, karyawan, function(err, result){
+        if(err) throw err
+        data[index]['karyawanNama'] = result[0]['nama']
+        callback()
+    })
+}
+
 function add_nama_pelanggan(index, data, callback){
 
     var pelangganID = data[index]['pelangganID']
-
     var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
     var pelanggan = [pelangganID]
     connection.query(qrstring, pelanggan, function(err, result){
         if(err) throw err
-        data[index]['nama'] = result[0]['nama']
+        data[index]['pelangganNama'] = result[0]['nama']
         callback()
     })
 }
@@ -161,8 +172,8 @@ router.post('/tambah_penjualan', function(req,res){
         else{
             resp['token_status'] = 'success'
             var querystring = 'INSERT INTO penjualan SET pelangganID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, subtotal = ?, karyawanID = ?, isPrinted = ?, status = ?, alamat = ?, notes = ?';
-            var pembelian = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.isPrinted, req.body.status, req.body.alamat, req.body.notes]
-            connection.query(querystring, pembelian, function(err2, result2){
+            var penjualan = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.subtotal, result['karyawanID'], req.body.isPrinted, req.body.status, req.body.alamat, req.body.notes]
+            connection.query(querystring, penjualan, function(err2, result2){
                 if(err2) throw err2;
                 resp['penjualanID'] = result2.insertId;
 
@@ -214,8 +225,9 @@ router.post('/list_piutang_penjualan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM penjualan WHERE status != "lunas"'
-            connection.query(querystring, function(err2, result2){
+            var querystring = 'SELECT * FROM penjualan WHERE status != "lunas" AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var penjualan = [req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring, penjualan, function(err2, result2){
                 if(err2) throw err2
 
                 var len = result2.length
@@ -223,7 +235,20 @@ router.post('/list_piutang_penjualan', function(req,res){
                     add_nama_pelanggan(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
-                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
                 );
             })
         }
@@ -241,7 +266,8 @@ router.post('/list_lunas_penjualan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM penjualan WHERE status = "lunas"'
+            var querystring = 'SELECT * FROM penjualan WHERE status = "lunas" AND tanggal_transaksi >= ? AND  tanggal_transaksi <= ?'
+            var penjualan = [req.body.tgl_awal, req.body.tgl_akhir]
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2
 
@@ -250,7 +276,20 @@ router.post('/list_lunas_penjualan', function(req,res){
                     add_nama_pelanggan(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
-                    function(){resp['data'] = result2; res.status(200).send(resp);}
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
                 );
             })
         }
@@ -352,30 +391,6 @@ router.post('/tambah_cicilan_penjualan', function(req,res){
     })
 })
 
-function add_nama_pelanggan2(index, data, callback){
-
-    var pelangganID = data[index]['pelangganID']
-    var qrstring = 'SELECT nama FROM pelanggan WHERE pelangganID = ?'
-    var pelanggan = [pelangganID]
-    connection.query(qrstring, pelanggan, function(err, result){
-        if(err) throw err
-        data[index]['pelangganNama'] = result[0]['nama']
-        callback()
-    })
-}
-
-function add_nama_karyawan(index, data, callback){
-
-    var karyawanID = data[index]['karyawanID']
-    var qrstring = 'SELECT nama FROM karyawan WHERE karyawanID = ?'
-    var karyawan = [karyawanID]
-    connection.query(qrstring, karyawan, function(err, result){
-        if(err) throw err
-        data[index]['karyawanNama'] = result[0]['nama']
-        callback()
-    })
-}
-
 router.post('/list_penjualan_jatuh_tempo', function(req,res){
 
     var resp = {}
@@ -410,7 +425,7 @@ router.post('/list_penjualan_jatuh_tempo', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_pelanggan2(loop.iteration(), result2, function(result) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
@@ -428,6 +443,114 @@ router.post('/list_penjualan_jatuh_tempo', function(req,res){
                         );
                     }
                 );
+            })
+        }
+    })
+})
+
+router.post('/list_penjualan_barang_A', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring1 = 'SELECT satuanID FROM satuanbarang WHERE barangID = ?'
+            var querystring2 = 'SELECT penjualanID, SUM(quantity*harga_jual_saat_ini*(100-disc)/100) as subtotal FROM penjualanbarang WHERE satuanID IN ('+querystring1+') GROUP BY penjualanID'
+            var querystring3 = 'SELECT p.penjualanID, pelangganID, tanggal_transaksi, jatuh_tempo, karyawanID, isPrinted, status, alamat, notes, t.subtotal as subtotal FROM penjualan as p, ('+querystring2+') as t WHERE p.penjualanID = t.penjualanID AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
+            var penjualanbarang = [req.body.barangID, req.body.tgl_awal, req.body.tgl_akhir]
+            connection.query(querystring3, penjualanbarang, function(err2, result2){
+                if(err2) throw err2
+
+                var len = result2.length
+                asyncLoop(len, function(loop) {
+                    add_nama_pelanggan(loop.iteration(), result2, function(result) {
+                        loop.next();
+                    })},
+                    function(){
+                        asyncLoop(len, function(loop) {
+                            add_nama_karyawan(loop.iteration(), result2, function(result) {
+                                loop.next();
+                            })},
+                            function(){
+                                resp['data'] = result2
+                                resp['data'].sort(function(a,b){
+                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                })
+                                res.status(200).send(resp)
+                            }
+                        );
+                    }
+                );
+            })
+        }
+    })
+})
+
+router.post('/change_printed_status', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE penjualan SET isPrinted = 1 - isPrinted WHERE penjualanID = ?'
+            var penjualan = [req.body.penjualanID]
+            connection.query(querystring, penjualan, function(err2, result2){
+                if(err2) throw err2
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/edit_penjualanbarang', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ? WHERE penjualanbarangID = ?'
+            var penjualanbarang = [req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
+            connection.query(querystring, penjualanbarang, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/edit_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] ='failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE penjualan SET pelangganID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, notes = ?, alamat = ? WHERE penjualanID = ?'
+            var penjualan = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.alamat, req.body.penjualanID]
+            connection.query(querystring, penjualan, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
             })
         }
     })

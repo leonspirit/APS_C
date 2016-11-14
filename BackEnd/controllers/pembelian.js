@@ -51,7 +51,7 @@ function add_nama_karyawan(index, data, callback){
     })
 }
 
-function add_nama_supplier2(index, data, callback){
+function add_nama_supplier(index, data, callback){
 
     var supplierID = data[index]['supplierID']
     var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
@@ -124,19 +124,6 @@ router.post('/tambah_pembelian', function(req,res){
     })
 })
 
-function add_nama_supplier(index, data, callback){
-
-    var supplierID = data[index]['supplierID']
-
-    var qrstring = 'SELECT nama FROM supplier WHERE supplierID = ?'
-    var supplier = [supplierID]
-    connection.query(qrstring, supplier, function(err, result){
-        if(err) throw err
-        data[index]['nama'] = result[0]['nama']
-        callback()
-    })
-}
-
 router.post('/list_pembelian', function(req,res){
 
     var resp = {}
@@ -182,7 +169,7 @@ router.post('/list_hutang_pembelian', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
@@ -223,7 +210,7 @@ router.post('/list_lunas_pembelian', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
@@ -374,7 +361,7 @@ router.post('/list_pembelian_jatuh_tempo', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
@@ -409,7 +396,7 @@ router.post('/list_pembelian_barang_A', function(req,res){
         else{
             resp['token_status'] = 'success'
             var querystring1 = 'SELECT satuanID FROM satuanbarang WHERE barangID = ?'
-            var querystring2 = 'SELECT pembelianID, SUM(quantity*harga_per_biji) as subtotal FROM pembelianbarang WHERE satuanID IN ('+querystring1+') GROUP BY pembelianID'
+            var querystring2 = 'SELECT pembelianID, SUM(quantity*harga_per_biji*(100-disc_1-disc_2-disc_3)/100) as subtotal FROM pembelianbarang WHERE satuanID IN ('+querystring1+') GROUP BY pembelianID'
             var querystring3 = 'SELECT p.pembelianID, supplierID, tanggal_transaksi, jatuh_tempo, karyawanID, isPrinted, status, notes, t.subtotal as subtotal FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID AND tanggal_transaksi >= ? AND tanggal_transaksi <= ?'
             var pembelianbarang = [req.body.barangID, req.body.tgl_awal, req.body.tgl_akhir]
             connection.query(querystring3, pembelianbarang, function(err2, result2){
@@ -417,7 +404,7 @@ router.post('/list_pembelian_barang_A', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
@@ -458,7 +445,7 @@ router.post('/list_pembelian_supplier_A', function(req,res){
 
                 var len = result2.length
                 asyncLoop(len, function(loop) {
-                    add_nama_supplier2(loop.iteration(), result2, function(result) {
+                    add_nama_supplier(loop.iteration(), result2, function(result) {
                         loop.next();
                     })},
                     function(){
