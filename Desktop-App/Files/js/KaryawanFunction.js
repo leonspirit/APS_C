@@ -180,13 +180,43 @@ function DaftarKaryawanEditConfirm(Button)
     });
 }
 function DaftarKaryawanCreateConfirm(){
-     var formData = document.getElementById("DaftarKaryawan-CreateModal-CreateForm");
+     var formData = document.getElementById("Daftarkaryawan-CreateModal-CreateForm");
     var nama = formData.elements['nama'].value;
     var telp = formData.elements['telp'].value;
     var alamat = formData.elements['alamat'].value;
     var username = formData.elements['username'].value;
-    var passwordHash = "password".hashCode();
-    AddKaryawan(currentToken, nama, telp, alamat, username, passwordHash,function(result){
+    var passwordHash = md5(username+"123");
+    var i;
+    var FullHakAkses = ["StokBarang",
+    "BarangTerjualTerbanyak",
+    "HargaPokokLaba",
+    "LaporanPenjualan",
+    "LaporanPembelian",
+    "PembelianBaru",
+    "PenjualanBaru",
+    "EditPenjualan",
+    "EditPembelian",
+    "ReturPenjualan",
+    "ReturPembelian",
+    "Hutang",
+    "Piutang",
+    "DaftarPelanggan",
+    "DaftarPembeliTerbanyak",
+    "DaftarSupplier",
+    "DaftarKaryawan",
+    "UpdateHakAksesKaryawan"];
+    var hakakses = [];
+    for (i=0;i<FullHakAkses.length;i++)
+    {
+        if ($("Daftarkaryawan-CreateModal-Hak"+FullHakAkses[i]).prop("checked"))
+        {
+            console.log("nambah "+FullHakAkses[i]);
+            hakakses.push({
+                "nama": FullHakAkses[i]
+            });
+        }
+    }
+    AddKaryawan(currentToken, nama, telp, alamat, username, passwordHash, hakakses,function(result){
         if (result.token_status=="success")
         {
             if  (result.karyawanID != null)
@@ -211,7 +241,7 @@ function DaftarKaryawanCreateConfirm(){
                     editButton+" "+delButton
                 ]).draw();
                 $("#Daftarkaryawan-CreateModal").modal('toggle');
-                createAlert("success", "Karyawan baru "+StrId+" - "+nama +" berhasil ditambahkan");
+                createAlert("success", "Karyawan baru "+StrId+" - "+nama +" berhasil ditambahkan, password baru untuk karyawan adalah username123, harap segera minta karyawan yang bersangkutan untuk mengganti password");
             }
             else
                 console.log("Add Karyawan failed");
@@ -224,43 +254,9 @@ function DaftarKaryawanCreateConfirm(){
     });
 
 }
-function ListHakAksesCreateModal()
-{
-    var akses=[
-        "Stok Barang",
-        "Laporan Penjualan",
-        "Laporan Pembelian",
-        "Penjualan Baru",
-        "Pembelian Baru",
-        "Hutang",
-        "Piutang",
-        "Daftar Pelanggan",
-        "Daftar Karyawan",
-        "Daftar Supplier"
-    ];
-    var i;
-    var TableHakAkses =  document.getElementById("CreateModalHakAksesTable").getElementsByTagName("tbody")[0];
-    for (i=0;i<akses.length;i++)
-    {
-        //var aksesRow = TableHakAkses.
-        var rowCount = TableHakAkses.rows.length;
-        var row = TableHakAkses.insertRow(rowCount);
-
-        var rowAksesName = row.insertCell(0);
-        rowAksesName.innerHTML = akses[i];
-
-        var rowAksesStatus = row.insertCell(1);
-        var checkBox  = document.createElement("input");
-        checkBox.setAttribute("type", "checkbox");
-        checkBox.setAttribute("class", "minimal");
-        rowAksesStatus.appendChild(checkBox);
-    }
-    $('input[type="checkbox"].minimal').iCheck({
-        checkboxClass:"icheckbox_minimal-green"
-    });
-}
 function InitDaftarKaryawanPage()
 {
+    currentToken = localStorage.getItem("token");
     setPage("DaftarKaryawan");
     DaftarKaryawanPopulateKaryawanData();
     $(document).on("click", ".Daftarkaryawan-delete-modal-toggle", function() {
@@ -294,6 +290,5 @@ function InitDaftarKaryawanPage()
             ""
         );
     });
- //   ListHakAksesCreateModal();
 
 }

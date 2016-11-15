@@ -42,6 +42,7 @@ function UpdateDataSupplier(token, Id, nama, telp, alamat, fn)
 
 function AddSupplier(token,  nama, telp, alamat, fn)
 {
+    console.log("lala");
     $.post( baseUrl + "supplier/tambah_supplier/",
         {
             token: token,
@@ -50,6 +51,7 @@ function AddSupplier(token,  nama, telp, alamat, fn)
             alamat: alamat
         }
         ,function(data) {
+            console.log("lali");
             fn(data);
         }, "json");
 }

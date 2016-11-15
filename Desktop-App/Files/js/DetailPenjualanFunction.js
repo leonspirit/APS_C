@@ -12,6 +12,13 @@ function populateDetailPenjualan(curPenjualanID)
         if (result.token_status=="success")
         {
             var penjualan = result.data[0];
+            if (penjualan.status=="lunas")
+            {
+                $("#Detailpenjualan-PayButton").show();
+            }
+            else {
+                $("#Detailpenjualan-PayButton").hide();
+            }
             if (!$.fn.DataTable.isDataTable("#Detailpenjualan-ItemTable")) {
                 itemPenjualanTable = $("#Detailpenjualan-ItemTable").DataTable({
                     "paging": false,
@@ -77,19 +84,37 @@ function populateDetailPenjualan(curPenjualanID)
                 var qty = penjualan.barang[i].quantity;
                 var disc = penjualan.barang[i].disc;
                 var itemSubtotal = (hargaUnit * qty)*((100-disc)/100);
-                itemPenjualanTable.row.add([
-                    "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                    penjualan.barang[i].penjualanbarangID+"aqua botol 600ml",
-                    "",
-                    "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                    "",
-                    "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
-                    "<span class='pull-right'>"+disc +" %</span>",
-                    "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>",
-                    "",
-                    ""
-                ]).draw();
+                if (hasHakAkses("HargaPokokLaba"))
+                {
+                    var hpokok="";
+                    var laba="";
+                    itemPenjualanTable.row.add([
+                        "<span class='pull-right'>"+(i+1).toString()+"</span>",
+                        penjualan.barang[i].penjualanbarangID+"aqua botol 600ml",
+                        "",
+                        "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
+                        "",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
+                        "<span class='pull-right'>"+disc +" %</span>",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>",
+                        hpokok,
+                        laba
+                    ]);
+                }
+                else {
+                    itemPenjualanTable.row.add([
+                        "<span class='pull-right'>"+(i+1).toString()+"</span>",
+                        penjualan.barang[i].penjualanbarangID+"aqua botol 600ml",
+                        "",
+                        "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
+                        "",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
+                        "<span class='pull-right'>"+disc +" %</span>",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"
+                    ]);
+                }
             }
+            itemPenjualanTable.draw();
             if (!$.fn.DataTable.isDataTable("#Detailpenjualan-cicilanTable")) {
                 CicilanPenjualanTable = $("#Detailpenjualan-cicilanTable").DataTable({
                     "paging": false,
@@ -145,6 +170,42 @@ function populateDetailPenjualan(curPenjualanID)
 }
 function InitDetailPenjualanPage(curPenjualanID)
 {
+
+    currentToken = localStorage.getItem("token");
+    console.log("initdetailpenjualan");
     setPage("DetailPenjualan");
     populateDetailPenjualan(curPenjualanID);
+    if (hasHakAkses("HargaPokokLaba"))
+    {
+        $(".Detailpenjualan-HargaPokokLaba").show();
+    }
+    else{
+        $(".Detailpenjualan-HargaPokokLaba").hide();
+    }
+
+    document.getElementById("Detailpenjualan-PayButton").onclick= function()
+    {
+        PopulateNotificationModal("beli", curPenjualanID);
+    };
+
+    if (hasHakAkses("ReturPenjualan"))
+    {
+        $("#Detailpenjualan-ReturButton").show();
+        document.getElementById("Detailpenjualan-ReturButton").onclick=function(){
+            InitReturPembelianPage(curPenjualanID);
+        };
+    }
+    else {
+        $("#Detailpenjualan-ReturButton").hide();
+    }
+    if (hasHakAkses("EditPenjualan"))
+    {
+        $("#Detailpenjualan-EditButton").show();
+        document.getElementById("Detailpenjualan-EditButton").onclick=function(){
+            InitEditPenjualanPage(curPenjualanID);
+        };
+    }
+    else {
+        $("#Detailpenjualan-EditButton").hide();
+    }
 }

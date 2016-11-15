@@ -155,7 +155,6 @@ function PembelianBaruAddRow()
     inputJumlah.setAttribute("onchange", "PembelianBaruDrawTable(this);");
     cell3.appendChild(inputJumlah);
 
-
     var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
     cell4.setAttribute("class", "form-group has-error");
@@ -169,7 +168,6 @@ function PembelianBaruAddRow()
         placeholder:"-- Pilih Unit --",
         allowClear:true
     });
-
 
     var cell6 = row.insertCell(5);
     cell6.setAttribute("style", "padding:0;");
@@ -437,14 +435,6 @@ function PembelianBaruSave(isPrinted)//PENTING
             valid=false;
             setWarning(document.getElementById("Pembelianbaru-Input-"+i.toString()+"-3"), "satuan harus diisi")
         }
-
-      /*  var harga_per_biji = document.getElementById("Pembelianbaru-Input-"+i.toString()+"-4");
-        if (harga_per_biji.value==null || harga_per_biji==0 || harga_per_biji=='')
-        {
-            valid=false;
-            setWarning(harga_per_biji,"jumlah tidak boleh kosong");
-        }
-*/
     }
     if (valid)
     {
@@ -505,30 +495,40 @@ function PembelianBaruCreateSupplierConfirm()
 {
     var valid=true;
     var formData = document.getElementById("Pembelianbaru-CreatesupplierModal-CreateForm");
-    var nama = formData.elements['nama'];
-    var telp = formData.elements['telp'];
-    var alamat = formData.elements['alamat'];
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
     if (nama=="" || nama==null)
     {
         valid=false;
     }
     if (valid)
     {
+        console.log("valid");
         AddSupplier(currentToken, nama, telp, alamat, function(result){
+            console.log('fungsi');
             if (result.token_status=="success")
             {
+                console.log('fungsi1');
                 if  (result.supplierID != null)
                 {
+                    console.log('fungsi2');
                     var pad ="00000";
                     var id = "" + result.supplierID;
                     var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
-
+                    console.log('fungsi3');
                     $("#Pembelianbaru-CreatesupplierModal").modal('toggle');
                     formData.reset();
                     createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
-                   /* DataSupplier.push({
+                    console.log('fungsi4');
+                    DataSupplier.pop();
+                    DataSupplier.push({
                         id:id,
                         text:nama
+                    });
+                    DataSupplier.push({
+                        id:0,
+                        text:"+ Tambah Supplier Baru"
                     });
                     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher){
                         $("#Pembelianbaru-SupplierSelect").select2({
@@ -539,7 +539,7 @@ function PembelianBaruCreateSupplierConfirm()
                             matcher:oldMatcher(SupplierMatcher)
                         });
                     });
-                    $("Pembelianbaru-SupplierSelect").select2().val(id).trigger("change");*/
+                    $("#Pembelianbaru-SupplierSelect").select2().val(id.toString()).trigger("change");
                 }
                 else {
                     console.log("Add Supplier failed");
@@ -549,15 +549,14 @@ function PembelianBaruCreateSupplierConfirm()
             else
             {
                 console.log("Token failed");
-                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                createAlert("danger", "Terd apat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
         });
     }
 }
-
-
 function InitPembelianBaruPage()
 {
+    currentToken = localStorage.getItem("token");
     setPage("PembelianBaru");
     PembelianBaruGetSupplier();
     PembelianBaruGetBarang();
@@ -593,9 +592,9 @@ function InitPembelianBaruPage()
     document.getElementById("Pembelianbaru-SupplierSelect").onchange=function()
     {
         if ($("#Pembelianbaru-SupplierSelect").val()==0)
-            $("#Pembelianbaru-CreateSupplierModal").modal('toggle');
+            $("#Pembelianbaru-CreatesupplierModal").modal('toggle');
     };
-    document.getElementById("Pembelianbaru-CreateModal-ConfirmButton").onclick=function()
+    document.getElementById("Pembelianbaru-CreatesupplierModal-ConfirmButton").onclick=function()
     {
         PembelianBaruCreateSupplierConfirm();
     };

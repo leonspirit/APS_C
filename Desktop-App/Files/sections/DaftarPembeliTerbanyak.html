@@ -1,0 +1,57 @@
+<template class="section-template">
+    <section class="content" id="section-DaftarPembeliTerbanyak">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+              <div class="box-header">
+                <div class="alert-placeholder">
+                </div>
+              </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Dari Tanggal</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </div>
+                      <input type="text" class="form-control pull-right" id="Pembeliterbanyak-TglawalDate">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Sampai Tanggal</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </div>
+                      <input type="text" class="form-control pull-right" id="Pembeliterbanyak-TglakhirDate">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table id="PembeliTerbanyakTable" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>No. Telp</th>
+                  <th>Alamat</th>
+                  <th>Total Pembeliam</th>
+                </tr>
+                </thead>
+                <tbody>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+
+<link rel="import" data-path="model/ModelPelanggan.js">
+<link rel="import" data-path="js/PembeliTerbanyakFunction.js">

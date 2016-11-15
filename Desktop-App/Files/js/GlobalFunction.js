@@ -35,24 +35,13 @@ function UpdateUICicilan(Dropdown)
 }
 function InitNotification()
 {
-    $('#NotificationModal-PembayaranSelect').on('change', function(){
-        UpdateUICicilan(this);
-    });
-    UpdateUICicilan($('#NotificationModal-PembayaranSelect'));
-    $("#NotificationModal-CicilanTanggalPencairanDate").datepicker({
-        dateFormat:'yy-mm-dd',
-        autoclose:true
-    });
-    $("#NotificationModal-CicilanTanggalTransaksiDate").datepicker({
-        dateFormat:'yy-mm-dd',
-        autoclose:true
-    });
     FillPenjualanNotificationList();
     FillPembelianNotificationList();
 }
 function FillPenjualanNotificationList()
 {
     var i;
+    $("#PenjualanNotif").empty();
     currentToken  = localStorage.getItem("token");
     var penjualanNotif = document.getElementById("PenjualanNotif");
     getJatuhTempoPenjualanData(currentToken, 3, function(result){
@@ -86,6 +75,7 @@ function FillPenjualanNotificationList()
 function FillPembelianNotificationList()
 {
     var i;
+    $("#PembelianNotif").empty();
     currentToken  = localStorage.getItem("token");
     var pembelianNotif = document.getElementById("PembelianNotif");
     getJatuhTempoPembelianData(currentToken, 3, function(result){
@@ -120,6 +110,18 @@ function PopulateNotificationModal(jenis, id)
 {
     $("#NotificationModal-PembayaranSelect").select2({
         minimumResultsForSearch:Infinity
+    });
+    $('#NotificationModal-PembayaranSelect').on('change', function(){
+        UpdateUICicilan(this);
+    });
+    UpdateUICicilan($('#NotificationModal-PembayaranSelect'));
+    $("#NotificationModal-CicilanTanggalPencairanDate").datepicker({
+        dateFormat:'yy-mm-dd',
+        autoclose:true
+    });
+    $("#NotificationModal-CicilanTanggalTransaksiDate").datepicker({
+        dateFormat:'yy-mm-dd',
+        autoclose:true
     });
     currentToken  = localStorage.getItem("token");
     if (jenis=="jual")
@@ -355,6 +357,7 @@ function InitNavMenu()
 function setPage(page)
 {
     var i;
+    InitNotification();
     removeAllAlert();
     removeWarning();
     var allContent = document.getElementsByClassName("content");
@@ -488,7 +491,7 @@ function myLogin()
 {
     var form = document.getElementById("LoginForm");
     var userName = form.elements["username"].value;
-    var password = form.elements["password"].value;
+    var password = md5(form.elements["password"].value);
 
     console.log(userName+" "+password);
     myUserLogin(userName, password, function(result){

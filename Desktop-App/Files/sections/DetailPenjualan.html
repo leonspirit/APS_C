@@ -53,8 +53,8 @@
                     <th style="width:150px">H.Satuan</th>
                     <th style="width:100px">Disc</th>
                     <th>Subtotal</th>
-                    <th>H.Pokok</th>
-                    <th>Lb</th>
+                    <th class="Detailpenjualan-HargaPokokLaba">H.Pokok</th>
+                    <th class="Detailpenjualan-HargaPokokLaba">Lb</th>
                     <th ></th>
                 </tr>
                 </thead>
@@ -65,8 +65,8 @@
                     <th></th>
                     <th colspan="6"><span class="pull-right">Total Harga</span></th>
                     <th><span class="pull-right">Rp. 0</span></th>
-                    <th>Total Lb</th>
-                    <th><span class="pull-right">Rp. 0</span></th>
+                    <th class="Detailpenjualan-HargaPokokLaba">Total Lb</th>
+                    <th class="Detailpenjualan-HargaPokokLaba"><span class="pull-right">Rp. 0</span></th>
                     <th>
                 </tr>
                 </tfoot>
@@ -101,8 +101,12 @@
                 </table>
             </div>
             <div class="box-footer">
-                <Button id="saveButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
-                <Button id="printButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-print"></i> Print</Button>
+                <span class="pull-right">
+                     <Button id="Detailpenjualan-PrintButton" class="btn btn-primary"><i class="glyphicon glyphicon-print"></i> Print</Button>
+                    <Button id="Detailpenjualan-EditButton" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Edit Data</Button>
+                    <Button id="Detailpenjualan-ReturButton" class="btn btn-primary"><i class="glyphicon glyphicon-share-alt"></i> Retur</Button>
+                    <Button id="Detailpenjualan-PayButton" data-toggle="modal" data-target="#NotificationModal" class="btn btn-primary"><i class="glyphicon glyphicon-usd"></i> Bayar</Button>
+                </span>
             </div>
           </div>
         </div>

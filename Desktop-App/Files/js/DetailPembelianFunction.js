@@ -11,6 +11,13 @@ function populateDetailPembelian(currentPembelianID)
         if (result.token_status=="success")
         {
             var pembelian = result.data[0];
+            if (pembelian.status=="lunas")
+            {
+                $("#Detailpembelian-PayButton").hide();
+            }
+            else {
+                $("#Detailpembelian-PayButton").show();
+            }
             if (!$.fn.DataTable.isDataTable("#Detailpembelian-ItemTable"))
             {
                 itemPembelianTable =$("#Detailpembelian-ItemTable").DataTable({
@@ -123,7 +130,7 @@ function populateDetailPembelian(currentPembelianID)
                     nomor_giro="-";
                 }
                 var bank  = pembelian.cicilan[i].bank;
-                if (bankl==null || bank=="")
+                if (bank==null || bank=="")
                 {
                     bank="-";
                 }
@@ -150,5 +157,31 @@ function InitDetailPembelianPage(curPembelianID)
     currentToken = localStorage.getItem("token");
     setPage("DetailPembelian");
     populateDetailPembelian(curPembelianID);
+    document.getElementById("Detailpembelian-PayButton").onclick= function() {
+        PopulateNotificationModal("beli", curPembelianID);
+    };
+    if (hasHakAkses("ReturPembelian"))
+    {
+        $("#Detailpembelian-ReturButton").show();
+        document.getElementById("Detailpembelian-ReturButton").onclick=function()
+        {
+            InitReturPembelianPage(curPembelianID);
+        };
+    }
+    else {
+        $("#Detailpembelian-ReturButton").hide();
+    }
+    if (hasHakAkses("EditPembelian"))
+    {
+        $("#Detailpembelian-EditButton").show();
+        document.getElementById("Detailpembelian-EditButton").onclick= function(){
+            InitEditPembelianPage(curPembelianID);
+        };
+    }
+    else {
+        $("#Detailpembelian-EditButton").hide();
+    }
+
+
 
 }

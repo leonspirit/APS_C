@@ -4,20 +4,80 @@
         <div class="col-xs-12">
           <div class="box box box-primary">
               <div class="box-header">
+                  <button data-toggle="collapse" data-parent="#accordion" href="#Piutang-SearchField" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
                   <div class="alert-placeholder"></div>
               </div>
               <div class="box-body">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Dari Tanggal</label>
+                              <div class="input-group date">
+                                  <div class="input-group-addon">
+                                      <i class="glyphicon glyphicon-calendar"></i>
+                                  </div>
+                                  <input type="text" class="form-control pull-right" id="Piutang-TglawalDate">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Hingga Tanggal</label>
+                              <div class="input-group date">
+                                  <div class="input-group-addon">
+                                      <i class="glyphicon glyphicon-calendar"></i>
+                                  </div>
+                                  <input type="text" class="form-control pull-right" id="Piutang-TglakhirDate">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div id="Piutang-SearchField" class="panel-collapse collapse">
+                      <div class="row">
+                          <form id="Piutang-SearchForm">
+                              <div class="col-md-2">
+                                  <label>ID</label>
+                                  <div class="form-group">
+                                      <div class="input-group">
+                                          <div class="input-group-addon">TB</div>
+                                          <input class="form-control Piutang-search-filter" name="id" type="number">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <label>Pembeli</label>
+                                  <input class="form-control Piutang-search-filter" name="pelanggan" type="text">
+                              </div>
+                              <div class="col-md-3">
+                                  <label>Cara pembayaran</label>
+                                  <select class="form-control Piutang-search-filter" name="pembayaran">
+                                      <option value="">Semua</option>
+                                      <option value="cash">Cash</option>
+                                      <option value="bon">Bon</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-3">
+                                  <label>Print</label>
+                                  <select class="form-control Piutang-search-filter" name="print">
+                                      <option value="">Semua</option>
+                                      <option value="sudah">Sudah</option>
+                                      <option value="belum">Belum</option>
+                                  </select>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
                   <table id="PiutangTable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                      <th>Kode</th>
-                      <th>Pembeli</th>
+                      <th id="PiutangTable-kode">Kode</th>
+                      <th id="PiutangTable-pembeli">Pembeli</th>
                       <th>Tanggal</th>
-                      <th>Pembayaran</th>
+                      <th id="PeiutangTable-pembayaran">Pembayaran</th>
                       <th>Jatuh tempo</th>
                       <th>Subtotal</th>
-                      <th>Print</th>
-                      <th>Detail</th>
+                      <th id="PiutangTable-print">Print</th>
+                      <th></th>
                     </tr>
                     </thead>
                     <tbody>

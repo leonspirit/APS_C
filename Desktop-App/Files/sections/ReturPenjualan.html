@@ -1,5 +1,5 @@
 <template class="section-template">
-    <section class="content" id="section-PenjualanBaru">
+    <section class="content" id="section-ReturPenjualan">
       <div class="row">
         <div class="col-xs-12">
         <div class="box box-primary">
@@ -7,110 +7,41 @@
                 <div class="alert-placeholder"></div>
             </div>
             <div class="box-body">
-                <form role="form">
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pelanggan</label>
-                            <input  style="width: 100%;" class="form-control select2" id="Penjualanbaru-PelangganSelect">
-
-                        </div>
+                        <span class="info-box-text">Kode</span>
+                        <span id="Returpenjualan-KodeText" class="info-box-number"></span>
+                        <span class="info-box-text">Pelanggan</span>
+                        <span id="Returpenjualan-PelangganText" class="info-box-number"></span>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pembayaran</label>
-                            <select class="form-control pull-right" id="Penjualanbaru-PembayaranSelect">
-                                <option value="cash">Cash</option>
-                                <option value="bon">Bon</option>
-                            </select>
-                        </div>
+                        <span class="info-box-text">Pembayaran</span>
+                        <span class="info-box-number" id="Returpenjualan-PembayaranText"></span>
+                        <span class="info-box-text">Status</span>
+                        <span class="info-box-number" id="Returpembelian-StatusText"></span>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Tanggal Penjualan</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" id="Penjualanbaru-TgltransaksiDate">
-                            </div>
-                          </div>
+                        <span class="info-box-text">Tanggal Transaksi</span>
+                        <span class="info-box-number" id="Returpenjualan-TglTransaksiText"></span>
+                        <span class="info-box-text">Tanggal Jatuh Tempo</span>
+                        <span class="info-box-number" id="Returpenjualan-TglJatuhTempoText"></span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Kirim Ke</label>
-                            <input id="Penjualanbaru-AlamatInput" type="text" class="form-control pull-right">
-                        </div>
-                    </div>
-                    <div class="col-md-4" id="Penjualanbaru-JatuhtempoContainer" >
-                        <div  class="form-group" id="form-field-jatuh-tempo">
-                            <label>Jatuh Tempo</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="Penjualanbaru-TgljatuhtempoDate">
-                            </div>
-                        </div>
+                    <div class="col-md-12">
+                        <span class="info-box-text">Notes</span>
+                        <span class="info-box-number" id="Returpenjualan-NotesText"></span>
                     </div>
                 </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Notes</label>
-                            <input id="Penjualanbaru-NotesInput" class="form-control" style="width: 100%;" >
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="box-header">
-              <h3 class="box-title">List Item</h3>
-            </div>
-            <div class="box-body">
-              <table id="Penjualanbaru-ItemTable" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th style="width:10px">No</th>
-                    <th style="width:250px">Barang</th>
-                    <th>Isi/Box</th>
-                    <th style="width:60px">Qty</th>
-                    <th style="width:100px">Unit</th>
-                    <th style="width:150px">H.Satuan</th>
-                    <th style="width:100px">Disc</th>
-                    <th>Subtotal</th>
-                    <th>H.Pokok</th>
-                    <th>Lb</th>
-                    <th ></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th></th>
-                    <th colspan="6"><span class="pull-right">Total Harga</span></th>
-                    <th><span class="pull-right">Rp. 0</span></th>
-                    <th>Total Lb</th>
-                    <th><span class="pull-right">Rp. 0</span></th>
-                    <th>
-                </tr>
-                </tfoot>
-              </table>
             </div>
             <div class="box-footer">
-                <Button id ="Penjualanbaru-ResetButton" class="btn btn-primary"><i class="glyphicon glyphicon-minus"></i> Reset</Button>
-                 <Button id="Penjualanbaru-AddButton" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</Button>
-                <Button id="Penjualanbaru-SaveButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
-                <Button id="Penjualanbaru-PrintButton" class="btn btn-success pull-right"><i class="glyphicon glyphicon-print"></i> Print</Button>
-            </div>
+               </div>
           </div>
         </div>
       </div>
     </section>
 </template>
-
 <link data-path="model/ModelPelanggan.js">
 <link data-path="model/ModelStok.js">
 <link data-path="model/ModelPenjualan.js">
-<link data-path="js/PenjualanBaruFunction.js">
+<link data-path="js/ReturPenjualanFunction.js">

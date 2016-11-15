@@ -5,19 +5,80 @@
           <div class="box box-primary">
             <div class="box-header">
                 <div class="alert-placeholder"></div>
+                <button data-toggle="collapse" data-parent="#accordion" href="#Laporanpenjualan-SearchField" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>
             </div>
             <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Dari Penjualan</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="Laporanpenjualan-TglawalDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sampai Tanggal</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="Laporanpenjualan-TglakhirDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="Laporanpenjualan-SearchField" class="panel-collapse collapse">
+                    <div class="row">
+                        <form id="Laporanpenjualan-SearchForm">
+                            <div class="col-md-2">
+                                <label>ID</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">TB</div>
+                                        <input class="form-control Laporanpenjualan-search-filter" name="id" type="number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Pembeli</label>
+                                <input class="form-control Laporanpenjualan-search-filter" name="pelanggan" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Cara pembayaran</label>
+                                <select class="form-control Laporanpenjualan-search-filter" name="pembayaran">
+                                    <option value="">Semua</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bon">Bon</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Print</label>
+                                <select class="form-control Laporanpenjualan-search-filter" name="print">
+                                    <option value="">Semua</option>
+                                    <option value="sudah">Sudah</option>
+                                    <option value="belum">Belum</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <table id="PenjualanTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Kode</th>
-                            <th>Pembeli</th>
+                            <th id="PenjualanTable-kode">Kode</th>
+                            <th id="PenjualanTable-pembeli">Pembeli</th>
                             <th>Tanggal</th>
-                            <th>Pembayaran</th>
+                            <th id="PenjualanTable-pembayaran">Pembayaran</th>
                             <th>Jatuh tempo</th>
                             <th>Subtotal</th>
-                            <th>Print</th>
-                            <th>Detail</th>
+                            <th id="PenjualanTable-laba">Laba</th>
+                            <th id="PenjualanTable-print">Print</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

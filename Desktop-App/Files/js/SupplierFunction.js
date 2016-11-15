@@ -139,53 +139,57 @@ function DaftarSupplierDeleteSupplierConfirm(Button)
 }
 function DaftarSupplierCreateSupplierConfirm()
 {
+    var valid=true;
     var formData = document.getElementById("Daftarsupplier-CreateModal-CreateForm");
-    var nama = formData.elements['nama'];
-    var telp = formData.elements['telp'];
-    var alamat = formData.elements['alamat'];
+    var nama = formData.elements['nama'].value;
+    var telp = formData.elements['telp'].value;
+    var alamat = formData.elements['alamat'].value;
     if (nama=="" || nama==null)
     {
-
+        valid=false;
     }
-    AddSupplier(currentToken, nama, telp, alamat, function(result){
-        if (result.token_status=="success")
-        {
-            if  (result.supplierID != null)
+    if (valid)
+    {
+        AddSupplier(currentToken, nama, telp, alamat, function(result){
+            if (result.token_status=="success")
             {
-                console.log("Add supplier success "+ result.supplierID);
-                var SupplierTable = $('#SupplierTable').DataTable();
-                var pad ="00000";
-                var id = "" + result.supplierID;
-                var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
+                if  (result.supplierID != null)
+                {
+                    console.log("Add supplier success "+ result.supplierID);
+                    var SupplierTable = $('#SupplierTable').DataTable();
+                    var pad ="00000";
+                    var id = "" + result.supplierID;
+                    var StrId  = "S"+ pad.substring(0, pad.length - id.length)+id;
 
-                var editButton = "<a class='Daftarsupplier-edit-modal-toggle' data-toggle='modal' href='#Daftarsupplier-EditModal' data-id='"+
-                    id+
-                    "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                var delButton = "<a style='color:red;' class='Daftarsupplier-delete-modal-toggle' href='#Daftarsupplier-DeleteModal' data-toggle='modal' data-id='" +
-                    id+
-                    "'><i class='glyphicon glyphicon-trash'></i></a>";
-                SupplierTable.row.add([
-                    StrId,
-                    nama,
-                    telp,
-                    alamat,
-                    editButton+" "+delButton
-                ]).draw();
-                $("#Daftarsupplier-CreateModal").modal('toggle');
-                formData.reset();
-                createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
+                    var editButton = "<a class='Daftarsupplier-edit-modal-toggle' data-toggle='modal' href='#Daftarsupplier-EditModal' data-id='"+
+                        id+
+                        "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                    var delButton = "<a style='color:red;' class='Daftarsupplier-delete-modal-toggle' href='#Daftarsupplier-DeleteModal' data-toggle='modal' data-id='" +
+                        id+
+                        "'><i class='glyphicon glyphicon-trash'></i></a>";
+                    SupplierTable.row.add([
+                        StrId,
+                        nama,
+                        telp,
+                        alamat,
+                        editButton+" "+delButton
+                    ]).draw();
+                    $("#Daftarsupplier-CreateModal").modal('toggle');
+                    formData.reset();
+                    createAlert("success", "Supplier baru "+StrId+" - "+nama +" berhasil ditambahkan");
+                }
+                else {
+                    console.log("Add Supplier failed");
+                    createAlert("danger", "Data supplier gagal ditambahkan, mohon coba kembali");
+                }
             }
-            else {
-                console.log("Add Supplier failed");
-                createAlert("danger", "Data supplier gagal ditambahkan, mohon coba kembali");
+            else
+            {
+                console.log("Token failed");
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
-        }
-        else
-        {
-            console.log("Token failed");
-            createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-        }
-    });
+        });
+    }
 }
 
 function DaftarSupplierUpdateSupplierConfirm(Button)

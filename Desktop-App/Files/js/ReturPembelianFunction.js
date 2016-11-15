@@ -5,24 +5,9 @@
 function populateReturPembelian(currentPembelianID)
 {
     GetDetailPembelian(currentToken, currentPembelianID, function(result) {
-        var itemPembelianTable;// =$("#Detailpembelian-ItemTable").DataTable();
-     //   var CicilanPembelianTable;// =$("#Detailpembelian-CicilanTable").DataTable();
+        var itemPembelianTable;
         if (result.token_status == "success") {
             var pembelian = result.data[0];
-            /*if (!$.fn.DataTable.isDataTable("#Returpembelian-ItemTable")) {
-                itemPembelianTable = $("#Returpembelian-ItemTable").DataTable({
-                    "paging": false,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": false,
-                    "info": false,
-                    "autoWidth": false
-                });
-            }*/
-            /*else {
-                itemPembelianTable = $("#Returpembelian-ItemTable").DataTable();
-                itemPembelianTable.clear().draw();
-            }*/
             var i;
 
             var pad = "0000";
@@ -60,18 +45,6 @@ function populateReturPembelian(currentPembelianID)
             for (i=0;i<pembelian.barang.length;i++)
             {
                 ReturPembelianAddRow(pembelian.barang[i]);
-              /* itemPembelianTable.row.add([
-                    "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                    pembelian.barang[i].pembelianbarangID,
-                    "",
-                    "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                    "",
-                    "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
-                    "<span class='pull-right'>"+disc1 +" %</span>",
-                    "<span class='pull-right'>"+disc2 +" %</span>",
-                    "<span class='pull-right'>"+disc3 +" %</span>",
-                    "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"
-                ])*/
             }
         }
     });
@@ -112,7 +85,7 @@ function ReturPembelianAddRow(barang)
     var cellqtyRetur = row.insertCell(4);
     cellqtyRetur.setAttribute("style", "padding:0");
     var inputJumlahRetur = document.createElement("input");
-    inputJumlahRetur.setAttribute("id", "Pembelianbaru-Input-"+rowNum.toString()+"-2");
+    inputJumlahRetur.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-2");
     inputJumlahRetur.setAttribute("class", "form-control");
     inputJumlahRetur.setAttribute("type", "number");
     inputJumlahRetur.setAttribute("min", "0");

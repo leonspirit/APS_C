@@ -130,12 +130,15 @@ function StokBarangCreateModalDisableHargaJualInput()
     var i;
     for (i=0;i<satuan.length;i++)
     {
-        if ($("#StokBarang-CreateForm-harga-jual-"+satuan[i]+"-check").prop("checked"))
+        console.log($("#Stokbarang-CreateForm-harga-jual-"+satuan[i]+"-check"));
+        if ($("#Stokbarang-CreateForm-harga-jual-"+satuan[i]+"-check").prop("checked"))
         {
+            console.log("checked");
             form.elements["harga-jual-"+satuan[i]+"-input"].disabled =false;
         }
         else
         {
+            console.log("notChecked");
             form.elements["harga-jual-"+satuan[i]+"-input"].disabled= true;
         }
     }
@@ -238,6 +241,7 @@ function StokBarangCreateBarangConfirm()
 
 //INITIALIZATION FUNCTIONS
 function InitStokBarangPage() {
+    currentToken = localStorage.getItem("token");
     setPage("StokBarang");
     StokBarangPopulateData();
     $(document).on("click", ".edit-modal-toggle", function () {

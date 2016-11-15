@@ -61,6 +61,7 @@ function DaftarPelangganPopulateData()
     });
 }
 
+
 function DaftarPelangganDeleteConfirm(Button){
     var pelangganID = $(Button).attr('data-id');
     var rowNum = $(Button).attr('data-row-num');
@@ -238,9 +239,24 @@ function DaftarPelangganSearchFromTable(queryID,  queryNama, queryTelp, queryAla
 
 function InitDaftarPelangganPage()
 {
+    currentToken = localStorage.getItem("token");
     setPage("DaftarPelanggan");
 
-    currentToken = localStorage.getItem("token");
+    $(document).off("click", ".Daftarpelanggan-delete-modal-toggle");
+    $(document).off("click", ".Daftarpelanggan-edit-modal-toggle");
+
+    if (hasHakAkses("DaftarPembeliTerbanyak"))
+    {
+        $("#Daftarpelanggan-PembeliTerbanyakButton").show();
+        document.getElementById("Daftarpelanggan-PembeliTerbanyakButton").onclick=function()
+        {
+            InitDaftarPembeliTerbanyakPage();
+        }
+
+    }
+    else {
+        $("#Daftarpelanggan-PembeliTerbanyakButton").hide();
+    }
 
     DaftarPelangganPopulateData();
 

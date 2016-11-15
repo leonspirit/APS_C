@@ -4,7 +4,7 @@
  */
 
 
-function ReturPembelianAddRow()
+function ReturPenjualanAddRow()
 {
     var tableBody = document.getElementById('Returpembelian-ItemTable').getElementsByTagName("tbody")[0];
 
@@ -150,7 +150,7 @@ function ReturPembelianAddRow()
 }
 
 
-function InitReturPenjualan(penjualanID)
+function InitReturPenjualanPage(penjualanID)
 {
     setPage("ReturPenjualan");
 

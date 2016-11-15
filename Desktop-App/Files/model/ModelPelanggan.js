@@ -13,6 +13,18 @@ function GetAllPelangganData(token, fn)
             fn(data);
         }, "json");
 }
+function GetPembeliTerbanyakData(token, tgl_awal, tgl_akhir, fn)
+{
+    $.post( baseUrl+"pelanggan/list_pembeli_terbanyak",
+        {
+            token:token,
+            tgl_awal:tgl_awal,
+            tgl_akhir:tgl_akhir
+        },function( data ) {
+            fn(data);
+        }, "json");
+}
+
 
 function DeletePelanggan(token, pelangganID, fn)
 {
