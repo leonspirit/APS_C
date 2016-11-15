@@ -159,6 +159,23 @@ function add_nama_pelanggan(index, data, callback){
     })
 }
 
+function add_metode_retur(index, data, callback){
+
+    var returpenjualanID = data[index]['returpenjualanID']
+    var qrstring = 'SELECT voucherpenjualanID FROM voucherpenjualan WHERE returpenjualanID = ?'
+    var retur = [returpenjualanID]
+    connection.query(qrstring, retur, function(err, result){
+        if(err) throw err
+        if(result.length == 0){
+            data[index]['metode'] = 0
+        }
+        else{
+            data[index]['metode'] = 1
+        }
+        callback()
+    })
+}
+
 router.post('/tambah_penjualan', function(req,res){
 
     if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
@@ -355,7 +372,29 @@ router.post('/detail_penjualan', function(req,res){
                             connection.query(querystring2, penjualan, function(err3, result3){
                                 if(err3)throw err3
                                 resp['data'][0]['barang'] = result3
-                                res.status(200).send(resp)
+
+                                var querystring3 = 'SELECT * FROM cicilanpenjualan WHERE penjualanID = ?'
+                                connection.query(querystring3, penjualan, function(err4, result4){
+                                    if(err4) throw err4
+                                    resp['data'][0]['cicilan'] = result4
+
+                                    var querystring4 = 'SELECT penjualanbarangID FROM penjualanbarang WHERE penjualanID = ?'
+                                    var querystring5 = 'SELECT * FROM returpenjualan WHERE penjualanbarangID IN ('+querystring4+')'
+                                    connection.query(querystring5, penjualan, function(err5, result5){
+                                        if(err5) throw err5
+
+                                        var len = result5.length
+                                        asyncLoop(len, function(loop) {
+                                            add_metode_retur(loop.iteration(), result5, function(result) {
+                                                loop.next();
+                                            })},
+                                            function(){
+                                                resp['data'][0]['retur'] = result5
+                                                res.status(200).send(resp)
+                                            }
+                                        );
+                                    })
+                                })
                             })
                         }
                     );
@@ -417,8 +456,8 @@ router.post('/list_penjualan_jatuh_tempo', function(req,res){
             yyyy = last_n_day.getFullYear()
             if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}last_n_day = yyyy+'-'+mm+'-'+dd
 
-            var querystring = 'SELECT * FROM penjualan WHERE jatuh_tempo >= ? AND jatuh_tempo <= ? AND status!="lunas"'
-            var penjualan = [today, last_n_day]
+            var querystring = 'SELECT * FROM penjualan WHERE jatuh_tempo <= ? AND status!="lunas"'
+            var penjualan = [last_n_day]
             connection.query(querystring, penjualan, function(err2, result2){
                 if(err2) throw err2
                 resp['data'] = result2
