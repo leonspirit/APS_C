@@ -72,6 +72,42 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
+function asyncVoucher(iterations, harga, func, callback) {
+    var index = 0;
+    var done = false;
+    var sisa_harga = harga
+    var loop = {
+        next: function(minus_harga) {
+            if (done) {
+                return;
+            }
+            sisa_harga = sisa_harga - minus_harga
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback();
+            }
+        },
+
+        cek_harga: function(){
+            return sisa_harga
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback();
+        }
+    };
+    loop.next(0);
+    return loop;
+}
+
 function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, callback){
 
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
@@ -79,35 +115,40 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
     connection.query(querystring, stok, function(err, result){
         if(err) throw err;
 
-        var stokID = result[0]['stokID']
-        var stok_skrg = result[0]['stok_skrg']
+        if(result.length > 0){
+            var stokID = result[0]['stokID']
+            var stok_skrg = result[0]['stok_skrg']
 
-        var kurang = 0
-        if(stok_skrg >= item){
-            kurang = item;
-        }
-        else{
-            kurang = stok_skrg;
-        }
+            var kurang = 0
+            if(stok_skrg >= item){
+                kurang = item;
+            }
+            else{
+                kurang = stok_skrg;
+            }
 
-        var resp = {}
-        resp['stok'] = kurang
+            var resp = {}
+            resp['stok'] = kurang
 
-        var querystring2 = 'UPDATE stok SET stok_skrg = stok_skrg - ? WHERE stokID = ?'
-        var stok_jual = [kurang, stokID]
-        connection.query(querystring2, stok_jual, function(err2, result2){
-            if(err2) throw err2;
+            var querystring2 = 'UPDATE stok SET stok_skrg = stok_skrg - ? WHERE stokID = ?'
+            var stok_jual = [kurang, stokID]
+            connection.query(querystring2, stok_jual, function(err2, result2){
+                if(err2) throw err2;
 
-            token_auth.get_stok_harga_pokok(barangID, function(result3){
-                var harga_pokok_saat_ini = result3['harga_pokok']
-                var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
-                var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
-                connection.query(querystring3, penjualanbarang, function(err5, result5){
-                    if(err5) throw err5
-                    return callback(resp)
+                token_auth.get_stok_harga_pokok(barangID, function(result3){
+                    var harga_pokok_saat_ini = result3['harga_pokok']
+                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
+                    var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
+                    connection.query(querystring3, penjualanbarang, function(err5, result5){
+                        if(err5) throw err5
+                        return callback(resp)
+                    })
                 })
             })
-        })
+        }
+        else{
+            //TODO: GA CUKUP STOKNYA
+        }
     })
 }
 
@@ -132,6 +173,40 @@ function add_penjualan_barang(req, i, penjualanID){
             function(){
             }
         )
+    })
+}
+
+function voucher_use(index, sisa_harga, penjualanID, tanggal, karyawanID, data, callback){
+
+    var resp = {}
+    var voucherID = data[index]['voucherpenjualanID']
+    var qrstring1 = 'SELECT jumlah FROM voucherpenjualan WHERE voucherpenjualanID = ?'
+    var voucher = [voucherID]
+    connection.query(qrstring1, voucher, function(err, result){
+        if(err) throw err
+
+        var sisa_voucher = result[0]['jumlah']
+        var qrstring2 = 'UPDATE voucherpenjualan SET jumlah = jumlah - ? WHERE voucherpenjualanID = ?'
+        var kurang = 0
+        if(sisa_voucher >= sisa_harga){
+            kurang = sisa_harga
+            resp['kurang'] = sisa_harga
+        }
+        else{
+            kurang = sisa_voucher
+            resp['kurang'] = sisa_voucher
+        }
+        var vocer = [kurang, voucherID]
+        connection.query(qrstring2, vocer, function(err2, result2){
+            if(err2) throw err2
+
+            var qrstring3 = 'INSERT INTO cicilanpenjualan SET penjualanID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "voucher", karyawanID = ?, voucherID = ?'
+            var cicilan = [penjualanID, tanggal, kurang, karyawanID, voucherID]
+            connection.query(qrstring3, cicilan, function(err3, result3){
+                if(err3) throw err3
+                return callback(resp)
+            })
+        })
     })
 }
 
@@ -198,7 +273,14 @@ router.post('/tambah_penjualan', function(req,res){
                 for(var i=0; i<len; i++){
                     add_penjualan_barang(req, i, result2.insertId);
                 }
-                res.status(200).send(resp)
+
+                var len2 = req.body.voucher.length
+                asyncVoucher(len2, req.body.subtotal, function(loop) {
+                    voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
+                        loop.next(result['kurang']);
+                    })},
+                    function(){res.status(200).send(resp);}
+                );
             })
         }
     })
@@ -285,7 +367,7 @@ router.post('/list_lunas_penjualan', function(req,res){
             resp['token_status'] = 'success'
             var querystring = 'SELECT * FROM penjualan WHERE status = "lunas" AND tanggal_transaksi >= ? AND  tanggal_transaksi <= ?'
             var penjualan = [req.body.tgl_awal, req.body.tgl_akhir]
-            connection.query(querystring, function(err2, result2){
+            connection.query(querystring, penjualan, function(err2, result2){
                 if(err2) throw err2
 
                 var len = result2.length
