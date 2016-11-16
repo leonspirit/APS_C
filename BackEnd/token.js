@@ -158,10 +158,10 @@ module.exports = {
         connection.query(qrstring, cicilan, function(err, result){
             if(err) throw err;
             var terbayar = result[0]['SUM(nominal)']
-            var qrstring2 = 'SELECT subtotal FROM pembelian WHERE pembelianID = ?'
+            var qrstring2 = 'SELECT subtotal, disc FROM pembelian WHERE pembelianID = ?'
             connection.query(qrstring2, cicilan, function(err2, result2){
                 if(err2)throw err2;
-                var subtotal = result2[0]['subtotal']
+                var subtotal = result2[0]['subtotal'] * (100-result2[0]['disc']) / 100
                 if(terbayar >= subtotal){
                     var qrstring3 = 'UPDATE pembelian SET status = "lunas" WHERE pembelianID = ?'
                     connection.query(qrstring3, cicilan, function(err3, result3){

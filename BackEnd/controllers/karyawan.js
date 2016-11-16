@@ -143,14 +143,39 @@ router.post('/update_karyawan', function(req,res){
 
     var resp = {}
     res.type('application/json')
-    token_auth.check_user(req.body.token, function(result){
+    token_auth.check_token(req.body.token, function(result){
+        if(result != 'aktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, password = ? WHERE karyawanID = ?'
+            var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.password, req.body.karyawanID]
+            connection.query(querystring, karyawan, function(err2, result2){
+                if(err2) throw err2
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
+            })
+        }
+    })
+});
 
-        if(result['status'] == 'aktif'){
+router.post('/update_password', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_user(req.body.token, function(result){
+        if(result['hak_akses'] == null || result['hak_akses'] == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
             var karyID = result['karyawanID']
             resp['token_status'] = 'success';
             if(karyID == req.body.karyawanID){
-                var querystring = 'UPDATE karyawan SET nama = ?, telp = ?, alamat = ?, password = ? WHERE karyawanID = ?'
-                var karyawan = [req.body.nama, req.body.telp, req.body.alamat, req.body.password, req.body.karyawanID]
+                var querystring = 'UPDATE karyawan SET password = ? WHERE karyawanID = ?'
+                var karyawan = [req.body.password, req.body.karyawanID]
                 connection.query(querystring, karyawan, function(err2, result2){
                     if(err2) throw err2;
                     resp['affectedRows'] = result2.affectedRows
@@ -162,12 +187,8 @@ router.post('/update_karyawan', function(req,res){
                 res.status(200).send(resp)
             }
         }
-        else{
-            resp['token_status'] = 'failed'
-            res.status(200).send(resp)
-        }
     })
-});
+})
 
 router.post('/login', function(req,res){
 
