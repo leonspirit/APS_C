@@ -148,6 +148,9 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
         }
         else{
             //TODO: GA CUKUP STOKNYA
+            var resp = {}
+            resp['stok'] = item
+            return callback(resp)
         }
     })
 }
