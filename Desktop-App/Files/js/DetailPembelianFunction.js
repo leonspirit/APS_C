@@ -63,7 +63,8 @@ function populateDetailPembelian(currentPembelianID)
             else {
                 notesText =pembelian.notes;
             }
-            document.getElementById("Detailpembelian-SupplierText").innerHTML = pembelian.nama;
+            console.log(pembelian);
+            document.getElementById("Detailpembelian-SupplierText").innerHTML = pembelian.supplierNama;
             document.getElementById("Detailpembelian-TglJatuhTempoText").innerHTML = JatuhTempoText;
             document.getElementById("Detailpembelian-TglTransaksiText").innerHTML = TglTransaksiText;
             document.getElementById("Detailpembelian-PembayaranText").innerHTML = PembayaranText;

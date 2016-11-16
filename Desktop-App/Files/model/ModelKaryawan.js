@@ -72,3 +72,15 @@ function DetailKaryawan(token, karyawanID, fn)
         }, "json");
 
 }
+function UpdateHakKaryawan(token, karyawanID, hakakses, fn)
+{
+    $.post( baseUrl + "karyawan/detil_karyawan/",
+        {
+            token:token,
+            karyawanID: karyawanID,
+            hak_akses:hakakses
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}

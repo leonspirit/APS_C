@@ -1,0 +1,54 @@
+<template class="section-template">
+    <section class="content" id="section-BarangTerjualTerbanyak">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+              <div class="box-header">
+                  <div class="alert-placeholder"></div>
+                  <button  data-toggle="collapse" data-parent="#accordion" href="#Stokbarang-SearchField" class="btn btn-primary"> <i class="glyphicon glyphicon-search"></i> Search</button>
+                  <button data-toggle="modal" href="#Stokbarang-CreateModal" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
+                  <button id="Stokbarang-BarangterlakuButton" class="btn btn-primary"><i class="glyphicon glyphicon-tag"></i> Barang Terlaku</button>
+              </div>
+            <div class="box-body">
+                <div id="Stokbarang-SearchField" class="panel-collapse collapse">
+                    <form id="Stokbarang-SearchForm" role="form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Kode</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">C</div>
+                                        <input name="kode" type="number" class="search-filter form-control">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label>Nama</label>
+                                    <input name="nama" type="text" class="search-filter form-control">
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              <table id="BarangTable" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th id="StokTable-kode">Kode</th>
+                        <th id="StokTable-nama">Nama Barang</th>
+                        <th id="StokTable-isi-carton">Terjual</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel="import" data-path="model/ModelStok.js">
+<link rel="import" data-path="js/BarangTerlakuFunction.js">

@@ -2,21 +2,23 @@
  * Created by Billy on 01-Nov-16.
  */
 
-var currentToken = localStorage.getItem("token");
+var currentToken;
 var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 
 function populateLaporanPenjualanData()
 {
 
-    var tglawaltemp2 = new Date($("#Piutang-TglawalDate").datepicker().val());
-    var tglakhirtemp2 = new Date($("#Piutang-TglakhirDate").datepicker().val());
+    var tglawaltemp2 = new Date($("#Laporanpenjualan-TglawalDate").datepicker().val());
+    var tglakhirtemp2 = new Date($("#Laporanpenjualan-TglakhirDate").datepicker().val());
     var tglawal = tglawaltemp2.getFullYear()+"-"+(tglawaltemp2.getMonth()+1)+"-"+tglawaltemp2.getDate();
     var tglakhir = tglakhirtemp2.getFullYear()+"-"+(tglakhirtemp2.getMonth()+1)+"-"+tglakhirtemp2.getDate();
 
     var PenjualanTable;// = $('#PenjualanTable').DataTable();
+    console.log(tglawal+tglakhir);
     getLunasPenjualanData(currentToken, tglawal, tglakhir, function(result) {
         var i;
+        console.log(tglawal+tglakhir);
         if (!$.fn.DataTable.isDataTable("#PenjualanTable"))
         {
             PenjualanTable = $('#PenjualanTable').DataTable({
@@ -49,7 +51,6 @@ function populateLaporanPenjualanData()
                 else
                     isPrinted="<i style='color:red' class='glyphicon glyphicon-remove'></i>";
 
-
                 var detailButton = "<a onclick='InitDetailPenjualanPage("+id+");'><i class='glyphicon glyphicon-new-window'></i></a>";
 
                 var d = new Date(result.data[i].tanggal_transaksi);
@@ -65,8 +66,6 @@ function populateLaporanPenjualanData()
                 else {
                     pembayaran = "Cash";
                 }
-                if (hasHakAkses("HargaPokokLaba"))
-                {
                     var laba = "";
                     PenjualanTable.row.add([
                         StrId,
@@ -79,23 +78,15 @@ function populateLaporanPenjualanData()
                         isPrinted,
                         detailButton
                     ]);
-                }
-                else
-                {
-                    PenjualanTable.row.add([
-                        StrId,
-                        result.data[i].pelangganNama,
-                        tglTransaksi,
-                        pembayaran,
-                        tglJatuhTempo,
-                        subtotal,
-                        isPrinted,
-                        detailButton
-                    ]);
-                }
-
             }
             PenjualanTable.draw();
+            if (hasHakAkses("HargaPokokLaba")){
+                PenjualanTable.column("PenjualanTable-laba").visible(true);
+            }
+            else {
+                PenjualanTable.column("PenjualanTable-laba").visible(false);
+
+            }
         }
         else
         {

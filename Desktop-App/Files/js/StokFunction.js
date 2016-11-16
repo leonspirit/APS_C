@@ -3,8 +3,7 @@
  */
 
 var currentHakAkses = localStorage.getItem("hak_akses");
-var currentToken = localStorage.getItem("token");
-
+var currentToken;
 
 function StokBarangPopulateEntry(BarangTable, barangEntry)
 {
@@ -23,11 +22,6 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                     'Rp. ' + numberWithCommas(result2.data[i2].harga_jual) +
                     '</span>';
 
-                var HargaPokok =
-                    '<span class="pull-right">' +
-                    'Rp. ' + numberWithCommas(barangEntry.harga_pokok * result2.data[i2].konversi * result2.data[i2].konversi_acuan) +
-                    '</span>';
-
                 var curBoxStok = parseInt(barangEntry.stok/(result2.data[i2].konversi * result2.data[i2].konversi_acuan));
                 var StokReady = '<span class="pull-right">' +
                     numberWithCommas(curBoxStok) + ' box';
@@ -43,15 +37,34 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 var delButton = "<a class='delete-modal-toggle' href='#deleteModal' data-toggle='modal'  style='color:red;' data-id='" +
                     id +
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
-                BarangTable.row.add([
-                    StrId,
-                    barangEntry.nama,
-                    IsiCarton,
-                    StokReady,
-                    HargaJual,
-                    HargaPokok,
-                    editButton + " " + delButton
-                ]).draw();
+
+              //  if (hasHakAkses("HargaPokokLaba"))
+               // {
+                    var HargaPokok =
+                        '<span class="pull-right">' +
+                        'Rp. ' + numberWithCommas(barangEntry.harga_pokok * result2.data[i2].konversi * result2.data[i2].konversi_acuan) +
+                        '</span>';
+                    BarangTable.row.add([
+                        StrId,
+                        barangEntry.nama,
+                        IsiCarton,
+                        StokReady,
+                        HargaJual,
+                        HargaPokok,
+                        editButton + " " + delButton
+                    ]).draw();
+                /*}
+                else {
+                    BarangTable.row.add([
+                        StrId,
+                        barangEntry.nama,
+                        IsiCarton,
+                        StokReady,
+                        HargaJual,
+                        editButton + " " + delButton
+                    ]).draw();
+                }*/
+
                 break;
             }
         }
@@ -75,6 +88,14 @@ function StokBarangPopulateData() {
     else {
         BarangTable = $('#BarangTable').DataTable();
         BarangTable.clear().draw();
+    }
+
+    if (!hasHakAkses("HargaPokokLaba"))
+    {
+        BarangTable.column("#StokTable-harga-pokok").visible(false);
+    }
+    else {
+        BarangTable.column("#StokTable-harga-pokok").visible(true);
     }
     GetAllStokData(currentToken, function (result) {
         if (result.token_status == "success") {
@@ -130,15 +151,12 @@ function StokBarangCreateModalDisableHargaJualInput()
     var i;
     for (i=0;i<satuan.length;i++)
     {
-        console.log($("#Stokbarang-CreateForm-harga-jual-"+satuan[i]+"-check"));
-        if ($("#Stokbarang-CreateForm-harga-jual-"+satuan[i]+"-check").prop("checked"))
+        if ($("#Stokbarang-CreateModal-harga-jual-"+satuan[i]+"-check").prop("checked"))
         {
-            console.log("checked");
             form.elements["harga-jual-"+satuan[i]+"-input"].disabled =false;
         }
         else
         {
-            console.log("notChecked");
             form.elements["harga-jual-"+satuan[i]+"-input"].disabled= true;
         }
     }
@@ -207,33 +225,45 @@ function StokBarangCreateBarangConfirm()
                 var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
                 var stokReady = "<span class='pull-right'>"+"0 box"+"</span>";
                 var hargaJual  ="<span class='pull-right'>Rp. "+numberWithCommas(form.elements["#harga-jual-box"].val())+"</span>";
-                var hargaPokok = "<span class='pull-right'>Rp. "+numberWithCommas(0)+"</span>";
                 var editButton = "<a class='edit-modal-toggle' data-toggle='modal' href='#editModal' data-id='" +
                     id +
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
                 var delButton = "<a class='delete-modal-toggle' href='#deleteModal' data-toggle='modal'  style='color:red;' data-id='" +
                     id +
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
-                BarangTable.row.add([
-                    StrId,
-                    form.elements["nama"].value.toString(),
-                    "@ "+form.elements["isi-box-input"].value+" "+acuanBox,
-                    stokReady,
-                    hargaJual,
-                    hargaPokok,
-                    editButton+" "+delButton
-                ]).draw();
+               // if (hasHakAkses("HargaPokokLaba"))
+             //   {
+                    var hargaPokok = "<span class='pull-right'>Rp. "+numberWithCommas(0)+"</span>";
+                    BarangTable.row.add([
+                        StrId,
+                        form.elements["nama"].value.toString(),
+                        "@ "+form.elements["isi-box-input"].value+" "+acuanBox,
+                        stokReady,
+                        hargaJual,
+                        hargaPokok,
+                        editButton+" "+delButton
+                    ]).draw();
+             /*   }
+                else {
+                    BarangTable.row.add([
+                        StrId,
+                        form.elements["nama"].value.toString(),
+                        "@ "+form.elements["isi-box-input"].value+" "+acuanBox,
+                        stokReady,
+                        hargaJual,
+                        editButton+" "+delButton
+                    ]).draw();
+                }
+*/
                 createAlert("success", "Barang baru "+StrId+" - "+form.elements["nama"].value.toString() +" berhasil ditambahkan");
                 $("#createModal").modal('toggle');
             }
             else
             {
-                console.log("Add Barang failed");
                 createAlert("danger", "Data Barang gagal ditambahkan, mohon coba kembali");
             }
         }
         else {
-            console.log("Token failed");
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
@@ -243,6 +273,18 @@ function StokBarangCreateBarangConfirm()
 function InitStokBarangPage() {
     currentToken = localStorage.getItem("token");
     setPage("StokBarang");
+    if (hasHakAkses("BarangTerjualterbanyak"))
+    {
+        $("#Stokbarang-BarangterlakuButton").show();
+        document.getElementById("Stokbarang-BarangterlakuButton").onclick=function()
+        {
+            InitBarangTerjualTerbanyakPage();
+        };
+    }
+    else
+        {
+        $("#Stokbarang-BarangterlakuButton").hide();
+    }
     StokBarangPopulateData();
     $(document).on("click", ".edit-modal-toggle", function () {
         StokBarangPopulateEditModal(this);
@@ -254,15 +296,18 @@ function InitStokBarangPage() {
             StokBarangSearchForm.elements['nama'].value
         );
     });
-    $('input[type="checkbox"].minimal').iCheck({
+    var allcheckbox = $('input[type="checkbox"].minimal');
+    allcheckbox.iCheck({
         checkboxClass: "icheckbox_minimal-green"
     });
+    allcheckbox.iCheck('uncheck');
     StokBarangCreateModalDisableHargaJualInput();
+    $(".check-satuan").off("ifChanged");
     $(".check-satuan").on("ifChanged", function () {
         StokBarangCreateModalDisableHargaJualInput();
     });
-    $(document).on("click", "#Stokbarang-CreateModal-ConfirmButton", function () {
+    document.getElementById("Stokbarang-CreateModal-ConfirmButton").onclick= function () {
         StokBarangCreateBarangConfirm();
-    });
+    };
 }
 

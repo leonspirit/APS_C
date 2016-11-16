@@ -17,7 +17,6 @@ function populateLaporanPembelianData()
     var NamaBulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var PembelianTable;
     getLunasPembelianData(currentToken, tglawal, tglakhir, function(result){
-        console.log("babi"+tglawal+" "+tglakhir);
         var i;
         if (!$.fn.DataTable.isDataTable( '#PembelianTable'))
         {

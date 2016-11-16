@@ -108,4 +108,17 @@ function AddSatuan(token, barangID, harga_jual, satuan, konversi, satuan_acuan, 
         }, "json");
 }
 
+function GetBarangTerlaku(token, tgl_awal, tgl_akhir, fn)
+{
+    $.post( baseUrl + "barang/tambah_satuan/",
+        {
+            token: token,
+            tgl_awal:tgl_awal,
+            tgl_akhir:tgl_akhir
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}
+
 //connection.end();

@@ -2,7 +2,26 @@
  * Created by Billy on 12-Oct-16.
  */
 
-var currentToken = localStorage.getItem("token");
+var currentToken;
+
+var FullHakAkses = ["StokBarang",
+    "BarangTerjualTerbanyak",
+    "HargaPokokLaba",
+    "LaporanPenjualan",
+    "LaporanPembelian",
+    "PembelianBaru",
+    "PenjualanBaru",
+    "EditPenjualan",
+    "EditPembelian",
+    "ReturPenjualan",
+    "ReturPembelian",
+    "Hutang",
+    "Piutang",
+    "DaftarPelanggan",
+    "DaftarPembeliTerbanyak",
+    "DaftarSupplier",
+    "DaftarKaryawan",
+    "UpdateHakAksesKaryawan"];
 
 function DaftarKaryawanPopulateKaryawanData()
 {
@@ -60,6 +79,7 @@ function DaftarKaryawanPopulateKaryawanData()
 
 function DaftarKaryawanPopulateEditModal(Button)
 {
+    $(".Daftarkaryawan-EditModal-check").iCheck('uncheck');
     var formData = document.getElementById("Daftarkaryawan-EditModal-EditForm");
     document.getElementById("Daftarkaryawan-EditModal-KaryawanIDText").innerHTML = $(Button).closest('tr').find('td:eq(0)').html();
     formData.elements['nama'].value=($(Button).closest('tr').find('td:eq(1)').html());
@@ -71,6 +91,15 @@ function DaftarKaryawanPopulateEditModal(Button)
     var KaryawanTable = $('#KaryawanTable').DataTable();
     var rowNumber = KaryawanTable.row($(Button).closest('tr')).index();
     document.getElementById("Daftarkaryawan-EditModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
+    var i;
+    DetailKaryawan(currentToken, karyawanID, function (result)
+    {
+        for (i=0;i<result.data[0].hak_akses.length;i++)
+        {
+            console.log(result.data[0].hak_akses[i]);
+            $("#Daftarkaryawan-EditModal-Hak"+result.data[0].hak_akses[i].nama).iCheck("check");
+        }
+    });
     console.log("delete "+karyawanID+" "+rowNumber);
 }
 
@@ -145,14 +174,22 @@ function DaftarKaryawanEditConfirm(Button)
    var pad ="00000";
     var Id = $(Button).attr('data-id');
     var StrId  = "K"+ pad.substring(0, pad.length - Id.length)+Id;
-
     var rowNum = $(Button).attr('data-row-num');
     var formData = document.getElementById("Daftarkaryawan-EditModal-EditForm");
     var nama = formData.elements['nama'].value;
     var telp = formData.elements['telp'].value;
     var alamat = formData.elements['alamat'].value;
     var username = formData.elements['username'].value;
-
+    var hakakses = [];
+    for (i=0;i<FullHakAkses.length;i++)
+    {
+        if ($("#Daftarkaryawan-EditModal-Hak"+FullHakAkses[i]).prop("checked"))
+        {
+            hakakses.push({
+                nama: FullHakAkses[i]
+            });
+        }
+    }
     UpdateDataKaryawan(currentToken, Id, nama, telp, alamat, username, function(result){
         if (result.token_status=="success")
         {
@@ -163,6 +200,13 @@ function DaftarKaryawanEditConfirm(Button)
                 KaryawanTable.cell(rowNum, 1).data(nama);
                 KaryawanTable.cell(rowNum, 2).data(telp);
                 KaryawanTable.cell(rowNum, 3).data(alamat);
+                UpdateHakKaryawan(currentToken, id, hakakses, function(result2){
+                    if (result2.token_status=="success") {
+                    }
+                    else {
+                        createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                    }
+                });
                 $("#Daftarkaryawan-EditModal").modal('toggle');
                 createAlert("success", "Data karyawan "+StrId+" - "+nama +" berhasil dirubah");
             }
@@ -187,35 +231,18 @@ function DaftarKaryawanCreateConfirm(){
     var username = formData.elements['username'].value;
     var passwordHash = md5(username+"123");
     var i;
-    var FullHakAkses = ["StokBarang",
-    "BarangTerjualTerbanyak",
-    "HargaPokokLaba",
-    "LaporanPenjualan",
-    "LaporanPembelian",
-    "PembelianBaru",
-    "PenjualanBaru",
-    "EditPenjualan",
-    "EditPembelian",
-    "ReturPenjualan",
-    "ReturPembelian",
-    "Hutang",
-    "Piutang",
-    "DaftarPelanggan",
-    "DaftarPembeliTerbanyak",
-    "DaftarSupplier",
-    "DaftarKaryawan",
-    "UpdateHakAksesKaryawan"];
     var hakakses = [];
     for (i=0;i<FullHakAkses.length;i++)
     {
-        if ($("Daftarkaryawan-CreateModal-Hak"+FullHakAkses[i]).prop("checked"))
+        if ($("#Daftarkaryawan-CreateModal-Hak"+FullHakAkses[i]).prop("checked"))
         {
             console.log("nambah "+FullHakAkses[i]);
             hakakses.push({
-                "nama": FullHakAkses[i]
+                nama: FullHakAkses[i]
             });
         }
     }
+    console.log(hakakses);
     AddKaryawan(currentToken, nama, telp, alamat, username, passwordHash, hakakses,function(result){
         if (result.token_status=="success")
         {
@@ -238,10 +265,14 @@ function DaftarKaryawanCreateConfirm(){
                     nama,
                     telp,
                     alamat,
+                    username,
                     editButton+" "+delButton
                 ]).draw();
                 $("#Daftarkaryawan-CreateModal").modal('toggle');
+                formData.reset();
+                $(".Daftarkaryawan-CreateModal-check").iCheck('uncheck');
                 createAlert("success", "Karyawan baru "+StrId+" - "+nama +" berhasil ditambahkan, password baru untuk karyawan adalah username123, harap segera minta karyawan yang bersangkutan untuk mengganti password");
+
             }
             else
                 console.log("Add Karyawan failed");
@@ -259,6 +290,13 @@ function InitDaftarKaryawanPage()
     currentToken = localStorage.getItem("token");
     setPage("DaftarKaryawan");
     DaftarKaryawanPopulateKaryawanData();
+
+
+    $('input[type="checkbox"].minimal').iCheck({
+        checkboxClass: "icheckbox_minimal-green"
+    });
+    $('input[type="checkbox"].minimal').iCheck("uncheck");
+
     $(document).on("click", ".Daftarkaryawan-delete-modal-toggle", function() {
         DaftarKaryawanPopulateDeleteModal(this);
     });
@@ -280,14 +318,14 @@ function InitDaftarKaryawanPage()
         DaftarKaryawanCreateConfirm();
     };
 
-    $(".search-filter").keyup( function(){
+    $(".Daftarkaryawan-search-filter").keyup( function(){
         var formdata=  document.getElementById("Daftarkaryawan-SearchForm");
         DaftarKaryawanSearchFromTable(
             formdata.elements['id'].value,
             formdata.elements['nama'].value,
             formdata.elements['telp'].value,
             formdata.elements['alamat'].value,
-            ""
+            formdata.elements['username'].value
         );
     });
 
