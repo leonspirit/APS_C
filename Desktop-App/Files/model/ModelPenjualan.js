@@ -52,8 +52,10 @@ function getJatuhTempoPenjualanData(token, n, fn)
 }
 
 
-function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtotal, isPrinted, status, notes, alamat, satuan, fn)
+function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtotal, isPrinted, status, notes, alamat, satuan, voucher, fn)
 {
+    console.log("asaudia")
+    console.log(voucher);
     $.post( baseUrl + "penjualan/tambah_penjualan/",
         {
             token: token,
@@ -65,7 +67,8 @@ function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtot
             status:status,
             notes:notes,
             alamat:alamat,
-            satuan:satuan
+            satuan:satuan,
+            voucher:voucher
         }, function(data) {
             fn(data);
         }, "json");
@@ -100,5 +103,17 @@ function AddCicilanPenjualan(token,penjualanID, tanggal_cicilan, nominal, notes,
         }, "json");
 }
 
+function EditPenjualanBarang(token, penjualanbarangID, harga_jual_saat_ini, disc, fn)
+{
+    $.post( baseUrl + "pembelian/tambah_cicilan_pembelian/",
+        {
+            token: token,
+            penjualanbarangID: penjualanbarangID,
+            harga_jual_saat_ini:harga_jual_saat_ini,
+            disc:disc
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
 //connection.end();

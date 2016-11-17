@@ -18,11 +18,13 @@ function EditPembelianAddRow(barang)
     var disc1 = barang.disc_1;
     var disc2 = barang.disc_2;
     var disc3 = barang.disc_3;
+    var subtotal = hargaUnit*qty *(100-disc1-disc2-disc3)/100;
    // var itemSubtotal = (hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
 
 
     var cell1 = row.insertCell(0);
     cell1.innerHTML = rowNum.toString();
+    cell1.setAttribute("data-id", barang.pembelianbarangID);
 
 
     var cell2 = row.insertCell(1);
@@ -80,11 +82,11 @@ function EditPembelianAddRow(barang)
     inputHargaLabel.setAttribute("class", "input-group-addon");
     inputHargaLabel.innerHTML = "Rp.";
     var inputHarga = document.createElement("input");
-    inputHarga.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-4");
+    inputHarga.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-1");
     inputHarga.setAttribute("type", "number");
     inputHarga.setAttribute("class", "form-control");
     inputHarga.value = hargaUnit;
-    //inputHarga.setAttribute("onchange", "PembelianBaruDrawTable(this.parentNode);");
+    inputHarga.setAttribute("onchange", "EditPembelianDrawTable(this);");
     inputHargaContainer.appendChild(inputHargaLabel);
     inputHargaContainer.appendChild(inputHarga);
     cell6.appendChild(inputHargaContainer);
@@ -95,13 +97,13 @@ function EditPembelianAddRow(barang)
     inputDiscContainer1.setAttribute("class", "input-group");
     inputDiscContainer1.setAttribute("style", "width:100%");
     var inputDisc1 = document.createElement("input");
-    inputDisc1.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-5");
+    inputDisc1.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-2");
     inputDisc1.setAttribute("type", "number");
     inputDisc1.setAttribute("min", "0");
     inputDisc1.setAttribute("max", "100");
     inputDisc1.setAttribute("class", "form-control");
     inputDisc1.value= disc1;
-   // inputDisc1.setAttribute("onchange", "PembelianBaruDrawTable(this.parentNode);");
+    inputDisc1.setAttribute("onchange", "EditPembelianDrawTable(this);");
     var inputDiscLabel1 = document.createElement("span");
     inputDiscLabel1.setAttribute("class", "input-group-addon");
     inputDiscLabel1.innerHTML = "%";
@@ -115,13 +117,13 @@ function EditPembelianAddRow(barang)
     inputDiscContainer2.setAttribute("class", "input-group");
     inputDiscContainer2.setAttribute("style", "width:100%");
     var inputDisc2 = document.createElement("input");
-    inputDisc2.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-6");
+    inputDisc2.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-3");
     inputDisc2.setAttribute("type", "number");
     inputDisc2.setAttribute("min", "0");
     inputDisc2.setAttribute("max", "100");
     inputDisc2.setAttribute("class", "form-control");
     inputDisc2.value= disc2;
-  //  inputDisc2.setAttribute("onchange", "PembelianBaruDrawTable(this.parentNode);");
+    inputDisc2.setAttribute("onchange", "EditPembelianDrawTable(this);");
     var inputDiscLabel2 = document.createElement("span");
     inputDiscLabel2.setAttribute("class", "input-group-addon");
     inputDiscLabel2.innerHTML = "%";
@@ -135,13 +137,13 @@ function EditPembelianAddRow(barang)
     inputDiscContainer3.setAttribute("class", "input-group");
     inputDiscContainer3.setAttribute("style", "width:100%");
     var inputDisc3 = document.createElement("input");
-    inputDisc3.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-7");
+    inputDisc3.setAttribute("id","Editpembelian-Input-"+rowNum.toString()+"-4");
     inputDisc3.setAttribute("type", "number");
     inputDisc3.setAttribute("min", "0");
     inputDisc3.setAttribute("max", "100");
     inputDisc3.setAttribute("class", "form-control");
     inputDisc3.value= disc3;
-   // inputDisc3.setAttribute("onchange", "PembelianBaruDrawTable(this.parentNode);");
+    inputDisc3.setAttribute("onchange", "EditPembelianDrawTable(this);");
     var inputDiscLabel3 = document.createElement("span");
     inputDiscLabel3.setAttribute("class", "input-group-addon");
     inputDiscLabel3.innerHTML = "%";
@@ -152,29 +154,143 @@ function EditPembelianAddRow(barang)
     var cell10 = row.insertCell(9);
     var span  = document.createElement("span");
     span.setAttribute("class", "pull-right");
-    span.innerHTML = "Rp. 0";
+    span.innerHTML = "Rp. "+numberWithCommas(subtotal);
     cell10.appendChild(span);
 
 }
 
 function populateEditPembelianPage(ID)
 {
+    EditPembelianResetTable();
     GetDetailPembelian(currentToken, ID, function(result)
     {
         var pembelian = result.data[0];
-
+        document.getElementById("Editpembelian-SupplierText").innerHTML = pembelian.supplierNama;
+        var tglTransaksi = $("#Editpembelian-TgltransaksiDate");
+        var tglJatuhTempo = $("#Editpembelian-TgljatuhtempoDate");
+        tglTransaksi.datepicker({
+            autoclose: true
+        });
+        tglTransaksi.datepicker("setDate", new Date(pembelian.tanggal_transaksi));
+        tglJatuhTempo.datepicker({
+            autoclose: true
+        });
+        if (pembelian.jatuh_tempo==null || pembelian.jatuh_tempo=='')
+        {
+            document.getElementById("Editpembelian-PembayaranText").innerHTML = "Cash";
+            document.getElementById("Editpembelian-TgljatuhtempoDate").disabled = true;
+        }
+        else {
+            document.getElementById("Editpembelian-PembayaranText").innerHTML = "Bon";
+            tglJatuhTempo.datepicker("setDate", new Date (pembelian.jatuh_tempo));
+        }
+        document.getElementById("Editpembelian-NotesInput").value=pembelian.notes;
+        var itemTableFooter= document.getElementById("Editpembelian-ItemTable").getElementsByTagName("tfoot")[0];
+        console.log(itemTableFooter);
+        itemTableFooter.rows[0].cells[2].children[0].children[0].value=pembelian.disc;
+        itemTableFooter.rows[0].cells[4].children[0].innerHTML="Rp. "+numberWithCommas(pembelian.subtotal);
         var i;
         for (i=0;i<pembelian.barang.length;i++)
         {
             EditPembelianAddRow(pembelian.barang[i]);
         }
     });
+}
 
+function EditPembelianDrawTable(r)
+{
+    var indexChanged;
+    if (r!=null)
+        indexChanged = getRowIndex(r);
+    else
+        indexChanged= 0;
+    var i;
+    var itemTable= document.getElementById("Editpembelian-ItemTable");
+
+    if(indexChanged>=1 && indexChanged<itemTable.rows.length){
+        console.log(indexChanged);
+        var curRow =  itemTable.rows[indexChanged];
+
+        var qtyStr = curRow.cells[3].children[0].innerHTML;
+        var qty = parseInt(qtyStr.replace(',',''));
+        console.log(qtyStr+" "+qty);
+        var hargaSatuan = document.getElementById("Editpembelian-Input-"+indexChanged+"-1").value;
+        var disc1 = document.getElementById("Editpembelian-Input-"+indexChanged+"-2").value;
+        var disc2 = document.getElementById("Editpembelian-Input-"+indexChanged+"-3").value;
+        var disc3 = document.getElementById("Editpembelian-Input-"+indexChanged+"-4").value;
+        //subtotal
+        var Subtotal = parseInt((qty * hargaSatuan*(100-disc1-disc2-disc3))/100);
+        curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
+    }
+    var TotalHarga = 0;
+    var subtotalTambahanStr;
+    var subtotalTambahan;
+
+    for (i=1;i<itemTable.rows.length-1;i++)
+    {
+        subtotalTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+        TotalHarga += subtotalTambahan;
+    }
+
+    var discBesar = itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value;
+    console.log(discBesar);
+
+    var TotalHargaAfterDisc = parseInt(TotalHarga *(100 - discBesar)/100);
+    itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHargaAfterDisc);
+}
+
+function EditPembelianResetTable()
+{
+    var tableBody = document.getElementById('Editpembelian-ItemTable').getElementsByTagName("tbody")[0];
+    while (true) {
+        if (tableBody.rows.length==0)
+            break;
+        tableBody.deleteRow(-1);
+    }
+}
+
+function EditPembelianSaveConfirm()
+{
+    console.log("lala");
+    var i;
+    var ItemTableBody = document.getElementById("Editpembelian-ItemTable").getElementsByTagName("tbody")[0];
+    var rowNum = ItemTableBody.rows.length;
+    console.log(rowNum);
+    for (i=1;i<=rowNum;i++)
+    {
+        console.log(i);
+        EditPembelianEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i);
+    }
+}
+function EditPembelianEditEntry(pembelianbarangID, row)
+{
+    console.log(pembelianbarangID+ row);
+    EditPembelianBarang(currentToken,
+        pembelianbarangID,
+        document.getElementById("Editpembelian-Input-"+row+"-1").value,
+        document.getElementById("Editpembelian-Input-"+row+"-2").value,
+        document.getElementById("Editpembelian-Input-"+row+"-3").value,
+        document.getElementById("Editpembelian-Input-"+row+"-4").value,
+        function(result){
+            if (result.token_status=='success')
+            {
+                console.log(pembelianbarangID);
+            }
+        }
+    )
 }
 
 function InitEditPembelianPage(curPembelianID)
 {
     currentToken = localStorage.getItem("token");
     setPage("EditPembelian");
-    populateEditPembelianPage(curPembelianID)
+
+    populateEditPembelianPage(curPembelianID);
+
+    document.getElementById("Editpembelian-SaveButton").onclick=function()
+    {
+        EditPembelianSaveConfirm();
+    };
+ //   EditPembelianDrawTable(null);
 }

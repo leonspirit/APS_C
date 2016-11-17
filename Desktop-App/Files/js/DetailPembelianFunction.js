@@ -135,14 +135,14 @@ function populateDetailPembelian(currentPembelianID)
                 {
                     bank="-";
                 }
-                CicilanPembelianTable.add.row([
+                CicilanPembelianTable.row.add([
                     TglTransaksiCicilanText,
                     pembelian.cicilan[i].cara_pembayaran,
                     "Rp. "+ numberWithCommas(pembelian.cicilan[i].nominal),
                     bank,
                     nomor_giro,
                     TglTransaksiCicilanText,
-                    penjualan.cicilan[i].notes
+                    pembelian.cicilan[i].notes
                 ]);
             }
             CicilanPembelianTable.draw();

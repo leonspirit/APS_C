@@ -5,40 +5,38 @@
           <div class="box box-primary">
               <div class="box-header">
                   <div class="alert-placeholder"></div>
-                  <button  data-toggle="collapse" data-parent="#accordion" href="#Stokbarang-SearchField" class="btn btn-primary"> <i class="glyphicon glyphicon-search"></i> Search</button>
-                  <button data-toggle="modal" href="#Stokbarang-CreateModal" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Tambah</button>
-                  <button id="Stokbarang-BarangterlakuButton" class="btn btn-primary"><i class="glyphicon glyphicon-tag"></i> Barang Terlaku</button>
-              </div>
+                    </div>
             <div class="box-body">
-                <div id="Stokbarang-SearchField" class="panel-collapse collapse">
-                    <form id="Stokbarang-SearchForm" role="form">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Kode</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">C</div>
-                                        <input name="kode" type="number" class="search-filter form-control">
-                                    </div>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Dari Tanggal</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
                                 </div>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label>Nama</label>
-                                    <input name="nama" type="text" class="search-filter form-control">
-                                    <span class="help-block"></span>
-                                </div>
+                                <input type="text" class="form-control pull-right" id="Barangterlaku-TglawalDate">
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sampai Tanggal</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="Barangterlaku-TglakhirDate">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              <table id="BarangTable" class="table table-bordered table-hover">
+              <table id="BarangTerlakuTable" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th id="StokTable-kode">Kode</th>
-                        <th id="StokTable-nama">Nama Barang</th>
-                        <th id="StokTable-isi-carton">Terjual</th>
+                        <th id="BarangTerlakuTable-kode">Kode</th>
+                        <th id="BarangTerlakuTable-nama">Nama Barang</th>
+                        <th id="BarangTerlakuTable-terjual">Terjual</th>
                     </tr>
                     </thead>
                 <tbody>

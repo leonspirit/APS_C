@@ -12,16 +12,14 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Supplier</label>
+                                <h4 id="Editpembelian-SupplierText"></h4>
                                <!-- <input class="form-control select2" style="width: 100%;" id="Pembelianbaru-SupplierSelect">-->
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Pembayaran</label>
-                                <select class="form-control" id="Editpembelian-PembayaranSelect">
-                                    <option value="cash">Cash</option>
-                                    <option value="bon">Bon</option>
-                                </select>
+                                <h4 id="Editpembelian-PembayaranText"></h4>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -61,26 +59,44 @@
             <div class="box-body">
                 <table id="Editpembelian-ItemTable" class="table table-bordered table-hover">
                     <thead>
-                    <tr>
-                        <th style="width:20px">#</th>
-                        <th>Barang</th>
-                        <th>Isi/Box</th>
-                        <th style="width:60px">Qty</th>
-                        <th>Unit</th>
-                        <th style="width:150px">H.Satuan</th>
-                        <th style="width:100px" >Disc 1</th>
-                        <th style="width:100px" >Disc 2</th>
-                        <th  style="width:100px">Disc 3</th>
-                        <th>Subtotal</th>
-                    </tr>
+                        <tr>
+                            <th style="width:20px">#</th>
+                            <th>Barang</th>
+                            <th>Isi/Box</th>
+                            <th style="width:60px">Qty</th>
+                            <th>Unit</th>
+                            <th style="width:150px">H.Satuan</th>
+                            <th style="width:100px" >Disc 1</th>
+                            <th style="width:100px" >Disc 2</th>
+                            <th  style="width:100px">Disc 3</th>
+                            <th>Subtotal</th>
+                        </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
-                    <tfoot></tfoot>
+                    <tfoot>
+                        <tr>
+                            <th colspan=5></th>
+                            <th colspan="2"><span class="pull-right">Discount</span></th>
+                            <td style="padding:0;">
+                                <div class="input-group" style="width:100%">
+                                    <input type="Number" class="form-control" onchange="EditPembelianDrawTable(null)">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </td>
+                            <th ><span class="pull-right">Total</span></th>
+                            <th>
+                                <span class="pull-right">
+                                </span>
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="box-footer">
+                <span class="pull-right">
+                    <Button id="Editpembelian-SaveButton" class="btn btn-primary"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
+                </span>
              </div>
           </div>
         </div>

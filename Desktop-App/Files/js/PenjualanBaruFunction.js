@@ -27,7 +27,8 @@ function formatOutput (optionElement) {
     else {
         return optionElement.text;
     }
-};
+}
+
 
 
 function PenjualanBaruGetPelanggan()
@@ -83,7 +84,8 @@ function PenjualanBaruGetBarang()
                         id: result.data[i].barangID,
                         text: result.data[i].nama.toString(),
                         nama: result.data[i].nama.toString(),
-                        harga_pokok : result.data[i].harga_pokok
+                        harga_pokok : result.data[i].harga_pokok,
+                        stok:result.data[i].stok
                     });
             }
             DataBarang.push(
@@ -149,6 +151,7 @@ function PenjualanBaruAddRow()
 
     var cell2 = row.insertCell(1);
     cell2.setAttribute("style", "padding:0");
+    cell2.setAttribute("class", "form-group");
     var inputBarang = document.createElement("input");
     inputBarang.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-1");
     inputBarang.setAttribute("style", "width:100%;");
@@ -166,20 +169,25 @@ function PenjualanBaruAddRow()
 
     var cell3 = row.insertCell(3);
     cell3.setAttribute("style", "padding:0");
+    cell3.setAttribute("class", "form-group");
+    var inputcontainer = document.createElement("div");
+    inputcontainer.setAttribute("class", "form-group");
     var inputJumlah = document.createElement("input");
     inputJumlah.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-2");
     inputJumlah.setAttribute("class", "form-control");
     inputJumlah.setAttribute("type", "number");
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
-    inputJumlah.setAttribute("onchange", "PenjualanBaruDrawTable(this,true);");
-    cell3.appendChild(inputJumlah);
+    inputJumlah.setAttribute("onchange", "PenjualanBaruDrawTable(this,true.parentNode);PenjualanBaruCekItemStok(this.parentNode);");
+    inputcontainer.appendChild(inputJumlah);
+    cell3.appendChild(inputcontainer);
 
     var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
+    cell4.setAttribute("class", "form-group");
     var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
-    inputSatuan.setAttribute("onchange", "PenjualanBaruGetHargaUnitSatuan(this);PenjualanBaruDrawTable(this);");
+    inputSatuan.setAttribute("onchange", "PenjualanBaruGetHargaUnitSatuan(this);PenjualanBaruDrawTable(this);PenjualanBaruCekItemStok(this);");
     inputSatuan.setAttribute("class", "form-control input-sm");
     inputSatuan.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-3");
     cell4.appendChild(inputSatuan);
@@ -279,6 +287,7 @@ function PenjualanBaruResetTable() {
 
 function PenjualanBaruDrawTable(r) {
 
+    var countLaba;
     if (hasHakAkses("HargaPokokLaba"))
     {
         countLaba=true;
@@ -288,7 +297,7 @@ function PenjualanBaruDrawTable(r) {
     var indexChanged;
     console.log(r);
     if (r != null){
-        indexChanged =r.parentNode.parentNode.rowIndex;
+        indexChanged =getRowIndex(r);
         console.log(indexChanged);
     }
     else {
@@ -362,7 +371,7 @@ function PenjualanBaruHideJatuhTempo()
 
 function PenjualanBaruGetSatuanBarangList(selectBox)
 {
-    var rowIndex = selectBox.parentNode.parentNode.rowIndex;
+    var rowIndex = getRowIndex(selectBox);
     var barangID = selectBox.value;
     var hargaPokokPcs = $(selectBox).select2('data')[0].harga_pokok;
         console.log(hargaPokokPcs);
@@ -377,7 +386,8 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
                 "id":result.data[i].satuanID,
                 "text":capitalizeFirstLetter(result.data[i].satuan),
                 "harga_jual":result.data[i].harga_jual,
-                "harga_pokok":result.data[i].konversi * result.data[i].konversi_acuan * hargaPokokPcs
+                "harga_pokok":result.data[i].konversi * result.data[i].konversi_acuan * hargaPokokPcs,
+                "konversi_final":result.data[i].konversi * result.data[i].konversi_acuan
             });
             if(result.data[i].satuan=="box")
             {
@@ -394,10 +404,11 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
 }
 function PenjualanBaruGetHargaUnitSatuan(selectBox)
 {
-    var rowIndex = selectBox.parentNode.parentNode.rowIndex;
+    var rowIndex = getRowIndex(selectBox);
     document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-4").value = $("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2('data')[0].harga_jual;
-    if (hasHakAkses("HargaPokokLaba"))
-    document.getElementById("Penjualanbaru-hpokok-"+rowIndex.toString()).innerHTML = "Rp. "+numberWithCommas($("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2('data')[0].harga_pokok);
+    if (hasHakAkses("HargaPokokLaba")) {
+        document.getElementById("Penjualanbaru-hpokok-" + rowIndex.toString()).innerHTML = "Rp. " + numberWithCommas($("#Penjualanbaru-Input-" + rowIndex.toString() + "-3").select2('data')[0].harga_pokok);
+    }
 }
 
 function PenjualanBaruSave(isPrinted) {
@@ -405,31 +416,77 @@ function PenjualanBaruSave(isPrinted) {
     var satuan = [];
     var itemTable = document.getElementById("Penjualanbaru-ItemTable");
     var i;
-    var alamat = document.getElementById("Penjualanbaru-AlamatInput").value;
+    var alamat = document.getElementById("Penjualanbaru-AlamatInput");
     var tglJatuhTempo, tglJatuhTempoTemp, status;
+
+    var tglTransaksiValue = $("#Penjualanbaru-TgltransaksiDate").datepicker().val();
+    var tglJatuhTempoValue= $("#Penjualanbaru-TgljatuhtempoDate").datepicker().val();
+
     if ($("#Penjualanbaru-PembayaranSelect").val() == "cash") {
         tglJatuhTempo = null;
         status = "lunas"
     }
     else {
-        tglJatuhTempoTemp = new Date($("#Penjualanbaru-TgljatuhtempoDate").datepicker().val());
+        tglJatuhTempoTemp = new Date(tglTransaksiValue);
         tglJatuhTempo = tglJatuhTempoTemp.getFullYear() + "-" + (tglJatuhTempoTemp.getMonth() + 1) + "-" + tglJatuhTempoTemp.getDate();
         status = "belum lunas"
     }
-    var tglTransaksiTemp = new Date($("#Penjualanbaru-TgltransaksiDate").datepicker().val());
+    var tglTransaksiTemp = new Date(tglJatuhTempoValue);
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
-    for (i = 1; i < itemTable.rows.length - 1; i++) {
-        satuan.push({
-            "satuanID": $("#Penjualanbaru-Input-" + i.toString() + "-3").val(),
-            "quantity": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-2").value,
-            "disc": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-5").value,
-            "harga_jual_saat_ini": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-4").value
-        });
+    var voucher=[];
 
+    var PelangganSelectValue = $("#Penjualanbaru-PelangganSelect").val();
+    if (PelangganSelectValue==null ||PelangganSelectValue=="" || PelangganSelectValue==0)
+    {
+        valid=false;
+        setWarning(document.getElementById("Penjualanbaru-PelangganSelect"), "Data Pelanggan harus diisi");
     }
-    console.log(satuan);
-
+    if (tglTransaksiValue==null || tglTransaksiValue=='')
+    {
+        valid=false;
+        setWarning(document.getElementById("Penjualanbaru-TgltransaksiDate"), "Tgl transaksi harus diisi");
+    }
+    if ($("#Penjualanbaru-PembayaranSelect").val()=="bon" && (tglJatuhTempoValue==null || tglJatuhTempoValue==''))
+    {
+        valid=false;
+        setWarning(document.getElementById("Penjualanbaru-TgljatuhtempoDate"), "Tgl jatuh tempo harus diisi bila membayar dengan bon");
+    }
+    if (alamat.value=='' || alamat.value==null)
+    {
+        valid=false;
+        setWarning(alamat, "Alamat pengiriman harus diisi");
+    }
+    for (i=1;i<itemTable.rows.length-1;i++)
+    {
+        var BarangSelectValue = $("#Penjualanbaru-Input-"+i+"-1").val();
+        if (BarangSelectValue == null || BarangSelectValue=='')
+        {
+            valid=false;
+            setWarning(document.getElementById("Penjualanbaru-Input-"+i+"-1"),"Barang harus diisi");
+        }
+        var qty = document.getElementById("Penjualanbaru-Input-"+i.toString()+"-2");
+        if (qty.value=='' || qty.value==null || qty.value==0)
+        {
+            valid=false;
+            setWarning(qty,"hrs diisi");
+        }
+        var satuanselect  =$("#Penjualanbaru-Input-"+i.toString()+"-3").val();
+        if (satuanselect=='' || satuanselect==null)
+        {
+            valid=false;
+            setWarning(document.getElementById("Penjualanbaru-Input-"+i.toString()+"-3"), "satuan harus diisi")
+        }
+    }
+    console.log(voucher);
     if (valid) {
+        for (i = 1; i < itemTable.rows.length - 1; i++) {
+            satuan.push({
+                "satuanID": $("#Penjualanbaru-Input-" + i.toString() + "-3").val(),
+                "quantity": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-2").value,
+                "disc": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-5").value,
+                "harga_jual_saat_ini": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-4").value
+            });
+        }
         AddPenjualan(
             currentToken,
             $("#Penjualanbaru-PelangganSelect").val(),
@@ -439,8 +496,9 @@ function PenjualanBaruSave(isPrinted) {
             isPrinted,
             status,
             $("#Penjualanbaru-NotesInput").val(),
-            alamat,
+            alamat.value,
             satuan,
+            voucher,
             function (result) {
                 if (result != null && result.token_status == "success") {
                     console.log(result.penjualanID);
@@ -472,7 +530,7 @@ function PenjualanBaruCreatePelangganConfirm()
     if (valid)
     {
         console.log("valid");
-        AddSupplier(currentToken, nama, telp, alamat, function(result){
+        AddPelanggan(currentToken, nama, telp, alamat, function(result){
             if (result.token_status=="success")
             {
                 if  (result.supplierID != null)
@@ -517,6 +575,35 @@ function PenjualanBaruCreatePelangganConfirm()
             }
         });
     }
+}
+
+
+function PenjualanBaruCekItemStok(node)
+{
+    var rowIndex = getRowIndex(node);//node.parentNode.parentNode.rowIndex;
+   // console.log(getRowIndex(node));
+    var barang_dibeli_satuan = document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-2").value;
+    var satuanselected =$("#Penjualanbaru-Input-"+rowIndex.toString()+"-3");
+    var barangselected =$("#Penjualanbaru-Input-"+rowIndex.toString()+"-1");
+    if (satuanselected.val()!=null && satuanselected.val()!='' && barangselected.val()!=null && barangselected.val()!='' && barangselected.val()!=0)
+    {
+        var stok = barangselected.select2('data')[0].stok;
+        var konversiFinal = satuanselected.select2('data')[0].konversi_final;
+        var barang_dibeli_final = barang_dibeli_satuan * konversiFinal;
+        if (barang_dibeli_final>stok){
+
+            setWarning(document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-2"),"Stok tdk cukup");
+            return true
+        }
+        else {
+            removeThisWarning(node);
+            return false;
+        }
+    }
+    else return false
+}
+function PenjualanBaruCekHargaRugi(node) {
+
 }
 
 

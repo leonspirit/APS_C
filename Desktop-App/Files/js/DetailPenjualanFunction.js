@@ -63,7 +63,7 @@ function populateDetailPenjualan(curPenjualanID)
             else {
                 notesText =penjualan.notes;
             }
-            document.getElementById("Detailpenjualan-PelangganText").innerHTML = penjualan.nama;
+            document.getElementById("Detailpenjualan-PelangganText").innerHTML = penjualan.pelangganNama;
             document.getElementById("Detailpenjualan-TglJatuhTempoText").innerHTML = JatuhTempoText;
             document.getElementById("Detailpenjualan-TglTransaksiText").innerHTML = TglTransaksiText;
             document.getElementById("Detailpenjualan-PembayaranText").innerHTML = PembayaranText;
@@ -75,12 +75,12 @@ function populateDetailPenjualan(curPenjualanID)
             var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(penjualan.subtotal)+"</span>";
            // var grandDiscountText ="<span class='pull-right'>"+numberWithCommas(penjualan.disc)+" %</span>";
 
-            $(itemPenjualanTable.column(2).footer()).html(grandTotalText);
+            $(itemPenjualanTable.column(7).footer()).html(grandTotalText);
           //  $(itemPembelianTable.column(7).footer()).html(grandDiscountText);
             console.log(penjualan);
             for (i=0;i<penjualan.barang.length;i++)
             {
-                var hargaUnit = penjualan.barang[i].harga_per_biji;
+                var hargaUnit = penjualan.barang[i].harga_jual_saat_ini;
                 var qty = penjualan.barang[i].quantity;
                 var disc = penjualan.barang[i].disc;
                 var itemSubtotal = (hargaUnit * qty)*((100-disc)/100);

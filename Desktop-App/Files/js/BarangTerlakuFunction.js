@@ -72,8 +72,14 @@ function BarangTerlakuPopulateEntry(BarangTerlakuTable, barangEntry)
 */
 function BarangTerlakuPopulateData() {
 
+    var tglawaltemp2 = new Date($("#Barangterlaku-TglawalDate").datepicker().val());
+    var tglakhirtemp2 = new Date($("#Barangterlaku-TglakhirDate").datepicker().val());
+    var tglawal = tglawaltemp2.getFullYear()+"-"+(tglawaltemp2.getMonth()+1)+"-"+tglawaltemp2.getDate();
+    var tglakhir = tglakhirtemp2.getFullYear()+"-"+(tglakhirtemp2.getMonth()+1)+"-"+tglakhirtemp2.getDate();
+
+
     var BarangTerlakuTable;//=$("#BarangTable").DataTable();
-    if(!$.fn.DataTable.isDataTable("#BarangTable")){
+    if(!$.fn.DataTable.isDataTable("#BarangTerlakuTable")){
         BarangTerlakuTable = $('#BarangTerlakuTable').DataTable({
             "paging": false,
             "lengthChange": false,
@@ -87,13 +93,13 @@ function BarangTerlakuPopulateData() {
         BarangTerlakuTable = $('#BarangTerlakuTable').DataTable();
         BarangTerlakuTable.clear().draw();
     }
-    GetBarangTerlaku(currentToken, function (result) {
+    GetBarangTerlaku(currentToken, tglawal, tglakhir, function (result) {
         if (result.token_status == "success") {
             var i;
             for (i = 0; i < result.data.length; i++) {
              //   BarangTerlakuPopulateEntry(BarangTerlakuTable, result.data[i]);
                 var pad = "00000";
-                var id = "" + barangEntry.barangID;
+                var id = "" + result.data[i].barangID;
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
                 BarangTerlakuTable.row.add([
@@ -109,10 +115,27 @@ function BarangTerlakuPopulateData() {
     });
 }
 
+function BarangTerlakuInitDate()
+{
+    var datebulanlalu = new Date();
+    datebulanlalu.setMonth(datebulanlalu.getMonth()-1);
+    var tglawalDatepicker = $("#Barangterlaku-TglawalDate");
+    var tglakhirDatepicker = $("#Barangterlaku-TglakhirDate");
+    tglawalDatepicker.datepicker({
+        autoclose: true
+    });
+    tglakhirDatepicker.datepicker({
+        autoclose: true
+    });
+    tglawalDatepicker.datepicker("setDate", datebulanlalu);
+    tglakhirDatepicker.datepicker("setDate", new Date());
+}
+
 //INITIALIZATION FUNCTIONS
 function InitBarangTerjualTerbanyakPage() {
     currentToken = localStorage.getItem("token");
     setPage("BarangTerjualTerbanyak");
+    BarangTerlakuInitDate();
     BarangTerlakuPopulateData();
 }
 
