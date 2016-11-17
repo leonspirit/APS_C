@@ -110,7 +110,7 @@ function AddSatuan(token, barangID, harga_jual, satuan, konversi, satuan_acuan, 
 
 function GetBarangTerlaku(token, tgl_awal, tgl_akhir, fn)
 {
-    $.post( baseUrl + "barang/tambah_satuan/",
+    $.post( baseUrl + "barang/list_barang_paling_banyak_terjual",
         {
             token: token,
             tgl_awal:tgl_awal,

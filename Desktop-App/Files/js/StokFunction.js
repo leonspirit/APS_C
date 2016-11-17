@@ -273,7 +273,7 @@ function StokBarangCreateBarangConfirm()
 function InitStokBarangPage() {
     currentToken = localStorage.getItem("token");
     setPage("StokBarang");
-    if (hasHakAkses("BarangTerjualterbanyak"))
+    if (hasHakAkses("BarangTerjualTerbanyak"))
     {
         $("#Stokbarang-BarangterlakuButton").show();
         document.getElementById("Stokbarang-BarangterlakuButton").onclick=function()

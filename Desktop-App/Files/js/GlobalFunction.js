@@ -11,6 +11,27 @@ function numberWithCommas(x) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function getRowIndex(item)
+{
+    var node = item;
+    while(true)
+    {
+        console.log(node.tagName);
+        if (node.tagName == "TR")
+        {
+            return node.rowIndex;
+        }
+        if (node.tagName == "TR")
+        {
+            return -9999;
+        }
+        else {
+            node=node.parentNode;
+        }
+    }
+}
+
 //Notification
 function UpdateUICicilan(Dropdown)
 {
@@ -424,33 +445,55 @@ function ImportSectionsAndModals() {
 function setWarning(field, message) {
     var FormGroup = field;
     while (true) {
-        FormGroup = FormGroup.parentNode;
+        if (FormGroup.tagName =="BODY")
+            break;
         if (FormGroup.classList.contains("form-group"))
             break;
+        FormGroup = FormGroup.parentNode;
     }
-    FormGroup.classList.add("has-error");
+   // FormGroup.classList.add("has-error");
     var spannya = FormGroup.getElementsByClassName("help-block");
     if (spannya == null || spannya.length == 0)
     {
         var span = document.createElement("span");
         span.setAttribute("class", "help-block");
+        span.setAttribute("style","color:red;");
         span.innerHTML = message;
         FormGroup.appendChild(span);
 
     }
 }
+function removeThisWarning(field)
+{
+    var FormGroup = field;
+    while (true) {
+        if (FormGroup.tagName =="BODY")
+            break;
+        if (FormGroup.classList.contains("form-group")/* && FormGroup.classList.contains("has-error")*/)
+            break;
+        FormGroup = FormGroup.parentNode;
+    }
+  //  FormGroup.classList.remove("has-error");
+    var spannya = FormGroup.getElementsByClassName("help-block");
+    var i;
+    for (i=0;i<spannya.length;i++) {
+        FormGroup.removeChild(spannya[i]);
+    }
+}
 
 function removeWarning()
 {
-    var i, j;
+
+    $("span.help-block").remove();
+   /* var i, j;
     var form_group = document.getElementsByClassName("form-group");
     for (i=0;i<form_group.length;i++)
     {
-        form_group[i].classList.remove("has-error");
+        //form_group[i].classList.remove("has-error");
         var span = form_group[i].getElementsByClassName("help-block");
         for (j=0;j<span.length;j++)
             form_group[i].removeChild(span[j]);
-    }
+    }*/
 }
 function CheckLogin()
 {

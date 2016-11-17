@@ -97,4 +97,19 @@ function AddCicilanPembelian(token,pembelianID, tanggal_cicilan, nominal, notes,
         }, "json");
 }
 
+function EditPembelianBarang(token, pembelianbarangID, harga_per_biji, disc_1, disc_2, disc_3, fn)
+{
+    $.post( baseUrl + "pembelian/edit_pembelianbarang/",
+        {
+            token: token,
+            pembelianbarangID: pembelianbarangID,
+            harga_per_biji:harga_per_biji,
+            disc_1:disc_1,
+            disc_2:disc_2,
+            disc_3:disc_3
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
 //connection.end();

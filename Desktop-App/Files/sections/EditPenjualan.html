@@ -7,7 +7,62 @@
                 <div class="alert-placeholder"></div>
             </div>
             <div class="box-body">
-                <table id="Editenjualan-ItemTable" class="table table-bordered table-hover">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pelanggan</label>
+                            <h4 id="Editpenjualan-PelangganText"></h4>
+                            <!-- <input class="form-control select2" style="width: 100%;" id="Pembelianbaru-SupplierSelect">-->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pembayaran</label>
+                            <h4 id="Editpenjualan-PembayaranText">
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tanggal Pembelian</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control" id="Editpenjualan-TgltransaksiDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <label>Kirim Ke</label>
+                        <input id="Editpembelian-AlamatInput" class="form-control" style="width: 100%;">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="Editpembelian-JatuhtempoContainer">
+                            <label>Tanggal Jatuh Tempo</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control" id="Editpenjualan-TgljatuhtempoDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Notes</label>
+                        <input id="Editpenjualan-NotesInput" class="form-control" style="width: 100%;">
+                    </div>
+                </div>
+                </div>
+            <div class="box-header">
+                <h4>Item</h4>
+            </div>
+            <div class="box-body">
+                <table id="Editpenjualan-ItemTable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th style="width:10px">No</th>
@@ -20,7 +75,6 @@
                         <th>Subtotal</th>
                         <th class="Editpenjualan-ItemTable-HargapokoklabaColumn">H.Pokok</th>
                         <th class="Editpenjualan-ItemTable-HargapokoklabaColumn">Lb</th>
-                        <th ></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,12 +86,14 @@
                         <th><span class="pull-right">Rp. 0</span></th>
                         <th class="Editpenjualan-ItemTable-HargapokoklabaColumn">Total Lb</th>
                         <th class="Editpenjualan-ItemTable-HargapokoklabaColumn"><span class="pull-right">Rp. 0</span></th>
-                        <th>
                     </tr>
                     </tfoot>
                 </table>
             </div>
             <div class="box-footer">
+                <span class="pull-right">
+                    <Button id="Editpenjualan-SaveButton" class="btn btn-primary"><i class="glyphicon glyphicon-save"></i> Simpan</Button>
+                </span>
             </div>
           </div>
         </div>

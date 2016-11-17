@@ -341,7 +341,7 @@ function PembelianBaruDrawTable(r)
 
     var indexChanged;
     if (r!=null)
-        indexChanged = r.parentNode.parentNode.rowIndex;
+        indexChanged = getRowIndex(r);//.parentNode.parentNode.rowIndex;
     else
         indexChanged= 0;
     var i;
@@ -414,7 +414,6 @@ function PembelianBaruSave(isPrinted)//PENTING
         valid=false;
         setWarning(document.getElementById("Pembelianbaru-TgljatuhtempoDate"), "Tgl jatuh tempo harus diisi bila membayar dengan bon");
     }
-
     for (i=1;i<itemTable.rows.length-1;i++)
     {
         var BarangSelectValue = $("#Pembelianbaru-Input-"+i+"-1").val();

@@ -147,6 +147,7 @@ function DaftarSupplierCreateSupplierConfirm()
     if (nama=="" || nama==null)
     {
         valid=false;
+        setWarning(formData.elements['nama'], "Nama supplier harus diisi")
     }
     if (valid)
     {

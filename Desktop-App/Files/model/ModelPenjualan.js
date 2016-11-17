@@ -100,5 +100,17 @@ function AddCicilanPenjualan(token,penjualanID, tanggal_cicilan, nominal, notes,
         }, "json");
 }
 
+function EditPenjualanBarang(token, penjualanbarangID, harga_jual_saat_ini, disc, fn)
+{
+    $.post( baseUrl + "pembelian/tambah_cicilan_pembelian/",
+        {
+            token: token,
+            penjualanbarangID: penjualanbarangID,
+            harga_jual_saat_ini:harga_jual_saat_ini,
+            disc:disc
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
 //connection.end();
