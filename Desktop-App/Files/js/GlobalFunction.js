@@ -157,7 +157,7 @@ function PopulateNotificationModal(jenis, id)
 
                 var JatuhTempo = new Date(penjualan.jatuh_tempo);
                 var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
-                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =penjualan.nama+" "+TglTransaksiText;
+                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =penjualan.pelangganNama+" "+TglTransaksiText;
                 document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
                 document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(penjualan.subtotal);
                 document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
@@ -183,7 +183,7 @@ function PopulateNotificationModal(jenis, id)
 
                 var JatuhTempo = new Date(pembelian.jatuh_tempo);
                 var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
-                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =pembelian.nama+" "+TglTransaksiText;
+                document.getElementById("NotificationModal-NamatanggalLink").innerHTML =pembelian.supplierNama+" "+TglTransaksiText;
                 document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
                 document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(pembelian.subtotal);
                 document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
@@ -246,6 +246,8 @@ function AddCicilan(tipe, id)
                 if (result.token_status=="success")
                 {
                     console.log(result.cicilanpenjualanID);
+                    InitDetailPenjualanPage(id);
+                    createAlert("success", "Pembayaran berhasil ditambahkan");
                     $("#NotificationModal").modal('toggle');
                 }
             }
@@ -266,6 +268,8 @@ function AddCicilan(tipe, id)
                 if (result.token_status=="success")
                 {
                     console.log(result.cicilanpembelianID);
+                    InitDetailPembelianPage(id);
+                    createAlert("success", "Pembayaran berhasil ditambahkan");
                     $("#NotificationModal").modal('toggle');
                 }
             }

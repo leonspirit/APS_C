@@ -4,6 +4,7 @@
 
 var currentHakAkses = localStorage.getItem("hak_akses");
 var currentToken;
+var totalBoxBarang = 0;
 
 function StokBarangPopulateEntry(BarangTable, barangEntry)
 {
@@ -23,6 +24,9 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                     '</span>';
 
                 var curBoxStok = parseInt(barangEntry.stok/(result2.data[i2].konversi * result2.data[i2].konversi_acuan));
+                totalBoxBarang+= curBoxStok;
+                console.log(totalBoxBarang);
+                document.getElementById("Stokbarang-TotalStokText").innerHTML = numberWithCommas(totalBoxBarang)+" Box";
                 var StokReady = '<span class="pull-right">' +
                     numberWithCommas(curBoxStok) + ' box';
                 if ((barangEntry.stok%(result2.data[i2].konversi * result2.data[i2].konversi_acuan))!=0)
@@ -53,17 +57,6 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                         HargaPokok,
                         editButton + " " + delButton
                     ]).draw();
-                /*}
-                else {
-                    BarangTable.row.add([
-                        StrId,
-                        barangEntry.nama,
-                        IsiCarton,
-                        StokReady,
-                        HargaJual,
-                        editButton + " " + delButton
-                    ]).draw();
-                }*/
 
                 break;
             }
@@ -73,6 +66,7 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
 
 function StokBarangPopulateData() {
 
+    totalBoxBarang = 0;
     var BarangTable;//=$("#BarangTable").DataTable();
     if(!$.fn.DataTable.isDataTable("#BarangTable")){
         BarangTable = $('#BarangTable').DataTable({
@@ -108,6 +102,7 @@ function StokBarangPopulateData() {
             console.log("token failed");
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
+
     });
 }
 function StokBarangSearch(queryID,  queryNama)

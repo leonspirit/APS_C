@@ -95,19 +95,22 @@ function BarangTerlakuPopulateData() {
     }
     GetBarangTerlaku(currentToken, tglawal, tglakhir, function (result) {
         if (result.token_status == "success") {
+            console.log(result);
             var i;
             for (i = 0; i < result.data.length; i++) {
-             //   BarangTerlakuPopulateEntry(BarangTerlakuTable, result.data[i]);
+                console.log(result.data[i]);
                 var pad = "00000";
                 var id = "" + result.data[i].barangID;
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
+                var barangterjual ="<span class='pull-right'>"+ result.data[i].terjual + " box</span>";
                 BarangTerlakuTable.row.add([
                     StrId,
                     result.data[i].nama,
-                    result.data[i].terjual
+                    barangterjual
                 ]);
             }
+            BarangTerlakuTable.draw();
         }
         else {
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");

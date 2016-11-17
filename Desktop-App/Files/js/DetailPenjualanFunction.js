@@ -14,10 +14,10 @@ function populateDetailPenjualan(curPenjualanID)
             var penjualan = result.data[0];
             if (penjualan.status=="lunas")
             {
-                $("#Detailpenjualan-PayButton").show();
+                $("#Detailpenjualan-PayButton").hide();
             }
             else {
-                $("#Detailpenjualan-PayButton").hide();
+                $("#Detailpenjualan-PayButton").show();
             }
             if (!$.fn.DataTable.isDataTable("#Detailpenjualan-ItemTable")) {
                 itemPenjualanTable = $("#Detailpenjualan-ItemTable").DataTable({
@@ -56,7 +56,7 @@ function populateDetailPenjualan(curPenjualanID)
                 JatuhTempoText="-";
             }
             var notesText ;
-            if (penjualan.notes=="" || penjualan.notes==null)
+            if (penjualan.notes =="" || penjualan.notes==null)
             {
                 notesText ="-";
             }
@@ -115,52 +115,91 @@ function populateDetailPenjualan(curPenjualanID)
                 }
             }
             itemPenjualanTable.draw();
-            if (!$.fn.DataTable.isDataTable("#Detailpenjualan-cicilanTable")) {
-                CicilanPenjualanTable = $("#Detailpenjualan-cicilanTable").DataTable({
-                    "paging": false,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": true,
-                    "info": false,
-                    "autoWidth": false
-                });
+            //nggambar sisa retur
+           // for (i=0;i<4;i++)
+          //  for (i=0;i<penjualan.cicilan.length;i++)
+            {
+              //  if (penjualan.cicilan[i].cara_pembayaran=="voucher") {
+                 //   itemPenjualanTable.footer().row.add([
+               //         "lala", "lili", "lele", "lolo", "lulu"
+             //       ]);
+              //  }
+            }
+
+            //nggambar cicilan
+            if(penjualan.jatuh_tempo!=null && penjualan.jatuh_tempo!='')
+            {
+                $(".Detailpenjualan-cicilanSection").show();
+                if (!$.fn.DataTable.isDataTable("#Detailpenjualan-cicilanTable")) {
+                    CicilanPenjualanTable = $("#Detailpenjualan-cicilanTable").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": true,
+                        "info": false,
+                        "autoWidth": false,
+                        "language": {
+                            "emptyTable": "Belum Ada Pembayaran"
+                        }
+                    });
+                }
+                else {
+                    CicilanPenjualanTable = $("#Detailpenjualan-cicilanTable").DataTable();
+                    CicilanPenjualanTable.clear().draw();
+                }
+                var totalsudahdibayar = 0;
+                for (i=0;i<penjualan.cicilan.length;i++)
+                {
+                     if (penjualan.cicilan[i].cara_pembayaran!="voucher")
+                     {
+                         totalsudahdibayar+= penjualan.cicilan[i].nominal;
+                         var TglTransaksiCicilan = new Date(penjualan.cicilan[i].tanggal_cicilan);
+                         var TglTransaksiCicilanText = TglTransaksiCicilan.getDate()+"/"+(TglTransaksiCicilan.getMonth()+1)+"/"+TglTransaksiCicilan.getFullYear();
+
+                         var TglPencairanCicilan = penjualan.cicilan[i].tanggal_pencairan;
+                         var TglPencairanCicilanText="-";
+                         if (TglPencairanCicilan==null || TglPencairanCicilan=="")
+                         {
+                             TglPencairanCicilanText = TglPencairanCicilan.getDate()+"/"+(TglPencairanCicilan.getMonth()+1)+"/"+TglPencairanCicilan.getFullYear();
+                         }
+                         var nomor_giro  = penjualan.cicilan[i].nomor_giro;
+                         if (nomor_giro==null || nomor_giro=="")
+                         {
+                             nomor_giro="-";
+                         }
+                         var bank  = penjualan.cicilan[i].bank;
+                         if (bank==null || bank=="")
+                         {
+                             bank="-";
+                         }
+                         CicilanPenjualanTable.row.add([
+                             TglTransaksiCicilanText,
+                             capitalizeFirstLetter(penjualan.cicilan[i].cara_pembayaran),
+                             "<span class='pull-right'>Rp. "+ numberWithCommas(penjualan.cicilan[i].nominal)+"</span>",
+                             bank,
+                             nomor_giro,
+                             TglTransaksiCicilanText,
+                             penjualan.cicilan[i].notes
+                         ]);
+                     }
+                }
+                CicilanPenjualanTable.draw();
+
+                var cicilantotaltext = "<span class='pull-right'>Rp. "+numberWithCommas(totalsudahdibayar)+"</span>";
+                $(CicilanPenjualanTable.column(2).footer()).html(cicilantotaltext);
+                var cicilanKekurangan  = penjualan.subtotal - totalsudahdibayar;
+                var cicilanKurangText= "<span class='pull-right'>Rp. "+numberWithCommas(cicilanKekurangan)+"</span>";
+                if (cicilanKekurangan<=0)
+                {
+                    cicilanKurangText="Lunas";
+                }
+                $(CicilanPenjualanTable.column(4).footer()).html(cicilanKurangText);
             }
             else {
-                CicilanPenjualanTable = $("#Detailpenjualan-cicilanTable").DataTable();
-                CicilanPenjualanTable.clear().draw();
+                $(".Detailpenjualan-cicilanSection").hide();
             }
-            for (i=0;i<penjualan.cicilan.length;i++)
-            {
-                var TglTransaksiCicilan = new Date(penjualan.cicilan[i].tanggal_cicilan);
-                var TglTransaksiCicilanText = TglTransaksiCicilan.getDate()+"/"+(TglTransaksiCicilan.getMonth()+1)+"/"+TglTransaksiCicilan.getFullYear();
 
-                var TglPencairanCicilan = penjualan.cicilan[i].tanggal_pencairan;
-                var TglPencairanCicilanText="-";
-                if (TglPencairanCicilan==null || TglPencairanCicilan=="")
-                {
-                    TglPencairanCicilanText = TglPencairanCicilan.getDate()+"/"+(TglPencairanCicilan.getMonth()+1)+"/"+TglPencairanCicilan.getFullYear();
-                }
-                var nomor_giro  = penjualan.cicilan[i].nomor_giro;
-                if (nomor_giro==null || nomor_giro=="")
-                {
-                    nomor_giro="-";
-                }
-                var bank  = penjualan.cicilan[i].bank;
-                if (bankl==null || bank=="")
-                {
-                    bank="-";
-                }
-                CicilanPenjualanTable.add.row([
-                    TglTransaksiCicilanText,
-                    penjualan.cicilan[i].cara_pembayaran,
-                    "Rp. "+ numberWithCommas(penjualan.cicilan[i].nominal),
-                    bank,
-                    nomor_giro,
-                    TglTransaksiCicilanText,
-                    penjualan.cicilan[i].notes
-                ]);
-            }
-            CicilanPenjualanTable.draw();
+
         }
         else
         {
@@ -185,14 +224,14 @@ function InitDetailPenjualanPage(curPenjualanID)
 
     document.getElementById("Detailpenjualan-PayButton").onclick= function()
     {
-        PopulateNotificationModal("beli", curPenjualanID);
+        PopulateNotificationModal("jual", curPenjualanID);
     };
 
     if (hasHakAkses("ReturPenjualan"))
     {
         $("#Detailpenjualan-ReturButton").show();
         document.getElementById("Detailpenjualan-ReturButton").onclick=function(){
-            InitReturPembelianPage(curPenjualanID);
+            InitReturPenjualanPage(curPenjualanID);
         };
     }
     else {
