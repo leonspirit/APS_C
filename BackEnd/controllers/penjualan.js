@@ -72,6 +72,44 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
+function asyncLaba(iterations, func, callback) {
+    var index = 0;
+    var done = false;
+    var total_laba = 0
+    var loop = {
+        next: function() {
+            if (done) {
+                return;
+            }
+
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback(total_laba);
+            }
+        },
+
+        tambah: function(laba){
+            total_laba = total_laba + laba
+            return total_laba
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback(total_laba);
+        }
+    };
+    loop.next();
+
+    return loop;
+}
+
 function asyncVoucher(iterations, harga, func, callback) {
     var index = 0;
     var done = false;
@@ -222,6 +260,87 @@ function add_nama_karyawan(index, data, callback){
         if(err) throw err
         data[index]['karyawanNama'] = result[0]['nama']
         callback()
+    })
+}
+
+function add_harga_pokok_unit(index, data, callback){
+
+    var penjualanbarangID = data[index]['penjualanbarangID']
+    var satuanID = data[index]['satuanID']
+    var quantity = data[index]['quantity']
+    var harga_jual = data[index]['harga_jual_saat_ini']
+    var harga_pokok_piece = data[index]['harga_pokok_saat_ini']
+    var disc = data[index]['disc']
+    harga_jual = harga_jual * (100-disc) / 100
+
+    var qrstring = 'SELECT konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
+    var satuan = [satuanID]
+    connection.query(qrstring, satuan, function(err, result){
+        if(err) throw err
+
+        var qrstring2 = 'SELECT penjualanbarangID, SUM(quantity) as jumlah FROM returpenjualan WHERE penjualanbarangID = ? GROUP BY penjualanbarangID'
+        var retur = [penjualanbarangID]
+        connection.query(qrstring2, retur, function(err2, result2){
+            if(result2.length){
+                quantity = quantity - result2[0]['jumlah']
+            }
+
+            var konversi_unit = result[0]['konversi'] * result[0]['konversi_acuan']
+            var harga_pokok_unit = konversi_unit * harga_pokok_piece
+
+            var resp = {}
+            resp['laba'] = (harga_jual - harga_pokok_unit) * quantity
+            return callback(resp)
+        })
+    })
+}
+
+function add_laba_penjualan(index, data, callback){
+
+    var penjualanID = data[index]['penjualanID']
+    var qrstring = 'SELECT penjualanbarangID, satuanID, quantity, harga_pokok_saat_ini, disc, harga_jual_saat_ini FROM penjualanbarang WHERE penjualanID = ?'
+    var penjualan = [penjualanID]
+    connection.query(qrstring, penjualan, function(err, result){
+        if(err) throw err
+
+        var len = result.length
+        asyncLaba(len, function(loop) {
+            add_harga_pokok_unit(loop.iteration(), result, function(result2) {
+                loop.tambah(result2['laba'])
+                loop.next();
+            })},
+            function(result3){
+                data[index]['laba'] = result3
+                callback()
+            }
+        );
+    })
+}
+
+function add_detail_box(index, data, callback){
+
+    var satuanID = data[index]['satuanID']
+    var qrstring1 = 'SELECT barangID, satuan FROM satuanbarang WHERE satuanID = ?'
+    var satuan = [satuanID]
+    connection.query(qrstring1, satuan, function(err, result){
+        if(err) throw err
+        data[index]['satuan_unit'] = result[0]['satuan']
+
+        var qrstring2 = 'SELECT konversi, satuan_acuan FROM satuanbarang WHERE barangID = ? AND satuan = "box"'
+        var box = [result[0]['barangID']]
+        connection.query(qrstring2, box, function(err2, result2){
+            if(err2) throw err2
+            data[index]['konversi_box'] = result2[0]['konversi']
+            data[index]['satuan_acuan_box'] = result2[0]['satuan_acuan']
+
+            var qrstring3 = 'SELECT nama FROM barang WHERE barangID = ?'
+            var barang = [result[0]['barangID']]
+            connection.query(qrstring3, barang, function(err3, result3){
+                if(err3) throw err3
+                data[index]['nama_barang'] = result3[0]['nama']
+                callback()
+            })
+        })
     })
 }
 
@@ -389,11 +508,18 @@ router.post('/list_lunas_penjualan', function(req,res){
                                 loop.next();
                             })},
                             function(){
-                                resp['data'] = result2
-                                resp['data'].sort(function(a,b){
-                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
-                                })
-                                res.status(200).send(resp)
+                                asyncLoop(len, function(loop){
+                                    add_laba_penjualan(loop.iteration(), result2, function(result){
+                                        loop.next()
+                                    })},
+                                    function(){
+                                        resp['data'] = result2
+                                        resp['data'].sort(function(a,b){
+                                            return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                        })
+                                        res.status(200).send(resp)
+                                    }
+                                )
                             }
                         );
                     }
@@ -461,30 +587,39 @@ router.post('/detail_penjualan', function(req,res){
                             var querystring2 = 'SELECT * FROM penjualanbarang WHERE penjualanID = ?'
                             connection.query(querystring2, penjualan, function(err3, result3){
                                 if(err3)throw err3
-                                resp['data'][0]['barang'] = result3
 
-                                var querystring3 = 'SELECT * FROM cicilanpenjualan WHERE penjualanID = ?'
-                                connection.query(querystring3, penjualan, function(err4, result4){
-                                    if(err4) throw err4
-                                    resp['data'][0]['cicilan'] = result4
+                                var len2 = result3.length
+                                asyncLoop(len2, function(loop){
+                                    add_detail_box(loop.iteration(), result3, function(result){
+                                        loop.next()
+                                    })},
+                                    function(){
+                                        resp['data'][0]['barang'] = result3
 
-                                    var querystring4 = 'SELECT penjualanbarangID FROM penjualanbarang WHERE penjualanID = ?'
-                                    var querystring5 = 'SELECT * FROM returpenjualan WHERE penjualanbarangID IN ('+querystring4+')'
-                                    connection.query(querystring5, penjualan, function(err5, result5){
-                                        if(err5) throw err5
+                                        var querystring3 = 'SELECT * FROM cicilanpenjualan WHERE penjualanID = ?'
+                                        connection.query(querystring3, penjualan, function(err4, result4){
+                                            if(err4) throw err4
+                                            resp['data'][0]['cicilan'] = result4
 
-                                        var len = result5.length
-                                        asyncLoop(len, function(loop) {
-                                            add_metode_retur(loop.iteration(), result5, function(result) {
-                                                loop.next();
-                                            })},
-                                            function(){
-                                                resp['data'][0]['retur'] = result5
-                                                res.status(200).send(resp)
-                                            }
-                                        );
-                                    })
-                                })
+                                            var querystring4 = 'SELECT penjualanbarangID FROM penjualanbarang WHERE penjualanID = ?'
+                                            var querystring5 = 'SELECT * FROM returpenjualan WHERE penjualanbarangID IN ('+querystring4+')'
+                                            connection.query(querystring5, penjualan, function(err5, result5){
+                                                if(err5) throw err5
+
+                                                var len = result5.length
+                                                asyncLoop(len, function(loop) {
+                                                    add_metode_retur(loop.iteration(), result5, function(result) {
+                                                        loop.next();
+                                                    })},
+                                                    function(){
+                                                        resp['data'][0]['retur'] = result5
+                                                        res.status(200).send(resp)
+                                                    }
+                                                );
+                                            })
+                                        })
+                                    }
+                                )
                             })
                         }
                     );

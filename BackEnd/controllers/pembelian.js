@@ -99,6 +99,33 @@ function add_nama_supplier(index, data, callback){
     })
 }
 
+function add_detail_box(index, data, callback){
+
+    var satuanID = data[index]['satuanID']
+    var qrstring1 = 'SELECT barangID, satuan FROM satuanbarang WHERE satuanID = ?'
+    var satuan = [satuanID]
+    connection.query(qrstring1, satuan, function(err, result){
+        if(err) throw err
+        data[index]['satuan_unit'] = result[0]['satuan']
+
+        var qrstring2 = 'SELECT konversi, satuan_acuan FROM satuanbarang WHERE barangID = ? AND satuan = "box"'
+        var box = [result[0]['barangID']]
+        connection.query(qrstring2, box, function(err2, result2){
+            if(err2) throw err2
+            data[index]['konversi_box'] = result2[0]['konversi']
+            data[index]['satuan_acuan_box'] = result2[0]['satuan_acuan']
+
+            var qrstring3 = 'SELECT nama FROM barang WHERE barangID = ?'
+            var barang = [result[0]['barangID']]
+            connection.query(qrstring3, barang, function(err3, result3){
+                if(err3) throw err3
+                data[index]['nama_barang'] = result3[0]['nama']
+                callback()
+            })
+        })
+    })
+}
+
 function add_metode_retur(index, data, callback){
 
     var returpembelianID = data[index]['returpembelianID']
@@ -390,30 +417,39 @@ router.post('/detail_pembelian', function(req,res){
                             var querystring2 = 'SELECT * FROM pembelianbarang WHERE pembelianID = ?'
                             connection.query(querystring2, pembelian, function(err3, result3){
                                 if(err3)throw err3
-                                resp['data'][0]['barang'] = result3
 
-                                var querystring3 = 'SELECT * FROM cicilanpembelian WHERE pembelianID = ?'
-                                connection.query(querystring3, pembelian, function(err4, result4){
-                                    if(err4) throw err4
-                                    resp['data'][0]['cicilan'] = result4
+                                var len2 = result3.length
+                                asyncLoop(len2, function(loop){
+                                    add_detail_box(loop.iteration(), result3, function(result){
+                                        loop.next()
+                                    })},
+                                    function(){
+                                        resp['data'][0]['barang'] = result3
 
-                                    var querystring4 = 'SELECT pembelianbarangID FROM pembelianbarang WHERE pembelianID = ?'
-                                    var querystring5 = 'SELECT * FROM returpembelian WHERE pembelianbarangID IN ('+querystring4+')'
-                                    connection.query(querystring5, pembelian, function(err5, result5){
-                                        if(err5) throw err5
+                                        var querystring3 = 'SELECT * FROM cicilanpembelian WHERE pembelianID = ?'
+                                        connection.query(querystring3, pembelian, function(err4, result4){
+                                            if(err4) throw err4
+                                            resp['data'][0]['cicilan'] = result4
 
-                                        var len = result5.length
-                                        asyncLoop(len, function(loop) {
-                                            add_metode_retur(loop.iteration(), result5, function(result) {
-                                                loop.next();
-                                            })},
-                                            function(){
-                                                resp['data'][0]['retur'] = result5
-                                                res.status(200).send(resp)
-                                            }
-                                        );
-                                    })
-                                })
+                                            var querystring4 = 'SELECT pembelianbarangID FROM pembelianbarang WHERE pembelianID = ?'
+                                            var querystring5 = 'SELECT * FROM returpembelian WHERE pembelianbarangID IN ('+querystring4+')'
+                                            connection.query(querystring5, pembelian, function(err5, result5){
+                                                if(err5) throw err5
+
+                                                var len = result5.length
+                                                asyncLoop(len, function(loop) {
+                                                    add_metode_retur(loop.iteration(), result5, function(result) {
+                                                        loop.next();
+                                                    })},
+                                                    function(){
+                                                        resp['data'][0]['retur'] = result5
+                                                        res.status(200).send(resp)
+                                                    }
+                                                );
+                                            })
+                                        })
+                                    }
+                                )
                             })
                         }
                     );
