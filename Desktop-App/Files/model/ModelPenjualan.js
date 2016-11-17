@@ -52,8 +52,10 @@ function getJatuhTempoPenjualanData(token, n, fn)
 }
 
 
-function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtotal, isPrinted, status, notes, alamat, satuan, fn)
+function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtotal, isPrinted, status, notes, alamat, satuan, voucher, fn)
 {
+    console.log("asaudia")
+    console.log(voucher);
     $.post( baseUrl + "penjualan/tambah_penjualan/",
         {
             token: token,
@@ -65,7 +67,8 @@ function AddPenjualan(token, pelangganID, tanggal_transaksi, jatuh_tempo, subtot
             status:status,
             notes:notes,
             alamat:alamat,
-            satuan:satuan
+            satuan:satuan,
+            voucher:voucher
         }, function(data) {
             fn(data);
         }, "json");

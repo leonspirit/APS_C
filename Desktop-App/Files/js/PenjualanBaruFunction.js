@@ -433,6 +433,7 @@ function PenjualanBaruSave(isPrinted) {
     }
     var tglTransaksiTemp = new Date(tglJatuhTempoValue);
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
+    var voucher=[];
 
     var PelangganSelectValue = $("#Penjualanbaru-PelangganSelect").val();
     if (PelangganSelectValue==null ||PelangganSelectValue=="" || PelangganSelectValue==0)
@@ -476,7 +477,7 @@ function PenjualanBaruSave(isPrinted) {
             setWarning(document.getElementById("Penjualanbaru-Input-"+i.toString()+"-3"), "satuan harus diisi")
         }
     }
-
+    console.log(voucher);
     if (valid) {
         for (i = 1; i < itemTable.rows.length - 1; i++) {
             satuan.push({
@@ -497,6 +498,7 @@ function PenjualanBaruSave(isPrinted) {
             $("#Penjualanbaru-NotesInput").val(),
             alamat.value,
             satuan,
+            voucher,
             function (result) {
                 if (result != null && result.token_status == "success") {
                     console.log(result.penjualanID);
@@ -528,7 +530,7 @@ function PenjualanBaruCreatePelangganConfirm()
     if (valid)
     {
         console.log("valid");
-        AddSupplier(currentToken, nama, telp, alamat, function(result){
+        AddPelanggan(currentToken, nama, telp, alamat, function(result){
             if (result.token_status=="success")
             {
                 if  (result.supplierID != null)
