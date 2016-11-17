@@ -206,13 +206,18 @@ router.post('/tambah_pembelian', function(req,res){
                     add_pembelian_barang(req, i, result2.insertId);
                 }
 
-                var len2 = req.body.voucher.length
-                asyncVoucher(len2, req.body.subtotal*(100-req.body.disc)/100, function(loop) {
-                    voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
-                        loop.next(result['kurang']);
-                    })},
-                    function(){res.status(200).send(resp);}
-                );
+                if(req.body.voucher){
+                    var len2 = req.body.voucher.length
+                    asyncVoucher(len2, req.body.subtotal*(100-req.body.disc)/100, function(loop) {
+                        voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
+                            loop.next(result['kurang']);
+                        })},
+                        function(){res.status(200).send(resp);}
+                    );
+                }
+                else{
+                    res.status(200).send(resp)
+                }
             })
         }
     })
@@ -638,8 +643,8 @@ router.post('/edit_pembelian', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE pembelian SET supplierID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, notes = ? WHERE pembelianID = ?'
-            var pembelian = [req.body.supplierID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.pembelianID]
+            var querystring = 'UPDATE pembelian SET tanggal_transaksi = ?, jatuh_tempo = ?, notes = ? WHERE pembelianID = ?'
+            var pembelian = [req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.pembelianID]
             connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2
                 resp['affectedRows'] = result2.affectedRows
