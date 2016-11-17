@@ -435,6 +435,7 @@ router.post('/tambah_cicilan_pembelian', function(req,res){
         else{
             resp['token_status'] = 'success'
 
+            if(req.body.tanggal_pencairan == '')req.body.tanggal_pencairan = null
             var querystring = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, notes = ?, cara_pembayaran = ?, bank = ?, nomor_giro = ?, tanggal_pencairan = ?, karyawanID = ?'
             var cicilanpembelian = [req.body.pembelianID, req.body.tanggal_cicilan, req.body.nominal, req.body.notes, req.body.cara_pembayaran, req.body.bank, req.body.nomor_giro, req.body.tanggal_pencairan, result['karyawanID']]
             connection.query(querystring, cicilanpembelian, function(err2, result2){
@@ -621,12 +622,31 @@ router.post('/edit_pembelianbarang', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE pembelianbarang SET harga_per_biji = ?, disc_1 = ?, disc_2 = ?, disc_3 = ? WHERE pembelianbarangID = ?'
-            var pembelianbarang = [req.body.harga_per_biji, req.body.disc_1, req.body.disc_2, req.body.disc_3, req.body.pembelianbarangID]
-            connection.query(querystring, pembelianbarang, function(err2, result2){
+
+            var querystring1 = 'SELECT pembelianID, quantity, disc_1, disc_2, disc_3, harga_per_biji FROM pembelianbarang WHERE pembelianbarangID = ?'
+            var pembelian1 = [req.body.pembelianbarangID]
+            connection.query(querystring1, pembelian1, function(err2, result2){
                 if(err2) throw err2
-                resp['affectedRows'] = result2.affectedRows
-                res.status(200).send(resp)
+
+                var price_awal = result2[0]['quantity'] * result2[0]['harga_per_biji']
+                price_awal = price_awal * (100-result2[0]['disc_1']-result2[0]['disc_2']-result2[0]['disc_3']) / 100
+
+                var curr_price = result2[0]['quantity'] * req.body.harga_per_biji
+                curr_price = curr_price * (100-req.body.disc_1-req.body.disc_2-req.body.disc_3) / 100
+
+                var querystring2 = 'UPDATE pembelianbarang SET harga_per_biji = ?, disc_1 = ?, disc_2 = ?, disc_3 = ? WHERE pembelianbarangID = ?'
+                var pembelianbarang = [req.body.harga_per_biji, req.body.disc_1, req.body.disc_2, req.body.disc_3, req.body.pembelianbarangID]
+                connection.query(querystring2, pembelianbarang, function(err3, result3){
+                    if(err3) throw err3
+                    resp['affectedRows'] = result3.affectedRows
+
+                    var querystring3 = 'UPDATE pembelian SET subtotal = subtotal - ? WHERE pembelianID = ?'
+                    var pembelian = [price_awal-curr_price, result2[0]['pembelianID']]
+                    connection.query(querystring3, pembelian, function(err4, result4){
+                        if(err4) throw err4
+                        res.status(200).send(resp)
+                    })
+                })
             })
         }
     })

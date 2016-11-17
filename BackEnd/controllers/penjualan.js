@@ -506,6 +506,7 @@ router.post('/tambah_cicilan_penjualan', function(req,res){
         else{
             resp['token_status'] = 'success'
 
+            if(req.body.tanggal_pencairan == '')req.body.tanggal_pencairan = null
             var querystring = 'INSERT INTO cicilanpenjualan SET penjualanID = ?, tanggal_cicilan = ?, nominal = ?, notes = ?, cara_pembayaran = ?, bank = ?, nomor_giro = ?, tanggal_pencairan = ?, karyawanID = ?'
             var cicilanpenjualan = [req.body.penjualanID, req.body.tanggal_cicilan, req.body.nominal, req.body.notes, req.body.cara_pembayaran, req.body.bank, req.body.nomor_giro, req.body.tanggal_pencairan, result['karyawanID']]
             connection.query(querystring, cicilanpenjualan, function(err2, result2){
@@ -653,7 +654,7 @@ router.post('/edit_penjualanbarang', function(req,res){
         else{
             resp['token_status'] = 'success'
 
-            var querystring1 = 'SELECT penjualanID, quantity, disc, harga_jual_saat_ini WHERE penjualanbarangID = ?'
+            var querystring1 = 'SELECT penjualanID, quantity, disc, harga_jual_saat_ini FROM penjualanbarang WHERE penjualanbarangID = ?'
             var penjualan1 = [req.body.penjualanbarangID]
             connection.query(querystring1, penjualan1, function(err2, result2){
                 if(err2) throw err2
@@ -664,7 +665,7 @@ router.post('/edit_penjualanbarang', function(req,res){
                 var curr_price = result2[0]['quantity'] * req.body.harga_jual_saat_ini
                 curr_price = curr_price * (100-req.body.disc) / 100
 
-                var querystring2 = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ?, WHERE penjualanbarangID = ?'
+                var querystring2 = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ? WHERE penjualanbarangID = ?'
                 var penjualanbarang = [req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
                 connection.query(querystring2, penjualanbarang, function(err3, result3){
                     if(err3) throw err3
