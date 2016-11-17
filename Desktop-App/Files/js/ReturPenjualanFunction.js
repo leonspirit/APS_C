@@ -138,7 +138,7 @@ function ReturPenjualanAddRow()
     var  inputDiscContainer1 = document.createElement("div");
     inputDiscContainer1.setAttribute("class", "input-group");
     inputDiscContainer1.setAttribute("style", "width:100%");
-    var inputDisc1 = document.createElement("input");
+    var inputDisc = document.createElement("input");
     inputDisc.setAttribute("id","Pembelianbaru-Input-"+rowNum.toString()+"-5");
     inputDisc.setAttribute("type", "number");
     inputDisc.setAttribute("min", "0");
@@ -148,7 +148,7 @@ function ReturPenjualanAddRow()
     var inputDiscLabel1 = document.createElement("span");
     inputDiscLabel1.setAttribute("class", "input-group-addon");
     inputDiscLabel1.innerHTML = "%";
-    inputDiscContainer1.appendChild(inputDisc1);
+    inputDiscContainer1.appendChild(inputDisc);
     inputDiscContainer1.appendChild(inputDiscLabel1);
     cell7.appendChild(inputDiscContainer1);
 

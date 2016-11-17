@@ -12,7 +12,7 @@
                       <table class="table">
                           <tr>
                               <td colspan =2><b>Nama</b></td>
-                              <td style="padding:0">
+                              <td class="form-group" style="padding:0">
                                   <input type="text" name="nama" class="form-control">
                               </td>
                           </tr>
@@ -26,6 +26,7 @@
                               <td colspan =2><b>Isi/Carton</b></td>
                               <td style="padding:0">
                                   <div class="input-group" style="width:100%;">
+
                                       <input type="number" name="isi-box-input" class="form-control" value="">
                                      <div class="input-group-btn">
                                          <select name="acuan-box-selct" style="width:100px" class="form-control">
@@ -59,9 +60,11 @@
                               <td><input type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
                               <td>Box</td>
                               <td style="padding:0">
-                                  <div class="input-group">
-                                      <div class="input-group-addon">Rp.</div>
-                                      <input name="harga-jual-box-input" class="form-control" type="number">
+                                  <div class="form-group">
+                                      <div class="input-group">
+                                          <div class="input-group-addon">Rp.</div>
+                                          <input name="harga-jual-box-input" class="form-control" type="number">
+                                      </div>
                                   </div>
                               </td>
                           </tr>
@@ -121,9 +124,106 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Detail Item</h4>
+                <h4 class="modal-title">Tambah Barang Baru</h4>
               </div>
               <div class="modal-body">
+                  <form id="Stokbarang-EditModal-CreateForm">
+                      <table class="table">
+                          <tr>
+                              <td colspan =2><b>Nama</b></td>
+                              <td style="padding:0" class="form-group">
+                                  <input type="text" name="nama" class="form-control">
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan=2><b>Stok</b></td>
+                              <td >
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan =2><b>Isi/Carton</b></td>
+                              <td style="padding:0">
+                                  <div class="input-group" style="width:100%;">
+                                      <div class="form-group">
+                                          <input type="number" name="isi-box-input" class="form-control" value="">
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="input-group-btn">
+                                              <select name="acuan-box-selct" style="width:100px" class="form-control">
+                                                  <option value="grs">Grs</option>
+                                                  <option value="lsn">Lsn</option>
+                                                  <option value="kod">Kod</option>
+                                                  <option value="pcs">Pcs</option>
+                                              </select>
+                                          </div>
+                                      </div>
+
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan="2"><b>Harga Pokok</b></td>
+                              <td>
+                              </td>
+                          </tr>
+                          <tr>
+                              <th></th>
+                              <th>Unit</th>
+                              <th>Harga Jual</th>
+                              <th></th>
+                          </tr>
+                          <tr>
+                              <td><input type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
+                              <td>Box</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input name="harga-jual-box-input" class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input id="Stokbarang-EditModal-harga-jual-grs-check" name="harga-jual-grs-check" type="checkbox" class="minimal check-satuan"></td>
+                              <td>Grs</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input name="harga-jual-grs-input" class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input id="Stokbarang-EditModal-harga-jual-kod-check" name="harga-jual-kod-check" type="checkbox" class="minimal check-satuan"></td>
+                              <td>Kod</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input name="harga-jual-kod-input" class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input id="Stokbarang-EditModal-harga-jual-lsn-check" name="harga-jual-lsn-check" type="checkbox" class="minimal check-satuan"></td>
+                              <td>Lsn</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input name="harga-jual-lsn-input" class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><input id="Stokbarang-EditModal-harga-jual-pcs-check" name="harga-jual-pcs-check" type="checkbox" class="minimal check-satuan"></td>
+                              <td>Pcs</td>
+                              <td style="padding:0">
+                                  <div class="input-group">
+                                      <div class="input-group-addon">Rp.</div>
+                                      <input name="harga-jual-pcs-input" class="form-control" type="number">
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+                  </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">OK</button>
