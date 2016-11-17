@@ -277,13 +277,18 @@ router.post('/tambah_penjualan', function(req,res){
                     add_penjualan_barang(req, i, result2.insertId);
                 }
 
-                var len2 = req.body.voucher.length
-                asyncVoucher(len2, req.body.subtotal, function(loop) {
-                    voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
-                        loop.next(result['kurang']);
-                    })},
-                    function(){res.status(200).send(resp);}
-                );
+                if(req.body.voucher){
+                    var len2 = req.body.voucher.length
+                    asyncVoucher(len2, req.body.subtotal, function(loop) {
+                        voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
+                            loop.next(result['kurang']);
+                        })},
+                        function(){res.status(200).send(resp);}
+                    );
+                }
+                else{
+                    res.status(200).send(resp)
+                }
             })
         }
     })
@@ -647,12 +652,31 @@ router.post('/edit_penjualanbarang', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ? WHERE penjualanbarangID = ?'
-            var penjualanbarang = [req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
-            connection.query(querystring, penjualanbarang, function(err2, result2){
+
+            var querystring1 = 'SELECT penjualanID, quantity, disc, harga_jual_saat_ini WHERE penjualanbarangID = ?'
+            var penjualan1 = [req.body.penjualanbarangID]
+            connection.query(querystring1, penjualan1, function(err2, result2){
                 if(err2) throw err2
-                resp['affectedRows'] = result2.affectedRows
-                res.status(200).send(resp)
+
+                var price_awal = result2[0]['quantity'] * result2[0]['harga_jual_saat_ini']
+                price_awal = price_awal * (100-result2[0]['disc']) / 100
+
+                var curr_price = result2[0]['quantity'] * req.body.harga_jual_saat_ini
+                curr_price = curr_price * (100-req.body.disc) / 100
+
+                var querystring2 = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ?, WHERE penjualanbarangID = ?'
+                var penjualanbarang = [req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
+                connection.query(querystring2, penjualanbarang, function(err3, result3){
+                    if(err3) throw err3
+                    resp['affectedRows'] = result3.affectedRows
+
+                    var querystring3 = 'UPDATE penjualan SET subtotal = subtotal - ? WHERE penjualanID = ?'
+                    var penjualan = [price_awal-curr_price, result2[0]['penjualanID']]
+                    connection.query(querystring3, penjualan, function(err4, result4){
+                        if(err4) throw err4
+                        res.status(200).send(resp)
+                    })
+                })
             })
         }
     })
@@ -669,8 +693,8 @@ router.post('/edit_penjualan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE penjualan SET pelangganID = ?, tanggal_transaksi = ?, jatuh_tempo = ?, notes = ?, alamat = ? WHERE penjualanID = ?'
-            var penjualan = [req.body.pelangganID, req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.alamat, req.body.penjualanID]
+            var querystring = 'UPDATE penjualan SET tanggal_transaksi = ?, jatuh_tempo = ?, notes = ?, alamat = ? WHERE penjualanID = ?'
+            var penjualan = [req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.alamat, req.body.penjualanID]
             connection.query(querystring, penjualan, function(err2, result2){
                 if(err2) throw err2
                 resp['affectedRows'] = result2.affectedRows
