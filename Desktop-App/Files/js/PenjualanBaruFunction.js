@@ -427,11 +427,11 @@ function PenjualanBaruSave(isPrinted) {
         status = "lunas"
     }
     else {
-        tglJatuhTempoTemp = new Date(tglTransaksiValue);
+        tglJatuhTempoTemp = new Date(tglJatuhTempoValue);
         tglJatuhTempo = tglJatuhTempoTemp.getFullYear() + "-" + (tglJatuhTempoTemp.getMonth() + 1) + "-" + tglJatuhTempoTemp.getDate();
         status = "belum lunas"
     }
-    var tglTransaksiTemp = new Date(tglJatuhTempoValue);
+    var tglTransaksiTemp = new Date(tglTransaksiValue);
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
     var voucher=[];
 

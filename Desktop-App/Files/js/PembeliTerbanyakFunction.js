@@ -26,12 +26,12 @@ function PembeliTerbanyakPopulateData()
                     "info": true,
                     "autoWidth": false,
                     "dom": '<"row"<"col-sm-6"l><"col-sm-6"p>><"row"<"col-sm-12"t>><"row"<"col-sm-6"i><"col-sm-6"p>>'
-                });
+                    });
             }
             else
             {
                 PembeliTerbanyakTable = $('#PembeliTerbanyakTable').DataTable();
-                PelangganTable.clear().draw();
+                PembeliTerbanyakTable.clear().draw();
             }
             for (i = 0; i < result.data.length; i++) {
                 var pad ="00000";
@@ -44,7 +44,7 @@ function PembeliTerbanyakPopulateData()
                     result.data[i].nama,
                     result.data[i].telp,
                     result.data[i].alamat,
-                    result.data[i].total
+                    "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].total)+"</span>"
                 ]);
             }
             PembeliTerbanyakTable.draw();

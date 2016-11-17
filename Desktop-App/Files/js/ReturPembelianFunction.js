@@ -101,10 +101,10 @@ function ReturPembelianAddRow(barang)
    cell7.innerHTML = "<span class='pull-right'>"+disc1 +" %</span>";
 
     var cell8 = row.insertCell(8);
-    cell8.innerHTML = "<span class='pull-right'>"+disc1 +" %</span>";
+    cell8.innerHTML = "<span class='pull-right'>"+disc2 +" %</span>";
 
     var cell9 = row.insertCell(9);
-    cell9.innerHTML = "<span class='pull-right'>"+disc1 +" %</span>";
+    cell9.innerHTML = "<span class='pull-right'>"+disc3 +" %</span>";
 
     var cell10 = row.insertCell(10);
     cell10.innerHTML = "<span class='pull-right'>Rp. "+itemSubtotal+"</span>";
@@ -117,6 +117,7 @@ function ReturPembelianSave()
 }
 function InitReturPembelianPage(id)
 {
+    currentToken = localStorage.getItem("token");
     setPage("ReturPembelian");
     populateReturPembelian(id);
 
