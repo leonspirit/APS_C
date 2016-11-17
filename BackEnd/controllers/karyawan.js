@@ -94,24 +94,19 @@ router.post('/list_karyawan', function(req,res){
 
     var resp = {}
     res.type('application/json');
-    token_auth.check_token(req.body.token, function(result){
-        if(result != 'aktif'){
+    token_auth.check_user(req.body.token, function(result){
+        if(result['hak_akses'] == null || result['hak_akses'] == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT karyawanID, nama, telp, alamat, username, status FROM karyawan';
-            connection.query(querystring, function(err2, result2){
+            var querystring = 'SELECT karyawanID, nama, telp, alamat, username, status FROM karyawan WHERE karyawanID != ?';
+            var karyawan = [result['karyawanID']]
+            connection.query(querystring, karyawan, function(err2, result2){
                 if(err2) throw err2;
-
-                var len = result2.length
-                asyncLoop(len, function(loop) {
-                    get_karyawan_hak_akses(loop.iteration(), result2, function(result) {
-                        loop.next();
-                    })},
-                    function(){resp['data'] = result2; res.status(200).send(resp);}
-                );
+                resp['data'] = result2
+                res.status(200).send(resp)
             });
         }
     })

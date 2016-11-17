@@ -39,6 +39,42 @@ function asyncLoop(iterations, func, callback) {
     return loop;
 }
 
+function asyncVoucher(iterations, harga, func, callback) {
+    var index = 0;
+    var done = false;
+    var sisa_harga = harga
+    var loop = {
+        next: function(minus_harga) {
+            if (done) {
+                return;
+            }
+            sisa_harga = sisa_harga - minus_harga
+            if (index < iterations) {
+                index++;
+                func(loop);
+            } else {
+                done = true;
+                callback();
+            }
+        },
+
+        cek_harga: function(){
+            return sisa_harga
+        },
+
+        iteration: function() {
+            return index - 1;
+        },
+
+        break: function() {
+            done = true;
+            callback();
+        }
+    };
+    loop.next(0);
+    return loop;
+}
+
 function add_nama_karyawan(index, data, callback){
 
     var karyawanID = data[index]['karyawanID']
@@ -113,6 +149,40 @@ function add_pembelian_barang(req, i, pembelianID){
     })
 }
 
+function voucher_use(index, sisa_harga, pembelianID, tanggal, karyawanID, data, callback){
+
+    var resp = {}
+    var voucherID = data[index]['voucherpembelianID']
+    var qrstring1 = 'SELECT jumlah FROM voucherpembelian WHERE voucherpembelianID = ?'
+    var voucher = [voucherID]
+    connection.query(qrstring1, voucher, function(err, result){
+        if(err) throw err
+
+        var sisa_voucher = result[0]['jumlah']
+        var qrstring2 = 'UPDATE voucherpembelian SET jumlah = jumlah - ? WHERE voucherpembelianID = ?'
+        var kurang = 0
+        if(sisa_voucher >= sisa_harga){
+            kurang = sisa_harga
+            resp['kurang'] = sisa_harga
+        }
+        else{
+            kurang = sisa_voucher
+            resp['kurang'] = sisa_voucher
+        }
+        var vocer = [kurang, voucherID]
+        connection.query(qrstring2, vocer, function(err2, result2){
+            if(err2) throw err2
+
+            var qrstring3 = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "voucher", karyawanID = ?, voucherID = ?'
+            var cicilan = [pembelianID, tanggal, kurang, karyawanID, voucherID]
+            connection.query(qrstring3, cicilan, function(err3, result3){
+                if(err3) throw err3
+                return callback(resp)
+            })
+        })
+    })
+}
+
 router.post('/tambah_pembelian', function(req,res){
 
     if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
@@ -135,7 +205,14 @@ router.post('/tambah_pembelian', function(req,res){
                 for(var i=0; i<len; i++){
                     add_pembelian_barang(req, i, result2.insertId);
                 }
-                res.status(200).send(resp)
+
+                var len2 = req.body.voucher.length
+                asyncVoucher(len2, req.body.subtotal*(100-req.body.disc)/100, function(loop) {
+                    voucher_use(loop.iteration(), loop.cek_harga(), result2.insertId, req.body.tanggal_transaksi, result['karyawanID'], req.body.voucher, function(result) {
+                        loop.next(result['kurang']);
+                    })},
+                    function(){res.status(200).send(resp);}
+                );
             })
         }
     })
