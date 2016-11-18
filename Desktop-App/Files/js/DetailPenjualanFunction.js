@@ -73,10 +73,8 @@ function populateDetailPenjualan(curPenjualanID)
             document.getElementById("Detailpenjualan-NotesText").innerHTML = notesText;
 
             var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(penjualan.subtotal)+"</span>";
-           // var grandDiscountText ="<span class='pull-right'>"+numberWithCommas(penjualan.disc)+" %</span>";
 
             $(itemPenjualanTable.column(7).footer()).html(grandTotalText);
-          //  $(itemPembelianTable.column(7).footer()).html(grandDiscountText);
             console.log(penjualan);
             for (i=0;i<penjualan.barang.length;i++)
             {
@@ -87,9 +85,11 @@ function populateDetailPenjualan(curPenjualanID)
                 var nama_barang = penjualan.barang[i].nama_barang;
                 var isi_box = (penjualan.barang[i].konversi_box).toString() + " " + penjualan.barang[i].satuan_acuan_box;
                 var satuan_unit = penjualan.barang[i].satuan_unit;
+
+
                 if (hasHakAkses("HargaPokokLaba"))
                 {
-                    var hpokok="";//;((hargaUnit*qty)*(100-disc)/100)-(qty*harga_pokok);
+                    var hpokok="";//penjualan.barang[i].harga_pokok_saat_ini*()
                     var laba="";
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
@@ -240,4 +240,30 @@ function InitDetailPenjualanPage(curPenjualanID)
     else {
         $("#Detailpenjualan-EditButton").hide();
     }
+
+    const BrowserWindow = require('electron').remote.BrowserWindow
+    const ipcRenderer = require('electron').ipcRenderer
+    const path = require('path')
+
+  //  const invisMsgBtn = document.getElementById('invis-msg')
+  //  const invisReply = document.getElementById('invis-reply')
+
+    document.getElementById("Detailpenjualan-PrintButton").addEventListener('click', function (clickEvent) {
+        const windowID = BrowserWindow.getFocusedWindow().id;
+        const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanBesar.html');
+        let win = new BrowserWindow({ width: 400, height: 400, show: true });
+        win.loadURL(invisPath)
+
+        win.webContents.on('did-finish-load', function () {
+            const input = 100
+            win.webContents.send('print-page', input, windowID)
+        })
+    })
+
+    ipcRenderer.on('page-printed', function (event, input, output) {
+       // const message = `The factorial of ${input} is ${output}`
+      //  invisReply.textContent = message
+        console.log("page printed"+output);
+    })
+
 }

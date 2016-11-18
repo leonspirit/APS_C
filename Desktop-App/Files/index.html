@@ -175,6 +175,10 @@
     <script src="dist/js/demo.js"></script>
     <script>
       $(function () {
+          const BrowserWindow = require('electron').remote.BrowserWindow
+          const ipcRenderer = require('electron').ipcRenderer
+          const path = require('path')
+
           var loggedIn = CheckLogin();
           if (!loggedIn)
           {

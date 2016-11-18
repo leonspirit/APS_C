@@ -28,6 +28,13 @@ function formatOutput (optionElement) {
         return optionElement.text;
     }
 }
+function twoDigitPad(num)
+{
+    var pad = "00";
+    var id = "" + num;
+    var StrId = pad.substring(0, pad.length - id.length) + id;
+    return StrId
+}
 
 
 function PenjualanBaruGetPelanggan()
@@ -48,7 +55,7 @@ function PenjualanBaruGetPelanggan()
             }
             DataPelanggan.push(
                 {
-                    id: 0,
+                    id: "new",
                     text: "+ Tambah Pelanggan Baru"
                 });
             $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher){
@@ -88,7 +95,7 @@ function PenjualanBaruGetBarang()
             }
             DataBarang.push(
                 {
-                    id: 0,
+                    id: "new",
                     text: "+ Tambah Barang Baru"
                 });
             $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
@@ -126,12 +133,12 @@ function PenjualanBaruRemoveRow(r)
     {
         console.log(j);
         tableBody.rows[j].cells[0].innerHTML = (j+1).toString();
-        tableBody.rows[j].cells[1].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-1");
-        tableBody.rows[j].cells[2].setAttribute("id", "Penjualanbaru-IsiboxText-"+(j+1).toString());
-        tableBody.rows[j].cells[3].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-2");
-        tableBody.rows[j].cells[4].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-3");
-        tableBody.rows[j].cells[5].children[0].children[1].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-4");
-        tableBody.rows[j].cells[6].children[0].children[0].setAttribute("id","Penjualanbaru-Input-"+(j+1).toString()+"-5");
+        tableBody.rows[j].cells[1].children[0].setAttribute("id","Penjualanbaru-Input-"+twoDigitPad(j+1)+"-1");
+        tableBody.rows[j].cells[2].setAttribute("id", "Penjualanbaru-IsiboxText-"+(j+1));
+        tableBody.rows[j].cells[3].children[0].setAttribute("id","Penjualanbaru-Input-"+twoDigitPad(j+1)+"-2");
+        tableBody.rows[j].cells[4].children[0].setAttribute("id","Penjualanbaru-Input-"+twoDigitPad(j+1)+"-3");
+        tableBody.rows[j].cells[5].children[0].children[1].setAttribute("id","Penjualanbaru-Input-"+twoDigitPad(j+1)+"-4");
+        tableBody.rows[j].cells[6].children[0].children[0].setAttribute("id","Penjualanbaru-Input-"+twoDigitPad(j+1)+"-5");
     }
     PenjualanBaruDrawTable(null)
 }
@@ -151,13 +158,14 @@ function PenjualanBaruAddRow()
     cell2.setAttribute("style", "padding:0");
     cell2.setAttribute("class", "form-group");
     var inputBarang = document.createElement("input");
-    inputBarang.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-1");
+    inputBarang.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-1");
     inputBarang.setAttribute("style", "width:100%;");
-    inputBarang.setAttribute("onchange", "PenjualanBaruInputBarangChangeListener(this)");
+    inputBarang.setAttribute("onchange", "PenjualanBaruInputBarangChangeListener(this);");
+  //  inputBarang.setAttribute("onkeydown", "MoveToNext(this);");
     inputBarang.setAttribute("class", "barang-select2 form-control input-sm");
     cell2.appendChild(inputBarang);
     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
-        $("#Penjualanbaru-Input-" + rowNum.toString() + "-1").select2({
+        $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-1").select2({
             data: DataBarang,
             placeholder: "-- Pilih Barang --",
             allowClear: true,
@@ -165,9 +173,10 @@ function PenjualanBaruAddRow()
             matcher: oldMatcher(BarangMatcher)
         });
     });
+    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-1").on("select2:select", function(e){MoveToNext(this);});
 
     var cell5 = row.insertCell(2);
-    cell5.setAttribute("id", "Penjualanbaru-IsiboxText-"+rowNum.toString());
+    cell5.setAttribute("id", "Penjualanbaru-IsiboxText-"+rowNum);
 
     var cell3 = row.insertCell(3);
     cell3.setAttribute("style", "padding:0");
@@ -175,12 +184,13 @@ function PenjualanBaruAddRow()
     var inputcontainer = document.createElement("div");
     inputcontainer.setAttribute("class", "form-group");
     var inputJumlah = document.createElement("input");
-    inputJumlah.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-2");
+    inputJumlah.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-2");
     inputJumlah.setAttribute("class", "form-control");
     inputJumlah.setAttribute("type", "number");
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
     inputJumlah.setAttribute("onchange", "PenjualanBaruInputQtyChangeListener(this);");
+    inputJumlah.setAttribute("onkeydown", "MoveToNext(this);");
     inputcontainer.appendChild(inputJumlah);
     cell3.appendChild(inputcontainer);
 
@@ -190,14 +200,17 @@ function PenjualanBaruAddRow()
     var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
     inputSatuan.setAttribute("onchange", "PenjualanBaruInputSatuanChangeListener(this);");
+  //  inputSatuan.setAttribute("onkeydown", "MoveToNext(this);");
     inputSatuan.setAttribute("class", "form-control input-sm");
-    inputSatuan.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-3");
+    inputSatuan.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-3");
     cell4.appendChild(inputSatuan);
-    $("#Penjualanbaru-Input-"+rowNum.toString()+"-3").select2({
-        minimumResultsForSearch:Infinity,
+    $("#Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-3").select2({
+   //     minimumResultsForSearch:Infinity,
         placeholder:"-- Pilih Unit --",
         allowClear:true
     });
+    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-3").on("select2:select", function(e){MoveToNext(this);});
+
 
     var cell7 = row.insertCell(5);
     cell7.setAttribute("style", "padding:0");
@@ -211,8 +224,9 @@ function PenjualanBaruAddRow()
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
     inputHarga.setAttribute("onchange", "PenjualanBaruInputHargaChangeListener(this);");
+    inputHarga.setAttribute("onkeydown", "MoveToNext(this);");
     inputHarga.setAttribute("class", "form-control");
-    inputHarga.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-4");
+    inputHarga.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-4");
     inputHargaGroup.appendChild(inputHargaAddOn);
     inputHargaGroup.appendChild(inputHarga);
     cell7.appendChild(inputHargaGroup);
@@ -230,8 +244,9 @@ function PenjualanBaruAddRow()
     inputDisc.setAttribute("min", "0");
     inputDisc.setAttribute("max", "100");
     inputDisc.setAttribute("class", "form-control");
-    inputDisc.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-5");
+    inputDisc.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-5");
     inputDisc.setAttribute("onchange", "PenjualanBaruInputDiscChangeListener(this);");
+    inputDisc.setAttribute("onkeydown", "MoveToNext(this);");
     inputDiscGroup.appendChild(inputDisc);
     inputDiscGroup.appendChild(inputDiscAddOn);
     cell8.appendChild(inputDiscGroup);
@@ -257,6 +272,7 @@ function PenjualanBaruAddRow()
         untung.setAttribute("class", "pull-right");
         untung.innerHTML = "Rp. 0";
         cell11.appendChild(untung);
+
         celldelButton = row.insertCell(10);
     }
     else {
@@ -271,6 +287,8 @@ function PenjualanBaruAddRow()
     delIcon.setAttribute("class", "glyphicon glyphicon-remove");
     delButton.appendChild(delIcon);
     celldelButton.appendChild(delButton);
+
+
 }
 function PenjualanBaruResetTable() {
     removeWarning();
@@ -287,23 +305,23 @@ function PenjualanBaruResetTable() {
     tableBody.rows[0].cells[7].innerHTML = "<span class='pull-right'>Rp. 0</span>";
     if (hasHakAkses("HargaPokokLaba"))
     {
-        tableBody.rows[0].cells[8].innerHTML = "<span class='pull-right'>Rp. 0</span>";
-        tableBody.rows[0].cells[9].innerHTML = "<span class='pull-right'>Rp. 0</span>";
+        tableBody.rows[0].cells[8].children[0].innerHTML = "Rp. 0";
+        tableBody.rows[0].cells[9].children[0].innerHTML = "Rp. 0";
     }
     $("#Penjualanbaru-PembayaranSelect").val('cash').trigger('change');
     document.getElementById("Penjualanbaru-TgltransaksiDate").value="";
     document.getElementById("Penjualanbaru-TgljatuhtempoDate").value="";
 
     $("#Penjualanbaru-PelangganSelect").val('').trigger('change');
-    $("#Penjualanbaru-Input-1-1").val('').trigger('change');
-    $("#Penjualanbaru-Input-1-3").empty().trigger('change');
+    $("#Penjualanbaru-Input-01-1").val('').trigger('change');
+    $("#Penjualanbaru-Input-01-3").empty().trigger('change');
 
     document.getElementById("Penjualanbaru-AlamatInput").value = '';
     document.getElementById("Penjualanbaru-NotesInput").value = '';
     document.getElementById("Penjualanbaru-IsiboxText-1").innerHTML = '';
-    document.getElementById("Penjualanbaru-Input-1-2").value='';
-    document.getElementById("Penjualanbaru-Input-1-4").value='';
-    document.getElementById("Penjualanbaru-Input-1-5").value='';
+    document.getElementById("Penjualanbaru-Input-01-2").value='';
+    document.getElementById("Penjualanbaru-Input-01-4").value='';
+    document.getElementById("Penjualanbaru-Input-01-5").value='';
 }
 
 function PenjualanBaruDrawTable(r) {
@@ -337,9 +355,9 @@ function PenjualanBaruDrawTable(r) {
     }
     if(indexChanged!=0 && indexChanged!=null){
         var curRow =  itemTable.rows[indexChanged];
-        var qty = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-2").value;
-        var hargaSatuan = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-4").value;
-        var disc = document.getElementById("Penjualanbaru-Input-"+indexChanged+"-5").value;
+        var qty = document.getElementById("Penjualanbaru-Input-"+twoDigitPad(indexChanged)+"-2").value;
+        var hargaSatuan = document.getElementById("Penjualanbaru-Input-"+twoDigitPad(indexChanged)+"-4").value;
+        var disc = document.getElementById("Penjualanbaru-Input-"+twoDigitPad(indexChanged)+"-5").value;
         //subtotal
         var Subtotal = parseInt((qty * hargaSatuan*(100-disc))/100);
         curRow.cells[7].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
@@ -414,15 +432,17 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
                 });
                 if(result.data[i].satuan=="box")
                 {
-                    document.getElementById("Penjualanbaru-IsiboxText-"+rowIndex.toString()).innerHTML = "@ "+result.data[i].konversi.toString()+" "+result.data[i].satuan_acuan;
+                    document.getElementById("Penjualanbaru-IsiboxText-"+rowIndex).innerHTML = "@ "+result.data[i].konversi.toString()+" "+result.data[i].satuan_acuan;
                 }
             }
-            $("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2({
+            $("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").select2({
                 data:data,
-                minimumResultsForSearch:Infinity,
+               // minimumResultsForSearch:Infinity,
                 placeholder:"-- Pilih Unit --",
                 allowClear:true
             });
+            $("#Penjualanbaru-Input-" + twoDigitPad(rowIndex)+ "-3").on("select2:select", function(e){MoveToNext(this);});
+
         })
     }
 
@@ -431,13 +451,14 @@ function PenjualanBaruGetHargaUnitSatuan(selectBox)
 {
     var rowIndex = getRowIndex(selectBox);
    // console.log($("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").val());
-    if ($("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").val())
+    if ($("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").val())
     {
-        document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-4").value = $("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").select2('data')[0].harga_jual;
+        document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4").value = $("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").select2('data')[0].harga_jual;
         if (hasHakAkses("HargaPokokLaba")) {
-            var hpokok =$("#Penjualanbaru-Input-" + rowIndex.toString() + "-3").select2('data')[0].harga_pokok;
+            var hpokok =$("#Penjualanbaru-Input-" + twoDigitPad(rowIndex) + "-3").select2('data')[0].harga_pokok;
             if (hpokok)
             {
+                console.log(rowIndex);
                 document.getElementById("Penjualanbaru-hpokok-" + rowIndex.toString()).innerHTML = "Rp. " + numberWithCommas(hpokok);
             }
 
@@ -492,33 +513,33 @@ function PenjualanBaruSave(isPrinted) {
     }
     for (i=1;i<itemTable.rows.length-1;i++)
     {
-        var BarangSelectValue = $("#Penjualanbaru-Input-"+i+"-1").val();
+        var BarangSelectValue = $("#Penjualanbaru-Input-"+twoDigitPad(i)+"-1").val();
         if (BarangSelectValue == null || BarangSelectValue=='' || BarangSelectValue==0)
         {
             valid=false;
-            setWarning(document.getElementById("Penjualanbaru-Input-"+i+"-1"),"Barang harus diisi");
+            setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-1"),"Barang harus diisi");
         }
-        var qty = document.getElementById("Penjualanbaru-Input-"+i.toString()+"-2");
+        var qty = document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-2");
         if (qty.value=='' || qty.value==null || qty.value==0)
         {
             valid=false;
             setWarning(qty,"hrs diisi");
         }
-        var satuanselect  =$("#Penjualanbaru-Input-"+i.toString()+"-3").val();
+        var satuanselect  =$("#Penjualanbaru-Input-"+twoDigitPad(i)+"-3").val();
         if (satuanselect=='' || satuanselect==null)
         {
             valid=false;
-            setWarning(document.getElementById("Penjualanbaru-Input-"+i.toString()+"-3"), "satuan harus diisi")
+            setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-3"), "satuan harus diisi")
         }
     }
     console.log(voucher);
     if (valid) {
         for (i = 1; i < itemTable.rows.length - 1; i++) {
             satuan.push({
-                "satuanID": $("#Penjualanbaru-Input-" + i.toString() + "-3").val(),
-                "quantity": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-2").value,
-                "disc": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-5").value,
-                "harga_jual_saat_ini": document.getElementById("Penjualanbaru-Input-" + i.toString() + "-4").value
+                "satuanID": $("#Penjualanbaru-Input-" + twoDigitPad(i) + "-3").val(),
+                "quantity": document.getElementById("Penjualanbaru-Input-" + twoDigitPad(i) + "-2").value,
+                "disc": document.getElementById("Penjualanbaru-Input-" + twoDigitPad(i) + "-5").value,
+                "harga_jual_saat_ini": document.getElementById("Penjualanbaru-Input-" + twoDigitPad(i) + "-4").value
             });
         }
         AddPenjualan(
@@ -613,9 +634,9 @@ function PenjualanBaruCekItemStok(node)
 {
     var rowIndex = getRowIndex(node);//node.parentNode.parentNode.rowIndex;
    // console.log(getRowIndex(node));
-    var barang_dibeli_satuan = document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-2").value;
-    var satuanselected =$("#Penjualanbaru-Input-"+rowIndex.toString()+"-3");
-    var barangselected =$("#Penjualanbaru-Input-"+rowIndex.toString()+"-1");
+    var barang_dibeli_satuan = document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-2").value;
+    var satuanselected =$("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3");
+    var barangselected =$("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-1");
     if (satuanselected.val()!=null && satuanselected.val()!='' && barangselected.val()!=null && barangselected.val()!='' && barangselected.val()!=0)
     {
         var stok = barangselected.select2('data')[0].stok;
@@ -623,7 +644,7 @@ function PenjualanBaruCekItemStok(node)
         var barang_dibeli_final = barang_dibeli_satuan * konversiFinal;
         if (barang_dibeli_final>stok){
 
-            setWarning(document.getElementById("Penjualanbaru-Input-"+rowIndex.toString()+"-2"),"Stok tdk cukup");
+            setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-2"),"Stok tdk cukup");
             return true;
         }
         else {
@@ -635,10 +656,10 @@ function PenjualanBaruCekItemStok(node)
 }
 function PenjualanBaruCekHargaRugi(node) {
     var rowIndex = getRowIndex(node);
-    var qty= document.getElementById("Penjualanbaru-Input-"+rowIndex+"-2").value;
-    var hargasatuan =  document.getElementById("Penjualanbaru-Input-"+rowIndex+"-4").value;
-    var disc =  document.getElementById("Penjualanbaru-Input-"+rowIndex+"-5").value;
-    var hpokok =$("#Penjualanbaru-Input-" + rowIndex.toString() + "-3").select2('data')[0].harga_pokok;
+    var qty= document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-2").value;
+    var hargasatuan =  document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4").value;
+    var disc =  document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-5").value;
+    var hpokok =$("#Penjualanbaru-Input-" + twoDigitPad(rowIndex) + "-3").select2('data')[0].harga_pokok;
 
     var laba  = ((qty*hargasatuan)*(100-disc)/100)-(hpokok*qty);
     if (laba<0)
@@ -652,7 +673,7 @@ function PenjualanBaruCekHargaRugi(node) {
 }
 function PenjualanBaruInputBarangChangeListener(node)
 {
-    if ($(node).val()==0)
+    if ($(node).val()=="new")
         $("#Penjualanbaru-CreatebarangModal").modal('toggle');
     PenjualanBaruGetSatuanBarangList(node);
     PenjualanBaruDrawTable(node);
@@ -679,6 +700,47 @@ function PenjualanBaruInputSatuanChangeListener(node)
     PenjualanBaruGetHargaUnitSatuan(node);
     PenjualanBaruDrawTable(node);
     PenjualanBaruCekItemStok(node);
+}
+
+function MoveToNext(node)
+{
+    //console.log(node.attr('id'));
+    if (event.which == 13) {
+        event.preventDefault();
+        console.log($(node).attr('id'));
+
+        var nowID = $(node).attr('id');
+        var angka1 =parseInt(nowID.toString().substring(20, 22));
+        var angka2 =parseInt(nowID.toString().substring(23));
+        var angka1baru, angka2baru;
+        if (angka2 < 5)
+        {
+            angka1baru = angka1;
+            angka2baru = angka2+1;
+        }
+        else if (angka2>=5)
+        {
+            angka1baru = angka1+1;
+            angka2baru = 1;
+        }
+        var nextID ="Penjualanbaru-Input-"+twoDigitPad(angka1baru)+"-"+angka2baru.toString();
+        if($("#" + nextID).length == 0) {
+            PenjualanBaruAddRow();
+            $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+                $("#" +nextID).select2('open');
+            });
+        }
+        else {
+            if ($("#" + nextID).data('select2'))
+            {
+                console.log("lala");
+                $("#" + nextID).select2('open');
+            }
+            else {
+                $("#"+nextID).focus();
+            }
+        }
+    }
 }
 function InitPenjualanBaruPage()
 {
@@ -734,6 +796,14 @@ function InitPenjualanBaruPage()
     }
     else {
         $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").show();
-    }
+    }/*
+
+    $('#Penjualanbaru-Input-01-2').on('keydown', 'input', function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            var $this = $(event.target);
+            console.log($this.attr('id'));
+        }
+    });*/
 
 }

@@ -37,6 +37,8 @@ function populateLaporanPenjualanData()
         }
         if (result.token_status=="success")
         {
+            var totalLaba = 0;
+            var totalDuit = 0;
             for (i = 0; i < result.data.length; i++) {
 
                 var pad = "0000";
@@ -66,18 +68,23 @@ function populateLaporanPenjualanData()
                 else {
                     pembayaran = "Cash";
                 }
-                    var laba = "";
-                    PenjualanTable.row.add([
-                        StrId,
-                        result.data[i].pelangganNama,
-                        tglTransaksi,
-                        pembayaran,
-                        tglJatuhTempo,
-                        subtotal,
-                        laba,
-                        isPrinted,
-                        detailButton
-                    ]);
+                //console.log(result.data[i]);
+                var laba = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].laba)+"</span>";
+
+                totalLaba+= result.data[i].laba;
+                totalDuit = result.data[i].subtotal;
+
+                PenjualanTable.row.add([
+                    StrId,
+                    result.data[i].pelangganNama,
+                    tglTransaksi,
+                    pembayaran,
+                    tglJatuhTempo,
+                    subtotal,
+                    laba,
+                    isPrinted,
+                    detailButton
+                ]);
             }
             PenjualanTable.draw();
             if (hasHakAkses("HargaPokokLaba")){
