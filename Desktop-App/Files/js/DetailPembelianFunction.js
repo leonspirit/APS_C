@@ -85,19 +85,19 @@ function populateDetailPembelian(currentPembelianID)
                 var disc2 = pembelian.barang[i].disc_2;
                 var disc3 = pembelian.barang[i].disc_3;
                 var itemSubtotal = (hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
-                var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+pembelian.barang[i].satuan_acuan_box
+                var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+capitalizeFirstLetter(pembelian.barang[i].satuan_acuan_box)
                 var satuan_unit = pembelian.barang[i].satuan_unit
                 var nama_barang = pembelian.barang[i].nama_barang
                 itemPembelianTable.row.add([
                     "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                    "<span class='pull-right'>"+nama_barang+" </span>",
-                    "<span class='pull-right'>"+isi_box+" </span>",
+                    nama_barang,
+                    "<span class='pull-right'>@ "+ isi_box+"</span>",
                     "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                    "<span class='pull-right'>"+satuan_unit+" </span>",
+                    "<span class='pull-right'>"+capitalizeFirstLetter(satuan_unit)+" </span>",
                     "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
-                    "<span class='pull-right'>"+disc1 +" </span>",
-                    "<span class='pull-right'>"+disc2 +" </span>",
-                    "<span class='pull-right'>"+disc3 +" </span>",
+                    "<span class='pull-right'>"+disc1 +"% </span>",
+                    "<span class='pull-right'>"+disc2 +"% </span>",
+                    "<span class='pull-right'>"+disc3 +"% </span>",
                     "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"
                 ])
             }

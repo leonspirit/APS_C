@@ -84,12 +84,12 @@ function populateDetailPenjualan(curPenjualanID)
                 var qty = penjualan.barang[i].quantity;
                 var disc = penjualan.barang[i].disc;
                 var itemSubtotal = (hargaUnit * qty)*((100-disc)/100);
-                var nama_barang = penjualan.barang[i].nama_barang
-                var isi_box = (penjualan.barang[i].konversi_box).toString() + " " + penjualan.barang[i].satuan_acuan_box
-                var satuan_unit = penjualan.barang[i].satuan_unit
+                var nama_barang = penjualan.barang[i].nama_barang;
+                var isi_box = (penjualan.barang[i].konversi_box).toString() + " " + penjualan.barang[i].satuan_acuan_box;
+                var satuan_unit = penjualan.barang[i].satuan_unit;
                 if (hasHakAkses("HargaPokokLaba"))
                 {
-                    var hpokok="";
+                    var hpokok="";//;((hargaUnit*qty)*(100-disc)/100)-(qty*harga_pokok);
                     var laba="";
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
@@ -107,10 +107,10 @@ function populateDetailPenjualan(curPenjualanID)
                 else {
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                        penjualan.barang[i].penjualanbarangID+"aqua botol 600ml",
-                        "",
+                        "<span class='pull-right'>"+nama_barang+"</span>",
+                        "<span class='pull-right'>"+isi_box+"</span>",
                         "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                        "",
+                        "<span class='pull-right'>"+satuan_unit+"</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
                         "<span class='pull-right'>"+disc +" %</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"
@@ -118,16 +118,6 @@ function populateDetailPenjualan(curPenjualanID)
                 }
             }
             itemPenjualanTable.draw();
-            //nggambar sisa retur
-           // for (i=0;i<4;i++)
-          //  for (i=0;i<penjualan.cicilan.length;i++)
-            {
-              //  if (penjualan.cicilan[i].cara_pembayaran=="voucher") {
-                 //   itemPenjualanTable.footer().row.add([
-               //         "lala", "lili", "lele", "lolo", "lulu"
-             //       ]);
-              //  }
-            }
 
             //nggambar cicilan
             if(penjualan.jatuh_tempo!=null && penjualan.jatuh_tempo!='')

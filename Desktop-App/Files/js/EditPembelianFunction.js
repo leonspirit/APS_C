@@ -13,6 +13,10 @@ function EditPembelianAddRow(barang)
     var row = tableBody.insertRow(rowCount);
     var rowNum = rowCount+1;
 
+    var isi_box = "@ "+(barang.konversi_box).toString()+" "+capitalizeFirstLetter(barang.satuan_acuan_box)
+    var satuan_unit = barang.satuan_unit
+    var nama_barang = barang.nama_barang
+
     var hargaUnit = barang.harga_per_biji;
     var qty = barang.quantity;
     var disc1 = barang.disc_1;
@@ -28,37 +32,16 @@ function EditPembelianAddRow(barang)
 
 
     var cell2 = row.insertCell(1);
-    /*cell2.setAttribute("style", "padding:0");
-    cell2.setAttribute("class", "form-group");
-    var inputBarang = document.createElement("input");
-    inputBarang.setAttribute("id", "Pembelianbaru-Input-"+rowNum.toString()+"-1");
-    inputBarang.setAttribute("style", "width:100%;");
-    inputBarang.setAttribute("onchange", "PembelianBaruGetSatuanBarangList(this);");
-    inputBarang.setAttribute("class", "barang-select2 form-control");
-    cell2.appendChild(inputBarang);
-    $("#Pembelianbaru-Input-"+rowNum.toString()+"-1").select2({
-        data: DataBarang,
-        placeholder:"-- Pilih Barang --",
-        allowClear:true
-    });*/
+    cell2.innerHTML = nama_barang;
 
     var cell5  =row.insertCell(2);
-    cell5.setAttribute("id", "Edipembelian-IsiboxText-"+rowNum.toString());
+    cell5.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
     cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>"
-   /* cell3.setAttribute("style", "padding:0");
-    cell3.setAttribute("class", "form-group");
-    var inputJumlah = document.createElement("input");
-    inputJumlah.setAttribute("id", "Pembelianbaru-Input-"+rowNum.toString()+"-2");
-    inputJumlah.setAttribute("class", "form-control");
-    inputJumlah.setAttribute("type", "number");
-    inputJumlah.setAttribute("min", "0");
-    inputJumlah.setAttribute("style", "width:100%;");
-    inputJumlah.setAttribute("onchange", "PembelianBaruDrawTable(this);");
-    cell3.appendChild(inputJumlah);*/
 
     var cell4 = row.insertCell(4);
+    cell4.innerHTML =  capitalizeFirstLetter(satuan_unit);
    /* cell4.setAttribute("style", "padding:0");
     cell4.setAttribute("class", "form-group has-error");
     var  inputSatuan = document.createElement("input");
@@ -71,8 +54,9 @@ function EditPembelianAddRow(barang)
         placeholder:"-- Pilih Unit --",
         allowClear:true
     });*/
+   var cellqtyretur = row.insertCell(5);
 
-    var cell6 = row.insertCell(5);
+    var cell6 = row.insertCell(6);
     cell6.setAttribute("style", "padding:0;");
     cell6.setAttribute("class", "form-group");
     var  inputHargaContainer = document.createElement("div");
@@ -91,7 +75,7 @@ function EditPembelianAddRow(barang)
     inputHargaContainer.appendChild(inputHarga);
     cell6.appendChild(inputHargaContainer);
 
-    var cell7 = row.insertCell(6);
+    var cell7 = row.insertCell(7);
     cell7.setAttribute("style", "padding:0;");
     var  inputDiscContainer1 = document.createElement("div");
     inputDiscContainer1.setAttribute("class", "input-group");
@@ -111,7 +95,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer1.appendChild(inputDiscLabel1);
     cell7.appendChild(inputDiscContainer1);
 
-    var cell8 = row.insertCell(7);
+    var cell8 = row.insertCell(8);
     cell8.setAttribute("style", "padding:0;");
     var  inputDiscContainer2 = document.createElement("div");
     inputDiscContainer2.setAttribute("class", "input-group");
@@ -131,7 +115,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer2.appendChild(inputDiscLabel2);
     cell8.appendChild(inputDiscContainer2);
 
-    var cell9 = row.insertCell(8);
+    var cell9 = row.insertCell(9);
     cell9.setAttribute("style", "padding:0;");
     var  inputDiscContainer3 = document.createElement("div");
     inputDiscContainer3.setAttribute("class", "input-group");
@@ -151,7 +135,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer3.appendChild(inputDiscLabel3);
     cell9.appendChild(inputDiscContainer3);
 
-    var cell10 = row.insertCell(9);
+    var cell10 = row.insertCell(10);
     var span  = document.createElement("span");
     span.setAttribute("class", "pull-right");
     span.innerHTML = "Rp. "+numberWithCommas(subtotal);

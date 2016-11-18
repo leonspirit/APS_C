@@ -49,11 +49,6 @@ function populateReturPembelian(currentPembelianID)
         }
     });
 }
-function ReturPembelianDrawTable()
-{
-
-}
-
 function ReturPembelianAddRow(barang)
 {
     var tableBody = document.getElementById('Returpembelian-ItemTable').getElementsByTagName("tbody")[0];
@@ -84,6 +79,7 @@ function ReturPembelianAddRow(barang)
 
     var cellqtyRetur = row.insertCell(4);
     cellqtyRetur.setAttribute("style", "padding:0");
+    cellqtyRetur.setAttribute("class", "form-control");
     var inputJumlahRetur = document.createElement("input");
     inputJumlahRetur.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-2");
     inputJumlahRetur.setAttribute("class", "form-control");
@@ -111,10 +107,6 @@ function ReturPembelianAddRow(barang)
 
 }
 
-function ReturPembelianSave()
-{
-
-}
 function InitReturPembelianPage(id)
 {
     currentToken = localStorage.getItem("token");

@@ -112,4 +112,29 @@ function EditPembelianBarang(token, pembelianbarangID, harga_per_biji, disc_1, d
         }, "json");
 }
 
+function AddReturPembelian(token, pembelianbarangID, tanggal, qty, metode, fn)
+{
+    $.post( baseUrl + "retur/tambah_retur_pembelian/",
+        {
+            token: token,
+            pembelianbarangID: pembelianbarangID,
+            tanggal:tanggal,
+            quantity:qty,
+            metode:metode
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function ListVoucherSupplier(token, supplierID, fn)
+{
+    $.post( baseUrl + "voucher/list_voucher_supplier_A/",
+        {
+            token: token,
+            supplierID:supplierID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
 //connection.end();

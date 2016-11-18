@@ -115,5 +115,31 @@ function EditPenjualanBarang(token, penjualanbarangID, harga_jual_saat_ini, disc
             fn(data);
         }, "json");
 }
+function AddReturPenjualan(token, penjualanbarangID, tanggal, qty, metode, fn)
+{
+    $.post( baseUrl + "retur/tambah_retur_penjualan/",
+        {
+            token: token,
+            penjualanbarangID: penjualanbarangID,
+            tanggal:tanggal,
+            quantity:qty,
+            metode:metode
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+function ListVoucherPelanggan(token, pelangganID, fn)
+{
+    $.post( baseUrl + "voucher/list_voucher_pelanggan_A/",
+        {
+            token: token,
+            pelangganID:pelangganID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+
 
 //connection.end();
