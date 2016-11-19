@@ -85,7 +85,7 @@ function DaftarKaryawanPopulateEditModal(Button)
     formData.elements['nama'].value=($(Button).closest('tr').find('td:eq(1)').html());
     formData.elements['telp'].value=($(Button).closest('tr').find('td:eq(2)').html());
     formData.elements['alamat'].value=($(Button).closest('tr').find('td:eq(3)').html());
-    formData.elements['username'].value=($(Button).closest('tr').find('td:eq(4)').html());
+    document.getElementById('Daftarkaryawan-EditModal-UsernameText').innerHTML=($(Button).closest('tr').find('td:eq(4)').html());
     var karyawanID = $(Button).attr('data-id');
     document.getElementById("Daftarkaryawan-EditModal-ConfirmButton").setAttribute("data-id", karyawanID);
     var KaryawanTable = $('#KaryawanTable').DataTable();
@@ -179,8 +179,9 @@ function DaftarKaryawanEditConfirm(Button)
     var nama = formData.elements['nama'].value;
     var telp = formData.elements['telp'].value;
     var alamat = formData.elements['alamat'].value;
-    var username = formData.elements['username'].value;
+    //var username = formData.elements['username'].value;
     var hakakses = [];
+    var i;
     for (i=0;i<FullHakAkses.length;i++)
     {
         if ($("#Daftarkaryawan-EditModal-Hak"+FullHakAkses[i]).prop("checked"))
@@ -190,7 +191,7 @@ function DaftarKaryawanEditConfirm(Button)
             });
         }
     }
-    UpdateDataKaryawan(currentToken, Id, nama, telp, alamat, username, function(result){
+    UpdateDataKaryawan(currentToken, Id, nama, telp, alamat, function(result){
         if (result.token_status=="success")
         {
             if (result['affectedRows'] == 1)
@@ -200,8 +201,9 @@ function DaftarKaryawanEditConfirm(Button)
                 KaryawanTable.cell(rowNum, 1).data(nama);
                 KaryawanTable.cell(rowNum, 2).data(telp);
                 KaryawanTable.cell(rowNum, 3).data(alamat);
-                UpdateHakKaryawan(currentToken, id, hakakses, function(result2){
+                UpdateHakKaryawan(currentToken, Id, hakakses, function(result2){
                     if (result2.token_status=="success") {
+                        console.log("hak karyawan teredit");
                     }
                     else {
                         createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");

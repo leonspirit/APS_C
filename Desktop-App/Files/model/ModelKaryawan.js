@@ -27,7 +27,7 @@ function DeleteKaryawan(token, karyawanID, fn)
         }, "json");
 }
 
-function UpdateDataKaryawan(token, Id, nama, telp, alamat, username, hak_akses, fn)
+function UpdateDataKaryawan(token, Id, nama, telp, alamat, fn)
 {
     $.post( baseUrl + "karyawan/update_karyawan/",
         {
@@ -35,9 +35,7 @@ function UpdateDataKaryawan(token, Id, nama, telp, alamat, username, hak_akses, 
             karyawanID: Id,
             nama: nama,
             telp: telp,
-            alamat: alamat,
-            username: username,
-            hak_akses: hak_akses
+            alamat: alamat
         }
         , function(  data ) {
             fn(data);
@@ -74,7 +72,7 @@ function DetailKaryawan(token, karyawanID, fn)
 }
 function UpdateHakKaryawan(token, karyawanID, hakakses, fn)
 {
-    $.post( baseUrl + "karyawan/detil_karyawan/",
+    $.post( baseUrl + "karyawan/update_akses/",
         {
             token:token,
             karyawanID: karyawanID,

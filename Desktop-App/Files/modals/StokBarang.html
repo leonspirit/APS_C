@@ -5,7 +5,7 @@
                   <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Detail Item</h4>
+                      <h4 class="modal-title">Tambah Barang baru</h4>
                   </div>
                   <div class="modal-body">
                       <form id="Stokbarang-CreateModal-CreateForm">
@@ -19,14 +19,13 @@
                           <tr>
                               <td colspan=2><b>Stok</b></td>
                               <td style="padding:0">
-                                  <input type="number" name="stok" class="form-control">
+                                  <input type="number" name="stok" class="form-control" onchange="StokBarangDisableHargaPokokField();">
                               </td>
                           </tr>
                           <tr>
                               <td colspan =2><b>Isi/Carton</b></td>
                               <td style="padding:0">
                                   <div class="input-group" style="width:100%;">
-
                                       <input type="number" name="isi-box-input" class="form-control" value="">
                                      <div class="input-group-btn">
                                          <select name="acuan-box-selct" style="width:100px" class="form-control">
@@ -45,7 +44,15 @@
                                   <div class="input-group" style="width:100%;">
                                       <div class="input-group-addon">Rp.</div>
                                       <input type="number" class="form-control" name="harga-pokok-input">
-                                      <div class="input-group-addon">/ Carton</div>
+                                      <div class="input-group-btn">
+                                          <select name="acuan-box-selct" style="width:100px" class="form-control">
+                                              <option value="box">Box</option>
+                                              <option value="grs">Grs</option>
+                                              <option value="lsn">Lsn</option>
+                                              <option value="kod">Kod</option>
+                                              <option value="pcs">Pcs</option>
+                                          </select>
+                                      </div>
                                   </div>
 
                               </td>
@@ -60,8 +67,8 @@
                               <td><input type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
                               <td>Box</td>
                               <td style="padding:0">
-                                  <div class="form-group">
-                                      <div class="input-group">
+                                  <div class="form-group" style="margin:0">
+                                      <div class="input-group" style="margin:0">
                                           <div class="input-group-addon">Rp.</div>
                                           <input name="harga-jual-box-input" class="form-control" type="number">
                                       </div>

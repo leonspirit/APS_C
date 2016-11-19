@@ -226,6 +226,7 @@ function EditPenjualanResetTable()
     document.getElementById("Editpenjualan-TgltransaksiDate").value = '';
     document.getElementById("Editpenjualan-TgljatuhtempoDate").value = '';
     document.getElementById("Editpenjualan-NotesInput").value = '';
+    document.getElementById("Editpenjualan-AlamatInput").value = '';
 
     var tableBody = document.getElementById('Editpenjualan-ItemTable').getElementsByTagName("tbody")[0];
     while (true) {

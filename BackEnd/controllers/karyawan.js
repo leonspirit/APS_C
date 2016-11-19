@@ -249,6 +249,7 @@ function add_hak_akses(index, karyawanID, data, callback){
 
 router.post('/update_akses', function(req,res){
 
+    console.log(req.body);
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){

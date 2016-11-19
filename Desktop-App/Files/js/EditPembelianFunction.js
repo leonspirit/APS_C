@@ -228,8 +228,8 @@ function EditPembelianResetTable()
 {
 
     document.getElementById("Editpembelian-TgltransaksiDate").value = '';
-    document.getElementById("#Editpembelian-TgljatuhtempoDate").value = '';
-    document.getElementById("#Editpembelian-NotesInput").value = '';
+    document.getElementById("Editpembelian-TgljatuhtempoDate").value = '';
+    document.getElementById("Editpembelian-NotesInput").value = '';
 
     var tableBody = document.getElementById('Editpembelian-ItemTable').getElementsByTagName("tbody")[0];
     while (true) {
