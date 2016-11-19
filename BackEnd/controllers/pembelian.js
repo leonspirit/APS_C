@@ -661,7 +661,7 @@ router.post('/edit_pembelianbarang', function(req,res){
         else{
             resp['token_status'] = 'success'
 
-            var querystring1 = 'SELECT pembelianID, quantity, disc_1, disc_2, disc_3, harga_per_biji FROM pembelianbarang WHERE pembelianbarangID = ?'
+            var querystring1 = 'SELECT pembelianID, quantity, disc_1, disc_2, disc_3, harga_per_biji, satuanID, stokID FROM pembelianbarang WHERE pembelianbarangID = ?'
             var pembelian1 = [req.body.pembelianbarangID]
             connection.query(querystring1, pembelian1, function(err2, result2){
                 if(err2) throw err2
@@ -670,7 +670,10 @@ router.post('/edit_pembelianbarang', function(req,res){
                 price_awal = price_awal * (100-result2[0]['disc_1']-result2[0]['disc_2']-result2[0]['disc_3']) / 100
 
                 var curr_price = result2[0]['quantity'] * req.body.harga_per_biji
-                curr_price = curr_price * (100-req.body.disc_1-req.body.disc_2-req.body.disc_3) / 100
+                curr_price = curr_price * (100-parseInt(req.body.disc_1)-parseInt(req.body.disc_2)-parseInt(req.body.disc_3)) / 100
+
+                var satuanID = result2[0]['satuanID']
+                var stokID = result2[0]['stokID']
 
                 var querystring2 = 'UPDATE pembelianbarang SET harga_per_biji = ?, disc_1 = ?, disc_2 = ?, disc_3 = ? WHERE pembelianbarangID = ?'
                 var pembelianbarang = [req.body.harga_per_biji, req.body.disc_1, req.body.disc_2, req.body.disc_3, req.body.pembelianbarangID]
@@ -682,7 +685,23 @@ router.post('/edit_pembelianbarang', function(req,res){
                     var pembelian = [price_awal-curr_price, result2[0]['pembelianID']]
                     connection.query(querystring3, pembelian, function(err4, result4){
                         if(err4) throw err4
-                        res.status(200).send(resp)
+
+                        var querystring4 = 'SELECT konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
+                        var satuanbarang = [satuanID]
+                        connection.query(querystring4, satuanbarang, function(err5, result5){
+                            if(err5) throw err5;
+                            var konversi = result5[0]['konversi'] * result5[0]['konversi_acuan']
+
+                            var total_disc = parseInt(req.body.disc_1) + parseInt(req.body.disc_2) + parseInt(req.body.disc_3)
+                            var harga_pokok = req.body.harga_per_biji * ((100 - total_disc)/100)
+
+                            var querystring5 = 'UPDATE stok SET harga_beli = ? WHERE stokID = ?'
+                            var stok = [harga_pokok/konversi, stokID];
+                            connection.query(querystring5, stok, function(err6, result6){
+                                if(err6) throw err6
+                                res.status(200).send(resp)
+                            })
+                        })
                     })
                 })
             })

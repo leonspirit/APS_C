@@ -446,12 +446,15 @@ function PembelianBaruSave(isPrinted)//PENTING
                 "harga_per_biji":document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-4").value
             });
         }
+        var grand_subtotal = parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(/,/g, ''))
+        grand_subtotal = grand_subtotal * 100 / (100 - itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value)
+
         AddPembelian(
             currentToken,
             SupplierSelectValue,
             tglTransaksi,
             tglJatuhTempo,
-            parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(/,/g, '')),
+            grand_subtotal,
             itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value,
             isPrinted,
             status,

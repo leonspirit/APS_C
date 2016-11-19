@@ -155,7 +155,7 @@ function InitLaporanPembelianPage()
             formdata.elements['id'].value,
             formdata.elements['supplier'].value,
             formdata.elements['pembayaran'].value,
-            formdata.elements['print'].value
+            ''
         );
     });
 

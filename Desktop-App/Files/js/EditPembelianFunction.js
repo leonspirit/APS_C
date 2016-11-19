@@ -40,8 +40,8 @@ function EditPembelianAddRow(barang)
     var cell3 = row.insertCell(3);
     cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>"
 
-    var cell4 = row.insertCell(4);
-    cell4.innerHTML =  capitalizeFirstLetter(satuan_unit);
+    //var cell4 = row.insertCell(4);
+    //cell4.innerHTML =  capitalizeFirstLetter(satuan_unit);
    /* cell4.setAttribute("style", "padding:0");
     cell4.setAttribute("class", "form-group has-error");
     var  inputSatuan = document.createElement("input");
@@ -54,9 +54,10 @@ function EditPembelianAddRow(barang)
         placeholder:"-- Pilih Unit --",
         allowClear:true
     });*/
-   var cellqtyretur = row.insertCell(5);
+    var cell5 = row.insertCell(4);
+    cell5.innerHTML = capitalizeFirstLetter(satuan_unit);
 
-    var cell6 = row.insertCell(6);
+    var cell6 = row.insertCell(5);
     cell6.setAttribute("style", "padding:0;");
     cell6.setAttribute("class", "form-group");
     var  inputHargaContainer = document.createElement("div");
@@ -75,7 +76,7 @@ function EditPembelianAddRow(barang)
     inputHargaContainer.appendChild(inputHarga);
     cell6.appendChild(inputHargaContainer);
 
-    var cell7 = row.insertCell(7);
+    var cell7 = row.insertCell(6);
     cell7.setAttribute("style", "padding:0;");
     var  inputDiscContainer1 = document.createElement("div");
     inputDiscContainer1.setAttribute("class", "input-group");
@@ -95,7 +96,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer1.appendChild(inputDiscLabel1);
     cell7.appendChild(inputDiscContainer1);
 
-    var cell8 = row.insertCell(8);
+    var cell8 = row.insertCell(7);
     cell8.setAttribute("style", "padding:0;");
     var  inputDiscContainer2 = document.createElement("div");
     inputDiscContainer2.setAttribute("class", "input-group");
@@ -115,7 +116,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer2.appendChild(inputDiscLabel2);
     cell8.appendChild(inputDiscContainer2);
 
-    var cell9 = row.insertCell(9);
+    var cell9 = row.insertCell(8);
     cell9.setAttribute("style", "padding:0;");
     var  inputDiscContainer3 = document.createElement("div");
     inputDiscContainer3.setAttribute("class", "input-group");
@@ -135,7 +136,7 @@ function EditPembelianAddRow(barang)
     inputDiscContainer3.appendChild(inputDiscLabel3);
     cell9.appendChild(inputDiscContainer3);
 
-    var cell10 = row.insertCell(10);
+    var cell10 = row.insertCell(9);
     var span  = document.createElement("span");
     span.setAttribute("class", "pull-right");
     span.innerHTML = "Rp. "+numberWithCommas(subtotal);
@@ -172,7 +173,7 @@ function populateEditPembelianPage(ID)
         var itemTableFooter= document.getElementById("Editpembelian-ItemTable").getElementsByTagName("tfoot")[0];
         console.log(itemTableFooter);
         itemTableFooter.rows[0].cells[2].children[0].children[0].value=pembelian.disc;
-        itemTableFooter.rows[0].cells[4].children[0].innerHTML="Rp. "+numberWithCommas(pembelian.subtotal);
+        itemTableFooter.rows[0].cells[4].children[0].innerHTML="Rp. "+numberWithCommas(pembelian.subtotal*(100-pembelian.disc)/100);
         var i;
         for (i=0;i<pembelian.barang.length;i++)
         {

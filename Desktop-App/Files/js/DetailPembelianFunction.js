@@ -72,7 +72,7 @@ function populateDetailPembelian(currentPembelianID)
             document.getElementById("Detailpembelian-KodeText").innerHTML = StrId;
             document.getElementById("Detailpembelian-NotesText").innerHTML = notesText;
 
-            var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(pembelian.subtotal)+"</span>";
+            var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(pembelian.subtotal*(100-pembelian.disc)/100)+"</span>";
             var grandDiscountText ="<span class='pull-right'>"+numberWithCommas(pembelian.disc)+" %</span>";
 
             $(itemPembelianTable.column(9).footer()).html(grandTotalText);

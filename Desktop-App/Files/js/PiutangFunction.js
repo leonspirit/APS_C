@@ -150,7 +150,7 @@ function InitPiutangPage()
             formdata.elements['id'].value,
             formdata.elements['pelanggan'].value,
             formdata.elements['pembayaran'].value,
-            formdata.elements['print'].value
+            ''
         );
     });
 }
