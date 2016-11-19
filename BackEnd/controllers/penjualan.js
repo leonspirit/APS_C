@@ -320,11 +320,13 @@ function add_laba_penjualan(index, data, callback){
 function add_detail_box(index, data, callback){
 
     var satuanID = data[index]['satuanID']
-    var qrstring1 = 'SELECT barangID, satuan FROM satuanbarang WHERE satuanID = ?'
+    var qrstring1 = 'SELECT barangID, satuan, konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
     var satuan = [satuanID]
     connection.query(qrstring1, satuan, function(err, result){
         if(err) throw err
         data[index]['satuan_unit'] = result[0]['satuan']
+        data[index]['konversi_unit'] = result[0]['konversi']
+        data[index]['konversi_acuan_unit'] = result[0]['konversi_acuan']
 
         var qrstring2 = 'SELECT konversi, satuan_acuan FROM satuanbarang WHERE barangID = ? AND satuan = "box"'
         var box = [result[0]['barangID']]
@@ -829,6 +831,7 @@ router.post('/edit_penjualan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
+            if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
             var querystring = 'UPDATE penjualan SET tanggal_transaksi = ?, jatuh_tempo = ?, notes = ?, alamat = ? WHERE penjualanID = ?'
             var penjualan = [req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.alamat, req.body.penjualanID]
             connection.query(querystring, penjualan, function(err2, result2){

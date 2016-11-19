@@ -71,9 +71,10 @@ function ReturPenjualanAddRow(barang) {
 
     var cell2 = row.insertCell(1);
     cell2.innerHTML = nama_barang;
+    cell2.setAttribute("id", "ReturPenjualan-Input-"+rowNum.toString()+"-1")
+    cell2.setAttribute("data-id", barang.penjualanbarangID)
 
     var cell5 = row.insertCell(2);
-    cell5.setAttribute("id", "Returpembelian-IsiboxText-" + rowNum.toString());
     cell5.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
@@ -81,14 +82,13 @@ function ReturPenjualanAddRow(barang) {
 
     var cellqtyretur = row.insertCell(4);
     cellqtyretur.setAttribute("style", "padding:0");
-    cellqtyRetur.setAttribute("class", "form-control");
+    cellqtyretur.setAttribute("class", "form-control");
     var inputqtyretur = document.createElement("input");
-    inputqtyretur.setAttribute("id", "Pembelianbaru-Input-" + rowNum.toString() + "-2");
+    inputqtyretur.setAttribute("id", "ReturPenjualan-Input-" + rowNum.toString() + "-2");
     inputqtyretur.setAttribute("class", "form-control");
     inputqtyretur.setAttribute("type", "number");
     inputqtyretur.setAttribute("min", "0");
     inputqtyretur.setAttribute("style", "width:100%;");
-    inputqtyretur.setAttribute("onchange", "PembelianBaruDrawTable(this);");
     cellqtyretur.appendChild(inputqtyretur);
 
     var cell4 = row.insertCell(5);
@@ -115,19 +115,96 @@ function ReturPenjualanAddRow(barang) {
     }
 }
 
+function add_retur_penjualan(counter, berhasil, length, penjualanID){
+
+    var tglTransaksiTemp = new Date();
+    var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
+
+    var metode = 0
+    if ($("#Returpenjualan-Metode").val() == "voucher") {
+        metode = 1
+    }
+
+    if(counter === undefined)counter = 1
+    if(counter >= length){
+        if (berhasil == 1) {
+            InitDetailPenjualanPage(penjualanID)
+            createAlert("success", "Retur Penjualan Berhasil Dilakukan");
+        }
+        else {
+            createAlert("danger", "Retur Penjualan Gagal Dilakukan");
+        }
+        return;
+    }
+
+    var QtyReturValue = $("#ReturPenjualan-Input-" + counter.toString() + "-2").val();
+    var penjualanbarangID = document.getElementById("ReturPenjualan-Input-"+counter.toString()+"-1").getAttribute("data-id");
+
+    if (QtyReturValue == null || QtyReturValue=='' || QtyReturValue==0){
+
+    }
+    else{
+        AddReturPenjualan(
+            currentToken,
+            penjualanbarangID,
+            tglTransaksi,
+            QtyReturValue,
+            metode,
+            function(result){
+
+                if (result != null && result.token_status == "success") {
+
+                }
+                else {
+                    berhasil = 0
+                }
+                counter++
+                add_retur_penjualan(counter, berhasil, length, penjualanID)
+            }
+        )
+    }
+
+}
+
+function returPenjualanBaru(penjualanID) {
+
+    var satuan = [];
+    var itemTable = document.getElementById("Returpenjualan-ItemTable");
+    var i;
+
+    add_retur_penjualan(1,1,itemTable.rows.length-1, penjualanID)
+}
+
+function clearReturPenjualan(){
+
+    var tableBody = document.getElementById('Returpenjualan-ItemTable').getElementsByTagName("tbody")[0];
+    while(tableBody.rows.length > 0){
+        tableBody.deleteRow(0)
+    }
+}
+
 
 function InitReturPenjualanPage(penjualanID)
 {
 
     currentToken = localStorage.getItem("token");
     setPage("ReturPenjualan");
+    clearReturPenjualan();
     ReturPenjualanPopulateData(penjualanID);
-     if (hasHakAkses('HargaPokokLaba'))
-     {
-         $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").show();
-     }
-     else {
-         $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").hide();
-     }
+
+    $('#Returpenjualan-Metode').select2({
+        minimumResultsForSearch: Infinity
+    })
+
+    document.getElementById("Returpenjualan-SaveButton").onclick=function(){
+        returPenjualanBaru(penjualanID);
+    };
+
+    if (hasHakAkses('HargaPokokLaba')){
+     $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").show();
+    }
+    else {
+     $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").hide();
+    }
 
 }
