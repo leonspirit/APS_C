@@ -64,7 +64,7 @@ CREATE TABLE `cicilanpembelian` (
   KEY `FK_KARYAWAN_CICILANPEMBELIAN` (`karyawanID`),
   CONSTRAINT `CICILAN_PEMBELIAN_FK` FOREIGN KEY (`pembelianID`) REFERENCES `pembelian` (`pembelianID`),
   CONSTRAINT `FK_KARYAWAN_CICILANPEMBELIAN` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `cicilanpembelian` (
 
 LOCK TABLES `cicilanpembelian` WRITE;
 /*!40000 ALTER TABLE `cicilanpembelian` DISABLE KEYS */;
-INSERT INTO `cicilanpembelian` VALUES (1,30,'2016-10-10',20000,'bbbb','giro','BCA','234231','0000-00-00',2,NULL),(2,30,'2016-10-10',60000,'bbbb','giro','BCA','234231','0000-00-00',2,NULL);
+INSERT INTO `cicilanpembelian` VALUES (1,30,'2016-10-10',20000,'bbbb','giro','BCA','234231','0000-00-00',2,NULL),(2,30,'2016-10-10',60000,'bbbb','giro','BCA','234231','0000-00-00',2,NULL),(3,31,'2016-10-10',27300,NULL,'voucher',NULL,NULL,NULL,2,1),(4,31,'2016-10-10',9900,NULL,'voucher',NULL,NULL,NULL,2,2),(5,32,'2016-10-10',20000,NULL,'voucher',NULL,NULL,NULL,2,1),(6,32,'2016-10-10',0,NULL,'voucher',NULL,NULL,NULL,2,2),(7,33,'2016-10-10',7300,NULL,'voucher',NULL,NULL,NULL,2,1),(8,33,'2016-10-10',2700,NULL,'voucher',NULL,NULL,NULL,2,2);
 /*!40000 ALTER TABLE `cicilanpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +127,7 @@ CREATE TABLE `hakakses` (
   PRIMARY KEY (`hakaksesID`),
   KEY `KARYAWAN_AKSES_FK` (`karyawanID`),
   CONSTRAINT `KARYAWAN_AKSES_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `hakakses` (
 
 LOCK TABLES `hakakses` WRITE;
 /*!40000 ALTER TABLE `hakakses` DISABLE KEYS */;
-INSERT INTO `hakakses` VALUES (7,2,'StokBarang'),(8,2,'LaporanPenjualan'),(9,2,'Hutang'),(10,2,'Piutang'),(11,2,'laba'),(12,2,'DaftarSupplier'),(13,2,'DaftarPelanggan'),(14,2,'DaftarKaryawan'),(36,6,'daftar_pelanggan'),(37,6,'stok'),(38,6,'daftar_supplier'),(39,6,'hutang'),(40,6,'piutang'),(41,2,'PembelianBaru'),(42,2,'LaporanPembelian'),(43,2,'PenjualanBaru');
+INSERT INTO `hakakses` VALUES (7,2,'StokBarang'),(8,2,'LaporanPenjualan'),(9,2,'Hutang'),(10,2,'Piutang'),(11,2,'laba'),(12,2,'DaftarSupplier'),(13,2,'DaftarPelanggan'),(14,2,'DaftarKaryawan'),(36,6,'daftar_pelanggan'),(37,6,'stok'),(38,6,'daftar_supplier'),(39,6,'hutang'),(40,6,'piutang'),(41,2,'PembelianBaru'),(42,2,'LaporanPembelian'),(43,2,'PenjualanBaru'),(44,7,'StokBarang'),(45,7,'BarangTerjualTerbanyak'),(46,7,'HargaPokokLaba'),(47,7,'LaporanPenjualan'),(48,7,'LaporanPembelian'),(49,7,'PembelianBaru'),(50,7,'PenjualanBaru'),(51,7,'EditPenjualan'),(52,7,'EditPembelian'),(53,7,'ReturPenjualan'),(54,7,'ReturPembelian'),(55,7,'Hutang'),(56,7,'Piutang'),(57,7,'DaftarPelanggan'),(58,7,'DaftarPembeliTerbanyak'),(59,7,'DaftarSupplier'),(60,7,'DaftarKaryawan');
 /*!40000 ALTER TABLE `hakakses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `karyawan` (
   `password` varchar(40) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `karyawan` (
 
 LOCK TABLES `karyawan` WRITE;
 /*!40000 ALTER TABLE `karyawan` DISABLE KEYS */;
-INSERT INTO `karyawan` VALUES (2,'billy bonkas','0841239417','Jl. PuKer 19','billy','bonka','aktif'),(3,'pypqwefqwf','081234812639784','jl samting','streamz','abcde','inaktif'),(5,'arianto','081423','puncak kertajaya','leonspirit','pyupyupyu','aktif'),(6,'ariari','081234812639784','jl gatau','disisis','abcde','aktif');
+INSERT INTO `karyawan` VALUES (2,'billy bonkas','0841239417','Jl. PuKer 19','billy','c6251ebcd58dc724f505c04ee133c66f','aktif'),(3,'pypqwefqwf','081234812639784','jl samting','streamz','abcde','inaktif'),(5,'ari ganteng','0812345','Jl pewpewpewpew','leonspirit','ariari','aktif'),(6,'ariari','081234812639784','jl gatau','disisis','abcde','aktif'),(7,'ari','028301283','qlewfjqewopjf','ari','f0ba8f9f389484af6f1a6ccc62a645d0','aktif');
 /*!40000 ALTER TABLE `karyawan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +218,7 @@ CREATE TABLE `pembelian` (
   KEY `PEMBELIAN_KARY_FK` (`karyawanID`),
   CONSTRAINT `PEMBELIAN_KARY_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`),
   CONSTRAINT `SUPPLIER_FK` FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`supplierID`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ CREATE TABLE `pembelian` (
 
 LOCK TABLES `pembelian` WRITE;
 /*!40000 ALTER TABLE `pembelian` DISABLE KEYS */;
-INSERT INTO `pembelian` VALUES (18,5,'2016-11-01',NULL,320000,2,0,0,'belum lunas',NULL),(19,5,'2016-11-01',NULL,50000,2,0,0,'lunas',NULL),(20,1,'2016-10-30','2016-11-08',10152,2,10,0,'belum lunas',NULL),(21,3,'2016-10-29',NULL,10152,2,10,0,'lunas',NULL),(22,5,'2016-10-01',NULL,146080,2,0,0,'lunas',NULL),(23,38,'2016-10-30',NULL,8100,2,10,0,'lunas',NULL),(24,6,'2016-10-01',NULL,9702,2,2,0,'lunas',NULL),(25,89,'2016-10-10','2016-10-30',11174,2,3,0,'lunas','ini pembelian'),(26,81,'2016-10-08',NULL,369000,2,0,0,'lunas',NULL),(27,5,'2016-10-08',NULL,100000,2,0,0,'lunas',NULL),(28,5,'2016-10-08',NULL,100000,2,0,0,'lunas',NULL),(29,5,'2016-10-10',NULL,100000,2,0,1,'lunas',NULL),(30,6,'2016-11-10','2016-11-15',80000,2,0,0,'lunas','');
+INSERT INTO `pembelian` VALUES (18,5,'2016-11-01',NULL,320000,2,0,0,'belum lunas',NULL),(19,5,'2016-11-01',NULL,50000,2,0,0,'lunas',NULL),(20,1,'2016-10-30','2016-11-08',10152,2,10,0,'belum lunas',NULL),(21,3,'2016-10-29',NULL,10152,2,10,0,'lunas',NULL),(22,5,'2016-10-01',NULL,146080,2,0,0,'lunas',NULL),(23,38,'2016-10-30',NULL,8100,2,10,0,'lunas',NULL),(24,6,'2016-10-01',NULL,9702,2,2,0,'lunas',NULL),(25,89,'2016-10-10','2016-10-30',11174,2,3,0,'lunas','ini pembelian'),(26,81,'2016-10-08',NULL,369000,2,0,0,'lunas',NULL),(27,5,'2016-10-08',NULL,100000,2,0,0,'lunas',NULL),(28,5,'2016-10-08',NULL,100000,2,0,0,'lunas',NULL),(29,5,'2016-10-10',NULL,100000,2,0,1,'lunas',NULL),(30,6,'2016-11-10','2016-11-15',80000,2,0,0,'lunas',''),(31,1,'2016-10-10','2016-10-15',3000000,2,0,0,'belum lunas',NULL),(32,1,'2016-10-10','2016-10-15',20000,2,0,0,'belum lunas',NULL),(33,1,'2016-10-10','2016-10-15',-5000,2,0,0,'belum lunas',NULL),(34,3,'2016-11-25',NULL,999700,7,0,0,'lunas','asdfqjwepof'),(35,5,'2016-11-24',NULL,402000,7,0,0,'lunas','qpwdvncapodsnapodsn'),(36,5,'2016-11-24',NULL,200000,7,0,0,'lunas','qpwdvncapodsnapodsn');
 /*!40000 ALTER TABLE `pembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +255,7 @@ CREATE TABLE `pembelianbarang` (
   CONSTRAINT `FK_SATUAN_PEMBELIAN` FOREIGN KEY (`satuanID`) REFERENCES `satuanbarang` (`satuanID`),
   CONSTRAINT `PEMBELIAN_FK` FOREIGN KEY (`pembelianID`) REFERENCES `pembelian` (`pembelianID`),
   CONSTRAINT `PEMBELIAN_STOK_FK` FOREIGN KEY (`stokID`) REFERENCES `stok` (`stokID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,7 +264,7 @@ CREATE TABLE `pembelianbarang` (
 
 LOCK TABLES `pembelianbarang` WRITE;
 /*!40000 ALTER TABLE `pembelianbarang` DISABLE KEYS */;
-INSERT INTO `pembelianbarang` VALUES (11,18,2,150000,1,2,4,40,11),(12,19,1,50000,0,0,0,37,12),(13,20,1,12000,1,2,3,28,13),(14,21,1,12000,3,1,2,20,14),(15,22,4,1000,1,2,3,31,15),(16,22,3,12000,4,3,1,15,16),(17,22,12,10000,3,2,4,36,17),(18,23,1,10000,10,0,0,30,18),(19,24,1,10000,1,0,0,36,19),(20,25,1,12000,1,1,2,34,20),(21,26,1,410000,10,0,0,39,21),(22,27,1,100000,0,0,0,29,22),(23,28,1,100000,0,0,0,29,23),(24,29,1,100000,1,2,3,29,24),(25,30,4,20000,0,0,0,30,25);
+INSERT INTO `pembelianbarang` VALUES (11,18,2,150000,1,2,4,40,11),(12,19,1,50000,0,0,0,37,12),(13,20,1,12000,1,2,3,28,13),(14,21,1,12000,3,1,2,20,14),(15,22,4,1000,1,2,3,31,15),(16,22,3,12000,4,3,1,15,16),(17,22,12,10000,3,2,4,36,17),(18,23,1,10000,10,0,0,30,18),(19,24,1,10000,1,0,0,36,19),(20,25,1,12000,1,1,2,34,20),(21,26,1,410000,10,0,0,39,21),(22,27,1,100000,0,0,0,29,22),(23,28,1,100000,0,0,0,29,23),(24,29,1,100000,1,2,3,29,24),(25,30,4,20000,0,0,0,30,25),(26,31,5,7500,10,0,5,14,26),(27,31,10,35000,7,6,5,15,27),(28,32,5,7500,10,0,5,14,28),(29,32,10,35000,7,6,5,15,29),(30,33,5,7500,10,0,5,14,30),(31,33,10,30000,0,0,0,15,31),(32,34,200,10000,0,0,1,29,33),(33,34,200,50000,1,1,1,30,34),(34,35,2000,20000,0,0,0,29,35),(35,35,2000,200000,0,0,0,15,36),(36,36,100000,20000,0,0,0,29,37),(37,36,100000,0,0,0,0,29,38);
 /*!40000 ALTER TABLE `pembelianbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,7 +291,7 @@ CREATE TABLE `penjualan` (
   KEY `PENJUALAN_KARY_FK` (`karyawanID`),
   CONSTRAINT `PELANGGAN_FK` FOREIGN KEY (`pelangganID`) REFERENCES `pelanggan` (`pelangganID`),
   CONSTRAINT `PENJUALAN_KARY_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,6 +300,7 @@ CREATE TABLE `penjualan` (
 
 LOCK TABLES `penjualan` WRITE;
 /*!40000 ALTER TABLE `penjualan` DISABLE KEYS */;
+INSERT INTO `penjualan` VALUES (1,1,'2016-11-15','2016-11-18',88600,2,0,'lunas','jl ssldfadsf','qewfqwdf'),(2,1,'2016-11-15','2016-11-18',21560,2,0,'lunas','jl ssldfadsf','qewfqwdf'),(13,6,'0000-00-00',NULL,10890,7,0,'lunas','asdfasdf','asdfcv'),(14,4,'2016-11-19',NULL,81180,7,0,'lunas','daskfjapowefj',''),(15,4,'2016-11-19',NULL,85000,7,0,'lunas','qweofqokwfj',''),(16,4,'2016-11-18',NULL,41000,7,0,'lunas','qfewfqew',''),(17,7,'2016-11-25',NULL,111000,7,0,'lunas','qfqwdf',''),(18,5,'2016-11-16',NULL,70000,7,0,'lunas','adsfqwef',''),(19,8,'2016-11-19',NULL,4059,7,0,'lunas','qweofjasdkfj','');
 /*!40000 ALTER TABLE `penjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +327,7 @@ CREATE TABLE `penjualanbarang` (
   CONSTRAINT `PENJUALANBARANG_STOK_FK` FOREIGN KEY (`stokID`) REFERENCES `stok` (`stokID`),
   CONSTRAINT `PENJUALAN_FK` FOREIGN KEY (`penjualanID`) REFERENCES `penjualan` (`penjualanID`),
   CONSTRAINT `SATUAN_FK` FOREIGN KEY (`satuanID`) REFERENCES `satuanbarang` (`satuanID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,6 +336,7 @@ CREATE TABLE `penjualanbarang` (
 
 LOCK TABLES `penjualanbarang` WRITE;
 /*!40000 ALTER TABLE `penjualanbarang` DISABLE KEYS */;
+INSERT INTO `penjualanbarang` VALUES (1,1,15,10,10,0,10000,16),(2,2,29,2,2,10000,150000,22),(3,2,29,2,2,10000,140000,23),(4,13,29,1,1,150,11000,24),(5,14,29,2,1,1902,11000,32),(6,14,30,4,1,-63,15000,18),(7,14,30,4,1,-67,15000,25),(8,15,29,5,0,1906,11000,32),(9,15,30,2,0,-69,15000,25),(10,15,30,2,0,-69,15000,34),(11,16,29,1,0,1907,11000,32),(12,16,30,2,0,-69,15000,34),(13,17,29,2,0,1908,11000,32),(14,17,30,5,0,-69,15000,34),(15,17,15,1,0,4116,14000,27),(16,18,30,1,0,-69,15000,34),(17,18,29,5,0,1910,11000,33),(18,19,29,100,1,1010,11000,33),(19,19,30,200,1,0,15000,34);
 /*!40000 ALTER TABLE `penjualanbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,12 +353,13 @@ CREATE TABLE `returpembelian` (
   `tanggal` date DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `karyawanID` int(11) DEFAULT NULL,
+  `metode` int(11) DEFAULT NULL,
   PRIMARY KEY (`returpembelianID`),
   KEY `PEMBELIAN_RETUR_FK` (`pembelianbarangID`),
   KEY `RETURPEMBELIAN_KARYAWAN_FK` (`karyawanID`),
   CONSTRAINT `PEMBELIAN_RETUR_FK` FOREIGN KEY (`pembelianbarangID`) REFERENCES `pembelianbarang` (`pembelianbarangID`),
   CONSTRAINT `RETURPEMBELIAN_KARYAWAN_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,6 +368,7 @@ CREATE TABLE `returpembelian` (
 
 LOCK TABLES `returpembelian` WRITE;
 /*!40000 ALTER TABLE `returpembelian` DISABLE KEYS */;
+INSERT INTO `returpembelian` VALUES (20,36,'2016-11-19',10,7,1),(21,37,'2016-11-19',14,7,1),(22,36,'2016-11-19',29,7,0),(23,37,'2016-11-19',2,7,0);
 /*!40000 ALTER TABLE `returpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,12 +385,13 @@ CREATE TABLE `returpenjualan` (
   `tanggal` date DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `karyawanID` int(11) DEFAULT NULL,
+  `metode` int(11) DEFAULT NULL,
   PRIMARY KEY (`returpenjualanID`),
   KEY `PENJUALAN_RETUR_FK` (`penjualanbarangID`),
   KEY `RETURPENJUALAN_KARYAWAN_FK` (`karyawanID`),
   CONSTRAINT `PENJUALAN_RETUR_FK` FOREIGN KEY (`penjualanbarangID`) REFERENCES `penjualanbarang` (`penjualanbarangID`),
   CONSTRAINT `RETURPENJUALAN_KARYAWAN_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -395,6 +400,7 @@ CREATE TABLE `returpenjualan` (
 
 LOCK TABLES `returpenjualan` WRITE;
 /*!40000 ALTER TABLE `returpenjualan` DISABLE KEYS */;
+INSERT INTO `returpenjualan` VALUES (40,18,'2016-11-19',4,7,1),(41,19,'2016-11-19',5,7,1);
 /*!40000 ALTER TABLE `returpenjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,7 +452,7 @@ CREATE TABLE `stok` (
   PRIMARY KEY (`stokID`),
   KEY `BARANG_STOK_FK` (`barangID`),
   CONSTRAINT `BARANG_STOK_FK` FOREIGN KEY (`barangID`) REFERENCES `barang` (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +461,7 @@ CREATE TABLE `stok` (
 
 LOCK TABLES `stok` WRITE;
 /*!40000 ALTER TABLE `stok` DISABLE KEYS */;
-INSERT INTO `stok` VALUES (11,39,160000,2,2,0),(12,38,500,100,100,0),(13,26,-552,5,5,0),(14,33,-2120,12,12,0),(15,29,-2,400,400,0),(16,31,-828,144,144,0),(17,37,-22400,12,12,0),(18,28,113,80,80,0),(19,37,9900,1,1,0),(20,36,-1440,1,1,0),(21,39,92250,4,4,0),(22,27,10000,10,10,0),(23,27,10000,10,10,0),(24,27,10000,10,10,0),(25,28,250,320,320,0);
+INSERT INTO `stok` VALUES (11,39,160000,2,2,0),(12,38,500,100,96,0),(13,26,-552,5,5,0),(14,33,-2120,12,12,0),(15,29,-2,400,400,0),(16,31,-828,144,0,0),(17,37,-22400,12,12,0),(18,28,113,80,0,0),(19,37,9900,1,1,0),(20,36,-1440,1,1,0),(21,39,92250,4,4,0),(22,27,10000,10,0,0),(23,27,10000,10,0,0),(24,27,10000,10,0,0),(25,28,250,320,0,0),(26,30,106,300,0,0),(27,31,598,480,432,0),(28,30,106,300,100,0),(29,31,598,480,480,0),(30,30,106,300,300,0),(31,31,598,480,480,0),(32,27,150,100,0,1),(33,27,990,2000,950,0),(34,28,-69,16000,0,0),(35,27,2000,20000,20000,0),(36,31,4167,96000,96000,0),(37,27,2000,1000000,1000000,0),(38,27,0,1000000,1000000,0);
 /*!40000 ALTER TABLE `stok` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +506,7 @@ CREATE TABLE `token` (
   PRIMARY KEY (`tokenID`),
   KEY `KARY_TOKEN_FK` (`karyawanID`),
   CONSTRAINT `KARY_TOKEN_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,7 +515,7 @@ CREATE TABLE `token` (
 
 LOCK TABLES `token` WRITE;
 /*!40000 ALTER TABLE `token` DISABLE KEYS */;
-INSERT INTO `token` VALUES (13,'20c7f211-72a8-41e0-abc5-e44ee8f2904b','aktif',2),(14,'7c669442-4d65-4b9b-b501-f213be264aa7','inaktif',2),(15,'d73de0c1-a4ec-4395-9bee-62f8e1183d84','aktif',3),(16,'efa33429-4de2-42c6-93fd-8c6b96a02cc1','aktif',2),(17,'f9ef6939-7937-452a-a089-1597eb8f9bb4','aktif',2),(18,'327bbf05-bfe1-4ea3-ad51-283c2379f38f','aktif',2),(19,'076e7a1b-1e49-438d-a451-e525aac6c669','aktif',2),(20,'545e4232-c5e8-4e2a-9395-0f3475498c53','aktif',2),(21,'1f099068-fe1f-4720-a2b5-bb8223f12d08','aktif',2),(22,'e31dae62-c23c-47d1-947d-933361b8dd6e','aktif',2),(23,'4761f740-95f7-45a1-a7f2-5405b9c66c15','aktif',2),(24,'81cc817c-8adb-4392-b59e-f54a93b9e18e','aktif',2),(25,'66f48c4a-63f9-482e-9008-d8a0cb55ec8c','aktif',2),(26,'460e6643-d717-4cfa-a472-42621705f277','aktif',2),(27,'b8c7aa52-3d30-4e02-82c7-09a1265c0164','aktif',2),(28,'4900a2b4-c6f2-49b9-accf-3cc113a05b0b','aktif',2),(29,'f10a6291-4d37-46e6-a893-0dec8d0ab6a0','aktif',2),(30,'e100efb6-d5c1-4d53-a9c7-06beb7dde5a6','aktif',2),(31,'49bd402a-ed10-448a-9dc7-5c6bf33c113c','inaktif',2),(32,'e2ef9895-7e69-42b3-9c69-7498a911dbf2','aktif',2),(33,'2ac5e9f4-43d6-411f-af25-ac0ff709c798','aktif',2),(34,'d68cc058-53d1-435b-b340-032e26f1753d','aktif',2),(35,'cb73844c-25d8-42b1-8c26-be55a7159909','aktif',2),(36,'4701fee8-6101-41aa-92b5-f8f3189f55f8','aktif',2),(37,'7ff7f7ae-932a-499b-a048-00f3505203f3','aktif',2),(38,'ce0d7262-b993-4f98-98e6-9c03513a3fd9','aktif',2),(39,'586e91e3-643d-44e8-b09c-d38e476a260d','aktif',2),(40,'51c0fbac-d5a0-4311-abcc-7ed5949d05ae','aktif',2),(41,'8a54a8a3-003b-4dbd-a1c5-7ad47c977e09','aktif',2),(42,'11e7aae7-8302-42a8-a837-0ca4a7a89a59','aktif',2),(43,'ac756222-20be-4453-9a0d-0753901f35e6','aktif',2),(44,'494a57e6-8588-4c3d-80ee-c97fb078cbee','aktif',2),(45,'874c7abc-aeff-44b7-9815-87208efa01ff','aktif',2),(46,'447f330c-c4cc-4191-afdf-58099acf5260','aktif',2),(47,'f583d5e2-ffb7-4abd-a00e-21ea1db15d04','aktif',2),(48,'04a56490-bb01-4708-9083-43a1424b3b92','aktif',2),(49,'645a924b-3c37-40d8-a4d6-ec50b517f58d','inaktif',2),(50,'6c60f700-0efd-41df-9381-405e23dfbe57','aktif',2),(51,'14c5767e-d961-4a42-99ac-b1fababf2d19','aktif',2),(52,'c080777a-6eba-42d4-a5eb-8f6e74d6dc40','aktif',2),(53,'5ee8802b-487c-46f7-9506-82a8ef3ff1b3','aktif',2),(54,'c788fb4e-9150-41ef-bea0-de98c8eede21','aktif',2),(55,'a15c2d93-1e5e-4a96-af72-74c5bb9fdc27','aktif',2),(56,'d177fa7c-44d6-44f4-a5eb-9583b6a7774a','aktif',2),(57,'fb8a05d6-dbce-4355-8c91-22a3e27e8390','aktif',2),(58,'b2f6469d-19ac-460a-80b7-3186f4cc1c3f','aktif',2),(59,'966974db-3307-47b4-a644-2b0df2f3ab9c','aktif',2),(60,'f64fa9ea-0d15-4bef-964f-78fb167edb7f','aktif',2),(61,'05547a7a-7a80-45e0-a64d-ba9001f698a9','aktif',2),(62,'708c5fa1-3bc1-45f6-a328-3132ddfa78ea','aktif',2),(63,'46d74678-6080-49bf-a65b-4923f86513b9','aktif',2),(64,'258fd8c8-c0ed-4cab-9e4f-dcd307882a63','aktif',2),(65,'89cd53a1-1833-4f2d-8444-47fdeb846cf1','aktif',2),(66,'8c5fb65c-0414-4d24-bdd4-3877127f2cff','aktif',2),(67,'fc47afd8-9185-4f92-9d5c-aa4b3e8fa4f0','aktif',2),(68,'fcb12866-8bc7-4201-aa8d-55ace51fadd1','aktif',2),(69,'e4ce6554-d2db-4d34-8bb5-2877f66f8dd7','aktif',2),(70,'ad7facc2-6d46-4eb4-9c07-633865a441b2','aktif',2),(71,'b675ec53-fc9a-4a70-8db9-e509f51be26e','aktif',2),(72,'e590c365-d1b1-495b-b39b-5622b36185ef','aktif',2),(73,'0f0abd2e-7804-4d75-b335-c6b06dc5f6dd','aktif',2),(74,'a9d30b60-c37f-46d7-bbe2-13d204901b78','aktif',2),(75,'86768ec8-2fa6-4adc-aac8-efb11d30861b','aktif',2),(76,'1a9d469d-c7b5-4c96-b06a-33aa8c2db82b','aktif',2),(77,'b65be65a-9f0a-43f9-a786-ae5f603e07f8','aktif',2),(78,'988777a9-4f42-418d-9e83-e8ecea1c3340','aktif',2),(79,'3c2ed17b-463e-4d28-8091-dcdfea2470eb','aktif',2),(80,'b7867b9e-2b24-4517-b7a3-6e1a411b2ca7','aktif',2),(81,'2a0354d9-7835-42e9-b713-8dce3066b360','aktif',2),(82,'aa907391-4ffe-47a0-8dc4-8b5ffab9702c','aktif',2),(83,'c94ae83e-be13-49a0-88d4-2af82f80268e','inaktif',2),(84,'e5c59002-f1e6-4476-8c0f-11667faecf70','aktif',2),(85,'73ea9f0a-7cd1-4313-b5a5-b3800455b4bf','aktif',2),(86,'756360ea-5b35-49e4-9afd-703ffef59778','aktif',2),(87,'ee9161f7-4fa9-4c11-9bf8-734ea801a6ee','aktif',2),(88,'c5e1a576-cad9-49fb-9fb0-06b6b2b54cbf','aktif',2),(89,'6b30b69d-7fad-48b7-b9c3-c36d8d2602d6','aktif',2),(90,'04635dc7-1004-4e11-b888-daecc1882675','aktif',2),(91,'68e59b71-0ca6-4ff7-9037-ce55d7fda694','aktif',2),(92,'97c77d9b-6a6b-4b79-8f5e-0d3565920072','aktif',2),(93,'27041b41-e513-462c-ac01-afee860b0083','aktif',2),(94,'d0c3fe90-e83c-4efa-a822-56107bf1ed02','aktif',2),(95,'41a854f7-b82e-423e-a95c-07f766abc387','aktif',2),(96,'59cde98c-61ae-4abd-aa1c-efefc05ed834','aktif',2),(97,'c99b151e-cd1f-4816-9503-4a122372907c','aktif',2),(98,'b129a128-556d-4080-b393-7523d9086be2','aktif',2),(99,'c21b8518-f3aa-48b2-b159-8a29f9e4f44a','aktif',2),(100,'262c3f46-b8fb-4214-8e57-42d7b89ecab9','aktif',2),(101,'4549d78b-33dc-43c1-ba5b-f945b0ea9cde','aktif',2),(102,'7b4460c0-e535-4db8-aab6-e2a9694928ca','aktif',2),(103,'7ae30818-49ad-41b9-8886-4658aca6a519','aktif',2),(104,'fca39b17-7949-46b5-8424-220cebf200cc','aktif',2),(105,'6daa2758-a339-4b9e-9471-9ef5762a29d5','aktif',2),(106,'8c4748e3-5e8c-4fa1-992c-ee4cee06a543','aktif',2),(107,'12637181-7db3-47c3-b390-4477dde21ee3','aktif',2),(108,'fc6daee6-12cb-4c04-b4bf-09289b04a19f','aktif',2),(109,'c2137e59-3134-4615-8d02-18b987a1fa6f','aktif',2),(110,'bd9ae597-fe22-452b-b539-879998becca4','aktif',2),(111,'cc44ef3f-c7f8-4f53-83fb-a4365590c40b','aktif',2),(112,'13e18743-9e35-4cf4-84f0-2a51ddd99e58','aktif',2),(113,'48c961ba-1af2-4ccc-ac65-263814c268cf','aktif',2),(114,'38901ab1-1ec1-4c43-9b20-0b8c594721ae','aktif',2),(115,'5b784ffa-d20c-4a06-bf32-70ed38e18a0e','aktif',2),(116,'ee326382-e12c-4cbb-b0e9-a11dd988c37c','aktif',2),(117,'55cc5fa6-f4ce-4b11-ba01-592c789b55a2','aktif',2),(118,'07e33a25-d0ba-47f3-9a04-03c23115a995','aktif',2),(119,'5e4a60fa-2515-4b66-abda-dd6c5b28da15','aktif',2),(120,'246d4f18-c4d8-4494-8c6b-bd67cb682ba2','aktif',2),(121,'c2933b07-ce78-4085-b615-75b1efeb51a5','aktif',2),(122,'7886c2e2-425f-456f-8da9-ac9b86f8d9ca','aktif',2),(123,'9f0c7417-049b-40e6-ae7b-7ca252394b1a','aktif',2),(124,'8e5e098c-adff-48f5-9bdc-2c54c9ba79f0','aktif',2),(125,'016142fa-d28f-47ac-afba-41f0ba1a8cc2','aktif',2),(126,'f6d3385d-ceb1-43c9-9a7e-ab1c021e8368','aktif',2),(127,'c9824d0a-7797-4031-850c-120d1a3e2214','aktif',2),(128,'3302f289-bcbd-45bd-99b3-b3a76c4b1d50','aktif',2),(129,'3ba431e8-0b75-4e40-b335-b5684380cb3d','aktif',2),(130,'34c1845a-69da-48be-97f0-15eded05eb8a','aktif',2),(131,'3411cc79-ad75-48d1-8eec-6a2bacac3c5c','aktif',2),(132,'3fdfe237-988f-4350-9c00-a3ea3d9679d5','aktif',2),(133,'9e481216-821b-4fe3-a52a-1345f99bdb41','aktif',2),(134,'ccf08d96-7a70-43bd-a140-86ea9c108a98','aktif',2),(135,'6b03a6c4-39cf-4538-8adb-e6d7819ba1d8','aktif',2),(136,'a3cf932f-a4c6-4ad7-a9f4-b1b1a9d8f50d','aktif',2),(137,'7b5007f1-b4cb-4eea-a6f7-6bb45b192c1d','aktif',2),(138,'3fc58e18-0b01-4dda-a17b-daf00ee9fa90','aktif',2),(139,'bbf74fc7-daf5-49f4-be4c-4f8ddd8b0b1e','aktif',2),(140,'794f0147-bb05-4826-9d56-f90769768ad4','aktif',2),(141,'6051e9ba-b135-4827-b04c-77f2b0e3395f','aktif',2),(142,'bd42259d-a5c7-46ca-9830-735ae1bde650','aktif',2),(143,'387d22d7-847d-4622-8fe6-98c220a23dff','aktif',2),(144,'7bd23718-881d-41a4-af98-7d038392bb3d','aktif',2),(145,'b2457e37-94a4-4ff2-b276-c96a920ca34d','aktif',2),(146,'0d27e19b-d063-4936-a821-777a6eb29094','aktif',2),(147,'367daafb-8b2b-4c50-9d6b-c44f48d18ff5','aktif',2),(148,'42f00dd3-a2c1-4054-b693-17c2580e1d67','aktif',2),(149,'849bc3db-3ac5-40c9-80ba-c8826abadc53','aktif',2),(150,'4ea6717c-41fa-46e8-83e9-1f3c72807eb9','aktif',2),(151,'52c47511-00f4-4467-979f-e5f1f60fc21b','aktif',2),(152,'e0e9d58e-c889-49d0-930f-6d2c5d308acb','aktif',2),(153,'1c4e3ece-c564-42eb-86f6-92231a13deac','aktif',2),(154,'9184c665-4bb5-4ea7-8466-0f46ae20e702','aktif',2),(155,'5d36d020-129c-4fb7-a128-f4a78b26ca20','aktif',2),(156,'4e65359f-4709-4c4f-8860-dc97bb7300fe','aktif',2),(157,'21812b42-d0b5-46aa-9eb0-91e76ae0a93f','aktif',2),(158,'8f49d17c-2b59-478f-9dc8-6abf836ddb98','aktif',2),(159,'26168927-501c-4ce9-8de7-64945eab5c92','aktif',2),(160,'c930c7ec-236e-452d-808e-df9bd7ed890b','aktif',2),(161,'754e3da0-06ad-47a2-8be6-7c7067db30ac','aktif',2),(162,'feee9ed3-6003-4f00-bf55-5c9d03d0da1d','aktif',2),(163,'369465d8-9e03-4bde-a71a-8db37a4d2ef5','aktif',2),(164,'5f2c03f4-05c6-469a-aa7f-7720cceaa510','aktif',2),(165,'cd076eb2-c9ce-4584-bb21-5000122435d6','aktif',2),(166,'8fb7094e-45c2-4c20-b58d-6e507818b0b5','aktif',2),(167,'d9805dcc-174f-46cd-994e-10b8f28e547c','aktif',2),(168,'bbda50ec-75fc-4090-b008-66180c9d95f4','aktif',2),(169,'75677b74-a88b-4ec1-9efa-135908d1e435','inaktif',2),(170,'7bd21a84-a81e-4f47-97ff-d2e8a5fc0986','aktif',2),(171,'0cf1316a-0cd3-4cc3-b942-94239ded887d','aktif',2),(172,'c71d8588-8ec1-4d80-8eb7-e4649952840b','aktif',2),(173,'6ae913bc-fa51-4eb2-92ff-400818dab023','aktif',2),(174,'c74d5701-4334-4735-9b2e-94686e4fd3b1','aktif',2),(175,'5d61f090-506b-4a44-9de3-68855ae89d16','aktif',2),(176,'55fce910-250d-477b-8f9a-2304c4261db5','inaktif',2),(177,'cf53c00f-242b-4523-b9bd-03c1dc4e1812','aktif',2),(178,'7228621f-afcd-4cfd-b292-b744629253a9','aktif',2),(179,'75a964a5-ab8c-4dbf-900b-3d8841cda085','aktif',2),(180,'b6d8c5fe-ebdf-45ed-856c-dca7de879c4b','aktif',2),(181,'c4f8b149-1158-4fd7-9aff-b6ddbc20117d','aktif',2),(182,'865f457f-4a0e-451a-8a49-672113e0fcc9','aktif',2),(183,'19806175-9e1b-4132-a418-82dba01fb852','aktif',2),(184,'d964d98a-0f8e-4027-adeb-2e717b5abb71','aktif',2),(185,'ab5355c6-783b-4e6a-96bf-0135b3bf2e55','aktif',2),(186,'70a125db-aeed-462a-9b6a-830eae29e38e','aktif',2),(187,'c93057bb-f477-43b5-a9d5-6f82ab4cce67','aktif',2),(188,'f4c60462-48f8-4bb2-8c99-6bb0201dae00','aktif',2),(189,'750e57b7-7329-4355-882e-5ae0046f5a78','aktif',2),(190,'8aae2276-ccaf-4a83-915e-ba9543ebbfdf','aktif',2),(191,'855cc21e-1bb2-4565-b402-8f198c41c2fe','aktif',2),(192,'a0282e7c-94e6-4dc2-9b2a-254b868b8599','aktif',2),(193,'22061e7e-e4aa-43af-a39c-1ad7690c4f04','aktif',2),(194,'67574cfb-4ceb-4d5f-b26b-1dca2332db7e','aktif',2),(195,'c00a661b-0fa4-4f9b-af4f-7e6bd5ee766d','aktif',2),(196,'985242a7-24a7-4359-b1be-a5ff12fa1d50','aktif',2),(197,'924dfecc-7b81-44ac-9c5a-04e621b4d6bb','aktif',2),(198,'8327502c-3467-44c7-979f-8cf0342361a8','aktif',2),(199,'cf315ebc-8669-4648-98e3-55b35b5566e4','aktif',2),(200,'0316c237-3c06-4a13-aae1-c80020268963','aktif',2),(201,'b47f8113-fa86-4ca2-a097-42e71c40fcaf','aktif',2),(202,'dd1c8b92-cb08-4680-9394-a1bada7a3015','aktif',2),(203,'b86865ad-a19e-45ac-befd-2670731c9a14','aktif',2),(204,'5eee945b-c72e-4472-8955-d91c77920263','aktif',2),(205,'9b3b43fb-9625-4d15-b481-3e96b7384982','aktif',2),(206,'e097b67f-c7ee-481e-aca0-aa6dfc209b02','aktif',2),(207,'a41cb282-363d-4f96-832f-d7e389a57da7','aktif',2),(208,'e96e55ee-ac51-4fc9-8bbc-9ea414258904','aktif',2),(209,'da23829f-c2d5-4d5e-8846-4cc2ccfabd63','aktif',2),(210,'cb6955a7-b8fe-4321-92a6-9ff8b601d210','aktif',2),(211,'517d51d0-b915-4b7d-90f6-1715bcc864a6','aktif',2),(212,'28dae17d-6cc6-441f-8de9-c18c12f1b8fa','aktif',2),(213,'41f7f824-eaeb-42ec-a5b8-6d50fff29caa','aktif',2),(214,'cd716570-b4a7-42a1-9528-8d370b12acf2','aktif',2),(215,'c37f2496-0b0c-4502-aab2-1e1c97d24205','aktif',2),(216,'06cc8402-a11d-4358-bf46-6a13ce873447','aktif',2),(217,'e6a6430d-d563-494a-b99d-ecdcf4f0ad3a','aktif',2),(218,'14ec27f2-1a0d-4d3e-9bd1-33b0df13b597','aktif',2),(219,'af34dd65-540f-417f-953f-107c4778300b','aktif',2),(220,'76280db7-d33c-472b-bb7f-461da453ae93','aktif',2),(221,'1373675f-cb44-439e-9833-5b54f9531d9e','aktif',2),(222,'ae1a9824-ab6c-4e15-aa8a-11672d14d420','aktif',2),(223,'ca80af0a-8a81-48a1-8f95-8aa4792a1306','aktif',2),(224,'e7d405cb-435b-449f-92fa-6ec2cb75c7c1','aktif',2),(225,'0ae265f0-a862-42f0-bd45-d1bf87daeb2f','aktif',2),(226,'279b6bf8-f0a0-490e-b125-ef186451aec8','aktif',2);
+INSERT INTO `token` VALUES (13,'20c7f211-72a8-41e0-abc5-e44ee8f2904b','aktif',2),(14,'7c669442-4d65-4b9b-b501-f213be264aa7','inaktif',2),(15,'d73de0c1-a4ec-4395-9bee-62f8e1183d84','aktif',3),(16,'efa33429-4de2-42c6-93fd-8c6b96a02cc1','aktif',2),(17,'f9ef6939-7937-452a-a089-1597eb8f9bb4','aktif',2),(18,'327bbf05-bfe1-4ea3-ad51-283c2379f38f','aktif',2),(19,'076e7a1b-1e49-438d-a451-e525aac6c669','aktif',2),(20,'545e4232-c5e8-4e2a-9395-0f3475498c53','aktif',2),(21,'1f099068-fe1f-4720-a2b5-bb8223f12d08','aktif',2),(22,'e31dae62-c23c-47d1-947d-933361b8dd6e','aktif',2),(23,'4761f740-95f7-45a1-a7f2-5405b9c66c15','aktif',2),(24,'81cc817c-8adb-4392-b59e-f54a93b9e18e','aktif',2),(25,'66f48c4a-63f9-482e-9008-d8a0cb55ec8c','aktif',2),(26,'460e6643-d717-4cfa-a472-42621705f277','aktif',2),(27,'b8c7aa52-3d30-4e02-82c7-09a1265c0164','aktif',2),(28,'4900a2b4-c6f2-49b9-accf-3cc113a05b0b','aktif',2),(29,'f10a6291-4d37-46e6-a893-0dec8d0ab6a0','aktif',2),(30,'e100efb6-d5c1-4d53-a9c7-06beb7dde5a6','aktif',2),(31,'49bd402a-ed10-448a-9dc7-5c6bf33c113c','inaktif',2),(32,'e2ef9895-7e69-42b3-9c69-7498a911dbf2','aktif',2),(33,'2ac5e9f4-43d6-411f-af25-ac0ff709c798','aktif',2),(34,'d68cc058-53d1-435b-b340-032e26f1753d','aktif',2),(35,'cb73844c-25d8-42b1-8c26-be55a7159909','aktif',2),(36,'4701fee8-6101-41aa-92b5-f8f3189f55f8','aktif',2),(37,'7ff7f7ae-932a-499b-a048-00f3505203f3','aktif',2),(38,'ce0d7262-b993-4f98-98e6-9c03513a3fd9','aktif',2),(39,'586e91e3-643d-44e8-b09c-d38e476a260d','aktif',2),(40,'51c0fbac-d5a0-4311-abcc-7ed5949d05ae','aktif',2),(41,'8a54a8a3-003b-4dbd-a1c5-7ad47c977e09','aktif',2),(42,'11e7aae7-8302-42a8-a837-0ca4a7a89a59','aktif',2),(43,'ac756222-20be-4453-9a0d-0753901f35e6','aktif',2),(44,'494a57e6-8588-4c3d-80ee-c97fb078cbee','aktif',2),(45,'874c7abc-aeff-44b7-9815-87208efa01ff','aktif',2),(46,'447f330c-c4cc-4191-afdf-58099acf5260','aktif',2),(47,'f583d5e2-ffb7-4abd-a00e-21ea1db15d04','aktif',2),(48,'04a56490-bb01-4708-9083-43a1424b3b92','aktif',2),(49,'645a924b-3c37-40d8-a4d6-ec50b517f58d','inaktif',2),(50,'6c60f700-0efd-41df-9381-405e23dfbe57','aktif',2),(51,'14c5767e-d961-4a42-99ac-b1fababf2d19','aktif',2),(52,'c080777a-6eba-42d4-a5eb-8f6e74d6dc40','aktif',2),(53,'5ee8802b-487c-46f7-9506-82a8ef3ff1b3','aktif',2),(54,'c788fb4e-9150-41ef-bea0-de98c8eede21','aktif',2),(55,'a15c2d93-1e5e-4a96-af72-74c5bb9fdc27','aktif',2),(56,'d177fa7c-44d6-44f4-a5eb-9583b6a7774a','aktif',2),(57,'fb8a05d6-dbce-4355-8c91-22a3e27e8390','aktif',2),(58,'b2f6469d-19ac-460a-80b7-3186f4cc1c3f','aktif',2),(59,'966974db-3307-47b4-a644-2b0df2f3ab9c','aktif',2),(60,'f64fa9ea-0d15-4bef-964f-78fb167edb7f','aktif',2),(61,'05547a7a-7a80-45e0-a64d-ba9001f698a9','aktif',2),(62,'708c5fa1-3bc1-45f6-a328-3132ddfa78ea','aktif',2),(63,'46d74678-6080-49bf-a65b-4923f86513b9','aktif',2),(64,'258fd8c8-c0ed-4cab-9e4f-dcd307882a63','aktif',2),(65,'89cd53a1-1833-4f2d-8444-47fdeb846cf1','aktif',2),(66,'8c5fb65c-0414-4d24-bdd4-3877127f2cff','aktif',2),(67,'fc47afd8-9185-4f92-9d5c-aa4b3e8fa4f0','aktif',2),(68,'fcb12866-8bc7-4201-aa8d-55ace51fadd1','aktif',2),(69,'e4ce6554-d2db-4d34-8bb5-2877f66f8dd7','aktif',2),(70,'ad7facc2-6d46-4eb4-9c07-633865a441b2','aktif',2),(71,'b675ec53-fc9a-4a70-8db9-e509f51be26e','aktif',2),(72,'e590c365-d1b1-495b-b39b-5622b36185ef','aktif',2),(73,'0f0abd2e-7804-4d75-b335-c6b06dc5f6dd','aktif',2),(74,'a9d30b60-c37f-46d7-bbe2-13d204901b78','aktif',2),(75,'86768ec8-2fa6-4adc-aac8-efb11d30861b','aktif',2),(76,'1a9d469d-c7b5-4c96-b06a-33aa8c2db82b','aktif',2),(77,'b65be65a-9f0a-43f9-a786-ae5f603e07f8','aktif',2),(78,'988777a9-4f42-418d-9e83-e8ecea1c3340','aktif',2),(79,'3c2ed17b-463e-4d28-8091-dcdfea2470eb','aktif',2),(80,'b7867b9e-2b24-4517-b7a3-6e1a411b2ca7','aktif',2),(81,'2a0354d9-7835-42e9-b713-8dce3066b360','aktif',2),(82,'aa907391-4ffe-47a0-8dc4-8b5ffab9702c','aktif',2),(83,'c94ae83e-be13-49a0-88d4-2af82f80268e','inaktif',2),(84,'e5c59002-f1e6-4476-8c0f-11667faecf70','aktif',2),(85,'73ea9f0a-7cd1-4313-b5a5-b3800455b4bf','aktif',2),(86,'756360ea-5b35-49e4-9afd-703ffef59778','aktif',2),(87,'ee9161f7-4fa9-4c11-9bf8-734ea801a6ee','aktif',2),(88,'c5e1a576-cad9-49fb-9fb0-06b6b2b54cbf','aktif',2),(89,'6b30b69d-7fad-48b7-b9c3-c36d8d2602d6','aktif',2),(90,'04635dc7-1004-4e11-b888-daecc1882675','aktif',2),(91,'68e59b71-0ca6-4ff7-9037-ce55d7fda694','aktif',2),(92,'97c77d9b-6a6b-4b79-8f5e-0d3565920072','aktif',2),(93,'27041b41-e513-462c-ac01-afee860b0083','aktif',2),(94,'d0c3fe90-e83c-4efa-a822-56107bf1ed02','aktif',2),(95,'41a854f7-b82e-423e-a95c-07f766abc387','aktif',2),(96,'59cde98c-61ae-4abd-aa1c-efefc05ed834','aktif',2),(97,'c99b151e-cd1f-4816-9503-4a122372907c','aktif',2),(98,'b129a128-556d-4080-b393-7523d9086be2','aktif',2),(99,'c21b8518-f3aa-48b2-b159-8a29f9e4f44a','aktif',2),(100,'262c3f46-b8fb-4214-8e57-42d7b89ecab9','aktif',2),(101,'4549d78b-33dc-43c1-ba5b-f945b0ea9cde','aktif',2),(102,'7b4460c0-e535-4db8-aab6-e2a9694928ca','aktif',2),(103,'7ae30818-49ad-41b9-8886-4658aca6a519','aktif',2),(104,'fca39b17-7949-46b5-8424-220cebf200cc','aktif',2),(105,'6daa2758-a339-4b9e-9471-9ef5762a29d5','aktif',2),(106,'8c4748e3-5e8c-4fa1-992c-ee4cee06a543','aktif',2),(107,'12637181-7db3-47c3-b390-4477dde21ee3','aktif',2),(108,'fc6daee6-12cb-4c04-b4bf-09289b04a19f','aktif',2),(109,'c2137e59-3134-4615-8d02-18b987a1fa6f','aktif',2),(110,'bd9ae597-fe22-452b-b539-879998becca4','aktif',2),(111,'cc44ef3f-c7f8-4f53-83fb-a4365590c40b','aktif',2),(112,'13e18743-9e35-4cf4-84f0-2a51ddd99e58','aktif',2),(113,'48c961ba-1af2-4ccc-ac65-263814c268cf','aktif',2),(114,'38901ab1-1ec1-4c43-9b20-0b8c594721ae','aktif',2),(115,'5b784ffa-d20c-4a06-bf32-70ed38e18a0e','aktif',2),(116,'ee326382-e12c-4cbb-b0e9-a11dd988c37c','aktif',2),(117,'55cc5fa6-f4ce-4b11-ba01-592c789b55a2','aktif',2),(118,'07e33a25-d0ba-47f3-9a04-03c23115a995','aktif',2),(119,'5e4a60fa-2515-4b66-abda-dd6c5b28da15','aktif',2),(120,'246d4f18-c4d8-4494-8c6b-bd67cb682ba2','aktif',2),(121,'c2933b07-ce78-4085-b615-75b1efeb51a5','aktif',2),(122,'7886c2e2-425f-456f-8da9-ac9b86f8d9ca','aktif',2),(123,'9f0c7417-049b-40e6-ae7b-7ca252394b1a','aktif',2),(124,'8e5e098c-adff-48f5-9bdc-2c54c9ba79f0','aktif',2),(125,'016142fa-d28f-47ac-afba-41f0ba1a8cc2','aktif',2),(126,'f6d3385d-ceb1-43c9-9a7e-ab1c021e8368','aktif',2),(127,'c9824d0a-7797-4031-850c-120d1a3e2214','aktif',2),(128,'3302f289-bcbd-45bd-99b3-b3a76c4b1d50','aktif',2),(129,'3ba431e8-0b75-4e40-b335-b5684380cb3d','aktif',2),(130,'34c1845a-69da-48be-97f0-15eded05eb8a','aktif',2),(131,'3411cc79-ad75-48d1-8eec-6a2bacac3c5c','aktif',2),(132,'3fdfe237-988f-4350-9c00-a3ea3d9679d5','aktif',2),(133,'9e481216-821b-4fe3-a52a-1345f99bdb41','aktif',2),(134,'ccf08d96-7a70-43bd-a140-86ea9c108a98','aktif',2),(135,'6b03a6c4-39cf-4538-8adb-e6d7819ba1d8','aktif',2),(136,'a3cf932f-a4c6-4ad7-a9f4-b1b1a9d8f50d','aktif',2),(137,'7b5007f1-b4cb-4eea-a6f7-6bb45b192c1d','aktif',2),(138,'3fc58e18-0b01-4dda-a17b-daf00ee9fa90','aktif',2),(139,'bbf74fc7-daf5-49f4-be4c-4f8ddd8b0b1e','aktif',2),(140,'794f0147-bb05-4826-9d56-f90769768ad4','aktif',2),(141,'6051e9ba-b135-4827-b04c-77f2b0e3395f','aktif',2),(142,'bd42259d-a5c7-46ca-9830-735ae1bde650','aktif',2),(143,'387d22d7-847d-4622-8fe6-98c220a23dff','aktif',2),(144,'7bd23718-881d-41a4-af98-7d038392bb3d','aktif',2),(145,'b2457e37-94a4-4ff2-b276-c96a920ca34d','aktif',2),(146,'0d27e19b-d063-4936-a821-777a6eb29094','aktif',2),(147,'367daafb-8b2b-4c50-9d6b-c44f48d18ff5','aktif',2),(148,'42f00dd3-a2c1-4054-b693-17c2580e1d67','aktif',2),(149,'849bc3db-3ac5-40c9-80ba-c8826abadc53','aktif',2),(150,'4ea6717c-41fa-46e8-83e9-1f3c72807eb9','aktif',2),(151,'52c47511-00f4-4467-979f-e5f1f60fc21b','aktif',2),(152,'e0e9d58e-c889-49d0-930f-6d2c5d308acb','aktif',2),(153,'1c4e3ece-c564-42eb-86f6-92231a13deac','aktif',2),(154,'9184c665-4bb5-4ea7-8466-0f46ae20e702','aktif',2),(155,'5d36d020-129c-4fb7-a128-f4a78b26ca20','aktif',2),(156,'4e65359f-4709-4c4f-8860-dc97bb7300fe','aktif',2),(157,'21812b42-d0b5-46aa-9eb0-91e76ae0a93f','aktif',2),(158,'8f49d17c-2b59-478f-9dc8-6abf836ddb98','aktif',2),(159,'26168927-501c-4ce9-8de7-64945eab5c92','aktif',2),(160,'c930c7ec-236e-452d-808e-df9bd7ed890b','aktif',2),(161,'754e3da0-06ad-47a2-8be6-7c7067db30ac','aktif',2),(162,'feee9ed3-6003-4f00-bf55-5c9d03d0da1d','aktif',2),(163,'369465d8-9e03-4bde-a71a-8db37a4d2ef5','aktif',2),(164,'5f2c03f4-05c6-469a-aa7f-7720cceaa510','aktif',2),(165,'cd076eb2-c9ce-4584-bb21-5000122435d6','aktif',2),(166,'8fb7094e-45c2-4c20-b58d-6e507818b0b5','aktif',2),(167,'d9805dcc-174f-46cd-994e-10b8f28e547c','aktif',2),(168,'bbda50ec-75fc-4090-b008-66180c9d95f4','aktif',2),(169,'75677b74-a88b-4ec1-9efa-135908d1e435','inaktif',2),(170,'7bd21a84-a81e-4f47-97ff-d2e8a5fc0986','aktif',2),(171,'0cf1316a-0cd3-4cc3-b942-94239ded887d','aktif',2),(172,'c71d8588-8ec1-4d80-8eb7-e4649952840b','aktif',2),(173,'6ae913bc-fa51-4eb2-92ff-400818dab023','aktif',2),(174,'c74d5701-4334-4735-9b2e-94686e4fd3b1','aktif',2),(175,'5d61f090-506b-4a44-9de3-68855ae89d16','aktif',2),(176,'55fce910-250d-477b-8f9a-2304c4261db5','inaktif',2),(177,'cf53c00f-242b-4523-b9bd-03c1dc4e1812','aktif',2),(178,'7228621f-afcd-4cfd-b292-b744629253a9','aktif',2),(179,'75a964a5-ab8c-4dbf-900b-3d8841cda085','aktif',2),(180,'b6d8c5fe-ebdf-45ed-856c-dca7de879c4b','aktif',2),(181,'c4f8b149-1158-4fd7-9aff-b6ddbc20117d','aktif',2),(182,'865f457f-4a0e-451a-8a49-672113e0fcc9','aktif',2),(183,'19806175-9e1b-4132-a418-82dba01fb852','aktif',2),(184,'d964d98a-0f8e-4027-adeb-2e717b5abb71','aktif',2),(185,'ab5355c6-783b-4e6a-96bf-0135b3bf2e55','aktif',2),(186,'70a125db-aeed-462a-9b6a-830eae29e38e','aktif',2),(187,'c93057bb-f477-43b5-a9d5-6f82ab4cce67','aktif',2),(188,'f4c60462-48f8-4bb2-8c99-6bb0201dae00','aktif',2),(189,'750e57b7-7329-4355-882e-5ae0046f5a78','aktif',2),(190,'8aae2276-ccaf-4a83-915e-ba9543ebbfdf','aktif',2),(191,'855cc21e-1bb2-4565-b402-8f198c41c2fe','aktif',2),(192,'a0282e7c-94e6-4dc2-9b2a-254b868b8599','aktif',2),(193,'22061e7e-e4aa-43af-a39c-1ad7690c4f04','aktif',2),(194,'67574cfb-4ceb-4d5f-b26b-1dca2332db7e','aktif',2),(195,'c00a661b-0fa4-4f9b-af4f-7e6bd5ee766d','aktif',2),(196,'985242a7-24a7-4359-b1be-a5ff12fa1d50','aktif',2),(197,'924dfecc-7b81-44ac-9c5a-04e621b4d6bb','aktif',2),(198,'8327502c-3467-44c7-979f-8cf0342361a8','aktif',2),(199,'cf315ebc-8669-4648-98e3-55b35b5566e4','aktif',2),(200,'0316c237-3c06-4a13-aae1-c80020268963','aktif',2),(201,'b47f8113-fa86-4ca2-a097-42e71c40fcaf','aktif',2),(202,'dd1c8b92-cb08-4680-9394-a1bada7a3015','aktif',2),(203,'b86865ad-a19e-45ac-befd-2670731c9a14','aktif',2),(204,'5eee945b-c72e-4472-8955-d91c77920263','aktif',2),(205,'9b3b43fb-9625-4d15-b481-3e96b7384982','aktif',2),(206,'e097b67f-c7ee-481e-aca0-aa6dfc209b02','aktif',2),(207,'a41cb282-363d-4f96-832f-d7e389a57da7','aktif',2),(208,'e96e55ee-ac51-4fc9-8bbc-9ea414258904','aktif',2),(209,'da23829f-c2d5-4d5e-8846-4cc2ccfabd63','aktif',2),(210,'cb6955a7-b8fe-4321-92a6-9ff8b601d210','aktif',2),(211,'517d51d0-b915-4b7d-90f6-1715bcc864a6','aktif',2),(212,'28dae17d-6cc6-441f-8de9-c18c12f1b8fa','aktif',2),(213,'41f7f824-eaeb-42ec-a5b8-6d50fff29caa','aktif',2),(214,'cd716570-b4a7-42a1-9528-8d370b12acf2','aktif',2),(215,'c37f2496-0b0c-4502-aab2-1e1c97d24205','aktif',2),(216,'06cc8402-a11d-4358-bf46-6a13ce873447','aktif',2),(217,'e6a6430d-d563-494a-b99d-ecdcf4f0ad3a','aktif',2),(218,'14ec27f2-1a0d-4d3e-9bd1-33b0df13b597','aktif',2),(219,'af34dd65-540f-417f-953f-107c4778300b','aktif',2),(220,'76280db7-d33c-472b-bb7f-461da453ae93','aktif',2),(221,'1373675f-cb44-439e-9833-5b54f9531d9e','aktif',2),(222,'ae1a9824-ab6c-4e15-aa8a-11672d14d420','aktif',2),(223,'ca80af0a-8a81-48a1-8f95-8aa4792a1306','aktif',2),(224,'e7d405cb-435b-449f-92fa-6ec2cb75c7c1','aktif',2),(225,'0ae265f0-a862-42f0-bd45-d1bf87daeb2f','aktif',2),(226,'279b6bf8-f0a0-490e-b125-ef186451aec8','inaktif',2),(227,'abcde','aktif',5),(228,'22601335-1930-4956-9e35-96b15f3d1f74','inaktif',7),(229,'bf2c5ce0-6b0f-4d69-ba63-7fadcbebb243','inaktif',2),(230,'77bd7c99-b608-41fd-872f-731338d79fba','aktif',7);
 /*!40000 ALTER TABLE `token` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -531,7 +537,7 @@ CREATE TABLE `voucherpembelian` (
   KEY `returpembelianID` (`returpembelianID`),
   CONSTRAINT `voucherpembelian_ibfk_1` FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`supplierID`),
   CONSTRAINT `voucherpembelian_ibfk_2` FOREIGN KEY (`returpembelianID`) REFERENCES `returpembelian` (`returpembelianID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -540,6 +546,7 @@ CREATE TABLE `voucherpembelian` (
 
 LOCK TABLES `voucherpembelian` WRITE;
 /*!40000 ALTER TABLE `voucherpembelian` DISABLE KEYS */;
+INSERT INTO `voucherpembelian` VALUES (6,5,200000,200000,20);
 /*!40000 ALTER TABLE `voucherpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -561,7 +568,7 @@ CREATE TABLE `voucherpenjualan` (
   KEY `returpenjualanID` (`returpenjualanID`),
   CONSTRAINT `voucherpenjualan_ibfk_1` FOREIGN KEY (`pelangganID`) REFERENCES `pelanggan` (`pelangganID`),
   CONSTRAINT `voucherpenjualan_ibfk_2` FOREIGN KEY (`returpenjualanID`) REFERENCES `returpenjualan` (`returpenjualanID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -570,6 +577,7 @@ CREATE TABLE `voucherpenjualan` (
 
 LOCK TABLES `voucherpenjualan` WRITE;
 /*!40000 ALTER TABLE `voucherpenjualan` DISABLE KEYS */;
+INSERT INTO `voucherpenjualan` VALUES (12,8,117810,117810,40);
 /*!40000 ALTER TABLE `voucherpenjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -582,4 +590,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-15 15:01:18
+-- Dump completed on 2016-11-19 11:05:07

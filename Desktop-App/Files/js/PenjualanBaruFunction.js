@@ -345,7 +345,7 @@ function PenjualanBaruDrawTable(r) {
         if(countLaba)
         {
             hpokokStr = curRow.cells[8].children[0].innerHTML.toString().substring(4);
-            hpokok = parseInt(hpokokStr.replace(',',''));
+            hpokok = parseInt(hpokokStr.replace(/,/g,''));
             laba = Subtotal - (hpokok*qty);
             curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(laba);
         }
@@ -357,12 +357,12 @@ function PenjualanBaruDrawTable(r) {
     for (i=1;i<itemTable.rows.length-1;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[7].children[0].innerHTML.toString().substring(4);
-        subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
         if (countLaba)
         {
             labaTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
-            labaTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+            labaTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
             TotalLaba += subtotalTambahan;
         }
 
@@ -529,7 +529,7 @@ function PenjualanBaruSave(isPrinted) {
             $("#Penjualanbaru-PelangganSelect").val(),
             tglTransaksi,
             tglJatuhTempo,
-            parseInt(itemTable.rows[itemTable.rows.length - 1].cells[2].children[0].innerHTML.substring(4).replace(',', '')),
+            parseInt(itemTable.rows[itemTable.rows.length - 1].cells[2].children[0].innerHTML.substring(4).replace(/,/g, '')),
             isPrinted,
             status,
             $("#Penjualanbaru-NotesInput").val(),

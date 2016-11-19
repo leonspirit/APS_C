@@ -252,7 +252,7 @@ router.post('/update_akses', function(req,res){
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
-        if(result != 'aktif'){
+        if(result == null || result == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
@@ -264,14 +264,14 @@ router.post('/update_akses', function(req,res){
 
             connection.query(querystring, hakakses, function(err2, result2){
                 if(err2) throw err2;
-            })
 
-            asyncLoop(len, function(loop) {
-                add_hak_akses(loop.iteration(), req.body.karyawanID, req.body.hak_akses, function(result) {
-                    loop.next();
-                })},
-                function(){res.status(200).send(resp);}
-            );
+                asyncLoop(len, function(loop) {
+                    add_hak_akses(loop.iteration(), req.body.karyawanID, req.body.hak_akses, function(result) {
+                        loop.next();
+                    })},
+                    function(){res.status(200).send(resp);}
+                );
+            })
         }
     })
 })

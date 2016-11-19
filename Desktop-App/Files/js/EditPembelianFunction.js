@@ -196,7 +196,7 @@ function EditPembelianDrawTable(r)
         var curRow =  itemTable.rows[indexChanged];
 
         var qtyStr = curRow.cells[3].children[0].innerHTML;
-        var qty = parseInt(qtyStr.replace(',',''));
+        var qty = parseInt(qtyStr.replace(/,/g,''));
         console.log(qtyStr+" "+qty);
         var hargaSatuan = document.getElementById("Editpembelian-Input-"+indexChanged+"-1").value;
         var disc1 = document.getElementById("Editpembelian-Input-"+indexChanged+"-2").value;
@@ -213,7 +213,7 @@ function EditPembelianDrawTable(r)
     for (i=1;i<itemTable.rows.length-1;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[10].children[0].innerHTML.toString().substring(4);
-        subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
     }
 

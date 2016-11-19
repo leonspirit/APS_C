@@ -363,7 +363,7 @@ function PembelianBaruDrawTable(r)
     for (i=1;i<itemTable.rows.length-1;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
-        subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
     }
 
@@ -451,7 +451,7 @@ function PembelianBaruSave(isPrinted)//PENTING
             SupplierSelectValue,
             tglTransaksi,
             tglJatuhTempo,
-            parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(',', '')),
+            parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(/,/g, '')),
             itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value,
             isPrinted,
             status,

@@ -182,7 +182,7 @@ function EditPenjualanDrawTable(r) {
         var curRow =  itemTable.rows[indexChanged];
      //   var qty = document.getElementById("Editpenjualan-Input-"+indexChanged+"-2").value;
         var qtyStr = curRow.cells[3].children[0].innerHTML;
-        var qty = parseInt(qtyStr.replace(',',''));
+        var qty = parseInt(qtyStr.replace(/,/g,''));
         var hargaSatuan = document.getElementById("Editpenjualan-Input-"+indexChanged+"-1").value;
         var disc = document.getElementById("Editpenjualan-Input-"+indexChanged+"-2").value;
         //subtotal
@@ -192,7 +192,7 @@ function EditPenjualanDrawTable(r) {
         if(countLaba)
         {
             hpokokStr = curRow.cells[8].children[0].innerHTML.toString().substring(4);
-            hpokok = parseInt(hpokokStr.replace(',',''));
+            hpokok = parseInt(hpokokStr.replace(/,/g,''));
             laba = Subtotal - (hpokok*qty);
             curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(laba);
         }
@@ -204,12 +204,12 @@ function EditPenjualanDrawTable(r) {
     for (i=1;i<itemTable.rows.length-1;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[7].children[0].innerHTML.toString().substring(4);
-        subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
         if (countLaba)
         {
             labaTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
-            labaTambahan = parseInt(subtotalTambahanStr.replace(',',''));
+            labaTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
             TotalLaba += subtotalTambahan;
         }
 

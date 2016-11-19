@@ -149,9 +149,9 @@ function add_pembelian_barang(req, i, pembelianID){
 
     var satuanID = req.body.satuan[i]['satuanID']
     var quantity = req.body.satuan[i]['quantity']
-    var disc1 = req.body.satuan[i]['disc1']
-    var disc2 = req.body.satuan[i]['disc2']
-    var disc3 = req.body.satuan[i]['disc3']
+    var disc1 = parseInt(req.body.satuan[i]['disc1'])
+    var disc2 = parseInt(req.body.satuan[i]['disc2'])
+    var disc3 = parseInt(req.body.satuan[i]['disc3'])
     var harga = req.body.satuan[i]['harga_per_biji']
     var total_disc = disc1 + disc2 + disc3
     var harga_pokok = harga * ((100 - total_disc)/100)
