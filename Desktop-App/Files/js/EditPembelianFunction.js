@@ -250,13 +250,14 @@ function EditPembelianSaveConfirm(id)
     var tgljatuhtemp2 = new Date($("#Editpembelian-TgljatuhtempoDate").datepicker().val());
     var tgltrans = tgltranstemp2.getFullYear()+"-"+(tgltranstemp2.getMonth()+1)+"-"+tgltranstemp2.getDate();
     var tgljatuh = tgljatuhtemp2.getFullYear()+"-"+(tgljatuhtemp2.getMonth()+1)+"-"+tgljatuhtemp2.getDate();
+    var disc =document.getElementById("Editpembelian-disc").value;
     if ($("#Editpembelian-TgljatuhtempoDate").datepicker().val()==null || $("#Editpembelian-TgljatuhtempoDate").datepicker().val()=='')
     {
         tgljatuh = null;
     }
     console.log(rowNum);
 
-    EditPembelian(currentToken, id, tgltrans, tgljatuh,notes, function(result) {
+    EditPembelian(currentToken, id, tgltrans, tgljatuh,disc, notes, function(result) {
         if (result.token_status=="success")
         {
             for (i=1;i<=rowNum;i++)

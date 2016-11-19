@@ -46,11 +46,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StokBarang.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EditPembelianFunction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/EditPembelianFunction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="259" column="55" selection-start-line="259" selection-start-column="55" selection-end-line="259" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModelPembelian.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="106" column="22" selection-start-line="106" selection-start-column="22" selection-end-line="106" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EditPembelian.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Desktop-App/Files/sections/EditPembelian.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="82" column="100" selection-start-line="82" selection-start-column="100" selection-end-line="82" selection-end-column="100" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StokBarang.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Desktop-App/Files/modals/StokBarang.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
+            <state relative-caret-position="153">
+              <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
               <folding>
                 <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#td#1;n#tr#2;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#select#0;n#div#1;n#div#0;n#td#1;n#tr#3;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -100,7 +130,6 @@
         <option value="$PROJECT_DIR$/Desktop-App/Files/modals/Global.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/sections/StokBarang.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/MyProfileFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/sections/EditPembelian.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/sections/ReturPenjualan.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/sections/ReturPembelian.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/ReturPembelianFunction.js" />
@@ -115,7 +144,6 @@
         <option value="$PROJECT_DIR$/Desktop-App/Files/printpages/PenjualanBesar.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/PembelianBaruFunction.js" />
         <option value="$PROJECT_DIR$/BackEnd/controllers/penjualan.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/sections/DetailPenjualan.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/LaporanPenjualanFunction.js" />
@@ -123,7 +151,6 @@
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/PenjualanBaruFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelStok.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/ReturPenjualanFunction.js" />
-        <option value="$PROJECT_DIR$/Desktop-App/Files/js/EditPembelianFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/sections/EditPenjualan.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/EditPenjualanFunction.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/DetailPembelianFunction.js" />
@@ -134,6 +161,9 @@
         <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelKaryawan.js" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/modals/StokBarang.html" />
         <option value="$PROJECT_DIR$/Desktop-App/Files/js/StokFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/sections/EditPembelian.html" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/js/EditPembelianFunction.js" />
+        <option value="$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js" />
       </list>
     </option>
   </component>
@@ -609,12 +639,12 @@
       <workItem from="1479445708665" duration="20157000" />
       <workItem from="1479479568692" duration="17985000" />
       <workItem from="1479539130279" duration="14225000" />
-      <workItem from="1479562041094" duration="5298000" />
+      <workItem from="1479562041094" duration="6070000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="932303000" />
+    <option name="totallyTimeSpent" value="933075000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
@@ -846,13 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="112" column="1" selection-start-line="112" selection-start-column="1" selection-end-line="112" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPenjualan.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -872,6 +895,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="428">
           <caret line="155" column="33" selection-start-line="155" selection-start-column="33" selection-end-line="155" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -901,14 +925,6 @@
             <marker date="1479548432552" expanded="true" signature="4095:4106" ph="..." />
             <marker date="1479548432552" expanded="true" signature="4225:4234" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/sections/EditPembelian.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -961,14 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="119" column="55" selection-start-line="119" selection-start-column="55" selection-end-line="119" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/EditPembelianFunction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="231" column="29" selection-start-line="231" selection-start-column="29" selection-end-line="231" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -1069,12 +1077,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Desktop-App/Files/modals/StokBarang.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
+        <state relative-caret-position="153">
+          <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
           <folding>
             <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#td#1;n#tr#2;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#select#0;n#div#1;n#div#0;n#td#1;n#tr#3;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/sections/EditPembelian.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="82" column="100" selection-start-line="82" selection-start-column="100" selection-end-line="82" selection-end-column="100" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/js/EditPembelianFunction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="259" column="55" selection-start-line="259" selection-start-column="55" selection-end-line="259" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Desktop-App/Files/model/ModelPembelian.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="106" column="22" selection-start-line="106" selection-start-column="22" selection-end-line="106" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

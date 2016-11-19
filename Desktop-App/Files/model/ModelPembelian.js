@@ -96,7 +96,7 @@ function AddCicilanPembelian(token,pembelianID, tanggal_cicilan, nominal, notes,
             fn(data);
         }, "json");
 }
-function EditPembelian(token, pembelianID, tanggal_transaksi, jatuh_tempo, notes, fn)
+function EditPembelian(token, pembelianID, tanggal_transaksi, jatuh_tempo, disc, notes, fn)
 {
     $.post( baseUrl + "pembelian/edit_pembelian/",
         {
@@ -104,6 +104,7 @@ function EditPembelian(token, pembelianID, tanggal_transaksi, jatuh_tempo, notes
             pembelianID: pembelianID,
             tanggal_transaksi:tanggal_transaksi,
             jatuh_tempo:jatuh_tempo,
+            disc:disc,
             notes:notes
         }, function(  data ) {
             fn(data);
