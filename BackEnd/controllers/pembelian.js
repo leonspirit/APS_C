@@ -502,7 +502,7 @@ router.post('/list_pembelian_jatuh_tempo', function(req,res){
 
             var today = new Date()
             var last_n_day = new Date()
-            last_n_day.setDate(last_n_day.getDate() + req.body.n)
+            last_n_day.setDate(last_n_day.getDate() + parseInt(req.body.n))
 
             var dd = today.getDate();
             var mm = today.getMonth()+1; //January is 0!
