@@ -35,7 +35,7 @@ function populateReturPembelian(currentPembelianID)
             else {
                 notesText = pembelian.notes;
             }
-            document.getElementById("Returpembelian-SupplierText").innerHTML = pembelian.nama;
+            document.getElementById("Returpembelian-SupplierText").innerHTML = pembelian.supplierNama;
             document.getElementById("Returpembelian-TglJatuhTempoText").innerHTML = JatuhTempoText;
             document.getElementById("Returpembelian-TglTransaksiText").innerHTML = TglTransaksiText;
             document.getElementById("Returpembelian-PembayaranText").innerHTML = PembayaranText;
@@ -69,9 +69,12 @@ function ReturPembelianAddRow(barang)
 
 
     var cell2 = row.insertCell(1);
-    cell2.innerHTML = barang.pembelianbarangID;
+    cell2.innerHTML = barang.nama_barang;
+    cell2.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-1")
+    cell2.setAttribute("data-id", barang.pembelianbarangID)
 
     var cell5  =row.insertCell(2);
+    cell5.innerHTML = "@ " + barang.konversi_box.toString() + " " + barang.satuan_acuan_box
     cell5.setAttribute("id", "Pembelianbaru-IsiboxText-"+rowNum.toString());
 
     var cell3 = row.insertCell(3);
@@ -89,6 +92,7 @@ function ReturPembelianAddRow(barang)
     cellqtyRetur.appendChild(inputJumlahRetur);
 
     var cell4 = row.insertCell(5);
+    cell4.innerHTML = barang.satuan_unit
 
     var cell6 = row.insertCell(6);
    cell6.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>";
@@ -104,13 +108,88 @@ function ReturPembelianAddRow(barang)
 
     var cell10 = row.insertCell(10);
     cell10.innerHTML = "<span class='pull-right'>Rp. "+itemSubtotal+"</span>";
+}
+
+function add_retur_pembelian(counter, berhasil, length, pembelianID){
+
+    var tglTransaksiTemp = new Date();
+    var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
+
+    var metode = 0
+    if ($("#Returpembelian-Metode").val() == "voucher") {
+        metode = 1
+    }
+
+    if(counter === undefined)counter = 1
+    if(counter >= length){
+        if (berhasil == 1) {
+            InitDetailPembelianPage(pembelianID)
+            createAlert("success", "Retur Pembelian Berhasil Dilakukan");
+        }
+        else {
+            createAlert("danger", "Retur Pembelian Gagal Dilakukan");
+        }
+        return;
+    }
+
+    var QtyReturValue = $("#ReturPembelian-Input-" + counter.toString() + "-2").val();
+    var pembelianbarangID = document.getElementById("ReturPembelian-Input-"+counter.toString()+"-1").getAttribute("data-id");
+
+    if (QtyReturValue == null || QtyReturValue=='' || QtyReturValue==0){
+
+    }
+    else{
+        AddReturPembelian(
+            currentToken,
+            pembelianbarangID,
+            tglTransaksi,
+            QtyReturValue,
+            metode,
+            function(result){
+
+                if (result != null && result.token_status == "success") {
+
+                }
+                else {
+                    berhasil = 0
+                }
+                counter++
+                add_retur_pembelian(counter, berhasil, length, pembelianID)
+            }
+        )
+    }
 
 }
 
-function InitReturPembelianPage(id)
+function returPembelianBaru(pembelianID) {
+
+    var satuan = [];
+    var itemTable = document.getElementById("Returpembelian-ItemTable");
+    var i;
+
+    add_retur_pembelian(1,1,itemTable.rows.length-1, pembelianID)
+}
+
+function clearReturPembelian(){
+
+    var tableBody = document.getElementById('Returpembelian-ItemTable').getElementsByTagName("tbody")[0];
+    while(tableBody.rows.length > 0){
+        tableBody.deleteRow(0)
+    }
+}
+
+function InitReturPembelianPage(pembelianID)
 {
     currentToken = localStorage.getItem("token");
     setPage("ReturPembelian");
-    populateReturPembelian(id);
+    clearReturPembelian();
+    populateReturPembelian(pembelianID);
+
+    $('#Returpembelian-Metode').select2({
+        minimumResultsForSearch: Infinity
+    })
+    document.getElementById("Returpembelian-SaveButton").onclick=function(){
+        returPembelianBaru(pembelianID);
+    };
 
 }

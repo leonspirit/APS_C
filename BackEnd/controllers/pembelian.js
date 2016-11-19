@@ -102,11 +102,13 @@ function add_nama_supplier(index, data, callback){
 function add_detail_box(index, data, callback){
 
     var satuanID = data[index]['satuanID']
-    var qrstring1 = 'SELECT barangID, satuan FROM satuanbarang WHERE satuanID = ?'
+    var qrstring1 = 'SELECT barangID, satuan, konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
     var satuan = [satuanID]
     connection.query(qrstring1, satuan, function(err, result){
         if(err) throw err
         data[index]['satuan_unit'] = result[0]['satuan']
+        data[index]['konversi_unit'] = result[0]['konversi']
+        data[index]['konversi_acuan_unit'] = result[0]['konversi_acuan']
 
         var qrstring2 = 'SELECT konversi, satuan_acuan FROM satuanbarang WHERE barangID = ? AND satuan = "box"'
         var box = [result[0]['barangID']]
@@ -699,8 +701,9 @@ router.post('/edit_pembelian', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'UPDATE pembelian SET tanggal_transaksi = ?, jatuh_tempo = ?, notes = ? WHERE pembelianID = ?'
-            var pembelian = [req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.pembelianID]
+            if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
+            var querystring = 'UPDATE pembelian SET tanggal_transaksi = ?, jatuh_tempo = ?, notes = ?, disc = ? WHERE pembelianID = ?'
+            var pembelian = [req.body.tanggal_transaksi, req.body.jatuh_tempo, req.body.notes, req.body.disc, req.body.pembelianID]
             connection.query(querystring, pembelian, function(err2, result2){
                 if(err2) throw err2
                 resp['affectedRows'] = result2.affectedRows
