@@ -499,6 +499,27 @@ function removeWarning()
             form_group[i].removeChild(span[j]);
     }*/
 }
+
+
+function formatOutput (optionElement) {
+    if (optionElement.id =='new')
+    {
+        var $state = $('<strong>'+optionElement.text + '</strong>');
+        return $state;
+    }
+    else {
+        return optionElement.text;
+    }
+};
+
+function twoDigitPad(num)
+{
+    var pad = "00";
+    var id = "" + num;
+    var StrId = pad.substring(0, pad.length - id.length) + id;
+    return StrId
+}
+
 function CheckLogin()
 {
 

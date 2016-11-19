@@ -175,7 +175,7 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
 
                 token_auth.get_stok_harga_pokok(barangID, function(result3){
                     var harga_pokok_saat_ini = result3['harga_pokok']
-                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
+                    var querystring3 = 'INSERT INTO  g SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
                     var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
                     connection.query(querystring3, penjualanbarang, function(err5, result5){
                         if(err5) throw err5
@@ -375,6 +375,7 @@ function add_metode_retur(index, data, callback){
 
 router.post('/tambah_penjualan', function(req,res){
 
+    console.log(req.body)
     if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
     var resp = {}
     res.type('application/json')

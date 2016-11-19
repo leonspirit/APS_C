@@ -86,17 +86,16 @@ function populateDetailPenjualan(curPenjualanID)
                 var isi_box = (penjualan.barang[i].konversi_box).toString() + " " + penjualan.barang[i].satuan_acuan_box;
                 var satuan_unit = penjualan.barang[i].satuan_unit;
 
-
                 if (hasHakAkses("HargaPokokLaba"))
                 {
-                    var hpokok="";//penjualan.barang[i].harga_pokok_saat_ini*()
-                    var laba="";
+                    var hpokok=penjualan.barang[i].konversi_unit * penjualan.barang[i].satuan_acuan_unit * penjualan.barang[i].harga_pokok_saat_ini;
+                    var laba=itemSubtotal - (qty*hpokok);
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                        "<span class='pull-right'>"+nama_barang+"</span>",
-                        "<span class='pull-right'>"+isi_box+"</span>",
+                        nama_barang,
+                        "@ "+isi_box+"",
                         "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                        "<span class='pull-right'>"+satuan_unit+"</span>",
+                        capitalizeFirstLetter(satuan_unit)  ,
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
                         "<span class='pull-right'>"+disc +" %</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>",
@@ -107,8 +106,8 @@ function populateDetailPenjualan(curPenjualanID)
                 else {
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                        "<span class='pull-right'>"+nama_barang+"</span>",
-                        "<span class='pull-right'>"+isi_box+"</span>",
+                        nama_barang,
+                        "@ "+isi_box,
                         "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
                         "<span class='pull-right'>"+satuan_unit+"</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
@@ -245,25 +244,19 @@ function InitDetailPenjualanPage(curPenjualanID)
     const ipcRenderer = require('electron').ipcRenderer
     const path = require('path')
 
-  //  const invisMsgBtn = document.getElementById('invis-msg')
-  //  const invisReply = document.getElementById('invis-reply')
-
-    document.getElementById("Detailpenjualan-PrintButton").addEventListener('click', function (clickEvent) {
+    document.getElementById("Detailpenjualan-PrintButton").onclick = function () {
         const windowID = BrowserWindow.getFocusedWindow().id;
         const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanBesar.html');
-        let win = new BrowserWindow({ width: 400, height: 400, show: true });
+        let win = new BrowserWindow({ width: 800, height: 800, show: true });
         win.loadURL(invisPath)
 
         win.webContents.on('did-finish-load', function () {
-            const input = 100
-            win.webContents.send('print-page', input, windowID)
+            win.webContents.send('print-page', curPenjualanID, windowID)
         })
-    })
-
+    };
+   // ipcRenderer.off('page-printed');
     ipcRenderer.on('page-printed', function (event, input, output) {
-       // const message = `The factorial of ${input} is ${output}`
-      //  invisReply.textContent = message
-        console.log("page printed"+output);
+        createAlert("success", "Penjualan telah di print")
     })
 
 }

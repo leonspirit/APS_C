@@ -204,7 +204,7 @@ function EditPembelianDrawTable(r)
         var disc3 = document.getElementById("Editpembelian-Input-"+indexChanged+"-4").value;
         //subtotal
         var Subtotal = parseInt((qty * hargaSatuan*(100-disc1-disc2-disc3))/100);
-        curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
+        curRow.cells[10].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
     }
     var TotalHarga = 0;
     var subtotalTambahanStr;
@@ -212,7 +212,7 @@ function EditPembelianDrawTable(r)
 
     for (i=1;i<itemTable.rows.length-1;i++)
     {
-        subtotalTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
+        subtotalTambahanStr = itemTable.rows[i].cells[10].children[0].innerHTML.toString().substring(4);
         subtotalTambahan = parseInt(subtotalTambahanStr.replace(',',''));
         TotalHarga += subtotalTambahan;
     }
@@ -226,6 +226,11 @@ function EditPembelianDrawTable(r)
 
 function EditPembelianResetTable()
 {
+
+    document.getElementById("Editpembelian-TgltransaksiDate").value = '';
+    document.getElementById("#Editpembelian-TgljatuhtempoDate").value = '';
+    document.getElementById("#Editpembelian-NotesInput").value = '';
+
     var tableBody = document.getElementById('Editpembelian-ItemTable').getElementsByTagName("tbody")[0];
     while (true) {
         if (tableBody.rows.length==0)
@@ -234,22 +239,43 @@ function EditPembelianResetTable()
     }
 }
 
-function EditPembelianSaveConfirm()
+function EditPembelianSaveConfirm(id)
 {
     console.log("lala");
     var i;
     var ItemTableBody = document.getElementById("Editpembelian-ItemTable").getElementsByTagName("tbody")[0];
     var rowNum = ItemTableBody.rows.length;
-    console.log(rowNum);
-    for (i=1;i<=rowNum;i++)
+    var notes = document.getElementById("Editpembelian-NotesInput").value;
+    var tgltranstemp2 = new Date($("#Editpembelian-TgltransaksiDate").datepicker().val());
+    var tgljatuhtemp2 = new Date($("#Editpembelian-TgljatuhtempoDate").datepicker().val());
+    var tgltrans = tgltranstemp2.getFullYear()+"-"+(tgltranstemp2.getMonth()+1)+"-"+tgltranstemp2.getDate();
+    var tgljatuh = tgljatuhtemp2.getFullYear()+"-"+(tgljatuhtemp2.getMonth()+1)+"-"+tgljatuhtemp2.getDate();
+    if ($("#Editpembelian-TgljatuhtempoDate").datepicker().val()==null || $("#Editpembelian-TgljatuhtempoDate").datepicker().val()=='')
     {
-        console.log(i);
-        EditPembelianEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i);
+        tgljatuh = null;
     }
+    console.log(rowNum);
+
+    EditPembelian(currentToken, id, tgltrans, tgljatuh,notes, function(result) {
+        if (result.token_status=="success")
+        {
+            for (i=1;i<=rowNum;i++)
+            {
+                console.log(i);
+                EditPembelianEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i );
+            }
+            InitDetailPembelianPage(id);
+            createAlert("success", "Data Pembelian Berhasil diubah");
+        }
+
+    })
+
+
 }
 function EditPembelianEditEntry(pembelianbarangID, row)
 {
     console.log(pembelianbarangID+ row);
+
     EditPembelianBarang(currentToken,
         pembelianbarangID,
         document.getElementById("Editpembelian-Input-"+row+"-1").value,
@@ -274,7 +300,7 @@ function InitEditPembelianPage(curPembelianID)
 
     document.getElementById("Editpembelian-SaveButton").onclick=function()
     {
-        EditPembelianSaveConfirm();
+        EditPembelianSaveConfirm(curPembelianID);
     };
  //   EditPembelianDrawTable(null);
 }

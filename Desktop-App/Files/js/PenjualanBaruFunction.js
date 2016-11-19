@@ -18,24 +18,6 @@ function BarangMatcher (term, text) {
     return false;
 }
 
-function formatOutput (optionElement) {
-    if (optionElement.id ==0)
-    {
-        var $state = $('<strong>'+optionElement.text + '</strong>');
-        return $state;
-    }
-    else {
-        return optionElement.text;
-    }
-}
-function twoDigitPad(num)
-{
-    var pad = "00";
-    var id = "" + num;
-    var StrId = pad.substring(0, pad.length - id.length) + id;
-    return StrId
-}
-
 
 function PenjualanBaruGetPelanggan()
 {
@@ -161,7 +143,6 @@ function PenjualanBaruAddRow()
     inputBarang.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-1");
     inputBarang.setAttribute("style", "width:100%;");
     inputBarang.setAttribute("onchange", "PenjualanBaruInputBarangChangeListener(this);");
-  //  inputBarang.setAttribute("onkeydown", "MoveToNext(this);");
     inputBarang.setAttribute("class", "barang-select2 form-control input-sm");
     cell2.appendChild(inputBarang);
     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
@@ -173,7 +154,7 @@ function PenjualanBaruAddRow()
             matcher: oldMatcher(BarangMatcher)
         });
     });
-    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-1").on("select2:select", function(e){MoveToNext(this);});
+    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-1").on("select2:select", function(e){PenjualanBaruMoveToNext(this);});
 
     var cell5 = row.insertCell(2);
     cell5.setAttribute("id", "Penjualanbaru-IsiboxText-"+rowNum);
@@ -190,7 +171,7 @@ function PenjualanBaruAddRow()
     inputJumlah.setAttribute("min", "0");
     inputJumlah.setAttribute("style", "width:100%;");
     inputJumlah.setAttribute("onchange", "PenjualanBaruInputQtyChangeListener(this);");
-    inputJumlah.setAttribute("onkeydown", "MoveToNext(this);");
+    inputJumlah.setAttribute("onkeydown", "PenjualanBaruMoveToNext(this);");
     inputcontainer.appendChild(inputJumlah);
     cell3.appendChild(inputcontainer);
 
@@ -200,7 +181,6 @@ function PenjualanBaruAddRow()
     var inputSatuan = document.createElement("input");
     inputSatuan.setAttribute("style", "width:100%");
     inputSatuan.setAttribute("onchange", "PenjualanBaruInputSatuanChangeListener(this);");
-  //  inputSatuan.setAttribute("onkeydown", "MoveToNext(this);");
     inputSatuan.setAttribute("class", "form-control input-sm");
     inputSatuan.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-3");
     cell4.appendChild(inputSatuan);
@@ -209,7 +189,7 @@ function PenjualanBaruAddRow()
         placeholder:"-- Pilih Unit --",
         allowClear:true
     });
-    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-3").on("select2:select", function(e){MoveToNext(this);});
+    $("#Penjualanbaru-Input-" + twoDigitPad(rowNum)+ "-3").on("select2:select", function(e){PenjualanBaruMoveToNext(this);});
 
 
     var cell7 = row.insertCell(5);
@@ -224,7 +204,7 @@ function PenjualanBaruAddRow()
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
     inputHarga.setAttribute("onchange", "PenjualanBaruInputHargaChangeListener(this);");
-    inputHarga.setAttribute("onkeydown", "MoveToNext(this);");
+    inputHarga.setAttribute("onkeydown", "PenjualanBaruMoveToNext(this);");
     inputHarga.setAttribute("class", "form-control");
     inputHarga.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-4");
     inputHargaGroup.appendChild(inputHargaAddOn);
@@ -246,7 +226,7 @@ function PenjualanBaruAddRow()
     inputDisc.setAttribute("class", "form-control");
     inputDisc.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-5");
     inputDisc.setAttribute("onchange", "PenjualanBaruInputDiscChangeListener(this);");
-    inputDisc.setAttribute("onkeydown", "MoveToNext(this);");
+    inputDisc.setAttribute("onkeydown", "PenjualanBaruMoveToNext(this);");
     inputDiscGroup.appendChild(inputDisc);
     inputDiscGroup.appendChild(inputDiscAddOn);
     cell8.appendChild(inputDiscGroup);
@@ -302,7 +282,7 @@ function PenjualanBaruResetTable() {
             break;
         tableBody.deleteRow(-1);
     }
-    tableBody.rows[0].cells[7].innerHTML = "<span class='pull-right'>Rp. 0</span>";
+    tableBody.rows[0].cells[7].children[0].innerHTML = "Rp. 0";
     if (hasHakAkses("HargaPokokLaba"))
     {
         tableBody.rows[0].cells[8].children[0].innerHTML = "Rp. 0";
@@ -441,7 +421,7 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
                 placeholder:"-- Pilih Unit --",
                 allowClear:true
             });
-            $("#Penjualanbaru-Input-" + twoDigitPad(rowIndex)+ "-3").on("select2:select", function(e){MoveToNext(this);});
+            $("#Penjualanbaru-Input-" + twoDigitPad(rowIndex)+ "-3").on("select2:select", function(e){PenjualanBaruMoveToNext(this);});
 
         })
     }
@@ -453,15 +433,16 @@ function PenjualanBaruGetHargaUnitSatuan(selectBox)
    // console.log($("#Penjualanbaru-Input-"+rowIndex.toString()+"-3").val());
     if ($("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").val())
     {
-        document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4").value = $("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").select2('data')[0].harga_jual;
+        var hargajual = $("#Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-3").select2('data')[0].harga_jual;
+        document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4").value = hargajual;
+        var hpokok =$("#Penjualanbaru-Input-" + twoDigitPad(rowIndex) + "-3").select2('data')[0].harga_pokok;
         if (hasHakAkses("HargaPokokLaba")) {
-            var hpokok =$("#Penjualanbaru-Input-" + twoDigitPad(rowIndex) + "-3").select2('data')[0].harga_pokok;
+
             if (hpokok)
             {
                 console.log(rowIndex);
                 document.getElementById("Penjualanbaru-hpokok-" + rowIndex.toString()).innerHTML = "Rp. " + numberWithCommas(hpokok);
             }
-
         }
     }
 }
@@ -531,6 +512,7 @@ function PenjualanBaruSave(isPrinted) {
             valid=false;
             setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-3"), "satuan harus diisi")
         }
+        valid  = PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-4"));
     }
     console.log(voucher);
     if (valid) {
@@ -668,6 +650,7 @@ function PenjualanBaruCekHargaRugi(node) {
         return false;
     }
     else {
+        removeThisWarning(node);
         return true;
     }
 }
@@ -691,18 +674,21 @@ function PenjualanBaruInputQtyChangeListener(node)
 }
 function PenjualanBaruInputDiscChangeListener(node)
 {
+    var rowIndex = getRowIndex(node);
     PenjualanBaruDrawTable(node);
-    PenjualanBaruCekHargaRugi(node);
+    PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4"));
 }
 
 function PenjualanBaruInputSatuanChangeListener(node)
 {
+    var rowIndex = getRowIndex(node);
     PenjualanBaruGetHargaUnitSatuan(node);
     PenjualanBaruDrawTable(node);
     PenjualanBaruCekItemStok(node);
+    PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4"));
 }
 
-function MoveToNext(node)
+function PenjualanBaruMoveToNext(node)
 {
     //console.log(node.attr('id'));
     if (event.which == 13) {

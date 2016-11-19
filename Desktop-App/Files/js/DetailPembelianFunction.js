@@ -84,7 +84,7 @@ function populateDetailPembelian(currentPembelianID)
                 var disc1 = pembelian.barang[i].disc_1;
                 var disc2 = pembelian.barang[i].disc_2;
                 var disc3 = pembelian.barang[i].disc_3;
-                var itemSubtotal = (hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
+                var itemSubtotal = parseInt(hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
                 var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+capitalizeFirstLetter(pembelian.barang[i].satuan_acuan_box)
                 var satuan_unit = pembelian.barang[i].satuan_unit
                 var nama_barang = pembelian.barang[i].nama_barang
@@ -210,6 +210,23 @@ function InitDetailPembelianPage(curPembelianID)
         $("#Detailpembelian-EditButton").hide();
     }
 
+    const BrowserWindow = require('electron').remote.BrowserWindow
+    const ipcRenderer = require('electron').ipcRenderer
+    const path = require('path')
+    document.getElementById("Detailpembelian-PrintButton").onclick = function () {
+        const windowID = BrowserWindow.getFocusedWindow().id;
+        const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
+        let win = new BrowserWindow({ width: 800, height: 800, show: true });
+        win.loadURL(invisPath);
+
+        win.webContents.on('did-finish-load', function () {
+            win.webContents.send('print-page', curPembelianID, windowID)
+        })
+    };
+  //  ipcRenderer.off('page-printed');
+    ipcRenderer.on('page-printed', function (event, input, output) {
+        createAlert("success", "Pembelian telah di print")
+    })
 
 
 }

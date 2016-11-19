@@ -118,11 +118,14 @@ function HutangSearchFromTable(queryID,  querySupplier, queryPembayaran, queryPr
     var qPrinted;
     if (queryPrinted=="sudah")
     {
-        qPrinted ="";// "<i style='color:green' class='glyphicon glyphicon-ok'></i>";
+        qPrinted ="<i style='color:green' class='glyphicon glyphicon-ok'></i>";
     }
-    else
+    else if (queryPrinted=="belum")
     {
-        qPrinted  ="";// "<i style='color:red' class='glyphicon glyphicon-red'></i>"
+        qPrinted  = "<i style='color:red' class='glyphicon glyphicon-remove'></i>"
+    }
+    else {
+        qPrinted="";
     }
     HutangTable.
     columns("#HutangTable-kode").search(StrId).

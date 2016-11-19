@@ -11,25 +11,39 @@ function EditPenjualanAddRow(barang)
     var row = tableBody.insertRow(rowCount);
     var rowNum = rowCount+1;
 
+    var satuan_unit = barang.satuan_unit;
+    var nama_barang = barang.nama_barang;
+    var isi_box = "@ "+(barang.konversi_box).toString() + " " + capitalizeFirstLetter(barang.satuan_acuan_box);
+
+
+
+
+
+    var hargaJual = barang.harga_jual_saat_ini;
+    var hargaPokok = (barang.harga_pokok_saat_ini * barang.konversi_unit * barang.konversi_acuan_unit);
+
+    var qty = barang.quantity;
+    var disc = barang.disc;
+    var subtotalvalue = hargaJual*qty *(100-disc)/100;
+
+    var laba = subtotalvalue - (hargaPokok*qty);
+
     var cell1 = row.insertCell(0);
     cell1.innerHTML = rowNum.toString();
     cell1.setAttribute("data-id", barang.penjualanbarangID);
-    var hargaJual = barang.harga_jual_saat_ini;
-    var hargaPokok = barang.harga_pokok_saat_ini;
-    var qty = barang.quantity;
-    var disc = barang.disc;
-
-    var subtotalvalue = hargaJual*qty *(100-disc)/100;
 
     var cell2 = row.insertCell(1);
+    cell2.innerHTML = nama_barang;
 
     var cell5 = row.insertCell(2);
     cell5.setAttribute("id", "Penjualanbaru-IsiboxText-"+rowNum.toString());
+    cell5.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
     cell3.innerHTML = numberWithCommas(qty);
 
     var cell4 = row.insertCell(4);
+    cell4.innerHTML = capitalizeFirstLetter(satuan_unit);
 
     var cell7 = row.insertCell(5);
     cell7.setAttribute("style", "padding:0");
@@ -81,13 +95,13 @@ function EditPenjualanAddRow(barang)
         var hPokok = document.createElement("span");
         hPokok.setAttribute("id", "Penjualanbaru-hpokok-"+rowNum.toString());
         hPokok.setAttribute("class", "pull-right");
-        hPokok.innerHTML = "Rp. 0";
+        hPokok.innerHTML = "Rp. "+numberWithCommas(hargaPokok);
         cell10.appendChild(hPokok);
 
         var cell11 = row.insertCell(9);
         var untung = document.createElement("span");
         untung.setAttribute("class", "pull-right");
-        untung.innerHTML = "Rp. 0";
+        untung.innerHTML = "Rp. "+numberWithCommas(laba);
         cell11.appendChild(untung);
     }
     else {
@@ -209,6 +223,10 @@ function EditPenjualanDrawTable(r) {
 
 function EditPenjualanResetTable()
 {
+    document.getElementById("Editpenjualan-TgltransaksiDate").value = '';
+    document.getElementById("Editpenjualan-TgljatuhtempoDate").value = '';
+    document.getElementById("Editpenjualan-NotesInput").value = '';
+
     var tableBody = document.getElementById('Editpenjualan-ItemTable').getElementsByTagName("tbody")[0];
     while (true) {
         if (tableBody.rows.length==0)
@@ -231,18 +249,38 @@ function EditPenjualanEditEntry(penjualanbarangID, row)
     )
 }
 
-function EditPenjualanSaveConfirm()
+function EditPenjualanSaveConfirm(id)
 {
     console.log("lala");
     var i;
     var ItemTableBody = document.getElementById("Editpenjualan-ItemTable").getElementsByTagName("tbody")[0];
     var rowNum = ItemTableBody.rows.length;
-    console.log(rowNum);
-    for (i=1;i<=rowNum;i++)
+
+    var notes = document.getElementById("Editpenjualan-NotesInput").value;
+    var alamat = document.getElementById("Editpenjualan-AlamatInput").value;
+    var tgltranstemp2 = new Date($("#Editpenjualan-TgltransaksiDate").datepicker().val());
+    var tgljatuhtemp2 = new Date($("#Editpenjualan-TgljatuhtempoDate").datepicker().val());
+    var tgltrans = tgltranstemp2.getFullYear()+"-"+(tgltranstemp2.getMonth()+1)+"-"+tgltranstemp2.getDate();
+    var tgljatuh = tgljatuhtemp2.getFullYear()+"-"+(tgljatuhtemp2.getMonth()+1)+"-"+tgljatuhtemp2.getDate();
+    if ($("#Editpenjualan-TgljatuhtempoDate").datepicker().val()==null || $("#Editpenjualan-TgljatuhtempoDate").datepicker().val()=='')
     {
-        console.log(i);
-        EditPenjualanEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i);
+        tgljatuh = null;
     }
+
+    EditPembelian(currentToken, id, tgltrans, tgljatuh, alamat, notes, function(result) {
+        if (result.token_status=="success")
+        {
+            for (i=1;i<=rowNum;i++)
+            {
+                console.log(i);
+                EditPenjualanEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i);
+            }
+            InitDetailPenjualanPage(id);
+            createAlert("success", "Data Pembelian Berhasil diubah");
+        }
+
+    })
+
 }
 
 function InitEditPenjualanPage(curPenjualanID)
@@ -250,5 +288,6 @@ function InitEditPenjualanPage(curPenjualanID)
 
     currentToken = localStorage.getItem("token");
     setPage("EditPenjualan");
+    EditPenjualanResetTable();
     populateEditPenjualanPage(curPenjualanID)
 }

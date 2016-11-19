@@ -103,6 +103,20 @@ function AddCicilanPenjualan(token,penjualanID, tanggal_cicilan, nominal, notes,
         }, "json");
 }
 
+function EditPenjualan(token, penjualanID, tanggal_transaksi, jatuh_tempo, alamat, notes, fn)
+{
+    $.post( baseUrl + "pembelian/edit_pembelian/",
+        {
+            token: token,
+            alamat:alamat,
+            penjualanID: penjualanID,
+            tanggal_transaksi:tanggal_transaksi,
+            jatuh_tempo:jatuh_tempo,
+            notes:notes
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 function EditPenjualanBarang(token, penjualanbarangID, harga_jual_saat_ini, disc, fn)
 {
     $.post( baseUrl + "pembelian/tambah_cicilan_pembelian/",

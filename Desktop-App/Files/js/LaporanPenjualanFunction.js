@@ -35,6 +35,7 @@ function populateLaporanPenjualanData()
             PenjualanTable = $('#PenjualanTable').DataTable();
             PenjualanTable.clear().draw();
         }
+
         if (result.token_status=="success")
         {
             var totalLaba = 0;
@@ -74,26 +75,42 @@ function populateLaporanPenjualanData()
                 totalLaba+= result.data[i].laba;
                 totalDuit = result.data[i].subtotal;
 
-                PenjualanTable.row.add([
-                    StrId,
-                    result.data[i].pelangganNama,
-                    tglTransaksi,
-                    pembayaran,
-                    tglJatuhTempo,
-                    subtotal,
-                    laba,
-                    isPrinted,
-                    detailButton
-                ]);
+           //     if (hasHakAkses("HargaPokokLaba")) {
+                    PenjualanTable.row.add([
+                        StrId,
+                        result.data[i].pelangganNama,
+                        tglTransaksi,
+                        pembayaran,
+                        tglJatuhTempo,
+                        subtotal,
+                        laba,
+                        isPrinted,
+                        detailButton
+                    ]).draw();
+           /*     }
+                else
+                {
+                    PenjualanTable.row.add([
+                        StrId,
+                        result.data[i].pelangganNama,
+                        tglTransaksi,
+                        pembayaran,
+                        tglJatuhTempo,
+                        subtotal,
+                        isPrinted,
+                        detailButton
+                    ]).draw();
+                }*/
             }
-            PenjualanTable.draw();
-            if (hasHakAkses("HargaPokokLaba")){
-                PenjualanTable.column("PenjualanTable-laba").visible(true);
+           /*PenjualanTable.draw();*/
+            if (!hasHakAkses("HargaPokokLaba")){
+                PenjualanTable.column("PenjualanTable-laba").visible(false);
             }
             else {
-                PenjualanTable.column("PenjualanTable-laba").visible(false);
-
+                PenjualanTable.column("PenjualanTable-laba").visible(true);
             }
+
+
         }
         else
         {
@@ -135,11 +152,14 @@ function LaporanPenjualanSearchFromTable(queryID,  querySupplier, queryPembayara
     var qPrinted;
     if (queryPrinted=="sudah")
     {
-        qPrinted ="";// "<i style='color:green' class='glyphicon glyphicon-ok'></i>";
+        qPrinted ="<i style='color:green' class='glyphicon glyphicon-ok'></i>";
     }
-    else
+    else if (queryPrinted=="belum")
     {
-        qPrinted  ="";// "<i style='color:red' class='glyphicon glyphicon-red'></i>"
+        qPrinted  = "<i style='color:red' class='glyphicon glyphicon-remove'></i>"
+    }
+    else {
+        qPrinted  ="";
     }
     LaporanPenjualanTable.
     columns("#PenjualanTable-kode").search(StrId).
@@ -170,7 +190,6 @@ function InitLaporanPenjualanPage()
     {
         populateLaporanPenjualanData();
     };
-
     $(".Laporanpenjualan-search-filter").on("change",  function(){
         var formdata=  document.getElementById("Laporanpenjualan-SearchForm");
         LaporanPenjualanSearchFromTable(
