@@ -88,7 +88,7 @@ function populateDetailPenjualan(curPenjualanID)
 
                 if (hasHakAkses("HargaPokokLaba"))
                 {
-                    var hpokok=penjualan.barang[i].konversi_unit * penjualan.barang[i].satuan_acuan_unit * penjualan.barang[i].harga_pokok_saat_ini;
+                    var hpokok=penjualan.barang[i].konversi_unit * penjualan.barang[i].konversi_acuan_unit * penjualan.barang[i].harga_pokok_saat_ini;
                     var laba=itemSubtotal - (qty*hpokok);
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
@@ -99,8 +99,8 @@ function populateDetailPenjualan(curPenjualanID)
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
                         "<span class='pull-right'>"+disc +" %</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>",
-                        hpokok,
-                        laba
+                        "<span class='pull-right'>Rp. "+numberWithCommas(hpokok)+"</span>",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(laba)+"</span>"
                     ]);
                 }
                 else {
@@ -109,7 +109,7 @@ function populateDetailPenjualan(curPenjualanID)
                         nama_barang,
                         "@ "+isi_box,
                         "<span class='pull-right'>"+numberWithCommas(qty)+"</span>",
-                        "<span class='pull-right'>"+satuan_unit+"</span>",
+                       capitalizeFirstLetter(satuan_unit),
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
                         "<span class='pull-right'>"+disc +" %</span>",
                         "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"

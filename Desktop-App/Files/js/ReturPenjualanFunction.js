@@ -66,6 +66,7 @@ function ReturPenjualanAddRow(barang) {
     var isi_box = "@ " + (barang.konversi_box).toString() + " " + capitalizeFirstLetter(barang.satuan_acuan_box);
     var satuan_unit = capitalizeFirstLetter(barang.satuan_unit);
 
+
     var cell1 = row.insertCell(0);
     cell1.innerHTML = rowNum.toString();
 
@@ -105,12 +106,18 @@ function ReturPenjualanAddRow(barang) {
 
     if (hasHakAkses("HargaPokokLaba")) {
 
+
+        var hpokok = barang.konversi_unit * barang.konversi_acuan_unit * barang.harga_pokok_saat_ini;
+        var laba = itemSubtotal - (qty*hpokok);
+
         var cell9 = row.insertCell(9);
+        cell9.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hpokok)+"</span>"
+
 
         var cell10 = row.insertCell(10);
         var span = document.createElement("span");
         span.setAttribute("class", "pull-right");
-        span.innerHTML = "Rp. 0";
+        span.innerHTML = "Rp. "+numberWithCommas(laba);
         cell10.appendChild(span);
     }
 }

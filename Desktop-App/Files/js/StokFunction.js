@@ -137,7 +137,17 @@ function StokBarangPopulateEditModal(Button)
     document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
     console.log("delete "+barangID+" "+rowNumber);
 }
-
+function StokBarangDisableHargaPokokField()
+{
+    var form = document.getElementById("Stokbarang-CreateModal-CreateForm");
+    var stok = form.elements['stok'].value;
+    if (stok==0 || stok=='' || stok==null)
+    {
+        form.elements['harga-pokok-input'].disabled= true;
+    }else {
+        form.elements['harga-pokok-input'].disabled= false;
+    }
+}
 function StokBarangCreateModalDisableHargaJualInput()
 {
     var form = document.getElementById("Stokbarang-CreateModal-CreateForm");
@@ -312,5 +322,6 @@ function InitStokBarangPage() {
     document.getElementById("Stokbarang-CreateModal-ConfirmButton").onclick= function () {
         StokBarangCreateBarangConfirm();
     };
+    StokBarangDisableHargaPokokField();
 }
 

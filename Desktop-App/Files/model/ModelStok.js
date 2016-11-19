@@ -121,4 +121,31 @@ function GetBarangTerlaku(token, tgl_awal, tgl_akhir, fn)
         }, "json");
 }
 
+function AddStok(token, barangID, stok, harga_pokok)
+{
+    $.post( baseUrl + "barang/tambah_stok",
+        {
+            token: token,
+            barangID: barangID,
+            stok:stok,
+            harga_pokok:harga_pokok
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}
+function RemoveStok(token, barangID, stok)
+{
+    $.post( baseUrl + "barang/kurangi_stok",
+        {
+            token: token,
+            barangID: barangID,
+            stok:stok
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}
+
+
 //connection.end();
