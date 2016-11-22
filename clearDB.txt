@@ -1,0 +1,14 @@
+delete from voucherpembelian;
+delete from voucherpenjualan;
+delete from cicilanpembelian;
+delete from cicilanpenjualan;
+delete from stok;
+delete from pembelianbarang;
+delete from penjualanbarang;
+delete from returpembelian;
+delete from returpenjualan;
+delete from penjualan;
+delete from pembelian;
+delete from pelanggan;
+delete from token;
+delete from supplier;

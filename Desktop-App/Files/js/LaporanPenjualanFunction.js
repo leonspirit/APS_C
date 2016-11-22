@@ -19,12 +19,21 @@ function populateLaporanPenjualanData()
     getLunasPenjualanData(currentToken, tglawal, tglakhir, function(result) {
         var i;
         console.log(tglawal+tglakhir);
+
+        if (!hasHakAkses("HargaPokokLaba")){
+            $("#PenjualanTable-laba").hide();
+         //   $("#PenjualanTable-dummy").show();
+        }
+        else {
+            $("#PenjualanTable-laba").show();
+          //  $("#PenjualanTable-dummy").hide();
+        }
         if (!$.fn.DataTable.isDataTable("#PenjualanTable"))
         {
             PenjualanTable = $('#PenjualanTable').DataTable({
                 "paging": false,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -38,10 +47,13 @@ function populateLaporanPenjualanData()
 
         if (result.token_status=="success")
         {
+
             var totalLaba = 0;
             var totalDuit = 0;
+
             for (i = 0; i < result.data.length; i++) {
 
+                console.log("lila"+i);
                 var pad = "0000";
                 var id = "" + result.data[i].penjualanID;
                 var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
@@ -70,12 +82,14 @@ function populateLaporanPenjualanData()
                     pembayaran = "Cash";
                 }
                 //console.log(result.data[i]);
-                var laba = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].laba)+"</span>";
 
-                totalLaba+= result.data[i].laba;
-                totalDuit = result.data[i].subtotal;
 
-           //     if (hasHakAkses("HargaPokokLaba")) {
+                if (hasHakAkses("HargaPokokLaba")) {
+                    var laba = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].laba)+"</span>";
+
+                    totalLaba+= result.data[i].laba;
+                    totalDuit = result.data[i].subtotal;
+
                     PenjualanTable.row.add([
                         StrId,
                         result.data[i].pelangganNama,
@@ -86,8 +100,8 @@ function populateLaporanPenjualanData()
                         laba,
                         isPrinted,
                         detailButton
-                    ]).draw();
-           /*     }
+                    ]);//.column("PenjualanTable-laba").visible(true).draw();
+                }
                 else
                 {
                     PenjualanTable.row.add([
@@ -99,16 +113,20 @@ function populateLaporanPenjualanData()
                         subtotal,
                         isPrinted,
                         detailButton
-                    ]).draw();
-                }*/
+
+                    ]);//.column("PenjualanTable-laba").visible(false).draw();
+                }
             }
            /*PenjualanTable.draw();*/
-            if (!hasHakAkses("HargaPokokLaba")){
+      /*      if (!hasHakAkses("HargaPokokLaba")){
+                console.log("lili");
                 PenjualanTable.column("PenjualanTable-laba").visible(false);
             }
             else {
+                console.log("l0li");
                 PenjualanTable.column("PenjualanTable-laba").visible(true);
-            }
+            }*/
+            PenjualanTable.draw();
 
 
         }
@@ -136,7 +154,7 @@ function LaporanPenjualanInitDate()
     tglakhirDatepicker.datepicker("setDate", new Date());
 }
 
-function LaporanPenjualanSearchFromTable(queryID,  querySupplier, queryPembayaran, queryPrinted)
+function LaporanPenjualanSearchFromTable(queryID,  queryPelanggan, queryPembayaran, queryPrinted)
 {
     var LaporanPenjualanTable = $('#PenjualanTable').DataTable();
     var StrId;
@@ -145,12 +163,12 @@ function LaporanPenjualanSearchFromTable(queryID,  querySupplier, queryPembayara
     {
         var pad ="0000";
         var id = "" + queryID2;
-        StrId  = "TB"+ pad.substring(0, pad.length - id.length)+id;
+        StrId  = "TJ"+ pad.substring(0, pad.length - id.length)+id;
     }
     else
         StrId = "";
     var qPrinted;
-    if (queryPrinted=="sudah")
+  /*  if (queryPrinted=="sudah")
     {
         qPrinted ="<i style='color:green' class='glyphicon glyphicon-ok'></i>";
     }
@@ -160,13 +178,16 @@ function LaporanPenjualanSearchFromTable(queryID,  querySupplier, queryPembayara
     }
     else {
         qPrinted  ="";
-    }
+    }*/
+  console.log(LaporanPenjualanTable);
+    console.log("lil");
     LaporanPenjualanTable.
     columns("#PenjualanTable-kode").search(StrId).
-    columns("#PenjualanTable-pelanggan").search(querySupplier).
+    columns("#PenjualanTable-pembeli").search(queryPelanggan).
     columns("#PenjualanTable-pembayaran").search(queryPembayaran).
-    columns("#PenjualanTable-print").search(qPrinted).
+    columns("#PenjualanTable-print").search(queryPrinted).
     draw();
+    console.log("ele");
 }
 function InitLaporanPenjualanPage()
 {
@@ -191,6 +212,7 @@ function InitLaporanPenjualanPage()
         populateLaporanPenjualanData();
     };
     $(".Laporanpenjualan-search-filter").on("change",  function(){
+        console.log("lala");
         var formdata=  document.getElementById("Laporanpenjualan-SearchForm");
         LaporanPenjualanSearchFromTable(
             formdata.elements['id'].value,

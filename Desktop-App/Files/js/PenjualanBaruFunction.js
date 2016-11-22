@@ -422,7 +422,6 @@ function PenjualanBaruGetSatuanBarangList(selectBox)
                 allowClear:true
             });
             $("#Penjualanbaru-Input-" + twoDigitPad(rowIndex)+ "-3").on("select2:select", function(e){PenjualanBaruMoveToNext(this);});
-
         })
     }
 
@@ -583,7 +582,7 @@ function PenjualanBaruCreatePelangganConfirm()
                         text:nama
                     });
                     DataPelanggan.push({
-                        id:0,
+                        id:"new",
                         text:"+ Tambah Pelanggan Baru"
                     });
                     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher){
@@ -687,7 +686,135 @@ function PenjualanBaruInputSatuanChangeListener(node)
     PenjualanBaruCekItemStok(node);
     PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-4"));
 }
+function PenjualanBaruDelReturRow(button)
+{
+    var indexRow = getRowIndex(button);
+    var tableBody = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var tableFoot = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tfoot")[0];
+    console.log(tableFoot.rows.length);
+    //  var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var i = getRowIndex(button);
+    console.log(i);
+    console.log(tableFoot.rows.length+" "+ tableBody.rows.length);
+    tableFoot.deleteRow(i-tableBody.rows.length-1);
 
+    if(tableFoot.rows.length==2)
+    {
+        tableFoot.deleteRow(-1);
+    }
+    PenjualanBaruDrawTable(null, true);
+}
+
+function PenjualanBaruCollectVoucher()
+{
+    var lists = document.getElementsByClassName("Penjualanbaru-VoucherModal-VoucherCheckList");
+    var i;
+    var voucherList = [];
+    var tableFoot = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tfoot")[0];
+    while (true) {
+        if (tableFoot.rows.length==1)
+            break;
+        tableFoot.deleteRow(-1);
+    }
+    console.log(tableFoot.rows.length);
+    var totalPengurangan= 0;
+
+    console.log(lists);
+    for (i=0;i<lists.length;i++)
+    {
+        console.log($(lists[i]).prop("checked"));
+        if ($(lists[i]).prop("checked"))
+        {
+            console.log($(lists[i]));
+            var rowFoot = tableFoot.rows.length;
+            var row = tableFoot.insertRow(rowFoot);
+
+            var text = row.insertCell(0);
+            text.setAttribute("colspan","7");
+            console.log($(lists[i]).attr("data-id"));
+            text.setAttribute("data-id", $(lists[i]).attr("data-id"));
+            text.innerHTML  = "<span class='pull-right'>Retur "+document.getElementById("Penjualanbaru-VoucherModal-DetailText-"+i).innerHTML+"</span>";
+            var nominal = row.insertCell(1);
+            nominal.innerHTML = "<span class='pull-right'> -"+document.getElementById("Penjualanbaru-VoucherModal-NominalText-"+i).innerHTML+"</span>";
+            var delbtn = row.insertCell(2);
+            delbtn.innerHTML =  "<a onclick='PenjualanBaruDelReturRow(this);' style='color:red;'><i class='glyphicon glyphicon-remove'></i></a>";
+
+            var temp1 =document.getElementById("Penjualanbaru-VoucherModal-NominalText-"+i).innerHTML;
+            var temp2 = parseInt(temp1.substring(4).replace(/,/g,''));
+            console.log(temp2);
+            totalPengurangan+= temp2;
+        }
+    }
+    var rowFoot2 = tableFoot.rows.length;
+    var row2 = tableFoot.insertRow(rowFoot2);
+    var text2 = row2.insertCell(0);
+    text2.setAttribute("colspan", "7");
+    text2.innerHTML ="<span class='pull-right'>Grand Total</span>";
+    var sisaContainer = row2.insertCell(1);
+    var sisaString  = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tfoot")[0].rows[0].cells[4].children[0].innerHTML;
+    //var celldummy  = row2.insertCell(2);
+
+    console.log(sisaString);
+    console.log(totalPengurangan);
+    console.log(parseInt(sisaString.substring(4).replace(/,/g,'')));
+    var sisa = (parseInt(sisaString.substring(4).replace(/,/g,'')) - totalPengurangan);
+    console.log(sisa);
+
+    if (sisa<0)
+    {
+        var sisapositif = -sisa;
+        console.log(sisapositif);
+        sisaContainer.innerHTML ="<span class='pull-right'>-Rp. "+numberWithCommas(sisapositif)+"</span>";
+    }
+    else {
+        sisaContainer.innerHTML ="<span class='pull-right'>Rp. "+numberWithCommas(sisa)+"</span>";
+    }
+}
+function PenjualanBaruChangePelangganListener()
+{
+    console.log($("#Penjualanbaru-PelangganSelect").val());
+        if ($("#Penjualanbaru-PelangganSelect").val()=="new")
+            $("#Penjualanbaru-CreatepelangganModal").modal('toggle');
+        else
+        {
+            ListVoucherPelanggan(currentToken, $("#Penjualanbaru-PelangganSelect").val(), function(result){
+                console.log("cari voucher ");
+                console.log(result);
+                if (result.token_status=="success")
+                {
+                    if (result.data && result.data.length>0)
+                    {
+                        var i;
+                        console.log("lila");
+
+                        document.getElementById("Penjualanbaru-VoucherModal-VoucherList").innerHTML="";
+                        for (i=0;i<result.data.length;i++)
+                        {
+                            var penjualanID = 19;
+                            var tanggalPembelian = "10/10/2016";
+                            var jumlah  = result.data[i].jumlah_awal;
+                            var voucherEntry = "<p><input data-id='"+ result.data[i].voucherpenjualanID+"' id ='voucher-"+penjualanID+"' type='checkbox' class='minimal Penjualanbaru-VoucherModal-VoucherCheckList'>" +
+                                "<a id='Penjualanbaru-VoucherModal-DetailText-"+i+"' onclick='InitDetailPenjualanPage("+penjualanID+");'>"+
+                                "Penjualan tanggal " +tanggalPembelian+" " +
+                                "</a>"+
+                                "<span id='Penjualanbaru-VoucherModal-NominalText-"+i+"'>Rp. "+numberWithCommas(jumlah)+"</span></p>";
+                            document.getElementById("Penjualanbaru-VoucherModal-VoucherList").innerHTML+= voucherEntry;
+                        }
+                        $("#Penjualanbaru-VoucherModal").modal('toggle');
+                        $('input[type="checkbox"].minimal').iCheck({
+                            checkboxClass: "icheckbox_minimal-green"
+                        });
+                        document.getElementById("Penjualanbaru-VoucherModal-ConfirmButton").onclick =function()
+                        {
+                            PenjualanBaruCollectVoucher();
+                            $("#Penjualanbaru-VoucherModal").modal('toggle');
+                        }
+                    }
+                }
+            });
+
+        }
+}
 function PenjualanBaruMoveToNext(node)
 {
     //console.log(node.attr('id'));
@@ -766,12 +893,10 @@ function InitPenjualanBaruPage()
     };
     document.getElementById("Penjualanbaru-PelangganSelect").onchange=function()
     {
-        if ($("#Penjualanbaru-PelangganSelect").val()==='0')
-            $("#Penjualanbaru-CreatepelangganModal").modal('toggle');
+        PenjualanBaruChangePelangganListener();
+     //   if ($("#Penjualanbaru-PelangganSelect").val()==='new')
+      //      $("#Penjualanbaru-CreatepelangganModal").modal('toggle');
     };
-   // barang_select2.on("change", function()
-
-
     document.getElementById("Penjualanbaru-CreatepelangganModal-ConfirmButton").onclick=function()
     {
         PenjualanBaruCreatePelangganConfirm();
@@ -782,14 +907,5 @@ function InitPenjualanBaruPage()
     }
     else {
         $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").show();
-    }/*
-
-    $('#Penjualanbaru-Input-01-2').on('keydown', 'input', function (event) {
-        if (event.which == 13) {
-            event.preventDefault();
-            var $this = $(event.target);
-            console.log($this.attr('id'));
-        }
-    });*/
-
+    }
 }

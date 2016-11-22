@@ -333,6 +333,16 @@ function createAlert(type, message)
     closeButton.setAttribute("arie-hidden", "true");
     closeButton.innerHTML="&times;";
     container.appendChild(closeButton);
+    var icon;
+    if (type=="success")
+    {
+        icon ="<i class='glyphicon glyphicon-ok'></i> &nbsp;&nbsp;";
+    }
+    else if (type=="danger")
+    {
+        icon ="<i class='glyphicon glyphicon-alert'></i> &nbsp;&nbsp;";
+    }
+    container.innerHTML+=icon;
     container.innerHTML += message;
     var placeholder = document.getElementsByClassName("alert-placeholder active")[0];
     if (placeholder.hasChildNodes())

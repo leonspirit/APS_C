@@ -19,7 +19,20 @@
                           <tr>
                               <td colspan=2><b>Stok</b></td>
                               <td style="padding:0">
-                                  <input type="number" name="stok" class="form-control" onchange="StokBarangDisableHargaPokokField();">
+                                  <div class="input-group">
+                                      <input type="number" name="stok" class="form-control" onchange="StokBarangDisableHargaPokokField();">
+                                      <div class="input-group-addon">Box</div>
+                                  </div>
+                                  <!--<div class="input-group-btn">-->
+                                      <!--Box-->
+                                     <!-- <select name="acuan-box-selct" style="width:100px" class="form-control">
+                                          <option value="box">Box</option>
+                                          <option value="grs">Grs</option>
+                                          <option value="lsn">Lsn</option>
+                                          <option value="kod">Kod</option>
+                                          <option value="pcs">Pcs</option>
+                                      </select>-->
+                                 <!-- </div>-->
                               </td>
                           </tr>
                           <tr>
@@ -28,7 +41,7 @@
                                   <div class="input-group" style="width:100%;">
                                       <input type="number" name="isi-box-input" class="form-control" value="">
                                      <div class="input-group-btn">
-                                         <select name="acuan-box-selct" style="width:100px" class="form-control">
+                                         <select name="acuan-box-select" style="width:100px" class="form-control">
                                              <option value="grs">Grs</option>
                                              <option value="lsn">Lsn</option>
                                              <option value="kod">Kod</option>
@@ -44,15 +57,17 @@
                                   <div class="input-group" style="width:100%;">
                                       <div class="input-group-addon">Rp.</div>
                                       <input type="number" class="form-control" name="harga-pokok-input">
-                                      <div class="input-group-btn">
-                                          <select name="acuan-box-selct" style="width:100px" class="form-control">
+                                      <div class="input-group-addon">/Box</div>
+                                      <!--<div class="input-group-btn">
+                                          / Box
+                                          <!--<select name="acuan-box-selct" style="width:100px" class="form-control">
                                               <option value="box">Box</option>
                                               <option value="grs">Grs</option>
                                               <option value="lsn">Lsn</option>
                                               <option value="kod">Kod</option>
                                               <option value="pcs">Pcs</option>
-                                          </select>
-                                      </div>
+                                          </select>-->
+                                   <!--   </div>-->
                                   </div>
 
                               </td>
@@ -131,11 +146,15 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah Barang Baru</h4>
+                <h4 class="modal-title">Edit data Barang</h4>
               </div>
               <div class="modal-body">
-                  <form id="Stokbarang-EditModal-CreateForm">
+                  <form id="Stokbarang-EditModal-EditForm">
                       <table class="table">
+                          <tr>
+                              <td colspan =2><b>Kode</b></td>
+                              <td id ="Stokbarang-EditModal-kode"></td>
+                          </tr>
                           <tr>
                               <td colspan =2><b>Nama</b></td>
                               <td style="padding:0" class="form-group">
@@ -164,7 +183,6 @@
                                               </select>
                                           </div>
                                       </div>
-
                                   </div>
                               </td>
                           </tr>

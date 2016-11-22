@@ -40,7 +40,7 @@ function PembelianBaruGetSupplier()
             }
             DataSupplier.push(
                 {
-                    id: 0,
+                    id: "new",
                     text: "+ Tambah Supplier Baru"
                 });
             $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher){
@@ -344,6 +344,7 @@ function PembelianBaruDrawTable(r)
         indexChanged= 0;
     var i;
     var itemTable= document.getElementById("Pembelianbaru-ItemTable");
+    var itemTableFoot= document.getElementById("Pembelianbaru-ItemTable").getElementsByTagName("tfoot")[0];
 
     if(indexChanged>=1 && indexChanged<itemTable.rows.length){
         var curRow =  itemTable.rows[indexChanged];
@@ -360,18 +361,35 @@ function PembelianBaruDrawTable(r)
     var subtotalTambahanStr;
     var subtotalTambahan;
 
-    for (i=1;i<itemTable.rows.length-1;i++)
+    console.log(itemTableFoot.rows.length+ " " +itemTable.rows.length);
+    for (i=1;i<itemTable.rows.length-itemTableFoot.rows.length;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
         subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
     }
 
-    var discBesar = itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value;
+    var posisitotal = itemTable.rows.length-itemTableFoot.rows.length;
+    console.log(posisitotal);
+
+    var discBesar = itemTable.rows[posisitotal].cells[2].children[0].children[0].value;
     console.log(discBesar);
 
     var TotalHargaAfterDisc = parseInt(TotalHarga *(100 - discBesar)/100);
-    itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHargaAfterDisc);
+    itemTable.rows[posisitotal].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHargaAfterDisc);
+    if (itemTableFoot.rows.length>1)
+    {
+        var totalpengurangan=0;
+        for (i=1;i<itemTableFoot.rows.length-1;i++)
+        {
+            var penguranganText = itemTableFoot.rows[i].cells[1].children[0].innerHTML;
+            var pengurangan = parseInt(penguranganText.substring(5).replace(/,/g,''));
+            totalpengurangan+=pengurangan;
+        }
+        var GrandTotal = TotalHargaAfterDisc-totalpengurangan;
+        itemTableFoot.rows[itemTableFoot.rows.length-1].cells[1].children[0].innerHTML = "Rp. "+numberWithCommas(GrandTotal);
+    }
+
 }
 function PembelianBaruSave(isPrinted)//PENTING
 {
@@ -382,6 +400,19 @@ function PembelianBaruSave(isPrinted)//PENTING
     var tglJatuhTempo, tglJatuhTempoTemp, status;
     var tglTransaksiValue = $("#Pembelianbaru-TgltransaksiDate").datepicker().val();
     var tglJatuhTempoValue= $("#Pembelianbaru-TgljatuhtempoDate").datepicker().val();
+
+    var voucher = [];
+    var tableFoot = document.getElementById("Pembelianbaru-ItemTable").getElementsByTagName("tfoot")[0];
+    if (tableFoot.rows.length>=2)
+    {
+        for (i=1;i<tableFoot.rows.length-1;i++)
+        {
+            voucher.push({
+               voucherID:tableFoot.rows[i].cells[0].getAttribute("data-id")
+            });
+        }
+    }
+
     if ($("#Pembelianbaru-PembayaranSelect").val()=="cash")
     {
         tglJatuhTempo=null;
@@ -598,36 +629,89 @@ function PembelianBaruMoveToNext(node)
 
 function PembelianBaruCollectVoucher()
 {
-    var lists = $(".PembelianBaru-VoucherModal-VoucherCheckList");
+    var lists = document.getElementsByClassName("Pembelianbaru-VoucherModal-VoucherCheckList");
     var i;
     var voucherList = [];
     var tableFoot = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tfoot")[0];
+    while (true) {
+        if (tableFoot.rows.length==1)
+            break;
+        tableFoot.deleteRow(-1);
+    }
+    console.log(tableFoot.rows.length);
+    var totalPengurangan= 0;
 
+    console.log(lists);
     for (i=0;i<lists.length;i++)
     {
-
-        if (list[i].prop("checked"))
+        console.log($(lists[i]).prop("checked"));
+        if ($(lists[i]).prop("checked"))
         {
+            console.log($(lists[i]));
             var rowFoot = tableFoot.rows.length;
             var row = tableFoot.insertRow(rowFoot);
             //var rowNum = rowFoot+1;
             var text = row.insertCell(0);
             text.setAttribute("colspan", "9");
+            console.log($(lists[i]).attr("data-id"));
+            text.setAttribute("data-id", $(lists[i]).attr("data-id"));
             text.innerHTML  = "<span class='pull-right'>Retur "+document.getElementById("Pembelianbaru-VoucherModal-DetailText-"+i).innerHTML+"</span>";
             var nominal = row.insertCell(1);
-            nominal.innerHTML = document.getElementById("Pembelianbaru-VoucherModal-NominalText-"+i).innerHTML;
+            nominal.innerHTML = "<span class='pull-right'> -"+document.getElementById("Pembelianbaru-VoucherModal-NominalText-"+i).innerHTML+"</span>";
+            var delbtn = row.insertCell(2);
+            delbtn.innerHTML =  "<a onclick='PembelianBaruDelReturRow(this);' style='color:red;'><i class='glyphicon glyphicon-remove'></i></a>";
+
+            var temp1 =document.getElementById("Pembelianbaru-VoucherModal-NominalText-"+i).innerHTML;
+            var temp2 = parseInt(temp1.substring(4).replace(/,/g,''));
+            console.log(temp2);
+            totalPengurangan+= temp2;
         }
     }
     var rowFoot2 = tableFoot.rows.length;
     var row2 = tableFoot.insertRow(rowFoot2);
     var text2 = row2.insertCell(0);
     text2.setAttribute("colspan", "9");
-    text2.innerHTML ="Grand Total";
-    var sisa = row2.insertCell(1);
-    sisa.innerHTML = document.getElementById("Pembelianbaru-VoucherModal-NominalText-"+i).innerHTML;
+    text2.innerHTML ="<span class='pull-right'>Grand Total</span>";
+    var sisaContainer = row2.insertCell(1);
+    var sisaString  = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tfoot")[0].rows[0].cells[4].children[0].innerHTML;
+    var celldummy  = row2.insertCell(2);
 
+    console.log(sisaString);
+    console.log(totalPengurangan);
+    console.log(parseInt(sisaString.substring(4).replace(/,/g,'')));
+    var sisa = (parseInt(sisaString.substring(4).replace(/,/g,'')) - totalPengurangan);
+    console.log(sisa);
 
-    //return voucherList;
+    if (sisa<0)
+    {
+        var sisapositif = -sisa;
+        console.log(sisapositif);
+        sisaContainer.innerHTML ="<span class='pull-right'>-Rp. "+numberWithCommas(sisapositif)+"</span>";
+    }
+    else {
+        sisaContainer.innerHTML ="<span class='pull-right'>Rp. "+numberWithCommas(sisa)+"</span>";
+    }
+}
+function PembelianBaruDelReturRow(button)
+{
+    var indexRow = getRowIndex(button);
+    var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var tableFoot = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tfoot")[0];
+    console.log(tableFoot.rows.length);
+  //  var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var i = getRowIndex(button);
+    console.log(i);
+ //   var rowCount = tableFoot.rows.length;
+    //var rowNum = rowCount-1;
+    console.log(tableFoot.rows.length+" "+ tableBody.rows.length);
+    tableFoot.deleteRow(i-tableBody.rows.length-1);
+
+    if(tableFoot.rows.length==2)
+    {
+        tableFoot.deleteRow(-1);
+    }
+    PembelianBaruDrawTable(null, true);
+
 }
 function PembelianBaruSupplierSelectChangeListener()
 {
@@ -636,27 +720,36 @@ function PembelianBaruSupplierSelectChangeListener()
     else
     {
         ListVoucherSupplier(currentToken, $("#Pembelianbaru-SupplierSelect").val(), function(result){
+            console.log("cari voucher ");
             console.log(result);
             if (result.token_status=="success")
             {
                 if (result.data && result.data.length>0)
                 {
                     var i;
+                    console.log("lila");
+
+                    document.getElementById("Pembelianbaru-VoucherModal-VoucherList").innerHTML="";
                     for (i=0;i<result.data.length;i++)
                     {
                         var pembelianID = 19;
                         var tanggalPembelian = "10/10/2016";
                         var jumlah  = result.data[i].jumlah_awal;
-                        var voucherEntry = "<input id='voucher-"+pembelianID+"' type='checkbox' class='minimal Pembelianbaru-VoucherModal-VoucherCheckList'>" +
-                            " <a id='Pembelianbaru-VoucherModal-DetailText-"+i+"' onclick='InitDetailPembelianPage(pembelianID);'>" +
-                            "Pembelian tangal" +tanggalPembelian+" " +
+                        var voucherEntry = "<p><input data-id='"+ result.data[i].voucherpembelianID+"' id ='voucher-"+pembelianID+"' type='checkbox' class='minimal Pembelianbaru-VoucherModal-VoucherCheckList'>" +
+                            " <a id='Pembelianbaru-VoucherModal-DetailText-"+i+"' onclick='InitDetailPembelianPage("+pembelianID+");'>" +
+                            "Pembelian tanggal " +tanggalPembelian+" " +
                             "</a>"+
-                            "<span id='Pembelianbaru-VoucherModal-NominalText-"+i+"'>Rp. "+numberWithCommas(jumlah)+"</span>"
+                            "<span id='Pembelianbaru-VoucherModal-NominalText-"+i+"'>Rp. "+numberWithCommas(jumlah)+"</span></p>";
                         document.getElementById("Pembelianbaru-VoucherModal-VoucherList").innerHTML+= voucherEntry;
                     }
+                    $("#Pembelianbaru-VoucherModal").modal('toggle');
+                    $('input[type="checkbox"].minimal').iCheck({
+                        checkboxClass: "icheckbox_minimal-green"
+                    });
                     document.getElementById("Pembelianbaru-VoucherModal-ConfirmButton").onclick =function()
                     {
                         PembelianBaruCollectVoucher();
+                        $("#Pembelianbaru-VoucherModal").modal('toggle');
                     }
                 }
             }

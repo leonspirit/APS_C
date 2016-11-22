@@ -370,6 +370,7 @@ router.post('/list_barang_paling_banyak_terjual', function(req,res){
 
 router.post('/tambah_stok', function(req,res){
 
+    console.log(req.body);
     var resp = {}
     res.type('application/json')
     token_auth.check_token(req.body.token, function(result){
