@@ -41,7 +41,7 @@ router.post('/list_supplier', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM supplier';
+            var querystring = 'SELECT * FROM supplier WHERE aktif = 1';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2;
                 resp['data'] = result2
@@ -62,7 +62,7 @@ router.post('/hapus_supplier', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'DELETE FROM supplier WHERE supplierID = ?';
+            var querystring = 'UPDATE supplier SET aktif = 0 WHERE supplierID = ?';
             var supplier = [req.body.supplierID];
             connection.query(querystring, supplier, function(err2, result2){
                 if(err2) throw err2;

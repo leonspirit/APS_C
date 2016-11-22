@@ -180,7 +180,7 @@ router.post('/list_barang', function(req,res){
         }
         else {
             resp['token_status'] = 'success'
-            var querystring = 'SELECT barangID, nama FROM barang';
+            var querystring = 'SELECT barangID, nama FROM barang WHERE aktif = 1';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2;
 
@@ -295,17 +295,12 @@ router.post('/hapus_barang', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'DELETE FROM satuanbarang WHERE barangID = ?'
+            var querystring = 'UPDATE barang SET aktif = 0 WHERE barangID = ?'
             var satuan = [req.body.barangID]
             connection.query(querystring, satuan, function(err2, result2){
                 if(err2) throw err2;
-                var querystring2 = 'DELETE FROM barang WHERE barangID = ?'
-                var barang = [req.body.barangID]
-                connection.query(querystring2, barang, function(err3, result3){
-                    if(err3) throw err3;
-                    resp['affectedRows'] = result3.affectedRows
-                    res.status(200).send(resp)
-                })
+                resp['affectedRows'] = result2.affectedRows
+                res.status(200).send(resp)
             })
         }
     })
