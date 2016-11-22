@@ -72,7 +72,7 @@ router.post('/list_pelanggan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'SELECT * FROM pelanggan';
+            var querystring = 'SELECT * FROM pelanggan WHERE aktif = 1';
             connection.query(querystring, function(err2, result2){
                 if(err2) throw err2;
                 resp['data'] = result2
@@ -94,7 +94,7 @@ router.post('/hapus_pelanggan', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'DELETE FROM pelanggan WHERE pelangganID = ?';
+            var querystring = 'UPDATE pelanggan SET aktif = 0 WHERE pelangganID = ?';
             var pelanggan = [req.body.pelangganID];
             connection.query(querystring, pelanggan, function(err2, result2){
                 if(err2) throw err2;
