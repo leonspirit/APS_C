@@ -34,6 +34,12 @@ function populateDetailPenjualan(curPenjualanID)
                 itemPenjualanTable.clear().draw();
             }
 
+            if (hasHakAkses("HargaPokokLaba")) {
+                itemPenjualanTable.column(".Detailpenjualan-HargaPokokLaba").visible(true);
+            }
+            else{
+                itemPenjualanTable.column(".Detailpenjualan-HargaPokokLaba").visible(false);
+            }
             var i;
             var pad ="0000";
             var id = "" + penjualan.penjualanID;
@@ -112,13 +118,54 @@ function populateDetailPenjualan(curPenjualanID)
                        capitalizeFirstLetter(satuan_unit),
                         "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>",
                         "<span class='pull-right'>"+disc +" %</span>",
-                        "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>"
+                        "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal) +"</span>",
+                        "",
+                        ""
                     ]);
                 }
             }
             itemPenjualanTable.draw();
+            //nggambar deail pengurangan vocer
+
+
+            var ItemTableFooter = document.getElementById("Detailpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
+            while(ItemTableFooter.rows.length>1)
+            {
+                ItemTableFooter.deleteRow(-1);
+            }
+
+           // itemPenjualanTable = $(ItemTableFooter).DataTable();
+            var adavocer = false;
+            var totalpengurangan = 0;
+            for (i=0;i<penjualan.cicilan.length;i++)
+            {
+                if (penjualan.cicilan[i].cara_pembayaran=="voucher") {
+                    adavocer=true;
+                    var tanggalretur = "10/10/2016";
+                    var rowCount = ItemTableFooter.rows.length;
+                    var row = ItemTableFooter.insertRow(rowCount);
+                    var col1 = row.insertCell(0);
+                    col1.setAttribute("colspan", "7");
+                    col1.innerHTML = "<span class='pull-right'>Retur Pembelian tanggal "+tanggalretur+"</span>";
+                    var col2 = row.insertCell(1);
+                    col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(penjualan.cicilan[i].nominal)+"</span>";
+                    totalpengurangan+=penjualan.cicilan[i].nominal;
+                }
+            }
+            if (adavocer)
+            {
+                rowCount = ItemTableFooter.rows.length;
+                row = ItemTableFooter.insertRow(rowCount);
+                col1 = row.insertCell(0);
+                col1.setAttribute("colspan", "7");
+                col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
+                col2 = row.insertCell(1);
+                col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(penjualan.subtotal-totalpengurangan)+"</span>";
+            }
+
 
             //nggambar cicilan
+            console.log(penjualan.jatuh_tempo);
             if(penjualan.jatuh_tempo!=null && penjualan.jatuh_tempo!='')
             {
                 $(".Detailpenjualan-cicilanSection").show();
@@ -189,6 +236,55 @@ function populateDetailPenjualan(curPenjualanID)
             }
             else {
                 $(".Detailpenjualan-cicilanSection").hide();
+            }
+
+            var ReturPenjualanTable;
+            console.log(penjualan.retur);
+            if(penjualan.retur!=null && penjualan.retur.length>0)
+            {
+
+                $(".Detailpenjualan-returSection").show();
+                if (!$.fn.DataTable.isDataTable("#Detailpenjualan-returTable")) {
+                    ReturPenjualanTable = $("#Detailpenjualan-returTable").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": true,
+                        "info": false,
+                        "autoWidth": false
+                    });
+                }
+                else {
+                    ReturPenjualanTable = $("#Detailpenjualan-returTable").DataTable();
+                    ReturPenjualanTable.clear().draw();
+                }
+                if (hasHakAkses("HargaPokokLaba")) {
+                    ReturPenjualanTable.column(".Detailpenjualan-HargaPokokLaba").visible(true);
+                }
+                else{
+                    ReturPenjualanTable.column(".Detailpenjualan-HargaPokokLaba").visible(false);
+                }
+
+                for (i=0;i<penjualan.retur.length;i++)
+                {
+                    ReturPenjualanTable.row.add([
+                        "<span class='pull-right'>"+(i+1).toString()+"</span>",
+                        penjualan.retur[i].penjualanbarangID,
+                        "",
+                        penjualan.retur[i].quantity,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+
+                }
+                ReturPenjualanTable.draw();
+            }
+            else {
+                $(".Detailpenjualan-returSection").hide();
             }
 
 

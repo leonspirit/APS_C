@@ -162,8 +162,8 @@ function PenjualanBaruAddRow()
     var cell3 = row.insertCell(3);
     cell3.setAttribute("style", "padding:0");
     cell3.setAttribute("class", "form-group");
-    var inputcontainer = document.createElement("div");
-    inputcontainer.setAttribute("class", "form-group");
+   // var inputcontainer = document.createElement("div");
+  //  inputcontainer.setAttribute("class", "form-group");
     var inputJumlah = document.createElement("input");
     inputJumlah.setAttribute("id", "Penjualanbaru-Input-"+twoDigitPad(rowNum)+"-2");
     inputJumlah.setAttribute("class", "form-control");
@@ -172,8 +172,8 @@ function PenjualanBaruAddRow()
     inputJumlah.setAttribute("style", "width:100%;");
     inputJumlah.setAttribute("onchange", "PenjualanBaruInputQtyChangeListener(this);");
     inputJumlah.setAttribute("onkeydown", "PenjualanBaruMoveToNext(this);");
-    inputcontainer.appendChild(inputJumlah);
-    cell3.appendChild(inputcontainer);
+  //  inputcontainer.appendChild(inputJumlah);
+    cell3.appendChild(inputJumlah);
 
     var cell4 = row.insertCell(4);
     cell4.setAttribute("style", "padding:0");
@@ -306,6 +306,7 @@ function PenjualanBaruResetTable() {
 
 function PenjualanBaruDrawTable(r) {
 
+
     var countLaba;
     if (hasHakAkses("HargaPokokLaba"))
     {
@@ -324,6 +325,8 @@ function PenjualanBaruDrawTable(r) {
     }
     var i;
     var itemTable= document.getElementById("Penjualanbaru-ItemTable");
+    var tableFoot = document.getElementById("Penjualanbaru-ItemTable").getElementsByTagName("tfoot")[0];
+    var posisitotal =itemTable.rows.length- tableFoot.rows.length;
     if (countLaba)
     {
         var TotalLaba = 0;
@@ -354,7 +357,7 @@ function PenjualanBaruDrawTable(r) {
     var subtotalTambahanStr;
     var subtotalTambahan;
 
-    for (i=1;i<itemTable.rows.length-1;i++)
+    for (i=1;i<posisitotal;i++)
     {
         subtotalTambahanStr = itemTable.rows[i].cells[7].children[0].innerHTML.toString().substring(4);
         subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
@@ -367,11 +370,24 @@ function PenjualanBaruDrawTable(r) {
         }
 
     }
-    itemTable.rows[itemTable.rows.length-1].cells[2].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHarga);
+    itemTable.rows[posisitotal].cells[2].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHarga);
     if (countLaba)
     {
-        itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalLaba);
+        itemTable.rows[posisitotal].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalLaba);
     }
+     if (tableFoot.rows.length>1)
+     {
+         var totalpengurangan=0;
+         for (i=1;i<tableFoot.rows.length-1;i++)
+         {
+             var penguranganText = tableFoot.rows[i].cells[1].children[0].innerHTML;
+             var pengurangan = parseInt(penguranganText.substring(5).replace(/,/g,''));
+             totalpengurangan+=pengurangan;
+         }
+         var GrandTotal = TotalHarga-totalpengurangan;
+         tableFoot.rows[tableFoot.rows.length-1].cells[1].children[0].innerHTML = "Rp. "+numberWithCommas(GrandTotal);
+     }
+
 }
 
 function PenjualanBaruHideJatuhTempo()
@@ -469,6 +485,16 @@ function PenjualanBaruSave(isPrinted) {
     var tglTransaksiTemp = new Date(tglTransaksiValue);
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
     var voucher=[];
+    var tableFoot = document.getElementById("Penjualanbaru-ItemTable").getElementsByTagName("tfoot")[0];
+    if (tableFoot.rows.length>=2)
+    {
+        for (i=1;i<tableFoot.rows.length-1;i++)
+        {
+            voucher.push({
+                voucherpenjualanID:tableFoot.rows[i].cells[0].getAttribute("data-id")
+            });
+        }
+    }
 
     var PelangganSelectValue = $("#Penjualanbaru-PelangganSelect").val();
     if (PelangganSelectValue==null ||PelangganSelectValue=="" || PelangganSelectValue==0)
@@ -491,7 +517,7 @@ function PenjualanBaruSave(isPrinted) {
         valid=false;
         setWarning(alamat, "Alamat pengiriman harus diisi");
     }
-    for (i=1;i<itemTable.rows.length-1;i++)
+    for (i=1;i<itemTable.rows.length-tableFoot.rows.length;i++)
     {
         var BarangSelectValue = $("#Penjualanbaru-Input-"+twoDigitPad(i)+"-1").val();
         if (BarangSelectValue == null || BarangSelectValue=='' || BarangSelectValue==0)
@@ -512,10 +538,12 @@ function PenjualanBaruSave(isPrinted) {
             setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-3"), "satuan harus diisi")
         }
         valid  = PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-4"));
+        valid  = PenjualanBaruCekItemStok(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-2"));
     }
+
     console.log(voucher);
     if (valid) {
-        for (i = 1; i < itemTable.rows.length - 1; i++) {
+        for (i = 1; i < itemTable.rows.length - tableFoot.rows.length; i++) {
             satuan.push({
                 "satuanID": $("#Penjualanbaru-Input-" + twoDigitPad(i) + "-3").val(),
                 "quantity": document.getElementById("Penjualanbaru-Input-" + twoDigitPad(i) + "-2").value,
@@ -528,7 +556,7 @@ function PenjualanBaruSave(isPrinted) {
             $("#Penjualanbaru-PelangganSelect").val(),
             tglTransaksi,
             tglJatuhTempo,
-            parseInt(itemTable.rows[itemTable.rows.length - 1].cells[2].children[0].innerHTML.substring(4).replace(/,/g, '')),
+            parseInt(itemTable.rows[itemTable.rows.length - tableFoot.rows.length].cells[2].children[0].innerHTML.substring(4).replace(/,/g, '')),
             isPrinted,
             status,
             $("#Penjualanbaru-NotesInput").val(),
@@ -626,14 +654,14 @@ function PenjualanBaruCekItemStok(node)
         if (barang_dibeli_final>stok){
 
             setWarning(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(rowIndex)+"-2"),"Stok tdk cukup");
-            return true;
+            return false;
         }
         else {
             removeThisWarning(node);
-            return false;
+            return true;
         }
     }
-    else return false
+    else return false;
 }
 function PenjualanBaruCekHargaRugi(node) {
     var rowIndex = getRowIndex(node);
@@ -785,17 +813,19 @@ function PenjualanBaruChangePelangganListener()
                     if (result.data && result.data.length>0)
                     {
                         var i;
-                        console.log("lila");
+
 
                         document.getElementById("Penjualanbaru-VoucherModal-VoucherList").innerHTML="";
                         for (i=0;i<result.data.length;i++)
                         {
-                            var penjualanID = 19;
-                            var tanggalPembelian = "10/10/2016";
+                            console.log(result.data[i]);
+                            var penjualanID = result.data[i].penjualanID;
+                            var tanggalPenjualantemp = new Date(result.data[i].tanggal_transaksi);
+                            var tanggalPenjualanStr = tanggalPenjualantemp.getDate()+"/"+(tanggalPenjualantemp.getMonth()+1)+"/"+tanggalPenjualantemp.getFullYear();
                             var jumlah  = result.data[i].jumlah_awal;
                             var voucherEntry = "<p><input data-id='"+ result.data[i].voucherpenjualanID+"' id ='voucher-"+penjualanID+"' type='checkbox' class='minimal Penjualanbaru-VoucherModal-VoucherCheckList'>" +
                                 "<a id='Penjualanbaru-VoucherModal-DetailText-"+i+"' onclick='InitDetailPenjualanPage("+penjualanID+");'>"+
-                                "Penjualan tanggal " +tanggalPembelian+" " +
+                                "Penjualan tanggal " +tanggalPenjualanStr+" " +
                                 "</a>"+
                                 "<span id='Penjualanbaru-VoucherModal-NominalText-"+i+"'>Rp. "+numberWithCommas(jumlah)+"</span></p>";
                             document.getElementById("Penjualanbaru-VoucherModal-VoucherList").innerHTML+= voucherEntry;

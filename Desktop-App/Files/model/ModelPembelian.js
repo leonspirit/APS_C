@@ -50,7 +50,7 @@ function getJatuhTempoPembelianData(token,n, fn)
 }
 
 
-function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, notes, satuan, fn)
+function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtotal, disc, isPrinted, status, notes, satuan, voucher, fn)
 {
     $.post( baseUrl + "pembelian/tambah_pembelian/",
         {
@@ -63,7 +63,8 @@ function AddPembelian(token, supplierID, tanggal_transaksi, jatuh_tempo, subtota
             isPrinted:isPrinted,
             status:status,
             notes:notes,
-            satuan:satuan
+            satuan:satuan,
+            voucher:voucher
         }, function(data) {
             fn(data);
         }, "json");

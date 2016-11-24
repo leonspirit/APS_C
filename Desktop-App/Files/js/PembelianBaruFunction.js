@@ -396,6 +396,8 @@ function PembelianBaruSave(isPrinted)//PENTING
     removeWarning();
     var satuan = [];
     var itemTable= document.getElementById("Pembelianbaru-ItemTable");
+    var itemTableFoot= document.getElementById("Pembelianbaru-ItemTable").getElementsByTagName("tfoot")[0];
+
     var i;
     var tglJatuhTempo, tglJatuhTempoTemp, status;
     var tglTransaksiValue = $("#Pembelianbaru-TgltransaksiDate").datepicker().val();
@@ -408,11 +410,10 @@ function PembelianBaruSave(isPrinted)//PENTING
         for (i=1;i<tableFoot.rows.length-1;i++)
         {
             voucher.push({
-               voucherID:tableFoot.rows[i].cells[0].getAttribute("data-id")
+               voucherpembelianID:tableFoot.rows[i].cells[0].getAttribute("data-id")
             });
         }
     }
-
     if ($("#Pembelianbaru-PembayaranSelect").val()=="cash")
     {
         tglJatuhTempo=null;
@@ -477,8 +478,10 @@ function PembelianBaruSave(isPrinted)//PENTING
                 "harga_per_biji":document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-4").value
             });
         }
-        var grand_subtotal = parseInt(itemTable.rows[itemTable.rows.length-1].cells[4].children[0].innerHTML.substring(4).replace(/,/g, ''))
-        grand_subtotal = grand_subtotal * 100 / (100 - itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value)
+        var posisitotal = itemTable.rows.length-itemTableFoot.rows.length;
+
+        var grand_subtotal = parseInt(itemTable.rows[posisitotal].cells[4].children[0].innerHTML.substring(4).replace(/,/g, ''));
+        grand_subtotal = grand_subtotal * 100 / (100 - itemTable.rows[posisitotal].cells[2].children[0].children[0].value);
 
         AddPembelian(
             currentToken,
@@ -491,6 +494,7 @@ function PembelianBaruSave(isPrinted)//PENTING
             status,
             $("#Pembelianbaru-NotesInput").val(),
             satuan,
+            voucher,
             function(result){
                 if (result.token_status=="success")
                 {

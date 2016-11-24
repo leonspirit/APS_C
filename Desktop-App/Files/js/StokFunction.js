@@ -5,6 +5,7 @@
 var currentHakAkses = localStorage.getItem("hak_akses");
 var currentToken;
 var totalBoxBarang = 0;
+var totalUangBarang = 0;
 
 function StokBarangPopulateEntry(BarangTable, barangEntry)
 {
@@ -16,25 +17,24 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 var id = "" + barangEntry.barangID;
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
-                var IsiCarton = "@ "+result2.data[i2].konversi.toString()+" "+result2.data[i2].satuan_acuan;
+                var IsiCarton = "@ " + result2.data[i2].konversi.toString() + " " + result2.data[i2].satuan_acuan;
 
                 var HargaJual =
                     '<span class="pull-right">' +
                     'Rp. ' + numberWithCommas(result2.data[i2].harga_jual) +
                     '</span>';
 
-                var curBoxStok = parseInt(barangEntry.stok/(result2.data[i2].konversi * result2.data[i2].konversi_acuan));
-                totalBoxBarang+= curBoxStok;
+                var curBoxStok = parseInt(barangEntry.stok / (result2.data[i2].konversi * result2.data[i2].konversi_acuan));
+                totalBoxBarang += curBoxStok;
                 console.log(totalBoxBarang);
-                document.getElementById("Stokbarang-TotalStokText").innerHTML = numberWithCommas(totalBoxBarang)+" Box";
+                document.getElementById("Stokbarang-TotalStokText").innerHTML = numberWithCommas(totalBoxBarang) + " Box";
                 var StokReady = '<span class="pull-right">' +
                     numberWithCommas(curBoxStok) + ' Box';
-                if ((barangEntry.stok%(result2.data[i2].konversi * result2.data[i2].konversi_acuan))!=0)
-                {
-                    var curSisaStok = (barangEntry.stok % (result2.data[i2].konversi * result2.data[i2].konversi_acuan))/result2.data[i2].konversi_acuan;
-                    StokReady +=" "+numberWithCommas(curSisaStok)+" "+capitalizeFirstLetter(result2.data[i2].satuan_acuan);
+                if ((barangEntry.stok % (result2.data[i2].konversi * result2.data[i2].konversi_acuan)) != 0) {
+                    var curSisaStok = (barangEntry.stok % (result2.data[i2].konversi * result2.data[i2].konversi_acuan)) / result2.data[i2].konversi_acuan;
+                    StokReady += " " + numberWithCommas(curSisaStok) + " " + capitalizeFirstLetter(result2.data[i2].satuan_acuan);
                 }
-                StokReady+='</span>';
+                StokReady += '</span>';
                 var editButton = "<a class='Stokbarang-edit-modal-toggle' data-toggle='modal' href='#Stokbarang-EditModal' data-id='" +
                     id +
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
@@ -42,6 +42,12 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                     id +
                     "'><i class='glyphicon glyphicon-trash'></i></a>";
 
+
+                if (hasHakAkses("HargaPokokLaba"))
+                {
+                    totalUangBarang += barangEntry.harga_pokok * barangEntry.stok;
+                    document.getElementById("Stokbarang-TotalUangText").innerHTML = "Rp. " + numberWithCommas(totalUangBarang);
+                }
               //  if (hasHakAkses("HargaPokokLaba"))
                // {
                     var HargaPokok =
@@ -63,7 +69,6 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
         }
     });
 }
-
 function StokBarangPopulateData() {
 
     totalBoxBarang = 0;
@@ -83,7 +88,6 @@ function StokBarangPopulateData() {
         BarangTable = $('#BarangTable').DataTable();
         BarangTable.clear().draw();
     }
-
     if (!hasHakAkses("HargaPokokLaba"))
     {
         BarangTable.column("#StokTable-harga-pokok").visible(false);
@@ -94,6 +98,7 @@ function StokBarangPopulateData() {
     GetAllStokData(currentToken, function (result) {
         if (result.token_status == "success") {
             var i;
+            totalUangBarang = 0;
             for (i = 0; i < result.data.length; i++) {
                 StokBarangPopulateEntry(BarangTable, result.data[i]);
             }
@@ -102,7 +107,6 @@ function StokBarangPopulateData() {
             console.log("token failed");
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
-
     });
 }
 function StokBarangSearch(queryID,  queryNama)

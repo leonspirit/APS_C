@@ -20,14 +20,7 @@ function populateLaporanPenjualanData()
         var i;
         console.log(tglawal+tglakhir);
 
-        if (!hasHakAkses("HargaPokokLaba")){
-            $("#PenjualanTable-laba").hide();
-         //   $("#PenjualanTable-dummy").show();
-        }
-        else {
-            $("#PenjualanTable-laba").show();
-          //  $("#PenjualanTable-dummy").hide();
-        }
+        var hargaPokokAkese = hasHakAkses("HargaPokokLaba");
         if (!$.fn.DataTable.isDataTable("#PenjualanTable"))
         {
             PenjualanTable = $('#PenjualanTable').DataTable({
@@ -44,6 +37,17 @@ function populateLaporanPenjualanData()
             PenjualanTable = $('#PenjualanTable').DataTable();
             PenjualanTable.clear().draw();
         }
+        if (hargaPokokAkese){
+            console.log("lili");
+            PenjualanTable.column("#PenjualanTable-laba").visible(true);
+         //   $("#PenjualanTable-laba").hide();
+        }
+        else {
+            console.log("l0li");
+            PenjualanTable.column("#PenjualanTable-laba").visible(false);
+          //  $("#PenjualanTable-laba").show();
+        }
+        PenjualanTable.draw();
 
         if (result.token_status=="success")
         {
@@ -81,54 +85,39 @@ function populateLaporanPenjualanData()
                 else {
                     pembayaran = "Cash";
                 }
-                //console.log(result.data[i]);
-
-
-                if (hasHakAkses("HargaPokokLaba")) {
                     var laba = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].laba)+"</span>";
 
                     totalLaba+= result.data[i].laba;
                     totalDuit = result.data[i].subtotal;
 
-                    PenjualanTable.row.add([
-                        StrId,
-                        result.data[i].pelangganNama,
-                        tglTransaksi,
-                        pembayaran,
-                        tglJatuhTempo,
-                        subtotal,
-                        laba,
-                        isPrinted,
-                        detailButton
-                    ]);//.column("PenjualanTable-laba").visible(true).draw();
-                }
-                else
-                {
-                    PenjualanTable.row.add([
-                        StrId,
-                        result.data[i].pelangganNama,
-                        tglTransaksi,
-                        pembayaran,
-                        tglJatuhTempo,
-                        subtotal,
-                        isPrinted,
-                        detailButton
-
-                    ]);//.column("PenjualanTable-laba").visible(false).draw();
-                }
+                 if (hargaPokokAkese) {
+                     PenjualanTable.row.add([
+                         StrId,
+                         result.data[i].pelangganNama,
+                         tglTransaksi,
+                         pembayaran,
+                         tglJatuhTempo,
+                         subtotal,
+                         laba,
+                         isPrinted,
+                         detailButton
+                     ]).draw();
+                 }
+                 else {
+                     PenjualanTable.row.add([
+                         StrId,
+                         result.data[i].pelangganNama,
+                         tglTransaksi,
+                         pembayaran,
+                         tglJatuhTempo,
+                         subtotal,
+                         "",
+                         isPrinted,
+                         detailButton
+                     ]).draw();
+                 }
             }
-           /*PenjualanTable.draw();*/
-      /*      if (!hasHakAkses("HargaPokokLaba")){
-                console.log("lili");
-                PenjualanTable.column("PenjualanTable-laba").visible(false);
-            }
-            else {
-                console.log("l0li");
-                PenjualanTable.column("PenjualanTable-laba").visible(true);
-            }*/
             PenjualanTable.draw();
-
-
         }
         else
         {
