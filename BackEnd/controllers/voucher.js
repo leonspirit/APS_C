@@ -151,4 +151,56 @@ router.post('/list_voucher_pelanggan_A', function(req,res){
     })
 })
 
+router.post('/get_voucher_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring1 = 'SELECT returpenjualanID FROM voucherpenjualan WHERE voucherpenjualanID = ?'
+            var querystring2 = 'SELECT penjualanbarangID FROM returpenjualan WHERE returpenjualanID IN ('+querystring1+')'
+            var querystring3 = 'SELECT penjualanID FROM penjualanbarang WHERE penjualanbarangID IN ('+querystring2+')'
+            var querystring4 = 'SELECT penjualanID, tanggal_transaksi FROM penjualan WHERE penjualanID IN ('+querystring3+')'
+            var vocer = [req.body.voucherpenjualanID]
+            connection.query(querystring4, vocer, function(err2, result2){
+                if(err2) throw err2
+                resp['penjualanID'] = result2[0]['penjualanID']
+                resp['tanggal'] = result2[0]['tanggal_transaksi']
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
+router.post('/get_voucher_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+            var querystring1 = 'SELECT returpembelianID FROM voucherpembelian WHERE voucherpembelianID = ?'
+            var querystring2 = 'SELECT pembelianbarangID FROM returpembelian WHERE returpembelianID IN ('+querystring1+')'
+            var querystring3 = 'SELECT pembelianID FROM pembelianbarang WHERE pembelianbarangID IN ('+querystring2+')'
+            var querystring4 = 'SELECT pembelianID, tanggal_transaksi FROM pembelian WHERE pembelianID IN ('+querystring3+')'
+            var vocer = [req.body.voucherpembelianID]
+            connection.query(querystring4, vocer, function(err2, result2){
+                if(err2) throw err2
+                resp['pembelianID'] = result2[0]['pembelianID']
+                resp['tanggal'] = result2[0]['tanggal_transaksi']
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
 module.exports = router

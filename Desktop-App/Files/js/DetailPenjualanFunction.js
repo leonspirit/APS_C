@@ -267,17 +267,40 @@ function populateDetailPenjualan(curPenjualanID)
 
                 for (i=0;i<penjualan.retur.length;i++)
                 {
+                    var tgl_temp = new Date(penjualan.retur[i].tanggal);
+                    var tgl = tgl_temp.getFullYear()+"-"+(tgl_temp.getMonth()+1)+"-"+tgl_temp.getDate();
+
+                    var metode = "Cash"
+                    if(penjualan.retur[i].metode == 1) metode = "Voucher"
+
+                    var len = penjualan.barang.length
+                    var isi_box_retur = 0
+                    var satuan_unit_retur
+                    var harga_unit_retur
+                    var disc_retur
+                    for(var j=0; j<len; j++){
+                        if(penjualan.barang[j].penjualanbarangID == penjualan.retur[i].penjualanbarangID){
+                            isi_box_retur = (penjualan.barang[j].konversi_box).toString() + " " + penjualan.barang[j].satuan_acuan_box
+                            satuan_unit_retur = penjualan.barang[j].satuan_unit;
+                            harga_unit_retur = penjualan.barang[j].harga_jual_saat_ini
+                            disc_retur = penjualan.barang[j].disc
+                        }
+                    }
+
+                    var subtotal_retur = harga_unit_retur * penjualan.retur[i].quantity
+                    subtotal_retur = subtotal_retur * (100 - disc_retur) / 100
+
                     ReturPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
                         penjualan.retur[i].penjualanbarangID,
-                        "",
+                        isi_box_retur,
                         penjualan.retur[i].quantity,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
+                        satuan_unit_retur,
+                        harga_unit_retur,
+                        disc_retur,
+                        subtotal_retur,
+                        tgl,
+                        metode
                     ]);
 
                 }
