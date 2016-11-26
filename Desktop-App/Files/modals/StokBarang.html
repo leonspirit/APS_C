@@ -164,31 +164,22 @@
                           <tr>
                               <td colspan=2><b>Stok</b></td>
                               <td >
+                                  <span>
+                                      <a id="Stokbarang-KoreksiKurangButton" href='#Stokbarang-KoreksiKurangModal' data-toggle='modal'><i class='glyphicon glyphicon-minus'></i></a>
+                                      <a id="Stokbarang-KoreksiTambahButton" href='#Stokbarang-KoreksiTambahModal' data-toggle='modal'><i class='glyphicon glyphicon-plus'></i></a>
+                                  </span>
+                                  <span id="Stokbarang-EditModal-stok"></span>
                               </td>
                           </tr>
                           <tr>
                               <td colspan =2><b>Isi/Carton</b></td>
-                              <td style="padding:0">
-                                  <div class="input-group" style="width:100%;">
-                                      <div class="form-group">
-                                          <input type="number" name="isi-box-input" class="form-control" value="">
-                                      </div>
-                                      <div class="form-group">
-                                          <div class="input-group-btn">
-                                              <select name="acuan-box-selct" style="width:100px" class="form-control">
-                                                  <option value="grs">Grs</option>
-                                                  <option value="lsn">Lsn</option>
-                                                  <option value="kod">Kod</option>
-                                                  <option value="pcs">Pcs</option>
-                                              </select>
-                                          </div>
-                                      </div>
-                                  </div>
+                              <td id="Stokbarang-EditModal-IsiBoxText">
+
                               </td>
                           </tr>
-                          <tr>
+                          <tr id="Stokbarang-EditModal-HargaPokokRow">
                               <td colspan="2"><b>Harga Pokok</b></td>
-                              <td>
+                              <td id="Stokbarang-EditModal-HargaPokokText">
                               </td>
                           </tr>
                           <tr>
@@ -274,4 +265,81 @@
                   </div>
               </div>
         </div>
+    <div class="modal fade"  id="Stokbarang-KoreksiTambahModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Koreksi- Tambah Stok</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Koreksi - Kurangi Stok barang <span id="Stokbarang-KoreksiModal-TambahNamaText"></span></p>
+                    <table class="table">
+                        <tr>
+                            <th>Jumlah</th>
+                            <td style="padding:0">
+                                <div class="form-group">
+                                    <input type="number" id="Stokbarang-KoreksiModal-TambahJumlahInput" class="form-control">
+                                </div>
+                            </td>
+                            <td style="padding:0">
+                                <input style="width:100%" id="Stokbarang-KoreksiModal-TambahSatuanInput" class="form-control">
+                            </td>
+                        </tr>
+                        <tr >
+                            <th>Harga Pokok</th>
+                            <td colspan=2 style="padding:0;">
+                                <div class="input-group" style="width:100%;">
+                                    <div class="input-group-addon">Rp.</div>
+                                    <input id="Stokbarang-KoreksiModal-TambahHargaInput" class="form-control" type="number">
+                                    <div class="input-group-addon">/ Box</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <span class="pull-right">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        <button id="Stokbarang-KoreksiModal-TambahConfirmButton" type="button" class="btn btn-primary" >OK</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade"  id="Stokbarang-KoreksiKurangModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Koreksi - Kurangi Stok</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Koreksi - Kurangi Stok barang <span id="Stokbarang-KoreksiModal-KurangNamaText"></span></p>
+                    <table class="table">
+                        <tr>
+                            <th>Jumlah</th>
+                            <td style="padding:0">
+                                <div class="form-group">
+                                    <input type="number" id="Stokbarang-KoreksiModal-KurangJumlahInput" class="form-control">
+                                </div>
+                            </td>
+                            <td style="padding:0">
+                                <input style="width:100%" id="Stokbarang-KoreksiModal-KurangSatuanInput" class="form-control">
+                            </td>
+                        </tr>
+                        </table>
+                </div>
+                <div class="modal-footer">
+                    <span class="pull-right">
+                        <button type="button" class="btn btn-primary" >Cancel</button>
+                        <button id="Stokbarang-KoreksiModal-KurangConfirmButton" type="button" class="btn btn-primary">OK</button>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

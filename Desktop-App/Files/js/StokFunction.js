@@ -17,7 +17,7 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 var id = "" + barangEntry.barangID;
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
-                var IsiCarton = "@ " + result2.data[i2].konversi.toString() + " " + result2.data[i2].satuan_acuan;
+                var IsiCarton = "@ " + result2.data[i2].konversi.toString() + " " + capitalizeFirstLetter(result2.data[i2].satuan_acuan);
 
                 var HargaJual =
                     '<span class="pull-right">' +
@@ -35,6 +35,9 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                     StokReady += " " + numberWithCommas(curSisaStok) + " " + capitalizeFirstLetter(result2.data[i2].satuan_acuan);
                 }
                 StokReady += '</span>';
+             //      var koreksiminButton = "<a href='#Stokbarang-KoreksiTambahModal' data-toggle='modal'><i class='glyphicon glyphicon-minus'></i></a>";
+              //     var koreksiplusButton =" <a href='#Stokbarang-KoreksiKurangModal' data-toggle='modal'> <i class='glyphicon glyphicon-plus'></i></a>";
+
                 var editButton = "<a class='Stokbarang-edit-modal-toggle' data-toggle='modal' href='#Stokbarang-EditModal' data-id='" +
                     id +
                     "'><i class='glyphicon glyphicon-pencil'></i></a>";
@@ -48,8 +51,6 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                     totalUangBarang += barangEntry.harga_pokok * barangEntry.stok;
                     document.getElementById("Stokbarang-TotalUangText").innerHTML = "Rp. " + numberWithCommas(totalUangBarang);
                 }
-              //  if (hasHakAkses("HargaPokokLaba"))
-               // {
                     var HargaPokok =
                         '<span class="pull-right">' +
                         'Rp. ' + numberWithCommas(barangEntry.harga_pokok * result2.data[i2].konversi * result2.data[i2].konversi_acuan) +
@@ -69,6 +70,84 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
         }
     });
 }
+function StokBarangPopulateKoreksiKurangModal(barangID)
+{
+    var i;
+    GetAllSatuanData(currentToken, barangID, function(result){
+            var i;
+            var data =[];
+        console.log(barangID);
+            for (i=0;i<result.data.length;i++)
+            {
+                data.push({
+                    "id":result.data[i].satuanID,
+                    "text":capitalizeFirstLetter(result.data[i].satuan),
+                    "harga_jual":result.data[i].harga_jual,
+                    "harga_pokok":result.data[i].konversi * result.data[i].konversi_acuan *result.data[i].harga_pokok,
+                    "konversi_final":result.data[i].konversi * result.data[i].konversi_acuan
+                });
+            }
+            $("#Stokbarang-KoreksiModal-KurangSatuanInput").select2({
+                data:data,
+                placeholder:"-- Pilih Unit --",
+                allowClear:true
+            });
+    });
+    document.getElementById("Stokbarang-KoreksiModal-KurangConfirmButton").onclick = function ()
+    {
+        var stokpengurangan = $("#Stokbarang-KoreksiModal-KurangSatuanInput").select2('data')[0].konversi_final * $("#Stokbarang-KoreksiModal-KurangJumlahInput").val();
+        RemoveStok(currentToken, barangID, stokpengurangan,function(result)
+        {
+            console.log(result);
+            if (result.token_status=="success")
+            {
+                console.log("kurang stok sukses");
+                createAlert("success", "Stok barang berhasil dikurangi");
+                $("#Stokbarang-KoreksiKurangModal").modal('toggle');
+            }
+        });
+    }
+}
+function StokBarangPopulateKoreksiTambahModal(barangID)
+{
+    var i;
+    GetAllSatuanData(currentToken, barangID, function(result){
+        var i;
+        var data =[];
+        console.log(barangID);
+        for (i=0;i<result.data.length;i++)
+        {
+            data.push({
+                "id":result.data[i].satuanID,
+                "text":capitalizeFirstLetter(result.data[i].satuan),
+                "harga_jual":result.data[i].harga_jual,
+                "harga_pokok":result.data[i].konversi * result.data[i].konversi_acuan *result.data[i].harga_pokok,
+                "konversi_final":result.data[i].konversi * result.data[i].konversi_acuan
+            });
+        }
+        $("#Stokbarang-KoreksiModal-TambahSatuanInput").select2({
+            data:data,
+            placeholder:"-- Pilih Unit --",
+            allowClear:true
+        });
+    });
+    document.getElementById("Stokbarang-KoreksiModal-TambahConfirmButton").onclick = function ()
+    {
+        var stoktambahan = $("#Stokbarang-KoreksiModal-TambahSatuanInput").select2('data')[0].konversi_final * $("#Stokbarang-KoreksiModal-TambahJumlahInput").val();
+       var hargaPokok =  $("#Stokbarang-KoreksiModal-TambahHargaInput").val() / $("#Stokbarang-KoreksiModal-TambahSatuanInput").select2('data')[0].konversi_final;
+        AddStok(currentToken, barangID, stoktambahan, hargaPokok,function(result)
+        {
+            console.log(result);
+            if (result.token_status=="success")
+            {
+                console.log("add stok sukses");
+                createAlert("success", "Stok barang berhasil ditambahkan");
+                $("#Stokbarang-KoreksiTambahModal").modal('toggle');
+            }
+        });
+    }
+}
+
 function StokBarangPopulateData() {
 
     totalBoxBarang = 0;
@@ -140,9 +219,20 @@ function StokBarangPopulateEditModal(Button)
     var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
     var satuan =["grs", "kod", "lsn", "pcs"];
     document.getElementById("Stokbarang-EditModal-kode").innerHTML = StrId;
+    document.getElementById("Stokbarang-EditModal-stok").innerHTML = $(Button).closest('tr').find('td:eq(3)').children("span")[0].innerHTML;
+    document.getElementById("Stokbarang-EditModal-IsiBoxText").innerHTML = $(Button).closest('tr').find('td:eq(2)').html();
+    if (hasHakAkses("HargaPokokLaba"))
+    {
+        $("#Stokbarang-EditModal-HargaPokokRow").show();
+        document.getElementById("Stokbarang-EditModal-HargaPokokText").innerHTML = $(Button).closest('tr').find('td:eq(5)').children("span")[0].innerHTML;
+    }
+    else {
+        $("#Stokbarang-EditModal-HargaPokokRow").hide();
+    }
+
     for (i=0;i<satuan.length;i++)
     {
-        $("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check").iCheck('uncheck');
+        $("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check").iCheck('uncheck').iCheck('disable');
         formdata.elements['harga-jual-'+satuan[i]+'-input'].disabled=true;
         formdata.elements['harga-jual-'+satuan[i]+'-input'].value="";
     }
@@ -153,17 +243,17 @@ function StokBarangPopulateEditModal(Button)
             console.log(result.data[i].satuan);
             $("#Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").iCheck('check');
             formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].value = result.data[i].harga_jual;
-           // $(formdata.elements['harga-jual-'+result.data[i].satuan+'-check']);
             formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].disabled=false;
         }
     });
 
+    document.getElementById("Stokbarang-KoreksiTambahButton").onclick = function(){
+        StokBarangPopulateKoreksiTambahModal(id);
+    };
+    document.getElementById("Stokbarang-KoreksiKurangButton").onclick = function(){
+        StokBarangPopulateKoreksiKurangModal(id);
+    };
 
-    //document.getElementById("edit-modal-save").setAttribute("data-id", barangID);
-    //var barangTable = $('#BarangTable').DataTable();
-    //var rowNumber = barangTable.row($(Button).closest('tr')).index();
-    //document.getElementById("edit-modal-save").setAttribute("data-row-num", rowNumber);
-    //console.log("delete "+barangID+" "+rowNumber);
 }
 function StokBarangDisableHargaPokokField()
 {
@@ -369,6 +459,7 @@ function InitStokBarangPage() {
     document.getElementById("Stokbarang-CreateModal-ConfirmButton").onclick= function () {
         StokBarangCreateBarangConfirm();
     };
+
     StokBarangDisableHargaPokokField();
 }
 

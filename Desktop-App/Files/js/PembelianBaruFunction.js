@@ -444,7 +444,7 @@ function PembelianBaruSave(isPrinted)//PENTING
         valid=false;
         setWarning(document.getElementById("Pembelianbaru-TgljatuhtempoDate"), "Tgl jatuh tempo harus diisi bila membayar dengan bon");
     }
-    for (i=1;i<itemTable.rows.length-1;i++)
+    for (i=1;i<itemTable.rows.length-tableFoot.rows.length;i++)
     {
         var BarangSelectValue = $("#Pembelianbaru-Input-"+twoDigitPad(i)+"-1").val();
         if (BarangSelectValue == null || BarangSelectValue=='')
@@ -467,11 +467,11 @@ function PembelianBaruSave(isPrinted)//PENTING
     }
     if (valid)
     {
-        for (i=1;i<itemTable.rows.length-1;i++){
-            var qty = document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-2");
+        for (i=1;i<itemTable.rows.length-tableFoot.rows.length;i++){
+            var qty2 = document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-2");
             satuan.push({
                 "satuanID":$("#Pembelianbaru-Input-"+twoDigitPad(i)+"-3").val(),
-                "quantity":qty.value,
+                "quantity":qty2.value,
                 "disc1":document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-5").value,
                 "disc2":document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-6").value,
                 "disc3":document.getElementById("Pembelianbaru-Input-"+twoDigitPad(i)+"-7").value,
@@ -489,7 +489,7 @@ function PembelianBaruSave(isPrinted)//PENTING
             tglTransaksi,
             tglJatuhTempo,
             grand_subtotal,
-            itemTable.rows[itemTable.rows.length-1].cells[2].children[0].children[0].value,
+            itemTable.rows[itemTable.rows.length-tableFoot.rows.length].cells[2].children[0].children[0].value,
             isPrinted,
             status,
             $("#Pembelianbaru-NotesInput").val(),

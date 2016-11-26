@@ -85,9 +85,9 @@ function populateDetailPembelian(currentPembelianID)
                 var disc2 = pembelian.barang[i].disc_2;
                 var disc3 = pembelian.barang[i].disc_3;
                 var itemSubtotal = parseInt(hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
-                var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+capitalizeFirstLetter(pembelian.barang[i].satuan_acuan_box)
-                var satuan_unit = pembelian.barang[i].satuan_unit
-                var nama_barang = pembelian.barang[i].nama_barang
+                var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+capitalizeFirstLetter(pembelian.barang[i].satuan_acuan_box);
+                var satuan_unit = pembelian.barang[i].satuan_unit;
+                var nama_barang = pembelian.barang[i].nama_barang;
                 itemPembelianTable.row.add([
                     "<span class='pull-right'>"+(i+1).toString()+"</span>",
                     nama_barang,
@@ -102,6 +102,44 @@ function populateDetailPembelian(currentPembelianID)
                 ])
             }
             itemPembelianTable.draw();
+
+            var ItemTableFooter = document.getElementById("Detailpembelian-ItemTable").getElementsByTagName("tfoot")[0];
+            while(ItemTableFooter.rows.length>1)
+            {
+                ItemTableFooter.deleteRow(-1);
+            }
+
+            // itemPenjualanTable = $(ItemTableFooter).DataTable();
+            var adavocer = false;
+            var totalpengurangan = 0;
+            for (i=0;i<pembelian.cicilan.length;i++)
+            {
+                if (pembelian.cicilan[i].cara_pembayaran=="voucher") {
+                    adavocer=true;
+                    var tanggalretur = "10/10/2016";
+                    var rowCount = ItemTableFooter.rows.length;
+                    var row = ItemTableFooter.insertRow(rowCount);
+                    var col1 = row.insertCell(0);
+                    col1.setAttribute("colspan", "9");
+                    col1.innerHTML = "<span class='pull-right'>Retur Pembelian tanggal "+tanggalretur+"</span>";
+                    var col2 = row.insertCell(1);
+                    col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(pembelian.cicilan[i].nominal)+"</span>";
+                    totalpengurangan+=pembelian.cicilan[i].nominal;
+                }
+            }
+            if (adavocer)
+            {
+                rowCount = ItemTableFooter.rows.length;
+                row = ItemTableFooter.insertRow(rowCount);
+                col1 = row.insertCell(0);
+                col1.setAttribute("colspan", "9");
+                col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
+                col2 = row.insertCell(1);
+                col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+
+                    numberWithCommas((pembelian.subtotal*(100-pembelian.disc)/100)-totalpengurangan)+
+                    "</span>";
+            }
+
 
             if(pembelian.jatuh_tempo!=null && pembelian.jatuh_tempo!='')
             {
@@ -158,10 +196,11 @@ function populateDetailPembelian(currentPembelianID)
                     }
 
                 }
+                var subtotalafterdisc = pembelian.subtotal*(100-pembelian.disc)/100;
                 CicilanPembelianTable.draw();
                 var cicilantotaltext = "<span class='pull-right'>Rp. " + numberWithCommas(totalsudahdibayar) + "</span>";
                 $(CicilanPembelianTable.column(2).footer()).html(cicilantotaltext);
-                var cicilanKekurangan = pembelian.subtotal - totalsudahdibayar;
+                var cicilanKekurangan = subtotalafterdisc - totalsudahdibayar;
                 var cicilanKurangText = "<span class='pull-right'>Rp. " + numberWithCommas(cicilanKekurangan) + "</span>";
                 if (cicilanKekurangan <= 0) {
                     cicilanKurangText = "Lunas";
@@ -171,6 +210,49 @@ function populateDetailPembelian(currentPembelianID)
             else
             {
                 $(".Detailpembelian-cicilanSection").hide();
+            }
+
+            var ReturPembelianTable;
+            console.log(pembelian.retur);
+            if(pembelian.retur!=null && pembelian.retur.length>0)
+            {
+
+                $(".Detailpembelian-returSection").show();
+                if (!$.fn.DataTable.isDataTable("#Detailpembelian-returTable")) {
+                    ReturPembelianTable = $("#Detailpembelian-returTable").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": true,
+                        "info": false,
+                        "autoWidth": false
+                    });
+                }
+                else {
+                    ReturPembelianTable = $("#Detailpembelian-returTable").DataTable();
+                    ReturPembelianTable.clear().draw();
+                }
+                for (i=0;i<pembelian.retur.length;i++)
+                {
+                    var tanggalpembelianretur = "10/10/2016";
+                    ReturPembelianTable.row.add([
+                        "<span class='pull-right'>"+(i+1).toString()+"</span>",
+                        tanggalpembelianretur,
+                        pembelian.retur[i].pembelianbarangID,
+                        "",
+                        pembelian.retur[i].quantity,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+                }
+                ReturPembelianTable.draw();
+            }
+            else {
+                $(".Detailpembelian-returSection").hide();
             }
 
         }

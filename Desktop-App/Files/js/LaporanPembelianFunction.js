@@ -43,7 +43,8 @@ function populateLaporanPembelianData()
                 var id = "" + result.data[i].pembelianID;
                 var StrId = "TB" + pad.substring(0, pad.length - id.length) + id;
 
-                var subtotal = "<span class='pull-right'>Rp. "+numberWithCommas(result.data[i].subtotal)+"</span>";
+                var subtotalafterdisc = result.data[i].subtotal*(100-result.data[i].disc)/100;
+                var subtotal = "<span class='pull-right'>Rp. "+numberWithCommas(subtotalafterdisc)+"</span>";
 
                 var isPrinted="";
                 if (result.data[i].isPrinted==1)
