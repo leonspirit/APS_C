@@ -278,12 +278,14 @@ function populateDetailPenjualan(curPenjualanID)
                     var satuan_unit_retur
                     var harga_unit_retur
                     var disc_retur
+                    var nama_retur
                     for(var j=0; j<len; j++){
                         if(penjualan.barang[j].penjualanbarangID == penjualan.retur[i].penjualanbarangID){
                             isi_box_retur = (penjualan.barang[j].konversi_box).toString() + " " + penjualan.barang[j].satuan_acuan_box
                             satuan_unit_retur = penjualan.barang[j].satuan_unit;
                             harga_unit_retur = penjualan.barang[j].harga_jual_saat_ini
                             disc_retur = penjualan.barang[j].disc
+                            nama_retur = penjualan.barang[j].nama_barang
                         }
                     }
 
@@ -292,13 +294,13 @@ function populateDetailPenjualan(curPenjualanID)
 
                     ReturPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                        penjualan.retur[i].penjualanbarangID,
+                        nama_retur,
                         isi_box_retur,
                         penjualan.retur[i].quantity,
                         satuan_unit_retur,
-                        harga_unit_retur,
-                        disc_retur,
-                        subtotal_retur,
+                        "Rp. "+numberWithCommas(harga_unit_retur),
+                        disc_retur+"%",
+                        "Rp. "+numberWithCommas(subtotal_retur),
                         tgl,
                         metode
                     ]);

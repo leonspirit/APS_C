@@ -234,19 +234,47 @@ function populateDetailPembelian(currentPembelianID)
                 }
                 for (i=0;i<pembelian.retur.length;i++)
                 {
+                    var tgl_temp = new Date(pembelian.retur[i].tanggal);
+                    var tgl = tgl_temp.getFullYear()+"-"+(tgl_temp.getMonth()+1)+"-"+tgl_temp.getDate();
+
+                    var metode = "Cash"
+                    if(pembelian.retur[i].metode == 1) metode = "Voucher"
+
+                    var len = pembelian.barang.length
+                    var isi_box_retur = 0
+                    var satuan_unit_retur
+                    var harga_unit_retur
+                    var disc1_retur, disc2_retur, disc3_retur
+                    var nama_retur
+                    for(var j=0; j<len; j++){
+                        if(pembelian.barang[j].pembelianbarangID == pembelian.retur[i].pembelianbarangID){
+                            isi_box_retur = (pembelian.barang[j].konversi_box).toString() + " " + pembelian.barang[j].satuan_acuan_box
+                            satuan_unit_retur = pembelian.barang[j].satuan_unit;
+                            harga_unit_retur = pembelian.barang[j].harga_per_biji
+                            disc1_retur = pembelian.barang[j].disc_1
+                            disc2_retur = pembelian.barang[j].disc_2
+                            disc3_retur = pembelian.barang[j].disc_3
+                            nama_retur = pembelian.barang[j].nama_barang
+                        }
+                    }
+
+                    var subtotal_retur = harga_unit_retur * pembelian.retur[i].quantity
+                    subtotal_retur = subtotal_retur * (100 - disc1_retur - disc2_retur - disc3_retur) / 100
+
                     var tanggalpembelianretur = "10/10/2016";
                     ReturPembelianTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
                         tanggalpembelianretur,
-                        pembelian.retur[i].pembelianbarangID,
-                        "",
+                        nama_retur,
+                        isi_box_retur,
                         pembelian.retur[i].quantity,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
+                        satuan_unit_retur,
+                        "Rp. "+numberWithCommas(harga_unit_retur),
+                        disc1_retur+"%",
+                        disc2_retur+"%",
+                        disc3_retur+"%",
+                        "Rp. "+numberWithCommas(subtotal_retur),
+                        metode
                     ]);
                 }
                 ReturPembelianTable.draw();
