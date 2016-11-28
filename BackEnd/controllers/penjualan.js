@@ -746,11 +746,18 @@ router.post('/list_penjualan_barang_A', function(req,res){
                                 loop.next();
                             })},
                             function(){
-                                resp['data'] = result2
-                                resp['data'].sort(function(a,b){
-                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
-                                })
-                                res.status(200).send(resp)
+                                asyncLoop(len, function(loop){
+                                    add_laba_penjualan(loop.iteration(), result2, function(result){
+                                        loop.next()
+                                    })},
+                                    function(){
+                                        resp['data'] = result2
+                                        resp['data'].sort(function(a,b){
+                                            return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                        })
+                                        res.status(200).send(resp)
+                                    }
+                                )
                             }
                         );
                     }
