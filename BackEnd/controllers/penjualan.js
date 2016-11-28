@@ -195,6 +195,8 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
 
 function add_penjualan_barang(req, i, penjualanID){
 
+    if(req.body.satuan[i]['disc'] == '')req.body.satuan[i]['disc'] = 0
+
     var satuanID = req.body.satuan[i]['satuanID']
     var quantity = req.body.satuan[i]['quantity']
     var disc = req.body.satuan[i]['disc']
@@ -744,11 +746,18 @@ router.post('/list_penjualan_barang_A', function(req,res){
                                 loop.next();
                             })},
                             function(){
-                                resp['data'] = result2
-                                resp['data'].sort(function(a,b){
-                                    return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
-                                })
-                                res.status(200).send(resp)
+                                asyncLoop(len, function(loop){
+                                    add_laba_penjualan(loop.iteration(), result2, function(result){
+                                        loop.next()
+                                    })},
+                                    function(){
+                                        resp['data'] = result2
+                                        resp['data'].sort(function(a,b){
+                                            return new Date(a.tanggal_transaksi).getTime() - new Date(b.tanggal_transaksi).getTime()
+                                        })
+                                        res.status(200).send(resp)
+                                    }
+                                )
                             }
                         );
                     }
@@ -812,7 +821,9 @@ router.post('/edit_penjualanbarang', function(req,res){
                     var penjualan = [price_awal-curr_price, result2[0]['penjualanID']]
                     connection.query(querystring3, penjualan, function(err4, result4){
                         if(err4) throw err4
-                        res.status(200).send(resp)
+                        token_auth.update_status_penjualan(result2[0]['penjualanID'], function(result){
+                            res.status(200).send(resp)
+                        })
                     })
                 })
             })

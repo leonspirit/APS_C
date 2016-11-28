@@ -170,7 +170,11 @@ module.exports = {
                     })
                 }
                 else{
-                    callback()
+                    var qrstring3 = 'UPDATE pembelian SET status = "belum lunas" WHERE pembelianID = ?'
+                    connection.query(qrstring3, cicilan, function(err3, result3){
+                        if(err3) throw err3
+                        callback()
+                    })
                 }
             })
         })
@@ -195,7 +199,11 @@ module.exports = {
                     })
                 }
                 else{
-                    callback()
+                    var qrstring3 = 'UPDATE penjualan SET status = "belum lunas" WHERE penjualanID = ?'
+                    connection.query(qrstring3, cicilan, function(err3, result3){
+                        if(err3) throw err3
+                        callback()
+                    })
                 }
             })
         })
