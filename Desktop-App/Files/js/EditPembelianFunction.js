@@ -38,7 +38,7 @@ function EditPembelianAddRow(barang)
     cell5.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
-    cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>"
+    cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>";
 
     //var cell4 = row.insertCell(4);
     //cell4.innerHTML =  capitalizeFirstLetter(satuan_unit);
@@ -205,7 +205,7 @@ function EditPembelianDrawTable(r)
         var disc3 = document.getElementById("Editpembelian-Input-"+indexChanged+"-4").value;
         //subtotal
         var Subtotal = parseInt((qty * hargaSatuan*(100-disc1-disc2-disc3))/100);
-        curRow.cells[10].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
+        curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
     }
     var TotalHarga = 0;
     var subtotalTambahanStr;
@@ -213,7 +213,7 @@ function EditPembelianDrawTable(r)
 
     for (i=1;i<itemTable.rows.length-1;i++)
     {
-        subtotalTambahanStr = itemTable.rows[i].cells[10].children[0].innerHTML.toString().substring(4);
+        subtotalTambahanStr = itemTable.rows[i].cells[9].children[0].innerHTML.toString().substring(4);
         subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
         TotalHarga += subtotalTambahan;
     }

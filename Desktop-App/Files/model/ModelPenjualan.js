@@ -153,6 +153,16 @@ function ListVoucherPelanggan(token, pelangganID, fn)
             fn(data);
         }, "json");
 }
+function GetPenjualanDariVoucher(token, voucherID, fn)
+{
+    $.post( baseUrl + "voucher/get_voucher_penjualan/",
+        {
+            token: token,
+            voucherpenjualanID:voucherID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
 
 

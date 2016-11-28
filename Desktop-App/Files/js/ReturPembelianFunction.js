@@ -35,6 +35,8 @@ function populateReturPembelian(currentPembelianID)
             else {
                 notesText = pembelian.notes;
             }
+            document.getElementById("Returpembelian-DiscText").innerHTML = numberWithCommas(pembelian.disc)+" %";
+            document.getElementById("Returpembelian-TotalText").innerHTML = "Rp. "+numberWithCommas(pembelian.subtotal*(100-pembelian.disc)/100);
             document.getElementById("Returpembelian-SupplierText").innerHTML = pembelian.supplierNama;
             document.getElementById("Returpembelian-TglJatuhTempoText").innerHTML = JatuhTempoText;
             document.getElementById("Returpembelian-TglTransaksiText").innerHTML = TglTransaksiText;
@@ -70,29 +72,29 @@ function ReturPembelianAddRow(barang)
 
     var cell2 = row.insertCell(1);
     cell2.innerHTML = barang.nama_barang;
-    cell2.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-1")
-    cell2.setAttribute("data-id", barang.pembelianbarangID)
+    cell2.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-1");
+    cell2.setAttribute("data-id", barang.pembelianbarangID);
 
     var cell5  =row.insertCell(2);
-    cell5.innerHTML = "@ " + barang.konversi_box.toString() + " " + barang.satuan_acuan_box
+    cell5.innerHTML = "@ " + barang.konversi_box.toString() + " " + barang.satuan_acuan_box;
     cell5.setAttribute("id", "Pembelianbaru-IsiboxText-"+rowNum.toString());
 
     var cell3 = row.insertCell(3);
     cell3.innerHTML ="<span class='pull-right'>"+numberWithCommas(qty)+"</span>";
 
     var cellqtyRetur = row.insertCell(4);
-    cellqtyRetur.setAttribute("style", "padding:0");
-    cellqtyRetur.setAttribute("class", "form-control");
+    cellqtyRetur.setAttribute("style", "padding:0");;
     var inputJumlahRetur = document.createElement("input");
     inputJumlahRetur.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-2");
     inputJumlahRetur.setAttribute("class", "form-control");
     inputJumlahRetur.setAttribute("type", "number");
     inputJumlahRetur.setAttribute("min", "0");
+    inputJumlahRetur.setAttribute("onchange", "ReturPembelianDrawTable(this);");
     inputJumlahRetur.setAttribute("style", "width:100%;");
     cellqtyRetur.appendChild(inputJumlahRetur);
 
     var cell4 = row.insertCell(5);
-    cell4.innerHTML = barang.satuan_unit
+    cell4.innerHTML = capitalizeFirstLetter(barang.satuan_unit);
 
     var cell6 = row.insertCell(6);
    cell6.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hargaUnit)+"</span>";
@@ -107,7 +109,65 @@ function ReturPembelianAddRow(barang)
     cell9.innerHTML = "<span class='pull-right'>"+disc3 +" %</span>";
 
     var cell10 = row.insertCell(10);
-    cell10.innerHTML = "<span class='pull-right'>Rp. "+itemSubtotal+"</span>";
+    cell10.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal)+"</span>";
+    var cell11 = row.insertCell(11);
+    //cell11.setAttribute("style","padding:0");
+    cell11.innerHTML =  "<span class='pull-right'>Rp. 0</span>";
+//    cell11.setAttribute("class", form-)
+
+}
+
+function ReturPembelianDrawTable(r)
+{
+
+    var indexChanged;
+    if (r!=null)
+        indexChanged = getRowIndex(r);//.parentNode.parentNode.rowIndex;
+    else
+        indexChanged= 0;
+    var i;
+    var itemTable= document.getElementById("Returpembelian-ItemTable");
+    var itemTableFoot= document.getElementById("Returpembelian-ItemTable").getElementsByTagName("tfoot")[0];
+
+    if(indexChanged>=1 && indexChanged<itemTable.rows.length){
+        var curRow =  itemTable.rows[indexChanged];
+        var qtyretur = curRow.cells[4].children[0].value;
+
+
+        var hargaSatuanStr = curRow.cells[6].children[0].innerHTML;
+        var hargaSatuan = parseInt(hargaSatuanStr.substring(4).replace(/,/g,''));
+        var disc1Str = curRow.cells[7].children[0].innerHTML;
+        var disc1 = parseInt(disc1Str.replace(' %',''));
+        var disc2Str = curRow.cells[8].children[0].innerHTML;
+        var disc2 = parseInt(disc2Str.replace(' %',''));
+        var disc3Str = curRow.cells[9].children[0].innerHTML;
+        var disc3 = parseInt(disc3Str.replace(' %',''));
+        //subtotal
+        var Subtotal = parseInt((qtyretur * hargaSatuan*(100-disc1-disc2-disc3))/100);
+        curRow.cells[11].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
+    }
+    var TotalHarga = 0;
+    var subtotalTambahanStr;
+    var subtotalTambahan;
+
+    console.log(itemTableFoot.rows.length+ " " +itemTable.rows.length);
+    for (i=1;i<itemTable.rows.length-itemTableFoot.rows.length;i++)
+    {
+        subtotalTambahanStr = itemTable.rows[i].cells[11].children[0].innerHTML.toString().substring(4);
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
+        TotalHarga += subtotalTambahan;
+    }
+
+    var posisitotal = itemTable.rows.length-itemTableFoot.rows.length;
+    console.log(posisitotal);
+
+    var discBesarStr = itemTable.rows[posisitotal].cells[2].children[0].innerHTML;
+    var discBesar = parseInt(discBesarStr.replace(' %',''));
+    console.log(discBesar);
+
+    var TotalHargaReturAfterDisc = parseInt(TotalHarga *(100 - discBesar)/100);
+    document.getElementById("Returpembelian-TotalReturText").innerHTML = "Rp. "+ numberWithCommas(TotalHargaReturAfterDisc);
+
 }
 
 function add_retur_pembelian(counter, berhasil, length, pembelianID){

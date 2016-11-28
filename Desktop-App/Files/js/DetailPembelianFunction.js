@@ -110,35 +110,7 @@ function populateDetailPembelian(currentPembelianID)
             }
 
             // itemPenjualanTable = $(ItemTableFooter).DataTable();
-            var adavocer = false;
-            var totalpengurangan = 0;
-            for (i=0;i<pembelian.cicilan.length;i++)
-            {
-                if (pembelian.cicilan[i].cara_pembayaran=="voucher") {
-                    adavocer=true;
-                    var tanggalretur = "10/10/2016";
-                    var rowCount = ItemTableFooter.rows.length;
-                    var row = ItemTableFooter.insertRow(rowCount);
-                    var col1 = row.insertCell(0);
-                    col1.setAttribute("colspan", "9");
-                    col1.innerHTML = "<span class='pull-right'>Retur Pembelian tanggal "+tanggalretur+"</span>";
-                    var col2 = row.insertCell(1);
-                    col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(pembelian.cicilan[i].nominal)+"</span>";
-                    totalpengurangan+=pembelian.cicilan[i].nominal;
-                }
-            }
-            if (adavocer)
-            {
-                rowCount = ItemTableFooter.rows.length;
-                row = ItemTableFooter.insertRow(rowCount);
-                col1 = row.insertCell(0);
-                col1.setAttribute("colspan", "9");
-                col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
-                col2 = row.insertCell(1);
-                col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+
-                    numberWithCommas((pembelian.subtotal*(100-pembelian.disc)/100)-totalpengurangan)+
-                    "</span>";
-            }
+            DetailPembelianGetVoucherList(0, pembelian, false, 0);
 
 
             if(pembelian.jatuh_tempo!=null && pembelian.jatuh_tempo!='')
@@ -149,7 +121,7 @@ function populateDetailPembelian(currentPembelianID)
                         "paging": false,
                         "lengthChange": false,
                         "searching": false,
-                        "ordering": true,
+                        "ordering": false,
                         "info": true,
                         "autoWidth": false,
                         "language": {
@@ -169,7 +141,7 @@ function populateDetailPembelian(currentPembelianID)
 
                         var TglPencairanCicilan = pembelian.cicilan[i].tanggal_pencairan;
                         var TglPencairanCicilanText = "-";
-                        if (TglPencairanCicilan == null || TglPencairanCicilan == "") {
+                        if (TglPencairanCicilan != null && TglPencairanCicilan != "") {
                             TglPencairanCicilanText = TglPencairanCicilan.getDate() + "/" + (TglPencairanCicilan.getMonth() + 1) + "/" + TglPencairanCicilan.getFullYear();
                         }
                         var nomor_giro = pembelian.cicilan[i].nomor_giro;
@@ -187,7 +159,7 @@ function populateDetailPembelian(currentPembelianID)
                             "Rp. " + numberWithCommas(pembelian.cicilan[i].nominal),
                             bank,
                             nomor_giro,
-                            TglTransaksiCicilanText,
+                            TglPencairanCicilanText,
                             pembelian.cicilan[i].notes
                         ]);
                     }
@@ -223,7 +195,7 @@ function populateDetailPembelian(currentPembelianID)
                         "paging": false,
                         "lengthChange": false,
                         "searching": false,
-                        "ordering": true,
+                        "ordering": false,
                         "info": false,
                         "autoWidth": false
                     });
@@ -235,45 +207,44 @@ function populateDetailPembelian(currentPembelianID)
                 for (i=0;i<pembelian.retur.length;i++)
                 {
                     var tgl_temp = new Date(pembelian.retur[i].tanggal);
-                    var tgl = tgl_temp.getFullYear()+"-"+(tgl_temp.getMonth()+1)+"-"+tgl_temp.getDate();
+                    var tgl = tgl_temp.getDate()+"-"+(tgl_temp.getMonth()+1)+"-"+tgl_temp.getFullYear();
 
-                    var metode = "Cash"
-                    if(pembelian.retur[i].metode == 1) metode = "Voucher"
+                    var metode = "Cash";
+                    if(pembelian.retur[i].metode == 1) metode = "Voucher";
 
-                    var len = pembelian.barang.length
-                    var isi_box_retur = 0
-                    var satuan_unit_retur
-                    var harga_unit_retur
-                    var disc1_retur, disc2_retur, disc3_retur
-                    var nama_retur
+                    var len = pembelian.barang.length;
+                    var isi_box_retur = 0;
+                    var satuan_unit_retur;
+                    var harga_unit_retur;
+                    var disc1_retur, disc2_retur, disc3_retur;
+                    var nama_retur;
                     for(var j=0; j<len; j++){
                         if(pembelian.barang[j].pembelianbarangID == pembelian.retur[i].pembelianbarangID){
-                            isi_box_retur = (pembelian.barang[j].konversi_box).toString() + " " + pembelian.barang[j].satuan_acuan_box
+                            isi_box_retur = "@ "+(pembelian.barang[j].konversi_box).toString() + " " + capitalizeFirstLetter(pembelian.barang[j].satuan_acuan_box);
                             satuan_unit_retur = pembelian.barang[j].satuan_unit;
-                            harga_unit_retur = pembelian.barang[j].harga_per_biji
-                            disc1_retur = pembelian.barang[j].disc_1
-                            disc2_retur = pembelian.barang[j].disc_2
-                            disc3_retur = pembelian.barang[j].disc_3
+                            harga_unit_retur = pembelian.barang[j].harga_per_biji;
+                            disc1_retur = pembelian.barang[j].disc_1;
+                            disc2_retur = pembelian.barang[j].disc_2;
+                            disc3_retur = pembelian.barang[j].disc_3;
                             nama_retur = pembelian.barang[j].nama_barang
                         }
                     }
 
-                    var subtotal_retur = harga_unit_retur * pembelian.retur[i].quantity
-                    subtotal_retur = subtotal_retur * (100 - disc1_retur - disc2_retur - disc3_retur) / 100
+                    var subtotal_retur = harga_unit_retur * pembelian.retur[i].quantity;
+                    subtotal_retur = subtotal_retur * (100 - disc1_retur - disc2_retur - disc3_retur) / 100;
 
-                    var tanggalpembelianretur = "10/10/2016";
                     ReturPembelianTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
-                        tanggalpembelianretur,
+                        tgl,
                         nama_retur,
                         isi_box_retur,
-                        pembelian.retur[i].quantity,
-                        satuan_unit_retur,
-                        "Rp. "+numberWithCommas(harga_unit_retur),
-                        disc1_retur+"%",
-                        disc2_retur+"%",
-                        disc3_retur+"%",
-                        "Rp. "+numberWithCommas(subtotal_retur),
+                        "<span class='pull-right'>" +pembelian.retur[i].quantity+"</span>",
+                        capitalizeFirstLetter(satuan_unit_retur),
+                        "<span class='pull-right'>Rp. "+numberWithCommas(harga_unit_retur)+"</span>",
+                        "<span class='pull-right'>"+disc1_retur+" %</span>",
+                        "<span class='pull-right'>"+disc2_retur+" %</span>",
+                        "<span class='pull-right'>"+disc3_retur+" %</span>",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(subtotal_retur)+"</span>",
                         metode
                     ]);
                 }
@@ -282,13 +253,50 @@ function populateDetailPembelian(currentPembelianID)
             else {
                 $(".Detailpembelian-returSection").hide();
             }
-
         }
         else
         {
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
+}
+function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
+{
+    var ItemTableFooter = document.getElementById("Detailpembelian-ItemTable").getElementsByTagName("tfoot")[0];
+    if (i==pembelian.cicilan.length) {
+        if (adavocer)
+        {
+            var rowCount = ItemTableFooter.rows.length;
+            var row = ItemTableFooter.insertRow(rowCount);
+            var  col1 = row.insertCell(0);
+            col1.setAttribute("colspan", "7");
+            col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
+            var col2 = row.insertCell(1);
+            col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(pembelian.subtotal-totalpengurangan)+"</span>";
+        }
+    }
+    else if (pembelian.cicilan[i].cara_pembayaran=="voucher")
+    {
+        GetPembelianDariVoucher(currentToken, pembelian.cicilan[i].voucherID,  function(result){
+            console.log(result);
+            var tanggalStr  = new Date(result.tanggal);
+            var tanggalretur = tanggalStr.getDate()+"/"+(tanggalStr.getMonth()+1)+"/"+tanggalStr.getFullYear();
+            adavocer=true;
+            var rowCount = ItemTableFooter.rows.length;
+            var row = ItemTableFooter.insertRow(rowCount);
+            var col1 = row.insertCell(0);
+            col1.setAttribute("colspan", "7");
+            col1.innerHTML =
+                "<a onclick='InitDetailPenjualanPage("+result.penjualanID+")'>" +
+                "<span class='pull-right' >Retur Pembelian tanggal "+tanggalretur+
+                "</span>" +
+                "</a>";
+            var col2 = row.insertCell(1);
+            col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(pembelian.cicilan[i].nominal)+"</span>";
+            totalpengurangan+=pembelian.cicilan[i].nominal;
+            DetailPembelianGetVoucherList(i+1, pembelian, adavocer, totalpengurangan);
+        });
+    }
 }
 function InitDetailPembelianPage(curPembelianID)
 {

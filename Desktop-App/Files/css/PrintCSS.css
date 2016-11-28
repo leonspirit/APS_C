@@ -1,0 +1,6 @@
+.borderfull{
+    border:1px solid #000000;
+}
+.table-printed tbody > tr > td{
+    border:0;
+}

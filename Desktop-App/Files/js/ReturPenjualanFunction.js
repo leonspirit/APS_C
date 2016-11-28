@@ -72,8 +72,8 @@ function ReturPenjualanAddRow(barang) {
 
     var cell2 = row.insertCell(1);
     cell2.innerHTML = nama_barang;
-    cell2.setAttribute("id", "ReturPenjualan-Input-"+rowNum.toString()+"-1")
-    cell2.setAttribute("data-id", barang.penjualanbarangID)
+    cell2.setAttribute("id", "ReturPenjualan-Input-"+rowNum.toString()+"-1");
+    cell2.setAttribute("data-id", barang.penjualanbarangID);
 
     var cell5 = row.insertCell(2);
     cell5.innerHTML = isi_box;
@@ -111,7 +111,7 @@ function ReturPenjualanAddRow(barang) {
         var laba = itemSubtotal - (qty*hpokok);
 
         var cell9 = row.insertCell(9);
-        cell9.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hpokok)+"</span>"
+        cell9.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hpokok)+"</span>";
 
 
         var cell10 = row.insertCell(10);
@@ -127,15 +127,15 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
     var tglTransaksiTemp = new Date();
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
 
-    var metode = 0
+    var metode = 0;
     if ($("#Returpenjualan-Metode").val() == "voucher") {
         metode = 1
     }
 
-    if(counter === undefined)counter = 1
+    if(counter === undefined)counter = 1;
     if(counter >= length){
         if (berhasil == 1) {
-            InitDetailPenjualanPage(penjualanID)
+            InitDetailPenjualanPage(penjualanID);
             createAlert("success", "Retur Penjualan Berhasil Dilakukan");
         }
         else {
@@ -165,7 +165,7 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
                 else {
                     berhasil = 0
                 }
-                counter++
+                counter++;
                 add_retur_penjualan(counter, berhasil, length, penjualanID)
             }
         )
@@ -175,9 +175,7 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
 
 function returPenjualanBaru(penjualanID) {
 
-    var satuan = [];
     var itemTable = document.getElementById("Returpenjualan-ItemTable");
-    var i;
 
     add_retur_penjualan(1,1,itemTable.rows.length-1, penjualanID)
 }
@@ -201,7 +199,7 @@ function InitReturPenjualanPage(penjualanID)
 
     $('#Returpenjualan-Metode').select2({
         minimumResultsForSearch: Infinity
-    })
+    });
 
     document.getElementById("Returpenjualan-SaveButton").onclick=function(){
         returPenjualanBaru(penjualanID);

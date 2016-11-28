@@ -9,6 +9,13 @@ var totalUangBarang = 0;
 
 function StokBarangPopulateEntry(BarangTable, barangEntry)
 {
+    if (hasHakAkses("HargaPokokLaba"))
+    {
+        $("#Stokbarang-TotalUangLabel").show();
+    }
+    else {
+        $("#Stokbarang-TotalUangLabel").hide();
+    }
     GetAllSatuanData(currentToken, barangEntry.barangID, function (result2) {
         var i2;
         for (i2 = 0; i2 < result2.data.length; i2++) {
@@ -27,11 +34,11 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 var curBoxStok = parseInt(barangEntry.stok / (result2.data[i2].konversi * result2.data[i2].konversi_acuan));
                 totalBoxBarang += curBoxStok;
                 console.log(totalBoxBarang);
-                document.getElementById("Stokbarang-TotalStokText").innerHTML = numberWithCommas(totalBoxBarang) + " Box";
+                document.getElementById("Stokbarang-TotalStokText").innerHTML = " "+numberWithCommas(totalBoxBarang) + " Box";
                 var StokReady = '<span class="pull-right">' +
                     numberWithCommas(curBoxStok) + ' Box';
                 if ((barangEntry.stok % (result2.data[i2].konversi * result2.data[i2].konversi_acuan)) != 0) {
-                    var curSisaStok = (barangEntry.stok % (result2.data[i2].konversi * result2.data[i2].konversi_acuan)) / result2.data[i2].konversi_acuan;
+                    var curSisaStok = (barangEntry.stok % (result2.data[i2].konversi *  result2.data[i2].konversi_acuan)) / result2.data[i2].konversi_acuan;
                     StokReady += " " + numberWithCommas(curSisaStok) + " " + capitalizeFirstLetter(result2.data[i2].satuan_acuan);
                 }
                 StokReady += '</span>';
@@ -243,7 +250,7 @@ function StokBarangPopulateEditModal(Button)
             console.log(result.data[i].satuan);
             $("#Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").iCheck('check');
             formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].value = result.data[i].harga_jual;
-            formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].disabled=false;
+            formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].disabled=true;
         }
     });
 

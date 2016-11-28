@@ -9,9 +9,10 @@
 
     <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/PrintCSS.css">
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <script>window.$ =window.jQuery = require('jQuery');</script>
+
 
 </head>
 <body>
@@ -27,7 +28,7 @@
             <div class="col-sm-4 invoice-col">
                     <strong>Kode Penjualan</strong><br>
                     <span id="PenjualanBesar-KodeText"></span><br>
-                    <strong>Supplier</strong><br>
+                    <strong>Pelanggan</strong><br>
                     <span id="PenjualanBesar-PelangganText"></span><br>
             </div>
             <div class="col-sm-4 invoice-col">
@@ -55,7 +56,7 @@
                     <span id="PenjualanBesar-NotesText"></span><br>
             </div>
         </div>
-        <table id="PenjualanBesar-ItemTable" class="table">
+        <table id="PenjualanBesar-ItemTable" class="table no-border">
             <thead>
             <tr>
                 <th>#</th>
@@ -102,7 +103,7 @@
             //const result = 1;//factorial(number)
             PopulatePenjualanBesarInvoice(number);
           //  window.print();
-            print();
+          //  print();
             const fromWindow = BrowserWindow.fromId(fromWindowId);
             fromWindow.webContents.send('page-printed', number, 0);
           //  window.close()

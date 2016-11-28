@@ -82,3 +82,15 @@ function UpdateHakKaryawan(token, karyawanID, hakakses, fn)
             fn(data);
         }, "json");
 }
+function UpdatePassword(token, karyawanID, password, fn)
+{
+    $.post( baseUrl + "karyawan/update_password/",
+        {
+            token:token,
+            karyawanID: karyawanID,
+            password:password
+        }
+        ,function(data) {
+            fn(data);
+        }, "json");
+}

@@ -150,5 +150,15 @@ function ListVoucherSupplier(token, supplierID, fn)
             fn(data);
         }, "json");
 }
+function GetPembelianDariVoucher(token, voucherID, fn)
+{
+    $.post( baseUrl + "voucher/get_voucher_pembelian/",
+        {
+            token: token,
+            voucherpembelianID:voucherID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
 //connection.end();

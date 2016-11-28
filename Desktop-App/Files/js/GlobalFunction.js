@@ -144,6 +144,7 @@ function PopulateNotificationModal(jenis, id)
         dateFormat:'yy-mm-dd',
         autoclose:true
     });
+    var i;
     currentToken  = localStorage.getItem("token");
     if (jenis=="jual")
     {
@@ -152,6 +153,54 @@ function PopulateNotificationModal(jenis, id)
             if (result.token_status=="success")
             {
                 var penjualan= result.data[0];
+                console.log(penjualan);
+                var cicilanTable;
+                if (!$.fn.DataTable.isDataTable("#NotificationModal-cicilanTable")) {
+                    cicilanTable = $("#NotificationModal-cicilanTable").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": false,
+                        "info": false,
+                        "autoWidth": false,
+                        "language": {
+                            "emptyTable": "Belum Ada Pembayaran"
+                        }
+                    });
+                }
+                else {
+                    cicilanTable = $("#NotificationModal-cicilanTable").DataTable();
+                    cicilanTable.clear().draw();
+                }
+                var totalaftervocer = penjualan.subtotal;
+                var totalsisapembayaran  =penjualan.subtotal;
+                if (penjualan.cicilan)
+                {
+                    var totalsudah = 0;
+                    for (i=0;i<penjualan.cicilan.length;i++)
+                    {
+                        if (penjualan.cicilan[i].cara_pembayaran!="voucher")
+                        {
+                            var  tglStr = new Date(penjualan.cicilan[i].tanggal_cicilan);
+                            var tglCicilan = tglStr.getDate()+"/"+(tglStr.getMonth()+1)+"/"+tglStr.getFullYear();
+                            cicilanTable.row.add([
+                                tglCicilan,
+                                penjualan.cicilan[i].cara_pembayaran,
+                                "<span class='pull-right'>Rp. "+numberWithCommas(penjualan.cicilan[i].nominal)+"</span>"
+                            ]);
+                            totalsudah+=penjualan.cicilan[i].nominal;
+                        }
+                        else {
+                            totalaftervocer-=penjualan.cicilan[i].nominal;
+                        }
+                        totalsisapembayaran-=penjualan.cicilan[i].nominal;
+                    }
+                    cicilanTable.draw();
+                }
+                var tablefooter = document.getElementById("NotificationModal-cicilanTable").getElementsByTagName("tfoot")[0];
+                tablefooter.rows[0].cells[1].innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(totalsudah)+"</span>";
+                tablefooter.rows[1].cells[1].innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(totalsisapembayaran)+"</span>";
+
                 var TglTransaksi = new Date(penjualan.tanggal_transaksi);
                 var TglTransaksiText = TglTransaksi.getDate()+" "+NamaBulan[TglTransaksi.getMonth()]+" "+TglTransaksi.getFullYear();
 
@@ -159,7 +208,7 @@ function PopulateNotificationModal(jenis, id)
                 var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
                 document.getElementById("NotificationModal-NamatanggalLink").innerHTML =penjualan.pelangganNama+" "+TglTransaksiText;
                 document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
-                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(penjualan.subtotal);
+                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(totalaftervocer);
                 document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
                 {
                     InitDetailPenjualanPage(id);
@@ -178,6 +227,56 @@ function PopulateNotificationModal(jenis, id)
             if (result.token_status=="success")
             {
                 var pembelian = result.data[0];
+                console.log(pembelian);
+                var cicilanTable;
+                if (!$.fn.DataTable.isDataTable("#NotificationModal-cicilanTable")) {
+                    cicilanTable = $("#NotificationModal-cicilanTable").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": false,
+                        "info": false,
+                        "autoWidth": false,
+                        "language": {
+                            "emptyTable": "Belum Ada Pembayaran"
+                        }
+                    });
+                }
+                else {
+                    cicilanTable = $("#NotificationModal-cicilanTable").DataTable();
+                    cicilanTable.clear().draw();
+                }
+
+                var totalaftervocer = pembelian.subtotal;
+                var totalsisapembayaran  =pembelian.subtotal;
+                if (pembelian.cicilan)
+                {
+                    var totalsudah = 0;
+                    for (i=0;i<pembelian.cicilan.length;i++)
+                    {
+                        if (pembelian.cicilan[i].cara_pembayaran!="voucher")
+                        {
+                            var  tglStr = new Date(pembelian.cicilan[i].tanggal_cicilan);
+                            var tglCicilan = tglStr.getDate()+"/"+(tglStr.getMonth()+1)+"/"+tglStr.getFullYear();
+                            cicilanTable.row.add([
+                                tglCicilan,
+                                pembelian.cicilan[i].cara_pembayaran,
+                                "<span class='pull-right'>Rp. "+numberWithCommas(pembelian.cicilan[i].nominal)+"</span>"
+                            ]);
+                            totalsudah+=pembelian.cicilan[i].nominal;
+                        }
+                        else {
+                            totalaftervocer-=pembelian.cicilan[i].nominal;
+                        }
+                        totalsisapembayaran-=pembelian.cicilan[i].nominal;
+                    }
+                    cicilanTable.draw();
+                }
+                var tablefooter = document.getElementById("NotificationModal-cicilanTable").getElementsByTagName("tfoot")[0];
+                tablefooter.rows[0].cells[1].innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(totalsudah)+"</span>";
+                tablefooter.rows[1].cells[1].innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(totalsisapembayaran)+"</span>";
+
+
                 var TglTransaksi = new Date(pembelian.tanggal_transaksi);
                 var TglTransaksiText = TglTransaksi.getDate()+" "+NamaBulan[TglTransaksi.getMonth()]+" "+TglTransaksi.getFullYear();
 
@@ -185,7 +284,7 @@ function PopulateNotificationModal(jenis, id)
                 var JatuhTempoText = JatuhTempo.getDate()+" "+NamaBulan[JatuhTempo.getMonth()]+" "+JatuhTempo.getFullYear();
                 document.getElementById("NotificationModal-NamatanggalLink").innerHTML =pembelian.supplierNama+" "+TglTransaksiText;
                 document.getElementById("NotificationModal-JatuhtempoText").innerHTML =JatuhTempoText;
-                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(pembelian.subtotal);
+                document.getElementById("NotificationModal-TotalText").innerHTML ="Rp. "+numberWithCommas(totalaftervocer);
                 document.getElementById("NotificationModal-NamatanggalLink").onclick=function()
                 {
                     InitDetailPembelianPage(id);
@@ -307,10 +406,6 @@ function InitUserPanel()
 {
     var currentName = localStorage.getItem("namaKaryawan");
     var currentUsername = localStorage.getItem("usernameKaryawan");
-   // var NamaText = document.createElement("span");
-   // NamaText.innerHTML = currentName;
-   // var UsernameText = document.createElement("small");
-    //UsernameText.innerHTML=currentUsername;
     document.getElementById("CurrentKaryawanName").innerHTML = currentName;
     document.getElementById("CurrentKaryawanUsername").innerHTML=currentUsername;
     document.getElementById("NameRightTop").innerHTML=currentName;
@@ -499,15 +594,6 @@ function removeWarning()
 {
 
     $("span.help-block").remove();
-   /* var i, j;
-    var form_group = document.getElementsByClassName("form-group");
-    for (i=0;i<form_group.length;i++)
-    {
-        //form_group[i].classList.remove("has-error");
-        var span = form_group[i].getElementsByClassName("help-block");
-        for (j=0;j<span.length;j++)
-            form_group[i].removeChild(span[j]);
-    }*/
 }
 
 

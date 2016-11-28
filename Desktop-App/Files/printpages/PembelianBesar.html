@@ -4,19 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Pembelian</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
     <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <script>window.$ =window.jQuery = require('jQuery');</script>
 
 </head>
 <body>
 <div class="wrapper">
-    <!-- Main content -->
     <section class="invoice">
         <div class="row">
             <div class="col-xs-12">
@@ -77,10 +73,7 @@
             </tfoot>
         </table>
     </section>
-    <!-- /.content -->
 </div>
-<!-- ./wrapper -->
-
 
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -102,7 +95,7 @@
 
             const fromWindow = BrowserWindow.fromId(fromWindowId);
             fromWindow.webContents.send('page-printed', number, 0);
-            print();
+           // print();
          //   window.close()
         });
 

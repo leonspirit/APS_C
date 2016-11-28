@@ -43,11 +43,17 @@ function MyProfileEditData()
         valid=false;
         setWarning(document.getElementById("ProfileNama"), "Nama Tidak Boleh Kosong");
     }
-   /* if (username==null || username.isEmpty())
+    var changepass=true;
+    if (pass=='' && passconfirm=='')
+        changepass=false;
+    if (changepass)
     {
-        valid=false;
-        setWarning(document.getElementById("ProfileUsername"), "Username Tidak Boleh Kosong");
-    }*/
+        if (pass!=passconfirm)
+        {
+            setWarning(document.getElementById("ProfilePasswordConfirm"), "Password Tidak Sama");
+            valid=false;
+        }
+    }
     if (valid)
     {
         UpdateDataKaryawan(currentToken, currentID, nama, notelp, alamat, function(result){
@@ -55,26 +61,39 @@ function MyProfileEditData()
             {
                 if (result.affectedRows==1)
                 {
+                    removeWarning();
                     createAlert("success", "Profile Berhasil Diubah");
+                    if (changepass)
+                    {
+                        UpdatePassword(currentToken, currentID, md5(pass), function(result2){
+                            if (result2.token_status=='success')
+                            {
+                                createAlert("success", "Profile dan Password Berhasil Diubah");
+                            }
+                            else{
+
+                            }
+                        });
+                    }
+                    localStorage.setItem("namaKaryawan",  nama);
+                  //  localStorage.setItem("usernameKaryawan",  result['username']);
+
+                    var currentName = localStorage.getItem("namaKaryawan");
+               //     var currentUsername = localStorage.getItem("usernameKaryawan");
+                    document.getElementById("CurrentKaryawanName").innerHTML = currentName;
+                //    document.getElementById("CurrentKaryawanUsername").innerHTML=currentUsername;
+                    document.getElementById("NameRightTop").innerHTML=currentName;
+
                 }
             }
             else{
                 createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
-        })
-    }
-    if (pass!=null && pass!='' && passconfirm!=null && passconfirm!='')
-    {
-        if (pass!=passconfirm)
-        {
-            valid =false;
-            setWarning(document.getElementById("ProfilePasswordConfirm"), "Password Tidak Sama");
-        }
-        else {
-
-        }
+        });
 
     }
+
+
 
 }
 function InitMyProfilePage()
@@ -84,4 +103,8 @@ function InitMyProfilePage()
     console.log("ini my profile");
     setPage("MyProfile");
     MyProfilepopulateKaryawanDetail();
+    document.getElementById("MyProfile-saveBtn").onclick=  function()
+    {
+        MyProfileEditData();
+    }
 }

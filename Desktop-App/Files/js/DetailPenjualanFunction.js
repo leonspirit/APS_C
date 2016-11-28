@@ -126,44 +126,12 @@ function populateDetailPenjualan(curPenjualanID)
             }
             itemPenjualanTable.draw();
             //nggambar deail pengurangan vocer
-
-
             var ItemTableFooter = document.getElementById("Detailpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
             while(ItemTableFooter.rows.length>1)
             {
                 ItemTableFooter.deleteRow(-1);
             }
-
-           // itemPenjualanTable = $(ItemTableFooter).DataTable();
-            var adavocer = false;
-            var totalpengurangan = 0;
-            for (i=0;i<penjualan.cicilan.length;i++)
-            {
-                if (penjualan.cicilan[i].cara_pembayaran=="voucher") {
-                    adavocer=true;
-                    var tanggalretur = "10/10/2016";
-                    var rowCount = ItemTableFooter.rows.length;
-                    var row = ItemTableFooter.insertRow(rowCount);
-                    var col1 = row.insertCell(0);
-                    col1.setAttribute("colspan", "7");
-                    col1.innerHTML = "<span class='pull-right'>Retur Pembelian tanggal "+tanggalretur+"</span>";
-                    var col2 = row.insertCell(1);
-                    col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(penjualan.cicilan[i].nominal)+"</span>";
-                    totalpengurangan+=penjualan.cicilan[i].nominal;
-                }
-            }
-            if (adavocer)
-            {
-                rowCount = ItemTableFooter.rows.length;
-                row = ItemTableFooter.insertRow(rowCount);
-                col1 = row.insertCell(0);
-                col1.setAttribute("colspan", "7");
-                col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
-                col2 = row.insertCell(1);
-                col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(penjualan.subtotal-totalpengurangan)+"</span>";
-            }
-
-
+            DetailPenjualanGetVoucherList(0, penjualan, false, 0);
             //nggambar cicilan
             console.log(penjualan.jatuh_tempo);
             if(penjualan.jatuh_tempo!=null && penjualan.jatuh_tempo!='')
@@ -187,8 +155,11 @@ function populateDetailPenjualan(curPenjualanID)
                     CicilanPenjualanTable.clear().draw();
                 }
                 var totalsudahdibayar = 0;
+                var totalsisa = penjualan.subtotal;
                 for (i=0;i<penjualan.cicilan.length;i++)
                 {
+
+                    totalsisa -=penjualan.cicilan[i].nominal;
                      if (penjualan.cicilan[i].cara_pembayaran!="voucher")
                      {
                          totalsudahdibayar+= penjualan.cicilan[i].nominal;
@@ -196,8 +167,9 @@ function populateDetailPenjualan(curPenjualanID)
                          var TglTransaksiCicilanText = TglTransaksiCicilan.getDate()+"/"+(TglTransaksiCicilan.getMonth()+1)+"/"+TglTransaksiCicilan.getFullYear();
 
                          var TglPencairanCicilan = penjualan.cicilan[i].tanggal_pencairan;
+                         console.log(TglPencairanCicilan);
                          var TglPencairanCicilanText="-";
-                         if (TglPencairanCicilan==null || TglPencairanCicilan=="")
+                         if (TglPencairanCicilan!=null && TglPencairanCicilan!="")
                          {
                              TglPencairanCicilanText = TglPencairanCicilan.getDate()+"/"+(TglPencairanCicilan.getMonth()+1)+"/"+TglPencairanCicilan.getFullYear();
                          }
@@ -217,16 +189,17 @@ function populateDetailPenjualan(curPenjualanID)
                              "<span class='pull-right'>Rp. "+ numberWithCommas(penjualan.cicilan[i].nominal)+"</span>",
                              bank,
                              nomor_giro,
-                             TglTransaksiCicilanText,
+                             TglPencairanCicilanText,
                              penjualan.cicilan[i].notes
                          ]);
                      }
+
                 }
                 CicilanPenjualanTable.draw();
 
                 var cicilantotaltext = "<span class='pull-right'>Rp. "+numberWithCommas(totalsudahdibayar)+"</span>";
                 $(CicilanPenjualanTable.column(2).footer()).html(cicilantotaltext);
-                var cicilanKekurangan  = penjualan.subtotal - totalsudahdibayar;
+                var cicilanKekurangan  = totalsisa;
                 var cicilanKurangText= "<span class='pull-right'>Rp. "+numberWithCommas(cicilanKekurangan)+"</span>";
                 if (cicilanKekurangan<=0)
                 {
@@ -249,7 +222,7 @@ function populateDetailPenjualan(curPenjualanID)
                         "paging": false,
                         "lengthChange": false,
                         "searching": false,
-                        "ordering": true,
+                        "ordering": false,
                         "info": false,
                         "autoWidth": false
                     });
@@ -265,43 +238,43 @@ function populateDetailPenjualan(curPenjualanID)
                     ReturPenjualanTable.column(".Detailpenjualan-HargaPokokLaba").visible(false);
                 }
 
+                console.log(penjualan.retur);
                 for (i=0;i<penjualan.retur.length;i++)
                 {
                     var tgl_temp = new Date(penjualan.retur[i].tanggal);
-                    var tgl = tgl_temp.getFullYear()+"-"+(tgl_temp.getMonth()+1)+"-"+tgl_temp.getDate();
+                    var tgl = tgl_temp.getDate()+"/"+(tgl_temp.getMonth()+1)+"/"+tgl_temp.getFullYear();
 
-                    var metode = "Cash"
-                    if(penjualan.retur[i].metode == 1) metode = "Voucher"
+                    var metode = "Cash";
+                    if(penjualan.retur[i].metode == 1) metode = "Voucher";
 
-                    var len = penjualan.barang.length
-                    var isi_box_retur = 0
-                    var satuan_unit_retur
-                    var harga_unit_retur
-                    var disc_retur
-                    var nama_retur
+                    var len = penjualan.barang.length;
+                    var isi_box_retur = 0;
+                    var satuan_unit_retur;
+                    var harga_unit_retur;
+                    var disc_retur;
+                    var nama_retur;
                     for(var j=0; j<len; j++){
                         if(penjualan.barang[j].penjualanbarangID == penjualan.retur[i].penjualanbarangID){
-                            isi_box_retur = (penjualan.barang[j].konversi_box).toString() + " " + penjualan.barang[j].satuan_acuan_box
-                            satuan_unit_retur = penjualan.barang[j].satuan_unit;
-                            harga_unit_retur = penjualan.barang[j].harga_jual_saat_ini
-                            disc_retur = penjualan.barang[j].disc
-                            nama_retur = penjualan.barang[j].nama_barang
+                            isi_box_retur = "@ "+(penjualan.barang[j].konversi_box).toString() + " " + capitalizeFirstLetter(penjualan.barang[j].satuan_acuan_box);
+                            satuan_unit_retur = capitalizeFirstLetter(penjualan.barang[j].satuan_unit);
+                            harga_unit_retur = penjualan.barang[j].harga_jual_saat_ini;
+                            disc_retur = penjualan.barang[j].disc;
+                            nama_retur = penjualan.barang[j].nama_barang;
                         }
                     }
-
-                    var subtotal_retur = harga_unit_retur * penjualan.retur[i].quantity
-                    subtotal_retur = subtotal_retur * (100 - disc_retur) / 100
+                    var subtotal_retur = harga_unit_retur * penjualan.retur[i].quantity;
+                    subtotal_retur = subtotal_retur * (100 - disc_retur) / 100;
 
                     ReturPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
+                        tgl,
                         nama_retur,
                         isi_box_retur,
-                        penjualan.retur[i].quantity,
+                        "<span class='pull-right'>"+numberWithCommas(penjualan.retur[i].quantity)+"</span>",
                         satuan_unit_retur,
-                        "Rp. "+numberWithCommas(harga_unit_retur),
-                        disc_retur+"%",
-                        "Rp. "+numberWithCommas(subtotal_retur),
-                        tgl,
+                        "<span class='pull-right'>Rp. "+numberWithCommas(harga_unit_retur)+"</span>",
+                        "<span class='pull-right'>"+disc_retur+" %</span>",
+                        "<span class='pull-right'>Rp. "+numberWithCommas(subtotal_retur)+"</span>",
                         metode
                     ]);
 
@@ -311,14 +284,57 @@ function populateDetailPenjualan(curPenjualanID)
             else {
                 $(".Detailpenjualan-returSection").hide();
             }
-
-
         }
         else
         {
             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
         }
     });
+}
+function DetailPenjualanGetVoucherList(i, penjualan, adavocer, totalpengurangan)
+{
+    var ItemTableFooter = document.getElementById("Detailpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
+    console.log("i"+i);
+    //console.log(penjualan.cicilan[i].cara_pembayaran);
+    if (i == penjualan.cicilan.length) {
+        console.log(adavocer);
+        if (adavocer)
+        {
+            console.log("wewe");
+            var rowCount = ItemTableFooter.rows.length;
+            var row = ItemTableFooter.insertRow(rowCount);
+            var  col1 = row.insertCell(0);
+             col1.setAttribute("colspan", "7");
+            col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
+            var col2 = row.insertCell(1);
+            col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(penjualan.subtotal-totalpengurangan)+"</span>";
+        }
+    }
+    else if (penjualan.cicilan[i].cara_pembayaran=="voucher")
+    {
+        GetPenjualanDariVoucher(currentToken, penjualan.cicilan[i].voucherID,  function(result){
+            console.log(result);
+            var tanggalStr  = new Date(result.tanggal);
+            var tanggalretur = tanggalStr.getDate()+"/"+(tanggalStr.getMonth()+1)+"/"+tanggalStr.getFullYear();
+            adavocer=true;
+            var rowCount = ItemTableFooter.rows.length;
+            var row = ItemTableFooter.insertRow(rowCount);
+            var col1 = row.insertCell(0);
+            col1.setAttribute("colspan", "7");
+            col1.innerHTML =
+                "<a onclick='InitDetailPenjualanPage("+result.penjualanID+")'>" +
+                "<span class='pull-right' >Retur Penjualan tanggal "+tanggalretur+
+                "</span>" +
+                "</a>";
+            var col2 = row.insertCell(1);
+            col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(penjualan.cicilan[i].nominal)+"</span>";
+            totalpengurangan+=penjualan.cicilan[i].nominal;
+            DetailPenjualanGetVoucherList(i+1, penjualan, adavocer, totalpengurangan);
+        });
+    }
+    else {
+        DetailPenjualanGetVoucherList(i+1, penjualan, adavocer, totalpengurangan);
+    }
 }
 function InitDetailPenjualanPage(curPenjualanID)
 {
@@ -376,6 +392,7 @@ function InitDetailPenjualanPage(curPenjualanID)
         })
     };
    // ipcRenderer.off('page-printed');
+    ipcRenderer.removeAllListeners();
     ipcRenderer.on('page-printed', function (event, input, output) {
         createAlert("success", "Penjualan telah di print")
     })

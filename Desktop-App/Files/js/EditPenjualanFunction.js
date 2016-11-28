@@ -16,10 +16,8 @@ function EditPenjualanAddRow(barang)
     var isi_box = "@ "+(barang.konversi_box).toString() + " " + capitalizeFirstLetter(barang.satuan_acuan_box);
 
 
-
-
-
     var hargaJual = barang.harga_jual_saat_ini;
+    console.log(barang.harga_pokok_saat_ini +" "+barang.konversi_unit +" "+ barang.konversi_acuan_unit);
     var hargaPokok = (barang.harga_pokok_saat_ini * barang.konversi_unit * barang.konversi_acuan_unit);
 
     var qty = barang.quantity;
@@ -40,7 +38,7 @@ function EditPenjualanAddRow(barang)
     cell5.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
-    cell3.innerHTML = numberWithCommas(qty);
+    cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>";
 
     var cell4 = row.insertCell(4);
     cell4.innerHTML = capitalizeFirstLetter(satuan_unit);
@@ -55,10 +53,10 @@ function EditPenjualanAddRow(barang)
     inputHargaAddOn.innerHTML="Rp.";
     var inputHarga= document.createElement("input");
     inputHarga.setAttribute("type", "number");
-    inputHarga.setAttribute("onchange", "EditpenjualanDrawTable(this.parentNode);");
+    inputHarga.setAttribute("onchange", "EditPenjualanDrawTable(this.parentNode);");
     inputHarga.setAttribute("class", "form-control");
     inputHarga.value=hargaJual;
-    inputHarga.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-1");
+    inputHarga.setAttribute("id", "Editpenjualan-Input-"+rowNum.toString()+"-1");
     inputHargaGroup.appendChild(inputHargaAddOn);
     inputHargaGroup.appendChild(inputHarga);
     cell7.appendChild(inputHargaGroup);
@@ -76,8 +74,8 @@ function EditPenjualanAddRow(barang)
     inputDisc.setAttribute("min", "0");
     inputDisc.setAttribute("max", "100");
     inputDisc.setAttribute("class", "form-control");
-    inputDisc.setAttribute("id", "Penjualanbaru-Input-"+rowNum.toString()+"-2");
-    inputDisc.setAttribute("onchange", "EditpenjualanDrawTable(this.parentNode);");
+    inputDisc.setAttribute("id", "Editpenjualan-Input-"+rowNum.toString()+"-2");
+    inputDisc.setAttribute("onchange", "EditPenjualanDrawTable(this.parentNode);");
     inputDisc.value=disc;
     inputDiscGroup.appendChild(inputDisc);
     inputDiscGroup.appendChild(inputDiscAddOn);
@@ -168,7 +166,7 @@ function EditPenjualanDrawTable(r) {
         indexChanged = 0;
     }
     var i;
-    var itemTable= document.getElementById("editpenjualan-ItemTable");
+    var itemTable= document.getElementById("Editpenjualan-ItemTable");
     if (countLaba)
     {
         var TotalLaba = 0;
@@ -239,8 +237,8 @@ function EditPenjualanEditEntry(penjualanbarangID, row)
 {
     EditPenjualanBarang(currentToken,
         penjualanbarangID,
-        document.getElementById("Editpembelian-Input-"+row+"-1").value,
-        document.getElementById("Editpembelian-Input-"+row+"-2").value,
+        document.getElementById("Editpenjualan-Input-"+row+"-1").value,
+        document.getElementById("Editpenjualan-Input-"+row+"-2").value,
         function(result){
             if (result.token_status=='success')
             {
@@ -268,7 +266,7 @@ function EditPenjualanSaveConfirm(id)
         tgljatuh = null;
     }
 
-    EditPembelian(currentToken, id, tgltrans, tgljatuh, alamat, notes, function(result) {
+    EditPenjualan(currentToken, id, tgltrans, tgljatuh, alamat, notes, function(result) {
         if (result.token_status=="success")
         {
             for (i=1;i<=rowNum;i++)
@@ -277,7 +275,7 @@ function EditPenjualanSaveConfirm(id)
                 EditPenjualanEditEntry($(ItemTableBody.rows[i-1].cells[0]).attr("data-id"), i);
             }
             InitDetailPenjualanPage(id);
-            createAlert("success", "Data Pembelian Berhasil diubah");
+            createAlert("success", "Data Penjualan Berhasil diubah");
         }
 
     })
@@ -290,5 +288,10 @@ function InitEditPenjualanPage(curPenjualanID)
     currentToken = localStorage.getItem("token");
     setPage("EditPenjualan");
     EditPenjualanResetTable();
-    populateEditPenjualanPage(curPenjualanID)
+    populateEditPenjualanPage(curPenjualanID);
+    document.getElementById("Editpenjualan-SaveButton").onclick=function()
+    {
+        EditPenjualanSaveConfirm(curPenjualanID);
+    }
+
 }
