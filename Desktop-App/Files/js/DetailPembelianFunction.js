@@ -291,7 +291,7 @@ function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
             col1.setAttribute("colspan", "9");
             col1.innerHTML =
                 "<a onclick='InitDetailPenjualanPage("+result.penjualanID+")'>" +
-                "<span class='pull-right' >Retur Pembelian tanggal "+tanggalretur+
+                "<span class='pull-right' >Voucher dari Pembelian tanggal "+tanggalretur+
                 "</span>" +
                 "</a>";
             var col2 = row.insertCell(1);
@@ -299,6 +299,23 @@ function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
             totalpengurangan+=pembelian.cicilan[i].nominal;
             DetailPembelianGetVoucherList(i+1, pembelian, adavocer, totalpengurangan);
         });
+    }
+    else if (pembelian.cicilan[i].cara_pembayaran=="retur")
+    {
+        var tanggalStr  = new Date(result.tanggal);
+        var tanggalretur = tanggalStr.getDate()+"/"+(tanggalStr.getMonth()+1)+"/"+tanggalStr.getFullYear();
+        adavocer=true;
+        var rowCount = ItemTableFooter.rows.length;
+        var row = ItemTableFooter.insertRow(rowCount);
+        var col1 = row.insertCell(0);
+        col1.setAttribute("colspan", "9");
+        col1.innerHTML =
+            "<span class='pull-right' >Retur tanggal "+tanggalretur+
+            "</span>";
+        var col2 = row.insertCell(1);
+        col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(pembelian.cicilan[i].nominal)+"</span>";
+        totalpengurangan+=pembelian.cicilan[i].nominal;
+        DetailPembelianGetVoucherList(i+1, pembelian, adavocer, totalpengurangan);
     }
 }
 function InitDetailPembelianPage(curPembelianID)

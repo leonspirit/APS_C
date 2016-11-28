@@ -175,18 +175,18 @@ function add_retur_pembelian(counter, berhasil, length, pembelianID){
     var tglTransaksiTemp = new Date();
     var tglTransaksi = tglTransaksiTemp.getFullYear() + "-" + (tglTransaksiTemp.getMonth() + 1) + "-" + tglTransaksiTemp.getDate();
 
-    var metode = 0
+    var metode = 0;
     if ($("#Returpembelian-Metode").val() == "voucher") {
-        metode = 1
+        metode = 1;
     }
     else  if ($("#Returpembelian-Metode").val() == "simpan") {
         metode=2;
     }
 
-    if(counter === undefined)counter = 1
+    if(counter === undefined)counter = 1;
     if(counter >= length){
         if (berhasil == 1) {
-            InitDetailPembelianPage(pembelianID)
+            InitDetailPembelianPage(pembelianID);
             createAlert("success", "Retur Pembelian Berhasil Dilakukan");
         }
         else {
@@ -216,8 +216,8 @@ function add_retur_pembelian(counter, berhasil, length, pembelianID){
                 else {
                     berhasil = 0
                 }
-                counter++
-                add_retur_pembelian(counter, berhasil, length, pembelianID)
+                counter++;
+                add_retur_pembelian(counter, berhasil, length, pembelianID);
             }
         )
     }
@@ -226,9 +226,7 @@ function add_retur_pembelian(counter, berhasil, length, pembelianID){
 
 function returPembelianBaru(pembelianID) {
 
-    var satuan = [];
     var itemTable = document.getElementById("Returpembelian-ItemTable");
-    var i;
 
     add_retur_pembelian(1,1,itemTable.rows.length-1, pembelianID)
 }
