@@ -44,7 +44,7 @@ router.post('/tambah_retur_penjualan', function(req,res){
                             if(req.body.metode == 0){
                                 res.status(200).send(resp)
                             }
-                            else{
+                            else if(req.body.metode == 1){
                                 var querystring2 = 'SELECT penjualanID, harga_jual_saat_ini*(100-disc)/100 as harga FROM penjualanbarang WHERE penjualanbarangID = ?'
                                 var querystring3 = 'SELECT p.pelangganID as pelangganID, t.harga as harga FROM penjualan as p, ('+querystring2+') as t WHERE p.penjualanID = t.penjualanID'
                                 var voucherpenjualan = [req.body.penjualanbarangID]
@@ -76,6 +76,21 @@ router.post('/tambah_retur_penjualan', function(req,res){
                                                 res.status(200).send(resp)
                                             })
                                         }
+                                    })
+                                })
+                            }
+                            else{
+                                var querystring2 = 'SELECT penjualanID, harga_jual_saat_ini*(100-disc)/100 as harga FROM penjualanbarang WHERE penjualanbarangID = ?'
+                                var cicilanpenjualan = [req.body.penjualanbarangID]
+                                connection.query(querystring2, cicilanpenjualan, function(err3, result3){
+                                    if(err3) throw err3
+                                    var nominal = result3[0]['harga'] * req.body.quantity
+
+                                    var querystring3 = 'INSERT INTO cicilanpenjualan SET penjualanID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "retur", karyawanID = ?'
+                                    var cicilan = [result3[0]['penjualanID'], req.body.tanggal, nominal, result['karyawanID']]
+                                    connection.query(querystring3, cicilan, function(err5, result5){
+                                        if(err5) throw err5
+                                        res.status(200).send(resp)
                                     })
                                 })
                             }
@@ -123,7 +138,7 @@ router.post('/tambah_retur_pembelian', function(req,res){
                             if(req.body.metode == 0){
                                 res.status(200).send(resp)
                             }
-                            else{
+                            else if (req.body.metode == 1){
                                 var querystring2 = 'SELECT pembelianID, harga_per_biji*(100-disc_1-disc_2-disc_3)/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
                                 var querystring3 = 'SELECT p.supplierID as supplierID, t.harga as harga FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID'
                                 var voucherpembelian = [req.body.pembelianbarangID]
@@ -155,6 +170,21 @@ router.post('/tambah_retur_pembelian', function(req,res){
                                                 res.status(200).send(resp)
                                             })
                                         }
+                                    })
+                                })
+                            }
+                            else{
+                                var querystring2 = 'SELECT pembelianID, harga_per_biji*(100-disc_1-disc_2-disc_3)/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
+                                var cicilanpembelian = [req.body.pembelianbarangID]
+                                connection.query(querystring2, cicilanpembelian, function(err3, result3){
+                                    if(err3) throw err3
+                                    var nominal = result3[0]['harga'] * req.body.quantity
+
+                                    var querystring3 = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "retur", karyawanID = ?'
+                                    var cicilan = [result3[0]['pembelianID'], req.body.tanggal, nominal, result['karyawanID']]
+                                    connection.query(querystring3, cicilan, function(err5, result5){
+                                        if(err5) throw err5
+                                        res.status(200).send(resp)
                                     })
                                 })
                             }

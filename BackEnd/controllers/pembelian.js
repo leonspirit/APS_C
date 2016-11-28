@@ -149,6 +149,11 @@ function add_pembelian_barang(req, i, pembelianID){
 
     var satuanID = req.body.satuan[i]['satuanID']
     var quantity = req.body.satuan[i]['quantity']
+
+    if(req.body.satuan[i]['disc1'] == '')req.body.satuan[i]['disc1'] = 0
+    if(req.body.satuan[i]['disc2'] == '')req.body.satuan[i]['disc2'] = 0
+    if(req.body.satuan[i]['disc3'] == '')req.body.satuan[i]['disc3'] = 0
+
     var disc1 = parseInt(req.body.satuan[i]['disc1'])
     var disc2 = parseInt(req.body.satuan[i]['disc2'])
     var disc3 = parseInt(req.body.satuan[i]['disc3'])
@@ -215,6 +220,7 @@ function voucher_use(index, sisa_harga, pembelianID, tanggal, karyawanID, data, 
 router.post('/tambah_pembelian', function(req,res){
 
     if(req.body.jatuh_tempo == '')req.body.jatuh_tempo = null
+    if(req.body.disc == '')req.body.disc = 0
     var resp = {}
     res.type('application/json')
     token_auth.check_user(req.body.token, function(result){
@@ -699,7 +705,9 @@ router.post('/edit_pembelianbarang', function(req,res){
                             var stok = [harga_pokok/konversi, stokID];
                             connection.query(querystring5, stok, function(err6, result6){
                                 if(err6) throw err6
-                                res.status(200).send(resp)
+                                token_auth.update_status_pembelian(result2[0]['pembelianID'], function(result){
+                                    res.status(200).send(resp)
+                                })
                             })
                         })
                     })
