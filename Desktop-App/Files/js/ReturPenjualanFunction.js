@@ -131,6 +131,9 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
     if ($("#Returpenjualan-Metode").val() == "voucher") {
         metode = 1
     }
+    else  if ($("#Returpenjualan-Metode").val() == "simpan") {
+        metode=2;
+    }
 
     if(counter === undefined)counter = 1;
     if(counter >= length){

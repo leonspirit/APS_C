@@ -1,0 +1,86 @@
+<template class="section-template">
+    <section class="content" id="section-PenjualanBarang">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+                <div class="alert-placeholder"></div>
+                <!--<button data-toggle="collapse" data-parent="#accordion" href="#Laporanpenjualan-SearchField" class="btn btn-primary" ><i class="glyphicon glyphicon-search"></i> Search</button>-->
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Dari Tanggal</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="PenjualanBarang-TglawalDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sampai Tanggal</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="PenjualanBarang-TglakhirDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              <!--  <div id="Laporanpenjualan-SearchField" class="panel-collapse collapse">
+                    <div class="row">
+                        <form id="Laporanpenjualan-SearchForm">
+                            <div class="col-md-2">
+                                <label>ID</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">TJ</div>
+                                        <input class="form-control Laporanpenjualan-search-filter" name="id" type="number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Pembeli</label>
+                                <input class="form-control Laporanpenjualan-search-filter" name="pelanggan" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Cara pembayaran</label>
+                                <select class="form-control Laporanpenjualan-search-filter" name="pembayaran">
+                                    <option value="">Semua</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bon">Bon</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>-->
+                <table id="PenjualanBarangTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th id="PenjualanBarangTable-kode">Kode</th>
+                            <th id="PenjualanBarangTable-pembeli">Pembeli</th>
+                            <th>Tanggal</th>
+                            <th id="PenjualanTable-pembayaran">Pembayaran</th>
+                            <th>Jatuh tempo</th>
+                            <th>Subtotal</th>
+                            <th id="PenjualanBarangTable-laba">Laba</th>
+                            <th id="PenjualanbarangTable-print">Print</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</template>
+<link rel=import" data-path="model/ModelPenjualan.js">
+<link rel=import" data-path="js/PenjualanBarangFunction.js">

@@ -72,8 +72,10 @@ function populateDetailPembelian(currentPembelianID)
             document.getElementById("Detailpembelian-KodeText").innerHTML = StrId;
             document.getElementById("Detailpembelian-NotesText").innerHTML = notesText;
 
-            var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(pembelian.subtotal*(100-pembelian.disc)/100)+"</span>";
+            var hargaAfterDisc =pembelian.subtotal*(100-pembelian.disc)/100;
+            var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(hargaAfterDisc)+"</span>";
             var grandDiscountText ="<span class='pull-right'>"+numberWithCommas(pembelian.disc)+" %</span>";
+
 
             $(itemPembelianTable.column(9).footer()).html(grandTotalText);
             $(itemPembelianTable.column(7).footer()).html(grandDiscountText);
@@ -156,7 +158,7 @@ function populateDetailPembelian(currentPembelianID)
                         CicilanPembelianTable.row.add([
                             TglTransaksiCicilanText,
                             pembelian.cicilan[i].cara_pembayaran,
-                            "Rp. " + numberWithCommas(pembelian.cicilan[i].nominal),
+                            "<span class='pull-right'>Rp. " + numberWithCommas(pembelian.cicilan[i].nominal)+"</span>",
                             bank,
                             nomor_giro,
                             TglPencairanCicilanText,
@@ -272,7 +274,8 @@ function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
             col1.setAttribute("colspan", "9");
             col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
             var col2 = row.insertCell(1);
-            col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(pembelian.subtotal-totalpengurangan)+"</span>";
+            var hargaAfterDisc = pembelian.subtotal*(100-pembelian.disc)/100;
+            col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(hargaAfterDisc-totalpengurangan)+"</span>";
         }
     }
     else if (pembelian.cicilan[i].cara_pembayaran=="voucher")
@@ -327,7 +330,6 @@ function InitDetailPembelianPage(curPembelianID)
     else {
         $("#Detailpembelian-EditButton").hide();
     }
-
     const BrowserWindow = require('electron').remote.BrowserWindow
     const ipcRenderer = require('electron').ipcRenderer
     const path = require('path')

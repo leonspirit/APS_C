@@ -29,6 +29,18 @@ function getPiutangPenjualanData(token, tgl_awal, tgl_akhir, fn)
             fn(data);
         }, "json");
 }
+function getBarangPenjualanData(token, barangID, tgl_awal, tgl_akhir, fn)
+{
+    $.post( baseUrl + "penjualan/list_penjualan_barang_A/",
+        {
+            token: token,
+            tgl_akhir:tgl_akhir,
+            tgl_awal:tgl_awal,
+            barangID:barangID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 function getAllPenjualanData(token, tgl_awal, tgl_akhir, fn)
 {
     $.post( baseUrl + "penjualan/list_penjualan/",

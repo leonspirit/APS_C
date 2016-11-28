@@ -179,6 +179,9 @@ function add_retur_pembelian(counter, berhasil, length, pembelianID){
     if ($("#Returpembelian-Metode").val() == "voucher") {
         metode = 1
     }
+    else  if ($("#Returpembelian-Metode").val() == "simpan") {
+        metode=2;
+    }
 
     if(counter === undefined)counter = 1
     if(counter >= length){

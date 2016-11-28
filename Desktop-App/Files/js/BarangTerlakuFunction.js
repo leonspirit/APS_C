@@ -104,10 +104,12 @@ function BarangTerlakuPopulateData() {
                 var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
 
                 var barangterjual ="<span class='pull-right'>"+ result.data[i].terjual + " box</span>";
+                var detailButton = "<a onclick = 'InitPenjualanBarangPage("+ id+")'><i class='glyphicon glyphicon-new-window'></i></a>";
                 BarangTerlakuTable.row.add([
                     StrId,
                     result.data[i].nama,
-                    barangterjual
+                    barangterjual,
+                    detailButton
                 ]);
             }
             BarangTerlakuTable.draw();

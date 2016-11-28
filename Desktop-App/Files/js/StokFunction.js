@@ -391,7 +391,6 @@ function StokBarangCreateBarangConfirm()
                      else {
                          harga_pokok_biji = parseInt((form.elements['harga-pokok-input'].value/ konversiAcuanBox))+1;
                      }
-                    //var stoktambahan = isibox.value* konversiAcuanBox * stokfield.value;
                     AddStok(currentToken, result.barangID, jumlahstokmasuk, harga_pokok_biji , function(result){
                         if (result.token_status=="success")
                         {
@@ -440,7 +439,6 @@ function StokBarangCreateBarangConfirm()
             }
         });
     }
-
 }
 
 //INITIALIZATION FUNCTIONS
