@@ -134,9 +134,9 @@ function populateEditPenjualanPage(ID)
         }
         document.getElementById("Editpenjualan-NotesInput").value=penjualan.notes;
         document.getElementById("Editpenjualan-AlamatInput").value=penjualan.alamat;
-        var itemTableFooter= document.getElementById("Editpembelian-ItemTable").getElementsByTagName("tfoot")[0];
+        var itemTableFooter= document.getElementById("Editpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
         console.log(itemTableFooter);
-        itemTableFooter.rows[0].cells[2].children[0].children[0].value=penjualan.disc;
+        itemTableFooter.rows[0].cells[2].children[0].innerHTML=penjualan.disc;
         itemTableFooter.rows[0].cells[4].children[0].innerHTML="Rp. "+numberWithCommas(penjualan.subtotal);
 
         var i;

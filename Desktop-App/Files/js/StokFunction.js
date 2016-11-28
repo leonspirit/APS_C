@@ -370,15 +370,32 @@ function StokBarangCreateBarangConfirm()
                 }
                 var jumlahstokmasuk;
                 var stokfield = form.elements['stok'];
+                var satuanstokfield = form.elements['satuan-stok-select'];
+                var satuanhargapokok = form.elements['harga-pokok-select'];
                 if (stokfield.value!=0 && stokfield.value!=null)
                 {
-                    jumlahstokmasuk = stokfield.value;
-                    var harga_pokok_biji = parseInt(form.elements['harga-pokok-input'].value/  konversiAcuanBox);
-                    var stoktambahan = isibox.value* konversiAcuanBox * stokfield.value;
-                    AddStok(currentToken, result.barangID, stoktambahan, harga_pokok_biji , function(result){
+                     if(satuanstokfield.value!=-1)
+                     {
+                         jumlahstokmasuk = stokfield.value * satuanstokfield.value;
+                     }
+                     else{
+                         jumlahstokmasuk = stokfield.value * isibox.value* konversiAcuanBox;
+                     }
+                    var harga_pokok_biji;
+                    console.log(satuanhargapokok.value);
+                     if (satuanhargapokok.value!=-1)
+                     {
+
+                         harga_pokok_biji = parseInt((form.elements['harga-pokok-input'].value/ (satuanhargapokok.value)))+1;
+                     }
+                     else {
+                         harga_pokok_biji = parseInt((form.elements['harga-pokok-input'].value/ konversiAcuanBox))+1;
+                     }
+                    //var stoktambahan = isibox.value* konversiAcuanBox * stokfield.value;
+                    AddStok(currentToken, result.barangID, jumlahstokmasuk, harga_pokok_biji , function(result){
                         if (result.token_status=="success")
                         {
-                            console.log(currentToken+" "+ stoktambahan+" "+harga_pokok_biji);
+                            console.log(currentToken+" "+ jumlahstokmasuk+" "+harga_pokok_biji);
                         }
                     });
                 }

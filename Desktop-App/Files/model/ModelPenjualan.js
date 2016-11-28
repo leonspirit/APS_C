@@ -105,7 +105,7 @@ function AddCicilanPenjualan(token,penjualanID, tanggal_cicilan, nominal, notes,
 
 function EditPenjualan(token, penjualanID, tanggal_transaksi, jatuh_tempo, alamat, notes, fn)
 {
-    $.post( baseUrl + "pembelian/edit_pembelian/",
+    $.post( baseUrl + "penjualan/edit_penjualan/",
         {
             token: token,
             alamat:alamat,
@@ -119,7 +119,7 @@ function EditPenjualan(token, penjualanID, tanggal_transaksi, jatuh_tempo, alama
 }
 function EditPenjualanBarang(token, penjualanbarangID, harga_jual_saat_ini, disc, fn)
 {
-    $.post( baseUrl + "pembelian/tambah_cicilan_pembelian/",
+    $.post( baseUrl + "penjualan/edit_penjualanbarang/",
         {
             token: token,
             penjualanbarangID: penjualanbarangID,

@@ -269,7 +269,7 @@ function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
             var rowCount = ItemTableFooter.rows.length;
             var row = ItemTableFooter.insertRow(rowCount);
             var  col1 = row.insertCell(0);
-            col1.setAttribute("colspan", "7");
+            col1.setAttribute("colspan", "9");
             col1.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Grand Total</span>";
             var col2 = row.insertCell(1);
             col2.innerHTML = "<span class='pull-right' style='font-weight:bold;'>Rp. "+numberWithCommas(pembelian.subtotal-totalpengurangan)+"</span>";
@@ -285,7 +285,7 @@ function DetailPembelianGetVoucherList(i, pembelian, adavocer, totalpengurangan)
             var rowCount = ItemTableFooter.rows.length;
             var row = ItemTableFooter.insertRow(rowCount);
             var col1 = row.insertCell(0);
-            col1.setAttribute("colspan", "7");
+            col1.setAttribute("colspan", "9");
             col1.innerHTML =
                 "<a onclick='InitDetailPenjualanPage("+result.penjualanID+")'>" +
                 "<span class='pull-right' >Retur Pembelian tanggal "+tanggalretur+
