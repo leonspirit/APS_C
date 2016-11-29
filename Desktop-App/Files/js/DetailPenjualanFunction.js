@@ -82,6 +82,7 @@ function populateDetailPenjualan(curPenjualanID)
 
             $(itemPenjualanTable.column(7).footer()).html(grandTotalText);
             console.log(penjualan);
+            var labatotal = 0;
             for (i=0;i<penjualan.barang.length;i++)
             {
                 var hargaUnit = penjualan.barang[i].harga_jual_saat_ini;
@@ -91,11 +92,11 @@ function populateDetailPenjualan(curPenjualanID)
                 var nama_barang = penjualan.barang[i].nama_barang;
                 var isi_box = (penjualan.barang[i].konversi_box).toString() + " " + penjualan.barang[i].satuan_acuan_box;
                 var satuan_unit = penjualan.barang[i].satuan_unit;
-
                 if (hasHakAkses("HargaPokokLaba"))
                 {
                     var hpokok=penjualan.barang[i].konversi_unit * penjualan.barang[i].konversi_acuan_unit * penjualan.barang[i].harga_pokok_saat_ini;
                     var laba=itemSubtotal - (qty*hpokok);
+                    labatotal+=laba;
                     itemPenjualanTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
                         nama_barang,
@@ -131,6 +132,10 @@ function populateDetailPenjualan(curPenjualanID)
             {
                 ItemTableFooter.deleteRow(-1);
             }
+            if (hasHakAkses("HargaPokokLaba"))
+            {
+                ItemTableFooter.rows[0].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(labatotal);
+            }
             DetailPenjualanGetVoucherList(0, penjualan, false, 0);
             //nggambar cicilan
             console.log(penjualan.jatuh_tempo);
@@ -142,7 +147,7 @@ function populateDetailPenjualan(curPenjualanID)
                         "paging": false,
                         "lengthChange": false,
                         "searching": false,
-                        "ordering": true,
+                        "ordering": false,
                         "info": false,
                         "autoWidth": false,
                         "language": {
@@ -160,7 +165,7 @@ function populateDetailPenjualan(curPenjualanID)
                 {
 
                     totalsisa -=penjualan.cicilan[i].nominal;
-                     if (penjualan.cicilan[i].cara_pembayaran!="voucher")
+                     if (penjualan.cicilan[i].cara_pembayaran!="voucher" && penjualan.cicilan[i].cara_pembayaran!='retur')
                      {
                          totalsudahdibayar+= penjualan.cicilan[i].nominal;
                          var TglTransaksiCicilan = new Date(penjualan.cicilan[i].tanggal_cicilan);
@@ -295,7 +300,6 @@ function DetailPenjualanGetVoucherList(i, penjualan, adavocer, totalpengurangan)
 {
     var ItemTableFooter = document.getElementById("Detailpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
     console.log("i"+i);
-    //console.log(penjualan.cicilan[i].cara_pembayaran);
     if (i == penjualan.cicilan.length) {
         console.log(adavocer);
         if (adavocer)
@@ -323,7 +327,7 @@ function DetailPenjualanGetVoucherList(i, penjualan, adavocer, totalpengurangan)
             col1.setAttribute("colspan", "7");
             col1.innerHTML =
                 "<a onclick='InitDetailPenjualanPage("+result.penjualanID+")'>" +
-                "<span class='pull-right' >Retur Penjualan tanggal "+tanggalretur+
+                "<span class='pull-right' >Voucher dari Penjualan tanggal "+tanggalretur+
                 "</span>" +
                 "</a>";
             var col2 = row.insertCell(1);
@@ -331,6 +335,23 @@ function DetailPenjualanGetVoucherList(i, penjualan, adavocer, totalpengurangan)
             totalpengurangan+=penjualan.cicilan[i].nominal;
             DetailPenjualanGetVoucherList(i+1, penjualan, adavocer, totalpengurangan);
         });
+    }
+    else if (penjualan.cicilan[i].cara_pembayaran=="retur")
+    {
+            var tanggalStr  = new Date(penjualan.cicilan[i].tanggal_cicilan);
+            var tanggalretur = tanggalStr.getDate()+"/"+(tanggalStr.getMonth()+1)+"/"+tanggalStr.getFullYear();
+            adavocer=true;
+            var rowCount = ItemTableFooter.rows.length;
+            var row = ItemTableFooter.insertRow(rowCount);
+            var col1 = row.insertCell(0);
+            col1.setAttribute("colspan", "7");
+            col1.innerHTML =
+               "<span class='pull-right' >Retur tanggal "+tanggalretur+
+                "</span>";
+            var col2 = row.insertCell(1);
+            col2.innerHTML = "<span class='pull-right'>-Rp. "+numberWithCommas(penjualan.cicilan[i].nominal)+"</span>";
+            totalpengurangan+=penjualan.cicilan[i].nominal;
+            DetailPenjualanGetVoucherList(i+1, penjualan, adavocer, totalpengurangan);
     }
     else {
         DetailPenjualanGetVoucherList(i+1, penjualan, adavocer, totalpengurangan);

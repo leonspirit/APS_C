@@ -15,7 +15,6 @@ function EditPenjualanAddRow(barang)
     var nama_barang = barang.nama_barang;
     var isi_box = "@ "+(barang.konversi_box).toString() + " " + capitalizeFirstLetter(barang.satuan_acuan_box);
 
-
     var hargaJual = barang.harga_jual_saat_ini;
     console.log(barang.harga_pokok_saat_ini +" "+barang.konversi_unit +" "+ barang.konversi_acuan_unit);
     var hargaPokok = (barang.harga_pokok_saat_ini * barang.konversi_unit * barang.konversi_acuan_unit);
@@ -102,9 +101,6 @@ function EditPenjualanAddRow(barang)
         untung.innerHTML = "Rp. "+numberWithCommas(laba);
         cell11.appendChild(untung);
     }
-    else {
-    }
-
 }
 
 function populateEditPenjualanPage(ID)
@@ -136,8 +132,8 @@ function populateEditPenjualanPage(ID)
         document.getElementById("Editpenjualan-AlamatInput").value=penjualan.alamat;
         var itemTableFooter= document.getElementById("Editpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
         console.log(itemTableFooter);
-        itemTableFooter.rows[0].cells[2].children[0].innerHTML=penjualan.disc;
-        itemTableFooter.rows[0].cells[4].children[0].innerHTML="Rp. "+numberWithCommas(penjualan.subtotal);
+       // itemTableFooter.rows[0].cells[2].children[0].innerHTML=penjualan.disc;
+        itemTableFooter.rows[0].cells[2].children[0].innerHTML="Rp. "+numberWithCommas(penjualan.subtotal);
 
         var i;
         for (i=0;i<penjualan.barang.length;i++)

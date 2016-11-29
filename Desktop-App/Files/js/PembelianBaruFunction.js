@@ -2,7 +2,7 @@
  * Created by Billy on 07-Oct-16.
  */
 
-var currentToken = localStorage.getItem("token");
+var currentToken;
 
 function SupplierMatcher (term, text) {
     if (text.toUpperCase().indexOf(term.toUpperCase()) != -1 || text==='+ Tambah Supplier Baru') {
@@ -21,7 +21,6 @@ function BarangMatcher (term, text) {
 var DataBarang, DataSupplier;
 function PembelianBaruGetSupplier()
 {
-
     GetAllSupplierData(currentToken, function(result){
         if(result.token_status=="success")
         {
@@ -68,7 +67,6 @@ function PembelianBaruGetBarang()
         {
             DataBarang = [];
             var i;
-            var pad ="00000";
             for (i=0;i<result.data.length;i++)
             {
                DataBarang.push(
@@ -516,14 +514,31 @@ function PembelianBaruSave(isPrinted)//PENTING
 function PembelianBaruResetTable()
 {
     var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var tableFoot = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tfoot")[0];
     while (true) {
         if (tableBody.rows.length==1)
             break;
         tableBody.deleteRow(-1);
     }
+
+    $("#Pembelianbaru-SupplierSelect").val('').trigger('change');
+    $("#Pembelianbaru-Input-01-1").val('').trigger('change');
+    $("#Pembelianbaru-Input-01-3").empty().trigger('change');
+    document.getElementById("Pembelianbaru-Input-01-2").value='';
+    document.getElementById("Pembelianbaru-Input-01-4").value='';
+
+    tableBody.rows[0].cells[2].innerHTML = '';
+
     tableBody.rows[0].cells[6].children[0].children[0].value = 0;
     tableBody.rows[0].cells[7].children[0].children[0].value = 0;
     tableBody.rows[0].cells[8].children[0].children[0].value = 0;
+    tableBody.rows[0].cells[9].children[0].innerHTML ="Rp. 0";
+    while (true) {
+        if (tableFoot.rows.length==1)
+            break;
+        tableFoot.deleteRow(-1);
+    }
+    tableFoot.rows[0].cells[4].innerHTML = "Rp. 0";
 }
 
 
@@ -739,11 +754,16 @@ function PembelianBaruSupplierSelectChangeListener()
                         var pembelianID = 19;
                         var tanggalPembelian = "10/10/2016";
                         var jumlah  = result.data[i].jumlah_awal;
-                        var voucherEntry = "<p><input data-id='"+ result.data[i].voucherpembelianID+"' id ='voucher-"+pembelianID+"' type='checkbox' class='minimal Pembelianbaru-VoucherModal-VoucherCheckList'>" +
+                        var voucherEntry =
+                            "<p>" +
+                            "<input data-id='"+ result.data[i].voucherpembelianID+"' id ='voucher-"+pembelianID+"' type='checkbox' class='minimal Pembelianbaru-VoucherModal-VoucherCheckList'>" +
                             " <a id='Pembelianbaru-VoucherModal-DetailText-"+i+"' onclick='InitDetailPembelianPage("+pembelianID+");'>" +
                             "Pembelian tanggal " +tanggalPembelian+" " +
                             "</a>"+
-                            "<span id='Pembelianbaru-VoucherModal-NominalText-"+i+"'>Rp. "+numberWithCommas(jumlah)+"</span></p>";
+                            "<span id='Pembelianbaru-VoucherModal-NominalText-"+i+"'>" +
+                            "Rp. "+numberWithCommas(jumlah)+
+                            "</span>" +
+                            "</p>";
                         document.getElementById("Pembelianbaru-VoucherModal-VoucherList").innerHTML+= voucherEntry;
                     }
                     $("#Pembelianbaru-VoucherModal").modal('toggle');

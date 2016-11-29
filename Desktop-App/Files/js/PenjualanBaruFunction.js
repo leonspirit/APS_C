@@ -271,23 +271,20 @@ function PenjualanBaruAddRow()
 
 }
 function PenjualanBaruResetTable() {
+    var hakhargaPokokLaba  = hasHakAkses("HargaPokokLaba");
     removeWarning();
     PenjualanBaruGetBarang();
     PenjualanBaruGetPelanggan();
 
     var tableBody = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tbody")[0];
+    var tableFoot = document.getElementById('Penjualanbaru-ItemTable').getElementsByTagName("tfoot")[0];
 
     while (true) {
         if (tableBody.rows.length==1)
             break;
         tableBody.deleteRow(-1);
     }
-    tableBody.rows[0].cells[7].children[0].innerHTML = "Rp. 0";
-    if (hasHakAkses("HargaPokokLaba"))
-    {
-        tableBody.rows[0].cells[8].children[0].innerHTML = "Rp. 0";
-        tableBody.rows[0].cells[9].children[0].innerHTML = "Rp. 0";
-    }
+
     $("#Penjualanbaru-PembayaranSelect").val('cash').trigger('change');
     document.getElementById("Penjualanbaru-TgltransaksiDate").value="";
     document.getElementById("Penjualanbaru-TgljatuhtempoDate").value="";
@@ -302,6 +299,23 @@ function PenjualanBaruResetTable() {
     document.getElementById("Penjualanbaru-Input-01-2").value='';
     document.getElementById("Penjualanbaru-Input-01-4").value='';
     document.getElementById("Penjualanbaru-Input-01-5").value='';
+
+    tableBody.rows[0].cells[7].children[0].innerHTML = "Rp. 0";
+    console.log("minyak");
+    console.log(tableBody.rows[0].cells[7].children[0]);
+    if (hakhargaPokokLaba)
+    {
+        tableBody.rows[0].cells[8].children[0].innerHTML = "Rp. 0";
+        tableBody.rows[0].cells[9].children[0].innerHTML = "Rp. 0";
+    }
+    while (true) {
+        if (tableFoot.rows.length==1)
+            break;
+        tableFoot.deleteRow(-1);
+    }
+    tableFoot.rows[0].cells[2].children[0].innerHTML = "Rp. 0";
+    if (hakhargaPokokLaba)
+        tableFoot.rows[0].cells[4].children[0].innerHTML = "Rp. 0";
 }
 
 function PenjualanBaruDrawTable(r) {

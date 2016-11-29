@@ -5,10 +5,13 @@
 function populateReturPembelian(currentPembelianID)
 {
     GetDetailPembelian(currentToken, currentPembelianID, function(result) {
-        var itemPembelianTable;
-        if (result.token_status == "success") {
+       if (result.token_status == "success") {
             var pembelian = result.data[0];
             var i;
+            if (pembelian.status=='lunas')
+            {
+                $("#ReturPenjualan-SimpanOption").hide();
+            }
 
             var pad = "0000";
             var id = "" + pembelian.pembelianID;
@@ -83,7 +86,7 @@ function ReturPembelianAddRow(barang)
     cell3.innerHTML ="<span class='pull-right'>"+numberWithCommas(qty)+"</span>";
 
     var cellqtyRetur = row.insertCell(4);
-    cellqtyRetur.setAttribute("style", "padding:0");;
+    cellqtyRetur.setAttribute("style", "padding:0");
     var inputJumlahRetur = document.createElement("input");
     inputJumlahRetur.setAttribute("id", "ReturPembelian-Input-"+rowNum.toString()+"-2");
     inputJumlahRetur.setAttribute("class", "form-control");
@@ -111,15 +114,12 @@ function ReturPembelianAddRow(barang)
     var cell10 = row.insertCell(10);
     cell10.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(itemSubtotal)+"</span>";
     var cell11 = row.insertCell(11);
-    //cell11.setAttribute("style","padding:0");
     cell11.innerHTML =  "<span class='pull-right'>Rp. 0</span>";
-//    cell11.setAttribute("class", form-)
 
 }
 
 function ReturPembelianDrawTable(r)
 {
-
     var indexChanged;
     if (r!=null)
         indexChanged = getRowIndex(r);//.parentNode.parentNode.rowIndex;
@@ -180,7 +180,7 @@ function add_retur_pembelian(counter, berhasil, length, pembelianID){
         metode = 1;
     }
     else  if ($("#Returpembelian-Metode").val() == "simpan") {
-        metode=2;
+        metode = 2;
     }
 
     if(counter === undefined)counter = 1;
@@ -248,9 +248,8 @@ function InitReturPembelianPage(pembelianID)
 
     $('#Returpembelian-Metode').select2({
         minimumResultsForSearch: Infinity
-    })
+    });
     document.getElementById("Returpembelian-SaveButton").onclick=function(){
         returPembelianBaru(pembelianID);
     };
-
 }
