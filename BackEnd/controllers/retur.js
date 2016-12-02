@@ -139,7 +139,7 @@ router.post('/tambah_retur_pembelian', function(req,res){
                                 res.status(200).send(resp)
                             }
                             else if (req.body.metode == 1){
-                                var querystring2 = 'SELECT pembelianID, harga_per_biji*(100-disc_1-disc_2-disc_3)/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
+                                var querystring2 = 'SELECT pembelianID, harga_per_biji*(100 - (disc_1) - ((100-disc_1)/100*disc_2) - ((100 - (disc_1) - ((100-disc_1)/100*disc_2))/100*disc_3) )/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
                                 var querystring3 = 'SELECT p.supplierID as supplierID, t.harga as harga FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID'
                                 var voucherpembelian = [req.body.pembelianbarangID]
                                 connection.query(querystring3, voucherpembelian, function(err3, result3){
@@ -174,7 +174,7 @@ router.post('/tambah_retur_pembelian', function(req,res){
                                 })
                             }
                             else{
-                                var querystring2 = 'SELECT pembelianID, harga_per_biji*(100-disc_1-disc_2-disc_3)/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
+                                var querystring2 = 'SELECT pembelianID, harga_per_biji*(100 - (disc_1) - ((100-disc_1)/100*disc_2) - ((100 - (disc_1) - ((100-disc_1)/100*disc_2))/100*disc_3) )/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
                                 var cicilanpembelian = [req.body.pembelianbarangID]
                                 connection.query(querystring2, cicilanpembelian, function(err3, result3){
                                     if(err3) throw err3

@@ -60,7 +60,7 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 }
                     var HargaPokok =
                         '<span class="pull-right">' +
-                        'Rp. ' + numberWithCommas(barangEntry.harga_pokok * result2.data[i2].konversi * result2.data[i2].konversi_acuan) +
+                        'Rp. ' + numberWithCommas(Math.round(barangEntry.harga_pokok * result2.data[i2].konversi * result2.data[i2].konversi_acuan)) +
                         '</span>';
                     BarangTable.row.add([
                         StrId,
@@ -484,4 +484,3 @@ function InitStokBarangPage() {
 
     StokBarangDisableHargaPokokField();
 }
-

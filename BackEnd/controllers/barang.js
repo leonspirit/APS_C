@@ -162,7 +162,8 @@ function get_stok_harga_barang(index, data, callback){
                 if(!data[index]['harga_pokok']){
                     data[index]['harga_pokok'] = 0
                 }
-                data[index]['harga_pokok'] = Math.round(data[index]['harga_pokok'])
+                data[index]['harga_pokok'] = data[index]['harga_pokok']
+                //data[index]['harga_pokok'] = Math.round(data[index]['harga_pokok'])
                 callback()
             }
         );
