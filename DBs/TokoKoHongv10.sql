@@ -28,7 +28,7 @@ CREATE TABLE `barang` (
   `harga_pokok` int(11) DEFAULT NULL,
   `aktif` int(11) DEFAULT '1',
   PRIMARY KEY (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `barang` (
 
 LOCK TABLES `barang` WRITE;
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
-INSERT INTO `barang` VALUES (26,'sendok',1000,1),(27,'garpu',990,1),(28,'piring',2980,1),(29,'piringrino',0,1),(30,'sendokrino',0,1),(31,'iniBarang',0,1),(32,'iniBarang2',0,1),(33,'iniBarang2',0,1),(34,'inibarang3',0,1),(35,'inibarang4',0,1),(36,'Boneka Beruang',0,1),(37,'Boneka Babi',0,1),(38,'baranglagi',0,1),(39,'Freddy goreng tepung',0,1),(40,'aqua',0,1),(41,'',0,1),(42,'objek',0,1);
+INSERT INTO `barang` VALUES (26,'sendok',1000,1),(27,'garpu',990,1),(28,'piring',2980,1),(29,'piringrino',0,1),(30,'sendokrino',0,1),(31,'iniBarang',0,1),(32,'iniBarang2',0,1),(33,'iniBarang2',0,1),(34,'inibarang3',0,1),(35,'inibarang4',0,1),(36,'Boneka Beruang',0,1),(37,'Boneka Babi',0,1),(38,'baranglagi',0,1),(39,'Freddy goreng tepung',0,1),(40,'aqua',0,1),(41,'',0,1),(42,'objek',0,1),(43,'cobacoba',0,1);
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +65,7 @@ CREATE TABLE `cicilanpembelian` (
   KEY `FK_KARYAWAN_CICILANPEMBELIAN` (`karyawanID`),
   CONSTRAINT `CICILAN_PEMBELIAN_FK` FOREIGN KEY (`pembelianID`) REFERENCES `pembelian` (`pembelianID`),
   CONSTRAINT `FK_KARYAWAN_CICILANPEMBELIAN` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,6 @@ CREATE TABLE `cicilanpembelian` (
 
 LOCK TABLES `cicilanpembelian` WRITE;
 /*!40000 ALTER TABLE `cicilanpembelian` DISABLE KEYS */;
-INSERT INTO `cicilanpembelian` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,7,NULL),(2,56,'2016-10-28',80000,'bca','transfer','hayo_bank_apa','',NULL,7,NULL),(3,57,'2016-10-25',12000,'','tunai','','',NULL,7,NULL),(4,47,'2016-11-28',5390000,NULL,'retur',NULL,NULL,NULL,7,NULL),(5,47,'2016-11-28',400000,NULL,'retur',NULL,NULL,NULL,7,NULL);
 /*!40000 ALTER TABLE `cicilanpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +101,7 @@ CREATE TABLE `cicilanpenjualan` (
   KEY `FK_KARYAWAN_CICILANPENJUALAN` (`karyawanID`),
   CONSTRAINT `CICILAN_PENJUALAN_FK` FOREIGN KEY (`penjualanID`) REFERENCES `penjualan` (`penjualanID`),
   CONSTRAINT `FK_KARYAWAN_CICILANPENJUALAN` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +110,6 @@ CREATE TABLE `cicilanpenjualan` (
 
 LOCK TABLES `cicilanpenjualan` WRITE;
 /*!40000 ALTER TABLE `cicilanpenjualan` DISABLE KEYS */;
-INSERT INTO `cicilanpenjualan` VALUES (1,22,'2016-11-28',1500000,NULL,'retur',NULL,NULL,NULL,7,NULL),(2,22,'2016-11-28',10000,NULL,'retur',NULL,NULL,NULL,7,NULL);
 /*!40000 ALTER TABLE `cicilanpenjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +219,7 @@ CREATE TABLE `pembelian` (
   KEY `PEMBELIAN_KARY_FK` (`karyawanID`),
   CONSTRAINT `PEMBELIAN_KARY_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`),
   CONSTRAINT `SUPPLIER_FK` FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`supplierID`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +228,7 @@ CREATE TABLE `pembelian` (
 
 LOCK TABLES `pembelian` WRITE;
 /*!40000 ALTER TABLE `pembelian` DISABLE KEYS */;
-INSERT INTO `pembelian` VALUES (46,6,'2016-11-17',NULL,4850000,7,2,0,'lunas','adsfasdf'),(47,1,'2016-11-19','2016-11-29',28085000,7,5,0,'belum lunas','pembelian kedua'),(48,7,'2016-11-26',NULL,1000000,7,0,0,'lunas',''),(49,7,'2016-11-26',NULL,1000000,7,0,0,'lunas',''),(50,7,'2016-11-26',NULL,1000000,7,0,0,'lunas',''),(51,7,'2016-11-26',NULL,1000000,7,0,0,'lunas',''),(52,1,'2016-11-30',NULL,3000000,7,0,0,'lunas',''),(53,8,'2016-11-29',NULL,96000,7,0,0,'lunas',''),(54,1,'2016-11-24',NULL,540050,7,0,0,'lunas',''),(55,1,'2016-11-24',NULL,100000,7,0,0,'lunas',''),(56,1,'2016-11-24','2016-11-30',80000,7,0,0,'belum lunas',''),(57,6,'2016-11-23','2016-11-29',12000,7,0,0,'lunas',''),(58,1,'2016-12-17',NULL,12345,7,0,0,'lunas',''),(59,5,'2016-12-08',NULL,353,7,0,0,'lunas',''),(60,5,'2016-12-22',NULL,700,7,0,0,'lunas',''),(61,6,'2016-12-28',NULL,700,7,0,0,'lunas',''),(62,3,'2016-12-17',NULL,700,7,0,0,'lunas',''),(63,7,'2016-12-14',NULL,719650,7,0,0,'belum lunas',''),(64,8,'2016-12-26',NULL,317,7,0,0,'lunas','');
+INSERT INTO `pembelian` VALUES (72,5,'2016-12-15',NULL,590400,7,0,0,'lunas','');
 /*!40000 ALTER TABLE `pembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +256,7 @@ CREATE TABLE `pembelianbarang` (
   CONSTRAINT `FK_SATUAN_PEMBELIAN` FOREIGN KEY (`satuanID`) REFERENCES `satuanbarang` (`satuanID`),
   CONSTRAINT `PEMBELIAN_FK` FOREIGN KEY (`pembelianID`) REFERENCES `pembelian` (`pembelianID`),
   CONSTRAINT `PEMBELIAN_STOK_FK` FOREIGN KEY (`stokID`) REFERENCES `stok` (`stokID`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +265,7 @@ CREATE TABLE `pembelianbarang` (
 
 LOCK TABLES `pembelianbarang` WRITE;
 /*!40000 ALTER TABLE `pembelianbarang` DISABLE KEYS */;
-INSERT INTO `pembelianbarang` VALUES (54,46,1000,5000,1,1,1,28,55),(55,47,1500,5500,0,0,2,29,56),(56,47,500,50000,10,5,5,30,57),(57,49,20,50000,0,0,0,14,58),(58,50,20,50000,0,0,0,14,59),(59,51,20,50000,0,0,0,15,60),(60,54,2,20000,0,0,0,19,61),(61,54,5,100010,0,0,0,33,62),(62,55,1,100000,0,0,0,19,63),(63,56,1,80000,0,0,0,19,64),(64,57,1,12000,0,0,0,41,65),(65,58,1,12345,0,0,0,21,66),(66,59,1,353,0,0,0,23,69),(67,60,1,1000,10,10,10,29,70),(68,61,1,1000,10,9,8.1,29,71),(69,62,1,1000,10,9,8.1,29,72),(70,63,1,1000000,10,10,10,29,73),(71,64,1,453,10,10,10,29,74);
+INSERT INTO `pembelianbarang` VALUES (79,72,10,60000,1.6,0,0,29,82);
 /*!40000 ALTER TABLE `pembelianbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +292,7 @@ CREATE TABLE `penjualan` (
   KEY `PENJUALAN_KARY_FK` (`karyawanID`),
   CONSTRAINT `PELANGGAN_FK` FOREIGN KEY (`pelangganID`) REFERENCES `pelanggan` (`pelangganID`),
   CONSTRAINT `PENJUALAN_KARY_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +301,6 @@ CREATE TABLE `penjualan` (
 
 LOCK TABLES `penjualan` WRITE;
 /*!40000 ALTER TABLE `penjualan` DISABLE KEYS */;
-INSERT INTO `penjualan` VALUES (21,1,'2016-11-18',NULL,8820000,7,0,'lunas','adfadsf',''),(22,7,'2016-11-15','2016-11-25',13520000,7,0,'belum lunas','asdfasdf','');
 /*!40000 ALTER TABLE `penjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +327,7 @@ CREATE TABLE `penjualanbarang` (
   CONSTRAINT `PENJUALANBARANG_STOK_FK` FOREIGN KEY (`stokID`) REFERENCES `stok` (`stokID`),
   CONSTRAINT `PENJUALAN_FK` FOREIGN KEY (`penjualanID`) REFERENCES `penjualan` (`penjualanID`),
   CONSTRAINT `SATUAN_FK` FOREIGN KEY (`satuanID`) REFERENCES `satuanbarang` (`satuanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,7 +336,6 @@ CREATE TABLE `penjualanbarang` (
 
 LOCK TABLES `penjualanbarang` WRITE;
 /*!40000 ALTER TABLE `penjualanbarang` DISABLE KEYS */;
-INSERT INTO `penjualanbarang` VALUES (20,21,28,900,2,970,10000,55),(21,22,30,180,0,500,75000,57),(22,22,14,2,0,833,10000,58);
 /*!40000 ALTER TABLE `penjualanbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,7 +358,7 @@ CREATE TABLE `returpembelian` (
   KEY `RETURPEMBELIAN_KARYAWAN_FK` (`karyawanID`),
   CONSTRAINT `PEMBELIAN_RETUR_FK` FOREIGN KEY (`pembelianbarangID`) REFERENCES `pembelianbarang` (`pembelianbarangID`),
   CONSTRAINT `RETURPEMBELIAN_KARYAWAN_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +367,6 @@ CREATE TABLE `returpembelian` (
 
 LOCK TABLES `returpembelian` WRITE;
 /*!40000 ALTER TABLE `returpembelian` DISABLE KEYS */;
-INSERT INTO `returpembelian` VALUES (24,54,'2016-11-19',50,7,1),(25,54,'2016-11-21',30,7,0),(26,54,'2016-11-21',10,7,1),(29,55,'2016-11-28',1000,7,2),(30,56,'2016-11-28',10,7,2),(32,67,'2016-12-02',1,7,1);
 /*!40000 ALTER TABLE `returpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -394,7 +389,7 @@ CREATE TABLE `returpenjualan` (
   KEY `RETURPENJUALAN_KARYAWAN_FK` (`karyawanID`),
   CONSTRAINT `PENJUALAN_RETUR_FK` FOREIGN KEY (`penjualanbarangID`) REFERENCES `penjualanbarang` (`penjualanbarangID`),
   CONSTRAINT `RETURPENJUALAN_KARYAWAN_FK` FOREIGN KEY (`karyawanID`) REFERENCES `karyawan` (`karyawanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,7 +398,6 @@ CREATE TABLE `returpenjualan` (
 
 LOCK TABLES `returpenjualan` WRITE;
 /*!40000 ALTER TABLE `returpenjualan` DISABLE KEYS */;
-INSERT INTO `returpenjualan` VALUES (5,20,'2016-11-21',10,7,1),(6,20,'2016-11-21',15,7,0),(7,21,'2016-11-28',20,7,2),(8,22,'2016-11-28',1,7,2);
 /*!40000 ALTER TABLE `returpenjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,13 +413,13 @@ CREATE TABLE `satuanbarang` (
   `barangID` int(11) DEFAULT NULL,
   `harga_jual` int(11) DEFAULT NULL,
   `satuan` varchar(20) DEFAULT NULL,
-  `konversi` int(11) DEFAULT NULL,
+  `konversi` float DEFAULT NULL,
   `satuan_acuan` varchar(20) DEFAULT NULL,
-  `konversi_acuan` int(11) DEFAULT NULL,
+  `konversi_acuan` float DEFAULT NULL,
   PRIMARY KEY (`satuanID`),
   KEY `BARANG_FK` (`barangID`),
   CONSTRAINT `BARANG_FK` FOREIGN KEY (`barangID`) REFERENCES `barang` (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -434,7 +428,7 @@ CREATE TABLE `satuanbarang` (
 
 LOCK TABLES `satuanbarang` WRITE;
 /*!40000 ALTER TABLE `satuanbarang` DISABLE KEYS */;
-INSERT INTO `satuanbarang` VALUES (14,30,10000,'box',5,'lsn',12),(15,31,14000,'box',4,'lsn',12),(16,31,3000,'lsn',12,'pcs',1),(17,32,14000,'box',2,'lsn',12),(18,32,3000,'lsn',12,'pcs',1),(19,33,14000,'box',5,'lsn',12),(20,33,3000,'lsn',12,'pcs',1),(21,34,14001,'box',60,'lsn',12),(22,34,3000,'lsn',12,'pcs',1),(23,35,300,'box',20,'grs',144),(24,35,400,'grs',144,'pcs',1),(25,35,500,'kod',20,'pcs',1),(26,35,600,'lsn',12,'pcs',1),(27,35,700,'pcs',1,'pcs',1),(28,26,10000,'box',5,'pcs',1),(29,27,11000,'box',10,'pcs',1),(30,28,15000,'box',4,'kod',20),(31,29,16000,'box',5,'kod',20),(32,30,16000,'box',6,'kod',20),(33,36,50000,'box',5,'pcs',1),(34,36,11000,'pcs',1,'pcs',1),(35,37,100000,'box',10,'pcs',1),(36,37,11000,'pcs',1,'pcs',1),(37,38,12000,'box',5,'kod',20),(38,38,700,'kod',20,'pcs',1),(39,39,400000,'box',4,'pcs',1),(40,39,101000,'pcs',1,'pcs',1),(41,40,50000,'box',5,'lsn',12),(42,40,10000,'lsn',12,'pcs',1),(43,41,50000,'box',5,'pcs',1),(44,41,11000,'pcs',1,'pcs',1),(45,42,500,'box',10,'lsn',12),(46,42,70,'grs',144,'pcs',1),(47,42,61,'lsn',12,'pcs',1);
+INSERT INTO `satuanbarang` VALUES (14,30,10000,'box',5,'lsn',12),(15,31,14000,'box',4,'lsn',12),(16,31,3000,'lsn',12,'pcs',1),(17,32,14000,'box',2,'lsn',12),(18,32,3000,'lsn',12,'pcs',1),(19,33,14000,'box',5,'lsn',12),(20,33,3000,'lsn',12,'pcs',1),(21,34,14001,'box',60,'lsn',12),(22,34,3000,'lsn',12,'pcs',1),(23,35,300,'box',20,'grs',144),(24,35,400,'grs',144,'pcs',1),(25,35,500,'kod',20,'pcs',1),(26,35,600,'lsn',12,'pcs',1),(27,35,700,'pcs',1,'pcs',1),(28,26,10000,'box',5,'pcs',1),(29,27,11000,'box',10,'pcs',1),(30,28,15000,'box',4,'kod',20),(31,29,16000,'box',5,'kod',20),(32,30,16000,'box',6,'kod',20),(33,36,50000,'box',5,'pcs',1),(34,36,11000,'pcs',1,'pcs',1),(35,37,100000,'box',10,'pcs',1),(36,37,11000,'pcs',1,'pcs',1),(37,38,12000,'box',5,'kod',20),(38,38,700,'kod',20,'pcs',1),(39,39,400000,'box',4,'pcs',1),(40,39,101000,'pcs',1,'pcs',1),(41,40,50000,'box',5,'lsn',12),(42,40,10000,'lsn',12,'pcs',1),(43,41,50000,'box',5,'pcs',1),(44,41,11000,'pcs',1,'pcs',1),(45,42,500,'box',10,'lsn',12),(46,42,70,'grs',144,'pcs',1),(47,42,61,'lsn',12,'pcs',1),(48,43,50000,'box',2.5,'grs',144);
 /*!40000 ALTER TABLE `satuanbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -455,7 +449,7 @@ CREATE TABLE `stok` (
   PRIMARY KEY (`stokID`),
   KEY `BARANG_STOK_FK` (`barangID`),
   CONSTRAINT `BARANG_STOK_FK` FOREIGN KEY (`barangID`) REFERENCES `barang` (`barangID`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -464,7 +458,7 @@ CREATE TABLE `stok` (
 
 LOCK TABLES `stok` WRITE;
 /*!40000 ALTER TABLE `stok` DISABLE KEYS */;
-INSERT INTO `stok` VALUES (55,26,970,5000,425,0),(56,27,539,15000,-5000,0),(57,28,500,40000,25600,0),(58,30,833,1200,1140,0),(59,30,833,1200,1200,0),(60,31,1042,960,960,0),(61,33,333,120,120,0),(62,36,20002,25,25,0),(63,33,1667,60,60,0),(64,33,1333,60,60,0),(65,40,200,60,60,0),(66,34,17.14583396911621,720,720,0),(69,35,0.12256944444444444,2880,2880,0),(70,27,70,10,-10,0),(71,27,72.9,10,10,0),(72,27,72.9,10,10,0),(73,27,72900.00000000001,10,10,0),(74,27,33.023700000000005,10,10,0);
+INSERT INTO `stok` VALUES (82,27,5904.000000000001,100,100,0);
 /*!40000 ALTER TABLE `stok` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -541,7 +535,7 @@ CREATE TABLE `voucherpembelian` (
   KEY `returpembelianID` (`returpembelianID`),
   CONSTRAINT `voucherpembelian_ibfk_1` FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`supplierID`),
   CONSTRAINT `voucherpembelian_ibfk_2` FOREIGN KEY (`returpembelianID`) REFERENCES `returpembelian` (`returpembelianID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -550,7 +544,6 @@ CREATE TABLE `voucherpembelian` (
 
 LOCK TABLES `voucherpembelian` WRITE;
 /*!40000 ALTER TABLE `voucherpembelian` DISABLE KEYS */;
-INSERT INTO `voucherpembelian` VALUES (7,6,291000,291000,24),(8,5,729,729,32);
 /*!40000 ALTER TABLE `voucherpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -572,7 +565,7 @@ CREATE TABLE `voucherpenjualan` (
   KEY `returpenjualanID` (`returpenjualanID`),
   CONSTRAINT `voucherpenjualan_ibfk_1` FOREIGN KEY (`pelangganID`) REFERENCES `pelanggan` (`pelangganID`),
   CONSTRAINT `voucherpenjualan_ibfk_2` FOREIGN KEY (`returpenjualanID`) REFERENCES `returpenjualan` (`returpenjualanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -581,7 +574,6 @@ CREATE TABLE `voucherpenjualan` (
 
 LOCK TABLES `voucherpenjualan` WRITE;
 /*!40000 ALTER TABLE `voucherpenjualan` DISABLE KEYS */;
-INSERT INTO `voucherpenjualan` VALUES (2,1,98000,98000,5);
 /*!40000 ALTER TABLE `voucherpenjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -594,4 +586,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-02  4:40:30
+-- Dump completed on 2016-12-02 18:44:41

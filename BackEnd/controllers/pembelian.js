@@ -145,6 +145,60 @@ function add_metode_retur(index, data, callback){
     })
 }
 
+function add_harga_stok(index, res_query, data, callback){
+
+    var stok = res_query[index]['stok_skrg']
+    var harga = res_query[index]['harga_beli']
+
+    if(data['stok']){
+        data['stok'] = data['stok'] + stok
+    }
+    else{
+        data['stok'] = stok
+    }
+
+    if(data['harga_pokok']){
+        data['harga_pokok'] = data['harga_pokok'] + (harga * stok)
+    }
+    else{
+        data['harga_pokok'] = harga * stok
+    }
+    callback()
+}
+
+function get_stok_harga_barang(index, data, callback){
+
+    var barangID = data[index]['barangID']
+
+    var qrstring = 'SELECT harga_beli, stok_skrg FROM stok WHERE barangID = ?'
+    var barang = [barangID]
+    connection.query(qrstring, barang, function(err, result){
+        if(err) throw err
+
+        var len = result.length
+        asyncLoop(len, function(loop) {
+            add_harga_stok(loop.iteration(), result, data[index], function(result) {
+                loop.next();
+            })},
+            function(){
+                if(data[index]['stok']){
+                    data[index]['harga_pokok'] = data[index]['harga_pokok'] / data[index]['stok']
+                }
+                else{
+                    data[index]['stok'] = 0
+                }
+
+                if(!data[index]['harga_pokok']){
+                    data[index]['harga_pokok'] = 0
+                }
+                data[index]['harga_pokok'] = data[index]['harga_pokok']
+                //data[index]['harga_pokok'] = Math.round(data[index]['harga_pokok'])
+                callback()
+            }
+        );
+    })
+}
+
 function add_pembelian_barang(req, i, pembelianID){
 
     var satuanID = req.body.satuan[i]['satuanID']
@@ -154,9 +208,9 @@ function add_pembelian_barang(req, i, pembelianID){
     if(req.body.satuan[i]['disc2'] == '')req.body.satuan[i]['disc2'] = 0
     if(req.body.satuan[i]['disc3'] == '')req.body.satuan[i]['disc3'] = 0
 
-    var disc1 = parseInt(req.body.satuan[i]['disc1'])
-    var disc2 = parseInt(req.body.satuan[i]['disc2']) * (100-disc1)/100
-    var disc3 = parseInt(req.body.satuan[i]['disc3']) * (100-disc1-disc2)/100
+    var disc1 = parseFloat(req.body.satuan[i]['disc1'])
+    var disc2 = parseFloat(req.body.satuan[i]['disc2']) * (100-disc1)/100
+    var disc3 = parseFloat(req.body.satuan[i]['disc3']) * (100-disc1-disc2)/100
 
     var harga = req.body.satuan[i]['harga_per_biji']
     var total_disc = disc1 + disc2 + disc3
@@ -176,9 +230,24 @@ function add_pembelian_barang(req, i, pembelianID){
             var stokID = result2.insertId;
 
             var querystring3 = 'INSERT INTO pembelianbarang SET pembelianID = ?, quantity = ?, harga_per_biji = ?, disc_1 = ?, disc_2 = ?, disc_3 = ?, satuanID = ?, stokID = ?'
-            var pembelianbarang = [pembelianID, quantity, harga, parseInt(req.body.satuan[i]['disc1']), parseInt(req.body.satuan[i]['disc2']), parseInt(req.body.satuan[i]['disc3']), satuanID, stokID]
+            var pembelianbarang = [pembelianID, quantity, harga, parseFloat(req.body.satuan[i]['disc1']), parseFloat(req.body.satuan[i]['disc2']), parseFloat(req.body.satuan[i]['disc3']), satuanID, stokID]
             connection.query(querystring3, pembelianbarang, function(err3, result3){
                 if(err3) throw err3;
+
+                var len = 1
+                asyncLoop(len, function(loop) {
+                    get_stok_harga_barang(loop.iteration(), result, function(result5) {
+                        loop.next();
+                    })},
+                    function(){
+
+                        var qrstring1 = 'UPDATE stok SET harga_beli = ? WHERE barangID = ?'
+                        var harga_stok = [result[0]['harga_pokok'], barangID]
+                        connection.query(qrstring1, harga_stok, function(err4, result4){
+                            if(err4) throw err4
+                        })
+                    }
+                );
             })
         })
     })
@@ -676,9 +745,9 @@ router.post('/edit_pembelianbarang', function(req,res){
                 var price_awal = result2[0]['quantity'] * result2[0]['harga_per_biji']
                 price_awal = price_awal * (100 - (result2[0]['disc_1']) - ((100-result2[0]['disc_1'])/100*result2[0]['disc_2']) - ( (100-(result2[0]['disc_1'])-(100-result2[0]['disc_1'])/100*result2[0]['disc_2'])/100*result2[0]['disc_3']) ) / 100
 
-                var d1 = parseInt(req.body.disc_1)
-                var d2 = parseInt(req.body.disc_2) * (100-d1)/100
-                var d3 = parseInt(req.body.disc_3) * (100-d1-d2)/100
+                var d1 = parseFloat(req.body.disc_1)
+                var d2 = parseFloat(req.body.disc_2) * (100-d1)/100
+                var d3 = parseFloat(req.body.disc_3) * (100-d1-d2)/100
 
                 var curr_price = result2[0]['quantity'] * req.body.harga_per_biji
                 curr_price = curr_price * (100-d1-d2-d3) / 100
