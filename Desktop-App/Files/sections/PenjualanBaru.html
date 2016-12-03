@@ -8,75 +8,73 @@
             </div>
             <div class="box-body">
                 <form role="form">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pelanggan</label>
-                            <input style="width: 100%;" class="form-control select2" id="Penjualanbaru-PelangganSelect">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pembayaran</label>
-                            <select class="form-control pull-right" id="Penjualanbaru-PembayaranSelect">
-                                <option value="cash">Cash</option>
-                                <option value="bon">Bon</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Tanggal Penjualan</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" id="Penjualanbaru-TgltransaksiDate">
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Kirim Ke</label>
-                            <input id="Penjualanbaru-AlamatInput" type="text" class="form-control pull-right">
-                        </div>
-                    </div>
-                    <div class="col-md-4" id="Penjualanbaru-JatuhtempoContainer" >
-                        <div  class="form-group" id="form-field-jatuh-tempo">
-                            <label>Jatuh Tempo</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="Penjualanbaru-TgljatuhtempoDate">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Pelanggan</label>
+                                        <input  class="form-control select2"  style="width: 100%" id="Penjualanbaru-PelangganSelect">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Pembayaran</label>
+                                        <select class="form-control pull-right" id="Penjualanbaru-PembayaranSelect">
+                                            <option value="cash">Cash</option>
+                                            <option value="bon">Bon</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tanggal Penjualan</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="Penjualanbaru-TgltransaksiDate">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Kirim Ke</label>
+                                        <input id="Penjualanbaru-AlamatInput" type="text" class="form-control pull-right">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div  class="form-group" id="form-field-jatuh-tempo">
+                                        <label>Jatuh Tempo</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="Penjualanbaru-TgljatuhtempoDate">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <label>Notes</label>
-                            <input id="Penjualanbaru-NotesInput" class="form-control" style="width: 100%;" >
+                            <textarea id="Penjualanbaru-NotesInput" rows="5" class="form-control" style="width: 100%;height:100%;resize:none;" ></textarea>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="box-header">
-              <h3 class="box-title">List Item</h3>
-            </div>
-            <div class="box-body">
               <table id="Penjualanbaru-ItemTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                     <th style="width:10px">No</th>
-                    <th style="width:250px">Barang</th>
-                    <th>Isi/Box</th>
+                    <th >Barang</th>
+                    <th style="width:90px">Isi/Box</th>
                     <th style="width:60px">Qty</th>
-                    <th style="width:100px">Unit</th>
-                    <th style="width:150px">H.Satuan</th>
-                    <th style="width:100px">Disc</th>
+                    <th style="width:80px">Unit</th>
+                    <th style="width:150px">H.Unit</th>
+                    <th style="width:85px">Disc</th>
                     <th>Subtotal</th>
                     <th class="Penjualanbaru-ItemTable-HargapokoklabaColumn">H.Pokok</th>
                     <th class="Penjualanbaru-ItemTable-HargapokoklabaColumn">Lb</th>

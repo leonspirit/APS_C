@@ -82,6 +82,7 @@
     </section>
     <!-- /.content -->
 </div>
+<button class="btn btn-primary" id="PenjualanBesar-PrintBtn">print</button>
 <!-- ./wrapper -->
 
 
@@ -94,24 +95,25 @@
 <script>
     $(function () {
 
-
        // window.print();
         const ipc = require('electron').ipcRenderer;
         const BrowserWindow = require('electron').remote.BrowserWindow;
 
         ipc.on('print-page', function (event, number, fromWindowId) {
-            //const result = 1;//factorial(number)
             PopulatePenjualanBesarInvoice(number);
-          //  window.print();
-          //  print();
-            const fromWindow = BrowserWindow.fromId(fromWindowId);
-            fromWindow.webContents.send('page-printed', number, 0);
+            $("PenjualanBesar-PrintBtn").show();
+            document.getElementById("PenjualanBesar-PrintBtn").onclick=function()
+            {
+                $("PenjualanBesar-PrintBtn").hide();
+                window.print();
+                const fromWindow = BrowserWindow.fromId(fromWindowId);
+                fromWindow.webContents.send('page-printed', number, 0);
+                window.close();
+            };
+
           //  window.close()
         });
-        function print()
-        {
-            window.print();
-        }
+
 
     });
 </script>

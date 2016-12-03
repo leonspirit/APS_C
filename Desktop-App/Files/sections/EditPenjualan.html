@@ -7,61 +7,60 @@
                 <div class="alert-placeholder"></div>
             </div>
             <div class="box-body">
+
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pelanggan</label>
-                            <h4 id="Editpenjualan-PelangganText"></h4>
-                            <!-- <input class="form-control select2" style="width: 100%;" id="Pembelianbaru-SupplierSelect">-->
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Pembayaran</label>
-                            <h4 id="Editpenjualan-PembayaranText">
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Tanggal Pembelian</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Pelanggan</label>
+                                            <h4 id="Editpenjualan-PelangganText"></h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Pembayaran</label>
+                                            <h4 id="Editpenjualan-PembayaranText">
+                                            </h4>
+                                        </div>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="Editpenjualan-TgltransaksiDate">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Kirim Ke</label>
+                                        <input id="Editpenjualan-AlamatInput" class="form-control" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tanggal Pembelian</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="Editpenjualan-TgltransaksiDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tanggal Jatuh Tempo</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="Editpenjualan-TgljatuhtempoDate">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <label>Kirim Ke</label>
-                        <input id="Editpenjualan-AlamatInput" class="form-control" style="width: 100%;">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Tanggal Jatuh Tempo</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control" id="Editpenjualan-TgljatuhtempoDate">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <label>Notes</label>
-                        <input id="Editpenjualan-NotesInput" class="form-control" style="width: 100%;">
+                        <textarea rows="5" id="Editpenjualan-NotesInput" class="form-control" style="width: 100%;resize:none;"></textarea>
                     </div>
                 </div>
-                </div>
-            <div class="box-header">
-                <h4>Item</h4>
-            </div>
-            <div class="box-body">
                 <table id="Editpenjualan-ItemTable" class="table table-bordered table-hover">
                     <thead>
                     <tr>

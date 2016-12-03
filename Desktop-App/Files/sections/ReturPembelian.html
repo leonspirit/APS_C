@@ -7,45 +7,86 @@
                         <div class="alert-placeholder"></div>
                     </div>
                     <div class="box-body">
+
                         <div class="row">
-                            <div class="col-md-4">
-                                <label>Kode</label>
-                                <h4 id="Returpembelian-KodeText"></h4>
-                                <label>Supplier</label>
-                                <h4 id="Returpembelian-SupplierText"></h4>
+                            <div class="col-md-3">
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Kode</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-KodeText"></div><br>
+                                </div>
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Supplier</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-SupplierText"></div><br>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label>Pembayaran</label>
-                                <h4 id="Returpembelian-PembayaranText"></h4>
-                                <label>Status</label>
-                                <h4 id="Returpembelian-StatusText"></h4>
+                            <div class="col-md-2">
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Pembayaran</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-PembayaranText"></div><br>
+                                </div>
+                                <div class="description-block">
+                                    <div class="descriptio-text pull-left">Status</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-StatusText"></div><br>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label>Tanggal Transaksi</label>
-                                <h4 id="Returpembelian-TglTransaksiText"></h4>
-                                <label>Tanggal Jatuh Tempo</label>
-                                <h4 id="Returpembelian-TglJatuhTempoText"></h4>
+                            <div class="col-md-2">
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Tanggal Transaksi</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-TglTransaksiText"></div><br>
+                                </div>
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Tanggal Jatuh Tempo</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-TglJatuhTempoText"></div><br>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label>Notes</label>
-                                <h4 id="Returpembelian-NotesText"></h4>
+                            <div class="col-md-3">
+                                <div class="description-block">
+                                    <div class="description-text pull-left">Notes</div><br>
+                                    <div class="description-header pull-left" id="Returpembelian-NotesText"></div><br>
+                                </div>
                             </div>
-                            <div class = "col-md-4">
-                                <label>Metode</label>
+                            <div class="col-md-2">
+                                <div class="description-block">
+                                <div class="description-text pull-left">Metode</div>
                                 <select id="Returpembelian-Metode" class="form-control select2">
                                     <option value="cash">Cash</option>
                                     <option value="voucher">Voucher</option>
                                     <option class="ReturPembelian-SimpanOption" value="simpan">Kurangi dari Tagihan</option>
                                 </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-header">
-                        <h3 class="box-title">Item</h3>
-                    </div>
-                    <div class="box-body">
+
+
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-4">-->
+                                <!--<label>Kode</label>-->
+                                <!--<h4 id="Returpembelian-KodeText"></h4>-->
+                                <!--<label>Supplier</label>-->
+                                <!--<h4 id="Returpembelian-SupplierText"></h4>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-4">-->
+                                <!--<label>Pembayaran</label>-->
+                                <!--<h4 id="Returpembelian-PembayaranText"></h4>-->
+                                <!--<label>Status</label>-->
+                                <!--<h4 id="Returpembelian-StatusText"></h4>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-4">-->
+                                <!--<label>Tanggal Transaksi</label>-->
+                                <!--<h4 id="Returpembelian-TglTransaksiText"></h4>-->
+                                <!--<label>Tanggal Jatuh Tempo</label>-->
+                                <!--<h4 id="Returpembelian-TglJatuhTempoText"></h4>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-8">-->
+                                <!--<label>Notes</label>-->
+                                <!--<h4 id="Returpembelian-NotesText"></h4>-->
+                            <!--</div>-->
+                            <!--<div class = "col-md-4">-->
+                                <!---->
+                            <!--</div>-->
+                        <!--</div>-->
                         <table id="Returpembelian-ItemTable" class="table table-bordered table-hover">
                             <thead>
                             <tr>

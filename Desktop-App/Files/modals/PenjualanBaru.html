@@ -65,11 +65,22 @@
                             <tr>
                                 <td colspan=2><b>Stok</b></td>
                                 <td style="padding:0">
-                                    <input type="number" name="stok" class="form-control">
+                                    <div class="input-group">
+                                        <input type="number" name="stok" class="form-control" onchange="PenjualanBaruHargaPokokField();">
+                                        <div class="input-group-btn">
+                                            <select name="satuan-stok-select" style="width:100px" class="form-control">
+                                                <option value=-1>Box</option>
+                                                <option value=144>Grs</option>
+                                                <option value=12>Lsn</option>
+                                                <option value=20>Kod</option>
+                                                <option value=1>Pcs</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan =2><b>Isi/Carton</b></td>
+                                <td colspan =2><b>Isi/Box</b></td>
                                 <td style="padding:0">
                                     <div class="input-group" style="width:100%;">
                                         <input type="number" name="isi-box-input" class="form-control" value="">
@@ -90,9 +101,16 @@
                                     <div class="input-group" style="width:100%;">
                                         <div class="input-group-addon">Rp.</div>
                                         <input type="number" class="form-control" name="harga-pokok-input">
-                                        <div class="input-group-addon">/ Carton</div>
+                                        <div class="input-group-btn">
+                                            <select name="harga-pokok-select" style="width:100px" class="form-control">
+                                                <option value=-1>Box</option>
+                                                <option value=144>Grs</option>
+                                                <option value=12>Lsn</option>
+                                                <option value=12>Kod</option>
+                                                <option value=1>Pcs</option>
+                                            </select>
+                                        </div>
                                     </div>
-
                                 </td>
                             </tr>
                             <tr>

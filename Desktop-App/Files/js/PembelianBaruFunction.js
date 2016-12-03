@@ -352,7 +352,7 @@ function PembelianBaruDrawTable(r)
         var disc2 = curRow.cells[7].children[0].children[0].value;
         var disc3 = curRow.cells[8].children[0].children[0].value;
         //subtotal
-        var Subtotal = parseInt((qty * hargaSatuan*(100-disc1-disc2-disc3))/100);
+        var Subtotal = parseInt(Math.round(qty * hargaSatuan*((100-disc1)/100)*((100-disc2)/100)*((100-disc3)/100)));
         curRow.cells[9].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
     }
     var TotalHarga = 0;
@@ -374,6 +374,7 @@ function PembelianBaruDrawTable(r)
     console.log(discBesar);
 
     var TotalHargaAfterDisc = parseInt(TotalHarga *(100 - discBesar)/100);
+    console.log(itemTable.rows[posisitotal]);
     itemTable.rows[posisitotal].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(TotalHargaAfterDisc);
     if (itemTableFoot.rows.length>1)
     {
@@ -513,6 +514,10 @@ function PembelianBaruSave(isPrinted)//PENTING
 }
 function PembelianBaruResetTable()
 {
+    removeWarning();
+    PembelianBaruGetBarang();
+    PembelianBaruGetSupplier();
+
     var tableBody = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tbody")[0];
     var tableFoot = document.getElementById('Pembelianbaru-ItemTable').getElementsByTagName("tfoot")[0];
     while (true) {
@@ -520,7 +525,12 @@ function PembelianBaruResetTable()
             break;
         tableBody.deleteRow(-1);
     }
+    tableFoot.rows[0].cells[2].children[0].children[0].value ='';
 
+    document.getElementById("Pembelianbaru-TgltransaksiDate").value="";
+    document.getElementById("Pembelianbaru-TgljatuhtempoDate").value="";
+
+    $("#Pembelianbaru-PembayaranSelect").val('cash').trigger('change');
     $("#Pembelianbaru-SupplierSelect").val('').trigger('change');
     $("#Pembelianbaru-Input-01-1").val('').trigger('change');
     $("#Pembelianbaru-Input-01-3").empty().trigger('change');
@@ -529,16 +539,17 @@ function PembelianBaruResetTable()
 
     tableBody.rows[0].cells[2].innerHTML = '';
 
-    tableBody.rows[0].cells[6].children[0].children[0].value = 0;
-    tableBody.rows[0].cells[7].children[0].children[0].value = 0;
-    tableBody.rows[0].cells[8].children[0].children[0].value = 0;
+    tableBody.rows[0].cells[6].children[0].children[0].value = '';
+    tableBody.rows[0].cells[7].children[0].children[0].value = '';
+    tableBody.rows[0].cells[8].children[0].children[0].value = '';
     tableBody.rows[0].cells[9].children[0].innerHTML ="Rp. 0";
     while (true) {
         if (tableFoot.rows.length==1)
             break;
         tableFoot.deleteRow(-1);
     }
-    tableFoot.rows[0].cells[4].innerHTML = "Rp. 0";
+    tableFoot.rows[0].cells[4].children[0].innerHTML = "Rp. 0";
+    removeWarning();
 }
 
 
@@ -629,9 +640,9 @@ function PembelianBaruMoveToNext(node)
         var nextID ="Pembelianbaru-Input-"+twoDigitPad(angka1baru)+"-"+angka2baru.toString();
         if($("#" + nextID).length == 0) {
             PembelianBaruAddRow();
-            $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
-                $("#" +nextID).select2('open');
-            });
+       //     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+      //          $("#" +nextID).select2('open');
+       //     });
         }
         else {
             if ($("#" + nextID).data('select2'))

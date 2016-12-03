@@ -24,10 +24,10 @@
                                       <div class="input-group-btn">
                                           <select name="satuan-stok-select" style="width:100px" class="form-control">
                                               <option value=-1>Box</option>
-                                              <option value=144>Grs</option>
-                                              <option value=12>Lsn</option>
-                                              <option value=20>Kod</option>
-                                              <option value=1>Pcs</option>
+                                              <option id="Stokbarang-CreateModal-SatuanStokSelect-grsOption" value=144>Grs</option>
+                                              <option id="Stokbarang-CreateModal-SatuanStokSelect-kodOption" value=20>Kod</option>
+                                              <option id="Stokbarang-CreateModal-SatuanStokSelect-lsnOption" value=12>Lsn</option>
+                                              <option id="Stokbarang-CreateModal-SatuanStokSelect-pcsOption" value=1>Pcs</option>
                                           </select>
                                       </div>
                                   </div>
@@ -58,10 +58,10 @@
                                       <div class="input-group-btn">
                                           <select name="harga-pokok-select" style="width:100px" class="form-control">
                                               <option value=-1>Box</option>
-                                              <option value=144>Grs</option>
-                                              <option value=12>Lsn</option>
-                                              <option value=12>Kod</option>
-                                              <option value=1>Pcs</option>
+                                              <option id="Stokbarang-CreateModal-SatuanHpokokSelect-grsOption" value=144>Grs</option>
+                                              <option id="Stokbarang-CreateModal-SatuanHpokokSelect-kodOption" value=20>Kod</option>
+                                              <option id="Stokbarang-CreateModal-SatuanHpokokSelect-lsnOption" value=12>Lsn</option>
+                                              <option id="Stokbarang-CreateModal-SatuanHpokokSelect-pcsOption" value=1>Pcs</option>
                                           </select>
                                       </div>
                                   </div>
@@ -74,7 +74,7 @@
                               <th></th>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
+                              <td><input id="Stokbarang-CreateModal-harga-jual-box-check" type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
                               <td>Box</td>
                               <td style="padding:0">
                                   <div class="form-group" style="margin:0">
@@ -167,9 +167,19 @@
                               </td>
                           </tr>
                           <tr>
-                              <td colspan =2><b>Isi/Carton</b></td>
-                              <td id="Stokbarang-EditModal-IsiBoxText">
-
+                              <td colspan =2><b>Isi/Box</b></td>
+                              <td style="padding:0">
+                                  <div class="input-group" style="width:100%;">
+                                      <input type="number" name="isi-box-input" class="form-control" value="">
+                                      <div class="input-group-btn">
+                                          <select name="acuan-box-select" style="width:100px" class="form-control">
+                                              <option value="grs">Grs</option>
+                                              <option value="lsn">Lsn</option>
+                                              <option value="kod">Kod</option>
+                                              <option value="pcs">Pcs</option>
+                                          </select>
+                                      </div>
+                                  </div>
                               </td>
                           </tr>
                           <tr id="Stokbarang-EditModal-HargaPokokRow">
@@ -184,7 +194,7 @@
                               <th></th>
                           </tr>
                           <tr>
-                              <td><input type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
+                              <td><input id="Stokbarang-EditModal-harga-jual-box-check" type="checkbox" name="harga-jual-box-check" class="minimal" checked disabled></td>
                               <td>Box</td>
                               <td style="padding:0">
                                   <div class="input-group">
@@ -270,7 +280,7 @@
                     <h4 class="modal-title">Koreksi- Tambah Stok</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Koreksi - Kurangi Stok barang <span id="Stokbarang-KoreksiModal-TambahNamaText"></span></p>
+                    <p>Koreksi - Tambah Stok barang <span id="Stokbarang-KoreksiModal-TambahNamaText"></span></p>
                     <table class="table">
                         <tr>
                             <th>Jumlah</th>

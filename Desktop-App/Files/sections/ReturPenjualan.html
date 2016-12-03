@@ -8,45 +8,100 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-4">
-                        <label>Kode</label>
-                        <h4 id="Returpenjualan-KodeText"></h4>
-                        <label>Pelanggan</label>
-                        <h4 id="Returpenjualan-PelangganText"></h4>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                            <div class="description-text pull-left">Kode</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-KodeText"></div><br>
+                        </div>
+                        <div class="description-block">
+                            <div class="description-text pull-left" >Pelanggan</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-PelangganText"></div><br>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label>Pembayaran</label>
-                        <h4 id="Returpenjualan-PembayaranText"></h4>
-                        <label>Status</label>
-                        <h4 id="Returpenjualan-StatusText"></h4>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                            <div class="description-text pull-left">Kirim Ke</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-AlamatText"></div><br>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label>Tanggal Transaksi</label>
-                        <h4 id="Returpenjualan-TglTransaksiText"></h4>
-                        <label>Tanggal Jatuh Tempo</label>
-                        <h4 id="Returpenjualan-TglJatuhTempoText"></h4>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                            <div class="description-text pull-left">Pembayaran</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-PembayaranText"></div><br>
+                        </div>
+                        <div class="description-block">
+                            <div class="description-text pull-left">Status</div><br>
+                            <div class="description-header pull-left"  id="Returpenjualan-StatusText"></div><br>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <label>Kirim Ke</label>
-                        <h4 id="Returpenjualan-AlamatText"></h4>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                            <div class="description-text pull-left">Tanggal Transaksi</div><br>
+                            <div class="description-header pull-left"  id="Returpenjualan-TglTransaksiText"></div><br>
+                        </div>
+                        <div class="description-block">
+                            <div class="description-text pull-left">Tanggal Jatuh Tempo</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-TglJatuhTempoText"></div><br>
+                        </div>
                     </div>
-                    <div class = "col-md-4">
-                        <label>Metode</label>
-                        <select id="Returpenjualan-Metode" class="form-control select2">
-                            <option value="cash">Cash</option>
-                            <option value="voucher">Voucher</option>
-                            <option class="ReturPenjualan-SimpanOption" value="simpan">Kurangi dari Tagihan</option>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                            <div class="description-text pull-left">Notes</div><br>
+                            <div class="description-header pull-left" id="Returpenjualan-NotesText"></div><br>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="description-block">
+                        <div class="description-text pull-left">Metode</div>
+                        <select id="Returpenjualan-Metode" class="form-control select2 pull-left">
+                        <option value="cash">Cash</option>
+                        <option value="voucher">Voucher</option>
+                        <option class="ReturPenjualan-SimpanOption" value="simpan">Kurangi dari Tagihan</option>
                         </select>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Notes</label>
-                        <h4 id="Returpenjualan-NotesText"></h4>
-                    </div>
-                </div>
+
+                <!--<div class="row">-->
+                    <!--<div class="col-md-4">-->
+                        <!--<label>Kode</label>-->
+                        <!--<h4 id="Returpenjualan-KodeText"></h4>-->
+                        <!--<label>Pelanggan</label>-->
+                        <!--<h4 id="Returpenjualan-PelangganText"></h4>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4">-->
+                        <!--<label>Pembayaran</label>-->
+                        <!--<h4 id="Returpenjualan-PembayaranText"></h4>-->
+                        <!--<label>Status</label>-->
+                        <!--<h4 id="Returpenjualan-StatusText"></h4>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4">-->
+                        <!--<label>Tanggal Transaksi</label>-->
+                        <!--<h4 id="Returpenjualan-TglTransaksiText"></h4>-->
+                        <!--<label>Tanggal Jatuh Tempo</label>-->
+                        <!--<h4 id="Returpenjualan-TglJatuhTempoText"></h4>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-8">-->
+                        <!--<label>Kirim Ke</label>-->
+                        <!--<h4 id="Returpenjualan-AlamatText"></h4>-->
+                    <!--</div>-->
+                    <!--<div class = "col-md-4">-->
+                        <!--<label>Metode</label>-->
+                        <!--<select id="Returpenjualan-Metode" class="form-control select2">-->
+                            <!--<option value="cash">Cash</option>-->
+                            <!--<option value="voucher">Voucher</option>-->
+                            <!--<option class="ReturPenjualan-SimpanOption" value="simpan">Kurangi dari Tagihan</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<label>Notes</label>-->
+                        <!--<h4 id="Returpenjualan-NotesText"></h4>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <table id="Returpenjualan-ItemTable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
@@ -71,9 +126,9 @@
                         <th></th>
                         <th colspan="7"><span class="pull-right">Total Harga</span></th>
                         <th><span class="pull-right">Rp. 0</span></th>
-                        <th class="Returpenjualan-ItemTable-HargapokoklabaColumn">Total Lb</th>
+                        <th class="Returpenjualan-ItemTable-HargapokoklabaColumn"><span class="pull-right">Total Lb</span></th>
                         <th class="Returpenjualan-ItemTable-HargapokoklabaColumn"><span class="pull-right">Rp. 0</span></th>
-                        <th><span class="pull-right">Rp. 0</span></th>
+                        <th id="Returpenjualan-TotalReturText"><span class="pull-right">Rp. 0</span></th>
                     </tr>
                     </tfoot>
                 </table>

@@ -76,15 +76,17 @@ function DeleteSatuan(token, satuanbarangID, fn)
         }, "json");
 }
 
-function UpdateDataSatuan(token, satuanbarangID, harga_jual, satuan, konversi, fn)
+function UpdateDataSatuan(token, satuanID, harga_jual, satuan, konversi, satuan_acuan, konversi_acuan, fn)
 {
     $.post( baseUrl + "barang/update_satuan/",
         {
             token: token,
-            satuanbarangID: satuanbarangID,
-            harga_jual: harga_jual,
-            satuan: satuan,
-            konversi :konversi,
+            satuanID: satuanID,
+            harga_jual:harga_jual,
+            satuan:satuan,
+            konversi:konversi,
+            satuan_acuan:satuan_acuan,
+            konversi_acuan: konversi_acuan
         }
         , function(  data ) {
             fn(data);

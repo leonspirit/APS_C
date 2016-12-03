@@ -171,10 +171,10 @@ function populateDetailPenjualan(curPenjualanID)
                          var TglTransaksiCicilan = new Date(penjualan.cicilan[i].tanggal_cicilan);
                          var TglTransaksiCicilanText = TglTransaksiCicilan.getDate()+"/"+(TglTransaksiCicilan.getMonth()+1)+"/"+TglTransaksiCicilan.getFullYear();
 
-                         var TglPencairanCicilan = penjualan.cicilan[i].tanggal_pencairan;
+                         var TglPencairanCicilan = new Date(penjualan.cicilan[i].tanggal_pencairan);
                          console.log(TglPencairanCicilan);
                          var TglPencairanCicilanText="-";
-                         if (TglPencairanCicilan!=null && TglPencairanCicilan!="")
+                         if (penjualan.cicilan[i].tanggal_pencairan!=null && penjualan.cicilan[i].tanggal_pencairan!="")
                          {
                              TglPencairanCicilanText = TglPencairanCicilan.getDate()+"/"+(TglPencairanCicilan.getMonth()+1)+"/"+TglPencairanCicilan.getFullYear();
                          }

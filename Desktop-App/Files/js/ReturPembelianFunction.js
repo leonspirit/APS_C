@@ -94,6 +94,7 @@ function ReturPembelianAddRow(barang)
     inputJumlahRetur.setAttribute("min", "0");
     inputJumlahRetur.setAttribute("onchange", "ReturPembelianDrawTable(this);");
     inputJumlahRetur.setAttribute("style", "width:100%;");
+    inputJumlahRetur.setAttribute("onchange", "ReturPembelianDrawTable(this);");
     cellqtyRetur.appendChild(inputJumlahRetur);
 
     var cell4 = row.insertCell(5);

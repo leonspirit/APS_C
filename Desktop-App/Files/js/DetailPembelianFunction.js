@@ -86,7 +86,7 @@ function populateDetailPembelian(currentPembelianID)
                 var disc1 = pembelian.barang[i].disc_1;
                 var disc2 = pembelian.barang[i].disc_2;
                 var disc3 = pembelian.barang[i].disc_3;
-                var itemSubtotal = parseInt(hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
+                var itemSubtotal = parseInt(Math.round(hargaUnit * qty*((100-disc1)/100)*((100-disc2)/100)*((100-disc3)/100)));
                 var isi_box = (pembelian.barang[i].konversi_box).toString()+" "+capitalizeFirstLetter(pembelian.barang[i].satuan_acuan_box);
                 var satuan_unit = pembelian.barang[i].satuan_unit;
                 var nama_barang = pembelian.barang[i].nama_barang;

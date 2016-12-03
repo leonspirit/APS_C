@@ -2,8 +2,11 @@
 /**
  * Created by Billy on 13-Nov-16.
  */
+var totalLaba=0;
+var currentToken;
 function ReturPenjualanPopulateData(currentPenjualanID)
 {
+    var tableFoot = document.getElementById('Returpenjualan-ItemTable').getElementsByTagName("tfoot")[0];
     GetDetailPenjualan(currentToken, currentPenjualanID, function(result) {
       //  var itemPembelianTable;
         if (result.token_status == "success") {
@@ -43,12 +46,63 @@ function ReturPenjualanPopulateData(currentPenjualanID)
             document.getElementById("Returpenjualan-KodeText").innerHTML = StrId;
             document.getElementById("Returpenjualan-AlamatText").innerHTML = penjualan.alamat;
             document.getElementById("Returpenjualan-NotesText").innerHTML = notesText;
+            totalLaba=0;
             for (i=0;i<penjualan.barang.length;i++)
             {
                 ReturPenjualanAddRow(penjualan.barang[i]);
+
             }
+            tableFoot.rows[0].cells[2].children[0].innerHTML = "Rp. "+numberWithCommas(penjualan.subtotal);
+            tableFoot.rows[0].cells[4].children[0].innerHTML = "Rp. "+numberWithCommas(totalLaba);
         }
     });
+}
+
+function ReturPenjualanDrawTable(r)
+{
+    var a;
+    if (hasHakAkses("HargaPokokLaba"))
+        a = 11;
+    else
+        a = 9;
+    var indexChanged;
+    if (r!=null)
+        indexChanged = getRowIndex(r);//.parentNode.parentNode.rowIndex;
+    else
+        indexChanged= 0;
+    var i;
+    var itemTable= document.getElementById("Returpenjualan-ItemTable");
+    var itemTableFoot= document.getElementById("Returpenjualan-ItemTable").getElementsByTagName("tfoot")[0];
+
+    if(indexChanged>=1 && indexChanged<itemTable.rows.length){
+        var curRow =  itemTable.rows[indexChanged];
+        var qtyretur = curRow.cells[4].children[0].value;
+
+        var hargaSatuanStr = curRow.cells[6].children[0].innerHTML;
+        var hargaSatuan = parseInt(hargaSatuanStr.substring(4).replace(/,/g,''));
+        var disc1Str = curRow.cells[7].children[0].innerHTML;
+         var disc1 = parseInt(disc1Str.replace(' %',''));
+        console.log(disc1+" "+hargaSatuan+" "+qtyretur);
+
+        var Subtotal = parseInt((qtyretur * hargaSatuan*(100-disc1))/100);
+        curRow.cells[a].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
+    }
+    var TotalHarga = 0;
+    var subtotalTambahanStr;
+    var subtotalTambahan;
+
+    console.log(itemTableFoot.rows.length+ " " +itemTable.rows.length);
+
+    for (i=1;i<itemTable.rows.length-itemTableFoot.rows.length;i++)
+    {
+        subtotalTambahanStr = itemTable.rows[i].cells[a].children[0].innerHTML.toString().substring(4);
+        subtotalTambahan = parseInt(subtotalTambahanStr.replace(/,/g,''));
+        TotalHarga += subtotalTambahan;
+    }
+    var posisitotal = itemTable.rows.length-itemTableFoot.rows.length;
+    console.log(posisitotal);
+     document.getElementById("Returpenjualan-TotalReturText").children[0].innerHTML = "Rp. "+ numberWithCommas(TotalHarga);
+
 }
 
 function ReturPenjualanAddRow(barang) {
@@ -65,7 +119,6 @@ function ReturPenjualanAddRow(barang) {
     var nama_barang = barang.nama_barang;
     var isi_box = "@ " + (barang.konversi_box).toString() + " " + capitalizeFirstLetter(barang.satuan_acuan_box);
     var satuan_unit = capitalizeFirstLetter(barang.satuan_unit);
-
 
     var cell1 = row.insertCell(0);
     cell1.innerHTML = rowNum.toString();
@@ -90,36 +143,41 @@ function ReturPenjualanAddRow(barang) {
     inputqtyretur.setAttribute("type", "number");
     inputqtyretur.setAttribute("min", "0");
     inputqtyretur.setAttribute("style", "width:100%;");
+    inputqtyretur.setAttribute("onchange", 'ReturPenjualanDrawTable(this);');
     cellqtyretur.appendChild(inputqtyretur);
 
     var cell4 = row.insertCell(5);
     cell4.innerHTML = satuan_unit;
 
     var cell6 = row.insertCell(6);
-    cell6.innerHTML = "<span class='pull-right'>Rp." + numberWithCommas(hargaUnit) + "</span>";
+    cell6.innerHTML = "<span class='pull-right'>Rp. " + numberWithCommas(hargaUnit) + "</span>";
 
     var cell7 = row.insertCell(7);
     cell7.innerHTML = "<span class='pull-right'>" + disc + " %</span>";
 
     var cell8 = row.insertCell(8);
-    cell8.innerHTML = "<span class='pull-right'>Rp." + numberWithCommas(itemSubtotal) + "</span>";
+    cell8.innerHTML = "<span class='pull-right'>Rp. " + numberWithCommas(itemSubtotal) + "</span>";
 
+    var cellNominalretur;
     if (hasHakAkses("HargaPokokLaba")) {
-
-
         var hpokok = barang.konversi_unit * barang.konversi_acuan_unit * barang.harga_pokok_saat_ini;
         var laba = itemSubtotal - (qty*hpokok);
 
         var cell9 = row.insertCell(9);
         cell9.innerHTML = "<span class='pull-right'>Rp. "+numberWithCommas(hpokok)+"</span>";
 
-
         var cell10 = row.insertCell(10);
         var span = document.createElement("span");
         span.setAttribute("class", "pull-right");
         span.innerHTML = "Rp. "+numberWithCommas(laba);
         cell10.appendChild(span);
+        cellNominalretur = row.insertCell(11);
+        totalLaba+=laba;
     }
+    else {
+        cellNominalretur = row.insertCell(9);
+    }
+    cellNominalretur.innerHTML = "<span class='pull-right'>Rp. 0</span>";
 }
 
 function add_retur_penjualan(counter, berhasil, length, penjualanID){
@@ -134,7 +192,6 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
     else  if ($("#Returpenjualan-Metode").val() == "simpan") {
         metode=2;
     }
-
     if(counter === undefined)counter = 1;
     if(counter >= length){
         if (berhasil == 1) {
@@ -161,7 +218,6 @@ function add_retur_penjualan(counter, berhasil, length, penjualanID){
             QtyReturValue,
             metode,
             function(result){
-
                 if (result != null && result.token_status == "success") {
 
                 }

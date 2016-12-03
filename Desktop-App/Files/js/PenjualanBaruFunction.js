@@ -47,6 +47,7 @@ function PenjualanBaruGetPelanggan()
                     allowClear:true,
                     templateResult:formatOutput,
                     matcher:oldMatcher(PelangganMatcher)
+					//containerCssClass: ':all:'
                 });
             });
         }
@@ -316,6 +317,7 @@ function PenjualanBaruResetTable() {
     tableFoot.rows[0].cells[2].children[0].innerHTML = "Rp. 0";
     if (hakhargaPokokLaba)
         tableFoot.rows[0].cells[4].children[0].innerHTML = "Rp. 0";
+    removeWarning();
 }
 
 function PenjualanBaruDrawTable(r) {
@@ -417,6 +419,17 @@ function PenjualanBaruHideJatuhTempo()
     }
 }
 
+function PenjualanBaruDisableHargaPokokField()
+{
+    var form = document.getElementById("Penjualanbaru-CreatebarangModal-CreateForm");
+    var stok = form.elements['stok'].value;
+    if (stok==0 || stok=='' || stok==null)
+    {
+        form.elements['harga-pokok-input'].disabled= true;
+    }else {
+        form.elements['harga-pokok-input'].disabled= false;
+    }
+}
 
 function PenjualanBaruGetSatuanBarangList(selectBox)
 {
@@ -610,12 +623,12 @@ function PenjualanBaruCreatePelangganConfirm()
          AddPelanggan(currentToken, nama, telp, alamat, function(result){
             if (result.token_status=="success")
             {
-                if  (result.supplierID != null)
+                if  (result.pelangganID != null)
                 {
                     var pad ="00000";
-                    var id = "" + result.supplierID;
+                    var id = "" + result.pelangganID;
                     var StrId  = "P"+ pad.substring(0, pad.length - id.length)+id;
-                    $("#Pembelianbaru-CreatesupplierModal").modal('toggle');
+                    $("#Penjualanbaru-CreatepelangganModal").modal('toggle');
                     formData.reset();
                     createAlert("success", "Pelanggan baru "+StrId+" - "+nama +" berhasil ditambahkan");
                     DataPelanggan.pop();
@@ -640,7 +653,7 @@ function PenjualanBaruCreatePelangganConfirm()
                 }
                 else {
                     console.log("Add Pelanggan failed");
-                    createAlert("danger", "Data supplier gagal ditambahkan, mohon coba kembali");
+                    createAlert("danger", "Data pelanggan gagal ditambahkan, mohon coba kembali");
                 }
             }
             else
@@ -687,7 +700,7 @@ function PenjualanBaruCekHargaRugi(node) {
     var laba  = ((qty*hargasatuan)*(100-disc)/100)-(hpokok*qty);
     if (laba<0)
     {
-        setWarning(node, "Harga Rugi");
+        setWarning(node, "Harga Salah");
         return false;
     }
     else {
@@ -883,9 +896,9 @@ function PenjualanBaruMoveToNext(node)
         var nextID ="Penjualanbaru-Input-"+twoDigitPad(angka1baru)+"-"+angka2baru.toString();
         if($("#" + nextID).length == 0) {
             PenjualanBaruAddRow();
-            $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
-                $("#" +nextID).select2('open');
-            });
+         //   $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+         //       $("#" +nextID).select2('open');
+         //   });
         }
         else {
             if ($("#" + nextID).data('select2'))
@@ -910,6 +923,7 @@ function InitPenjualanBaruPage()
     barang_select2.off("change");
     $("#Penjualanbaru-PembayaranSelect").select2({
         minimumResultsForSearch:Infinity
+	//	containerCssClass: ':all:'
     }).on("change", function(){
         PenjualanBaruHideJatuhTempo();
     });
