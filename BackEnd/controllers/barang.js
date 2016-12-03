@@ -375,13 +375,36 @@ router.post('/tambah_stok', function(req,res){
         }
         else{
             resp['token_status'] = 'success'
-            var querystring = 'INSERT INTO stok SET barangID = ?, stok_awal = ?, stok_skrg = ?, harga_beli = ?, koreksi = 1';
-            var stok = [req.body.barangID, req.body.stok, req.body.stok, req.body.harga_beli]
-            connection.query(querystring, stok, function(err2, result2){
-                if(err2) throw err2;
-                resp['stokID'] = result2.insertId;
-                res.status(200).send(resp);
-            });
+
+            var querystring2 = 'SELECT barangID, konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
+            var satuanbarang = [req.body.satuanID]
+            connection.query(querystring2, satuanbarang, function(err3, result3){
+                if(err3) throw err3
+                var konversi = result3[0]['konversi'] * result3[0]['konversi_acuan']
+                var total_piece = konversi * req.body.stok
+
+                var querystring = 'INSERT INTO stok SET barangID = ?, stok_awal = ?, stok_skrg = ?, harga_beli = ?, koreksi = 1';
+                var stok = [result3[0]['barangID'], total_piece, total_piece, req.body.harga_beli/konversi]
+                connection.query(querystring, stok, function(err2, result2){
+                    if(err2) throw err2;
+
+                    var len = 1
+                    asyncLoop(len, function(loop) {
+                        get_stok_harga_barang(loop.iteration(), result3, function(result5) {
+                            loop.next();
+                        })},
+                        function(){
+                            var qrstring1 = 'UPDATE stok SET harga_beli = ? WHERE barangID = ?'
+                            var harga_stok = [result3[0]['harga_pokok'], result3[0]['barangID']]
+                            connection.query(qrstring1, harga_stok, function(err4, result4){
+                                if(err4) throw err4
+                                resp['stokID'] = result2.insertId;
+                                res.status(200).send(resp);
+                            })
+                        }
+                    );
+                });
+            })
         }
     })
 })
@@ -428,22 +451,29 @@ router.post('/kurangi_stok', function(req,res){
 
     var resp = {}
     res.type('application/json')
-    token_auth.check_token(req.body.token, function(result){
-        if(result == null || result == 'inaktif'){
+    token_auth.check_token(req.body.token, function(result3){
+        if(result3 == null || result3 == 'inaktif'){
             resp['token_status'] = 'failed'
             res.status(200).send(resp)
         }
         else{
             resp['token_status'] = 'success'
 
-            asyncStok(req.body.stok, function(loop){
-                update_stok(loop.sisa(), req.body.barangID, function(result){
-                    loop.next(result['stok']);
-                })},
-                function(){
-                    res.status(200).send(resp)
-                }
-            )
+            var querystring = 'SELECT konversi, konversi_acuan FROM satuanbarang WHERE satuanID = ?'
+            var satuanbarang = [req.body.satuanID]
+            connection.query(querystring, satuanbarang, function(err2, result2){
+                if(err2) throw err2
+
+                var stok = result2[0]['konversi'] * result2[0]['konversi_acuan'] * req.body.stok
+                asyncStok(stok, function(loop){
+                    update_stok(loop.sisa(), req.body.barangID, function(result){
+                        loop.next(result['stok']);
+                    })},
+                    function(){
+                        res.status(200).send(resp)
+                    }
+                )
+            })
         }
     })
 })
