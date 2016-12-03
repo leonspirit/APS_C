@@ -141,7 +141,7 @@ function StokBarangPopulateKoreksiTambahModal(barangID)
     document.getElementById("Stokbarang-KoreksiModal-TambahConfirmButton").onclick = function ()
     {
         var stoktambahan = document.getElementById("Stokbarang-KoreksiModal-TambahJumlahInput").value;
-        var hargaPokok =  document.getElementById("#Stokbarang-KoreksiModal-TambahHargaInput").value;
+        var hargaPokok =  document.getElementById("Stokbarang-KoreksiModal-TambahHargaInput").value;
         var satuanID = $("#Stokbarang-KoreksiModal-TambahSatuanInput").val();
         AddStok(currentToken, barangID, stoktambahan, hargaPokok, satuanID, function(result)
         {
