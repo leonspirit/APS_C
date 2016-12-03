@@ -26,17 +26,14 @@ function DeleteBarang(token, barangID, fn)
             fn(data);
         }, "json");
 }
-
-function UpdateDataStok(token, barangID, nama, stok, fn)
+function UpdateBarang(token, barangID, nama, fn)
 {
     $.post( baseUrl + "barang/update_barang/",
         {
             token: token,
-            barangID: barangID,
             nama:nama,
-            stok:stok
-        }
-        , function(  data ) {
+            barangID: barangID
+        }, function(  data ) {
             fn(data);
         }, "json");
 }
@@ -123,26 +120,28 @@ function GetBarangTerlaku(token, tgl_awal, tgl_akhir, fn)
         }, "json");
 }
 
-function AddStok(token, barangID, stok, harga_pokok, fn)
+function AddStok(token, barangID, stok, harga_pokok,satuanID,  fn)
 {
     $.post( baseUrl + "barang/tambah_stok",
         {
             token: token,
             barangID: barangID,
             stok:stok,
-            harga_beli:harga_pokok
+            harga_beli:harga_pokok,
+            satuanID:satuanID
         }
         ,function(data) {
             fn(data);
         }, "json");
 }
-function RemoveStok(token, barangID, stok, fn)
+function RemoveStok(token, barangID, stok, satuanID,fn)
 {
     $.post( baseUrl + "barang/kurangi_stok",
         {
             token: token,
             barangID: barangID,
-            stok:stok
+            stok:stok,
+            satuanID:satuanID
         }
         ,function(data) {
             fn(data);
