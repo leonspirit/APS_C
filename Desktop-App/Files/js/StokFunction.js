@@ -2,11 +2,10 @@
  * Created by Billy on 01-Oct-16.
  */
 
-var currentHakAkses = localStorage.getItem("hak_akses");
 var currentToken;
 var totalBoxBarang = 0;
 var totalUangBarang = 0;
-var satuanIDlist;
+//var satuanIDlist;
 var finished, AddSatuanSuccess;
 
 function StokBarangPopulateEntry(BarangTable, barangEntry)
@@ -224,6 +223,9 @@ function StokBarangPopulateEditModal(Button)
     var formdata = document.getElementById("Stokbarang-EditModal-EditForm");
     formdata.reset();
     formdata.elements['nama'].value= $(Button).closest('tr').find('td:eq(1)').html();
+    //$("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check").iCheck("check");
+    $("#Stokbarang-EditModal-harga-jual-box-check").iCheck("check").iCheck("disable");
+
     var i;
     var barangID = $(Button).attr('data-id');
     var pad ="00000";
@@ -244,8 +246,9 @@ function StokBarangPopulateEditModal(Button)
     }
     for (i=0;i<satuan.length;i++)
     {
-        $("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check").iCheck('uncheck');
-        $("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check").iCheck('disable');
+        var curprop = $("#Stokbarang-EditModal-harga-jual-"+satuan[i]+"-check");
+        curprop.iCheck('check');
+        curprop.iCheck('uncheck').iCheck("disable");
         formdata.elements['harga-jual-'+satuan[i]+'-input'].disabled=true;
         formdata.elements['harga-jual-'+satuan[i]+'-input'].value="";
     }
@@ -260,8 +263,9 @@ function StokBarangPopulateEditModal(Button)
                 formdata.elements['acuan-box-select'].value = result.data[i].satuan_acuan;
             }
             console.log(result.data[i].konversi);
-            $("#Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").iCheck('check');
-            document.getElementById("Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").setAttribute("data-id", result.satuanID);
+            console.log(result.data[i].satuan);
+            $("#Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").iCheck('check').iCheck('disable');
+            document.getElementById("Stokbarang-EditModal-harga-jual-"+result.data[i].satuan+"-check").setAttribute("data-id", result.data[i].satuanID);
             formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].value = result.data[i].harga_jual;
             formdata.elements['harga-jual-'+result.data[i].satuan+'-input'].disabled = false;
         }
@@ -279,6 +283,40 @@ function StokBarangPopulateEditModal(Button)
     }
 
 }
+function StokBarangPopulateDeleteModal(Button)
+{
+   //
+
+    var BarangTable = $('#BarangTable').DataTable();
+    var rowNumber = BarangTable.row($(Button).closest('tr')).index();
+    document.getElementById("Stokbarang-DeleteModal-ConfirmButton").setAttribute("data-row-num", rowNumber);
+
+    var kode =  $(Button).closest('tr').find('td:eq(0)').html();
+    var nama = $(Button).closest('tr').find('td:eq(1)').html();
+    document.getElementById("Stokbarang-DeleteModal-kodeText").innerHTML = kode;
+    document.getElementById("Stokbarang-DeleteModal-namaText").innerHTML = nama;
+    var barangID = $(Button).attr('data-id');
+    document.getElementById("Stokbarang-DeleteModal-ConfirmButton").onclick = function()
+    {
+        DeleteBarang(currentToken, barangID, function(result){
+            if (result.token_status=="success")
+            {
+                console.log(result);
+                if (result.affectedRows==1)
+                {
+                    createAlert("success", "Barang berhasil dihapus");
+                    $("#Stokbarang-DeleteModal").modal('toggle');
+                    var rowNum = $(Button).attr('data-row-num');
+                    BarangTable.row(rowNum).remove().draw();
+                }
+                else {
+                    createAlert("danger", "Terdapat kesalahan dalam penghapusan barang, mohon coba kembali");
+                }
+            }
+        });
+    }
+}
+
 function StokBarangDisableHargaPokokField()
 {
     var form = document.getElementById("Stokbarang-CreateModal-CreateForm");
@@ -298,6 +336,7 @@ function StokBarangCreateModalDisableHargaJualInput()
 
     var satuanlokal =["grs", "kod", "lsn", "pcs"];
     var i;
+
     for (i=0;i<satuanlokal.length;i++)
     {
         if ($("#Stokbarang-CreateModal-harga-jual-"+satuanlokal[i]+"-check").prop("checked"))
@@ -327,7 +366,7 @@ function StokBarangEditBarangConfirm(barangID)
     var i;
     var namaBarang = form.elements["nama"];
     var hargajualbox= form.elements["harga-jual-box-input"];
-   // var isibox = form.elements["isi-box-input"];
+    var isibox = form.elements["isi-box-input"];
     if (namaBarang.value==null || namaBarang.value=='')
     {
         valid = false;
@@ -338,25 +377,23 @@ function StokBarangEditBarangConfirm(barangID)
         valid = false;
         setWarning(hargajualbox, "Harga Jual Box harus diisi");
     }
-    // if (isibox.value==''|| isibox==null)
-    // {
-    //     valid = false;
-    //     setWarning(isibox, "Isi per Box harus diisi");
-    // }
     for (i = 0; i < satuan.length; i++) {
-        if ($(form.elements["harga-jual-" + satuan[i] + "check"]).prop("checked")) {
+        if ($("#Stokbarang-EditModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
             if (form.elements["harga-jual-" + satuan[i] + "-input"].value=='' || form.elements["harga-jual-" + satuan[i] + "-input"].value==0)
             {
+                valid =false;
                 setWarning(form.elements["harga-jual-" + satuan[i] + "-input"], "Harga Tidak Boleh Kosong");
             }
         }
     }
+    console.log("lala"+barangID);
     console.log(valid);
     if (valid)
     {
-        UpdateBarang(currentToken, barangID, namaBarang, function(result) {
+        UpdateBarang(currentToken, barangID, namaBarang.value, function(result) {
+          //  console.log(currentToken, barangID, namaBarang.value);
             if (result.token_status == "success") {
-                console.log(result.barangID);
+                //console.log(result.barangID);
                 var konversiAcuanBox;
                 var acuanBox = form.elements["acuan-box-select"].value;
                 console.log(acuanBox);
@@ -366,40 +403,37 @@ function StokBarangEditBarangConfirm(barangID)
                         break;
                     }
                 }
-                console.log("aaa");
-                var UpdateSatuanSuccess = true;
-                UpdateDataSatuan(currentToken, document.getElementById("Stokbarang-EditModal-harga-jual-box-check").value, hargajualbox.value, "box", isibox.value, acuanBox, konversiAcuanBox,
+               var UpdateSatuanSuccess = true;
+
+                    UpdateDataSatuan(currentToken, document.getElementById("Stokbarang-EditModal-harga-jual-box-check").getAttribute("data-id"), hargajualbox.value, "box", isibox.value, acuanBox, konversiAcuanBox,
                     function (result3) {
                         if (result3.token_status == "success")
-                            console.log(result3.satuanID);
-                        else
-                            UpdateSatuanSuccess = false;
+                        {
+                            console.log(result3);
+                        }
                     }
                 );
-                console.log("bbb");
                 for (i = 0; i < satuan.length; i++) {
-                    if ($(form.elements["harga-jual-" + satuan[i] + "check"]).prop("checked")) {
-                        UpdateDataSatuan(currentToken, document.getElementById("Stokbarang-EditModal-harga-jual-" + satuan[i] + "-check").value, $(form.elements["harga-jual-" + satuan[i] + "-input"]).val(), satuan[i], konversiSatuan[i], "pcs", 1,
+                    if ($("#Stokbarang-EditModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
+                        UpdateDataSatuan(currentToken, document.getElementById("Stokbarang-EditModal-harga-jual-" + satuan[i] + "-check").getAttribute("data-id"), $(form.elements["harga-jual-" + satuan[i] + "-input"]).val(), satuan[i], konversiSatuan[i], "pcs", 1,
                             function (result2) {
                                 if (result2.token_status = "success")
-                                    console.log(result2.satuanID);
-                                else
-                                    UpdateSatuanSuccess = false;
+                                {
+                                    console.log(result2);
+                                }
                             }
                         );
                     }
                 }
-                console.log("ccc");
                 if (UpdateSatuanSuccess) {
                     console.log("ddd");
                     var pad = "00000";
-                    var id = "" + result.barangID;
+                    var id = "" + barangID;
                     var StrId = "C" + pad.substring(0, pad.length - id.length) + id;
                     InitStokBarangPage();
                     createAlert("success", "Data Barang " + StrId + " - " + form.elements["nama"].value.toString() + " berhasil dirubah");
                     $("#Stokbarang-EditModal").modal('toggle');
                     console.log("eee");
-
                 }
                 else {
                     createAlert("danger", "Data Barang gagal dirubah, mohon coba kembali");
@@ -411,54 +445,37 @@ function StokBarangEditBarangConfirm(barangID)
         });
     }
 }
-//
-// function StokbarangRekursitambahSatuan(barangID, i , finished)
-// {
-//     if(finished)
-//         return;
-//     var form  = document.getElementById("Stokbarang-CreateModal-CreateForm");
-//     var satuan = ["box", "grs", "kod", "lsn", "pcs"];
-//     var konversiSatuan = [-1, 144, 20, 12, 1];
-//     var satuan_acuan;
-//     var konversi_acuan;
-//     if (i!=0)
-//     {
-//         satuan_acuan = satuan[i];
-//         konversi_acuan= 1;
-//     }
-//     else {
-//         satuan_acuan = form.elements["acuan-box-select"].value;
-//
-//     }
-//     if ($(form.elements["harga-jual-"+satuan[i]+"-check"]).prop("checked"))
-//     {
-//         AddSatuan(currentToken, barangID, $(form.elements["harga-jual-"+satuan[i]+"-input"]).val(), satuan[i], konversiSatuan[i], satuan_acuan, konversi_acuan,
-//             function(result2){
-//                 if(result2.token_status="success")
-//                 {
-//                     console.log(result2.satuanID);
-//                     satuanIDlist[i+1] = result2.satuanID;
-//                     if (i<4)
-//                     {
-//               //          StokbarangRekursitambahSatuan(barangID, i +1, finished);
-//                     }
-//                     else {
-//                         finished = true;
-//                     }
-//                 }
-//                 else
-//                 {
-//                     AddSatuanSuccess  =false;
-//                 }
-//             }
-//         );
-//     }
-//     else {
-//       //  StokbarangRekursitambahSatuan(barangID, i +1, finished);
-//     }
-//
-// }
-
+function StokBarangAddSatuanDanStok( barangID, hargajual, namasatuan, konversi, namasatuanacuan, konversiacuan, stoktambahan, hargapokok, satuanstoktambahan)
+{
+    AddSatuan(currentToken, barangID, hargajual, namasatuan, konversi, namasatuanacuan, konversiacuan,
+        function(result2){
+            if(result2.token_status="success")
+            {
+                console.log(result2.satuanID);
+                if (stoktambahan>0 && (satuanstoktambahan == namasatuan))
+                {
+                    console.log("addinsstok"+namasatuan);
+                    console.log(currentToken, barangID, stoktambahan, hargapokok, result2.satuanID);
+                    AddStok(currentToken, barangID, stoktambahan, hargapokok, result2.satuanID, function(result5){
+                        if (result5.token_status=="success")
+                        {
+                            console.log(result5);
+                            console.log("stok nambah");
+                        }
+                    });
+                }
+            }
+            else
+                AddSatuanSuccess  =false;
+        }
+    );
+}
+function StokBarangCreateModalSatuanIsiListener()
+{
+    var form = document.getElementById("Stokbarang-CreateModal-CreateForm");
+    var satuan   =form.elements['satuan-stok-select'].value;
+    document.getElementById("Stokbarang-CreateModal-SatuanHargaBeliText").innerHTML = "/ "+capitalizeFirstLetter(satuan);
+}
 function StokBarangCreateBarangConfirm()
 {
     var satuan =[ "grs", "kod", "lsn", "pcs"];
@@ -466,6 +483,7 @@ function StokBarangCreateBarangConfirm()
     var BarangTable = $('#BarangTable').DataTable();
     var valid = true;
     var form = document.getElementById("Stokbarang-CreateModal-CreateForm");
+    removeWarning();
 
     console.log(form);
     var i;
@@ -481,12 +499,21 @@ function StokBarangCreateBarangConfirm()
     if (hargajualbox.value==''|| hargajualbox==null)
     {
         valid = false;
-        setWarning(hargajualbox, "Harga Jual Box harus diisi");
+        setWarning(hargajualbox, "Harga Tidak Boleh Kosong");
     }
-    if (isibox.value==''|| isibox==null)
+    if (isibox.value==''|| isibox.value==0 )
     {
         valid = false;
         setWarning(isibox, "Isi per Box harus diisi");
+    }
+    for (i = 0; i < satuan.length; i++) {
+        if ($("#Stokbarang-CreateModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
+            if (form.elements["harga-jual-" + satuan[i] + "-input"].value=='' || form.elements["harga-jual-" + satuan[i] + "-input"].value==0)
+            {
+                valid =false;
+                setWarning(form.elements["harga-jual-" + satuan[i] + "-input"], "Harga Tidak Boleh Kosong");
+            }
+        }
     }
     if (valid)
     {
@@ -494,10 +521,8 @@ function StokBarangCreateBarangConfirm()
         {
             if (result.token_status=="success")
             {
-                console.log(result.barangID);
                 var konversiAcuanBox;
                 var acuanBox = form.elements["acuan-box-select"].value;
-                console.log(acuanBox);
                 for (i=0;i<satuan.length;i++)
                 {
                     if (acuanBox==satuan[i])
@@ -506,115 +531,54 @@ function StokBarangCreateBarangConfirm()
                         break;
                     }
                 }
-                satuanIDlist =[-1, -1, -1, -1, -1];
-
-                finished=false;
-                AddSatuanSuccess = true;
-              //  StokbarangRekursitambahSatuan(0, result.barangID);
-               // console.log(AddSatuanSuccess);
-
-                AddSatuan(currentToken, result.barangID, hargajualbox.value, "box", isibox.value, acuanBox, konversiAcuanBox,
-                    function(result3) {
-                        if (result3.token_status == "success")
-                        {
-                            console.log(result3.satuanID);
-                            satuanIDlist[0] = result3.satuanID;
-                        }
-                        else
-                            AddSatuanSuccess = false;
-                    }
-                );
+                var stokmasuk  = form.elements['stok'].value;
+                var satuanstok = form.elements['satuan-stok-select'].value;
+                var hargapokok = form.elements['harga-pokok-input'].value;
+                StokBarangAddSatuanDanStok( result.barangID, hargajualbox.value, "box", isibox.value, acuanBox, konversiAcuanBox, stokmasuk, hargapokok, satuanstok);
                 for (i=0;i<satuan.length;i++)
                 {
                     if ($(form.elements["harga-jual-"+satuan[i]+"-check"]).prop("checked"))
                     {
                         console.log("adding satuan"+satuan[i]);
-                        AddSatuan(currentToken, result.barangID, $(form.elements["harga-jual-"+satuan[i]+"-input"]).val(), satuan[i], konversiSatuan[i], "pcs", 1,
-                            function(result2){
-                                if(result2.token_status="success")
-                                {
-                                    console.log(result2.satuanID);
-                                    satuanIDlist[i+1] = result2.satuanID;
-                                    console.log(satuan[i]);
-                                }
-                                else
-                                    AddSatuanSuccess  =false;
-                            }
-                        );
-                    }
-                }
+                        var hargajual = $(form.elements["harga-jual-"+satuan[i]+"-input"]).val();
+                        StokBarangAddSatuanDanStok( result.barangID, hargajual, satuan[i], konversiSatuan[i], "pcs", 1, stokmasuk, hargapokok, satuanstok);
 
-                //
-                var jumlahstokmasuk;
-                var stokfield = form.elements['stok'];
-                var satuanstokfield = form.elements['satuan-stok-select'];
-                var satuanhargapokok = form.elements['harga-pokok-select'];
-                if (stokfield.value!=0 && stokfield.value!=null)
-                {
-                    if(satuanstokfield.value!=-1)
-                         jumlahstokmasuk = stokfield.value * satuanstokfield.value;
-                    else
-                         jumlahstokmasuk = stokfield.value * isibox.value* konversiAcuanBox;
-                    var harga_pokok_biji;
-                    console.log(satuanhargapokok.value);
-                    if (satuanhargapokok.value!=-1)
-                         harga_pokok_biji = parseInt((form.elements['harga-pokok-input'].value/ (satuanhargapokok.value)))+1;
-                    else
-                         harga_pokok_biji = parseInt((form.elements['harga-pokok-input'].value/ konversiAcuanBox))+1;
-                        AddStok(currentToken, result.barangID, jumlahstokmasuk, harga_pokok_biji , function(result){
-                        if (result.token_status=="success")
-                        {
-                            console.log(currentToken+" "+ jumlahstokmasuk+" "+harga_pokok_biji);
-                        }
-                    });
-                }
-                else
-                {
-                    jumlahstokmasuk=0;
-                 }
-                if (AddSatuanSuccess)
-                {
-                    var pad ="00000";
-                    var id = "" + result.barangID;
-                    var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
-                    var stokReady = "<span class='pull-right'>"+numberWithCommas(jumlahstokmasuk)+" box"+"</span>";
-                    var hargaJual  ="<span class='pull-right'>Rp. "+numberWithCommas(form.elements["harga-jual-box-input"].value)+"</span>";
-                    var editButton = "<a onclick='StokBarangPopulateEditModal(this);' class='edit-modal-toggle' data-toggle='modal' href='#Stokbarang-EditModal' data-id='" +
-                        id +
-                        "'><i class='glyphicon glyphicon-pencil'></i></a>";
-                    var delButton = "<a class='delete-modal-toggle' href='#Stokbarang-DeleteModal' data-toggle='modal'  style='color:red;' data-id='" +
-                        id +
-                        "'><i class='glyphicon glyphicon-trash'></i></a>";
-                    var hargaPokok;
-                    if (jumlahstokmasuk==0)
-                    {
-                        hargaPokok = "<span class='pull-right'>Rp. 0</span>";
                     }
-                    else
-                        hargaPokok = "<span class='pull-right'>Rp. "+numberWithCommas(form.elements['harga-pokok-input'].value)+"</span>";
-                    BarangTable.row.add([
-                        StrId,
-                        form.elements["nama"].value.toString(),
-                        "@ "+form.elements["isi-box-input"].value+" "+acuanBox,
-                        stokReady,
-                        hargaJual,
-                        hargaPokok,
-                        editButton+" "+delButton
-                    ]).draw();
-                    createAlert("success", "Barang baru "+StrId+" - "+form.elements["nama"].value.toString() +" berhasil ditambahkan");
-                    form.reset();
-                    $(form.elements["harga-jual-box-check"]).iCheck("check");
-                    $(form.elements["harga-jual-grs-check"]).iCheck("uncheck");
-                    $(form.elements["harga-jual-kod-check"]).iCheck("uncheck");
-                    $(form.elements["harga-jual-lsn-check"]).iCheck("uncheck");
-                    $(form.elements["harga-jual-pcs-check"]).iCheck("uncheck");
-                    $("#Stokbarang-CreateModal").modal('toggle');
-                    console.log(satuanIDlist);
                 }
-                else
-                {
-                    createAlert("danger", "Data Barang gagal ditambahkan, mohon coba kembali");
-                }
+                 var pad ="00000";
+                 var id = "" + result.barangID;
+                 var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
+                // var stokReady = "<span class='pull-right'>"+numberWithCommas(0)+" box"+"</span>";
+                // var hargaJual  ="<span class='pull-right'>Rp. "+numberWithCommas(form.elements["harga-jual-box-input"].value)+"</span>";
+                // var editButton = "<a onclick='StokBarangPopulateEditModal(this);' class='edit-modal-toggle' data-toggle='modal' href='#Stokbarang-EditModal' data-id='" +
+                //     id +
+                //     "'><i class='glyphicon glyphicon-pencil'></i></a>";
+                // var delButton = "<a class='delete-modal-toggle' href='#Stokbarang-DeleteModal' data-toggle='modal'  style='color:red;' data-id='" +
+                //     id +
+                //     "'><i class='glyphicon glyphicon-trash'></i></a>";
+                // var hargaPokok;
+                // if (stokmasuk==0)
+                // {
+                //     hargaPokok = "<span class='pull-right'>Rp. 0</span>";
+                // }
+                // else
+                //     hargaPokok = "<span class='pull-right'>Rp. "+numberWithCommas(/*form.elements['harga-pokok-input'].value*/0)+"</span>";
+                // BarangTable.row.add([
+                //     StrId,
+                //     form.elements["nama"].value.toString(),
+                //     "@ "+form.elements["isi-box-input"].value+" "+acuanBox,
+                //     stokReady,
+                //     hargaJual,
+                //     hargaPokok,
+                //     editButton+" "+delButton
+                // ]).draw();
+                InitStokBarangPage();
+                createAlert("success", "Barang baru "+StrId+" - "+form.elements["nama"].value.toString() +" berhasil ditambahkan");
+                form.reset();
+                $("#Stokbarang-CreateModal").modal("toggle");
+                $("#Stokbarang-CreateModal-harga-jual-box-check").iCheck("check").iCheck("disable");
+                for(i=0;i<satuan.length;i++)
+                    $("#Stokbarang-CreateModal-harga-jual-"+satuan[i]+"-check").iCheck("uncheck");
             }
             else {
                 createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
@@ -640,9 +604,15 @@ function InitStokBarangPage() {
         $("#Stokbarang-BarangterlakuButton").hide();
     }
     StokBarangPopulateData();
+    $(document).off("click", ".Stokbarang-edit-modal-toggle");
     $(document).on("click", ".Stokbarang-edit-modal-toggle", function () {
         StokBarangPopulateEditModal(this);
     });
+    $(document).off("click", ".Stokbarang-delete-modal-toggle");
+    $(document).on("click", ".Stokbarang-delete-modal-toggle", function () {
+        StokBarangPopulateDeleteModal(this);
+    });
+
     var StokBarangSearchForm = document.getElementById("Stokbarang-SearchForm");
     $(".Stokbarang-search-filter").keyup(function () {
         StokBarangSearch(
@@ -656,8 +626,8 @@ function InitStokBarangPage() {
     });
     allcheckbox.iCheck('uncheck');
     StokBarangCreateModalDisableHargaJualInput();
-    $(".check-satuan").off("ifChanged");
-    $(".check-satuan").on("ifChanged", function () {
+    $(".check-satuan-createModal").off("ifChanged");
+    $(".check-satuan-createModal").on("ifChanged", function () {
         StokBarangCreateModalDisableHargaJualInput();
     });
     document.getElementById("Stokbarang-CreateModal-ConfirmButton").onclick= function () {
