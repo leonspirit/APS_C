@@ -567,9 +567,11 @@ function PenjualanBaruSave(isPrinted) {
         valid  = PenjualanBaruCekHargaRugi(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-4"));
         valid  = PenjualanBaruCekItemStok(document.getElementById("Penjualanbaru-Input-"+twoDigitPad(i)+"-2"));
     }
-
-    console.log(voucher);
-    if (valid) {
+    if (!valid)
+    {
+        return -1;
+    }
+    else {
         for (i = 1; i < itemTable.rows.length - tableFoot.rows.length; i++) {
             satuan.push({
                 "satuanID": $("#Penjualanbaru-Input-" + twoDigitPad(i) + "-3").val(),
@@ -598,9 +600,11 @@ function PenjualanBaruSave(isPrinted) {
                     var id = "" + result.penjualanID;
                     var StrId = "TJ" + pad.substring(0, pad.length - id.length) + id;
                     createAlert("success", "Data Penjualan baru " + StrId + " berhasil ditambahkan");
+                    return result.penjualanID;
                 }
                 else {
                     createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                    return -1;
                 }
             }
         );
@@ -952,8 +956,6 @@ function InitPenjualanBaruPage()
     document.getElementById("Penjualanbaru-PelangganSelect").onchange=function()
     {
         PenjualanBaruChangePelangganListener();
-     //   if ($("#Penjualanbaru-PelangganSelect").val()==='new')
-      //      $("#Penjualanbaru-CreatepelangganModal").modal('toggle');
     };
     document.getElementById("Penjualanbaru-CreatepelangganModal-ConfirmButton").onclick=function()
     {
@@ -966,4 +968,35 @@ function InitPenjualanBaruPage()
     else {
         $(".Penjualanbaru-ItemTable-HargapokoklabaColumn").show();
     }
+
+    const BrowserWindow = require('electron').remote.BrowserWindow;
+    const ipcRenderer = require('electron').ipcRenderer;
+    const path = require('path');
+    document.getElementById("Penjualanbaru-PrintButton").onclick = function () {
+        var resultPenjualanID = PenjualanBaruSave(0);
+        if (resultPenjualanID!=-1)
+        {
+            const windowID = BrowserWindow.getFocusedWindow().id;
+            const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanBesar.html');
+            let win = new BrowserWindow({ width: 800, height: 800, show: true });
+            win.loadURL(invisPath);
+            win.webContents.on('did-finish-load', function () {
+                win.webContents.send('print-penjualan-besar', resultPenjualanID, windowID)
+            });
+        }
+    };
+    ipcRenderer.on('penjualan-besar-printed', function (event, input, output) {//output=penjualanID
+        ChangePenjualanPrintedStatus(currentToken, output, function(result){
+            if (result.token_status=="success")
+            {
+                console.log("penjualan keprint");
+                createAlert("success", "Penjualan telah di simpan dan dicetak");
+            }
+            else {
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+        });
+      //  ipcRenderer.removeAllListeners();
+    });
+
 }

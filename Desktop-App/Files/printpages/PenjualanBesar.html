@@ -83,8 +83,6 @@
     <!-- /.content -->
 </div>
 <button class="btn btn-primary" id="PenjualanBesar-PrintBtn">print</button>
-<!-- ./wrapper -->
-
 
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -95,26 +93,21 @@
 <script>
     $(function () {
 
-       // window.print();
         const ipc = require('electron').ipcRenderer;
         const BrowserWindow = require('electron').remote.BrowserWindow;
 
-        ipc.on('print-page', function (event, number, fromWindowId) {
+        ipc.on('print-penjualan-besar', function (event, number, fromWindowId) {
             PopulatePenjualanBesarInvoice(number);
-            $("PenjualanBesar-PrintBtn").show();
+            $("#PenjualanBesar-PrintBtn").show();
             document.getElementById("PenjualanBesar-PrintBtn").onclick=function()
             {
-                $("PenjualanBesar-PrintBtn").hide();
+                $("#PenjualanBesar-PrintBtn").hide();
                 window.print();
                 const fromWindow = BrowserWindow.fromId(fromWindowId);
-                fromWindow.webContents.send('page-printed', number, 0);
+                fromWindow.webContents.send('penjualan-besar-printed', number, number);
                 window.close();
             };
-
-          //  window.close()
         });
-
-
     });
 </script>
 </body>

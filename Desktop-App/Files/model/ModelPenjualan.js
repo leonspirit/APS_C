@@ -175,6 +175,16 @@ function GetPenjualanDariVoucher(token, voucherID, fn)
             fn(data);
         }, "json");
 }
+function ChangePenjualanPrintedStatus(token, penjualanID, fn)
+{
+    $.post( baseUrl + "penjualan/change_printed_status/",
+        {
+            token: token,
+            penjualanID:penjualanID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
 
 
 

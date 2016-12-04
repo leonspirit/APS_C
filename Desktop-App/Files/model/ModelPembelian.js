@@ -161,4 +161,16 @@ function GetPembelianDariVoucher(token, voucherID, fn)
         }, "json");
 }
 
+function ChangePembelianPrintedStatus(token, pembelianID, fn)
+{
+    $.post( baseUrl + "pembelian/change_printed_status/",
+        {
+            token: token,
+            pembelianID:pembelianID
+        }, function(  data ) {
+            fn(data);
+        }, "json");
+}
+
+
 //connection.end();

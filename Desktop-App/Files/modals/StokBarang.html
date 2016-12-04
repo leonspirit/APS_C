@@ -311,17 +311,17 @@
                                     <input type="number" id="Stokbarang-KoreksiModal-TambahJumlahInput" class="form-control">
                                 </div>
                             </td>
-                            <td style="padding:0">
-                                <input style="width:100%" id="Stokbarang-KoreksiModal-TambahSatuanInput" class="form-control">
+                            <td style="padding:0;width:100px;">
+                                <input style="width:100%" id="Stokbarang-KoreksiModal-TambahSatuanInput" class="form-control" onchange="StokbarangTambahStokModalChangeSatuanListener();">
                             </td>
                         </tr>
                         <tr >
-                            <th>Harga Pokok</th>
+                            <th>Harga Beli</th>
                             <td colspan=2 style="padding:0;">
                                 <div class="input-group" style="width:100%;">
                                     <div class="input-group-addon">Rp.</div>
                                     <input id="Stokbarang-KoreksiModal-TambahHargaInput" class="form-control" type="number">
-                                    <div class="input-group-addon">/ Box</div>
+                                    <div style="width:100px;" class="input-group-addon" ><span class="pull-left" id="Stokbarang-TambahStokModal-SatuanHargaPokok"></span></div>
                                 </div>
                             </td>
                         </tr>

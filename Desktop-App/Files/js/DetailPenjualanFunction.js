@@ -398,24 +398,28 @@ function InitDetailPenjualanPage(curPenjualanID)
         $("#Detailpenjualan-EditButton").hide();
     }
 
-    const BrowserWindow = require('electron').remote.BrowserWindow
-    const ipcRenderer = require('electron').ipcRenderer
-    const path = require('path')
-
+    const BrowserWindow = require('electron').remote.BrowserWindow;
+    const ipcRenderer = require('electron').ipcRenderer;
+    //ipcRenderer.removeAllListeners();
+    const path = require('path');
     document.getElementById("Detailpenjualan-PrintButton").onclick = function () {
         const windowID = BrowserWindow.getFocusedWindow().id;
         const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanBesar.html');
         let win = new BrowserWindow({ width: 800, height: 800, show: true });
-        win.loadURL(invisPath)
+        win.loadURL(invisPath);
 
         win.webContents.on('did-finish-load', function () {
-            win.webContents.send('print-page', curPenjualanID, windowID)
-        })
+            win.webContents.send('print-penjualan-besar', curPembelianID, windowID)
+        });
     };
-   // ipcRenderer.off('page-printed');
-    ipcRenderer.removeAllListeners();
-    ipcRenderer.on('page-printed', function (event, input, output) {
-        createAlert("success", "Penjualan telah di print")
-    })
+    ipcRenderer.on('penjualan-besar-printed', function (event, input, output) {
+        ChangePenjualanPrintedStatus(currentToken, curPenjualanID, function(result){
+            if (result.token_status=="success")
+            {
+                createAlert("success", "Penjualan telah di print");
+            }
+        });
+    ///    ipcRenderer.removeAllListeners();
+    });
 
 }

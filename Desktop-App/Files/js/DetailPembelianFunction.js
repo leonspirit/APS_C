@@ -352,9 +352,12 @@ function InitDetailPembelianPage(curPembelianID)
     else {
         $("#Detailpembelian-EditButton").hide();
     }
+
     const BrowserWindow = require('electron').remote.BrowserWindow;
     const ipcRenderer = require('electron').ipcRenderer;
+    //ipcRenderer.removeAllListeners();
     const path = require('path');
+
     document.getElementById("Detailpembelian-PrintButton").onclick = function () {
         const windowID = BrowserWindow.getFocusedWindow().id;
         const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
@@ -362,13 +365,19 @@ function InitDetailPembelianPage(curPembelianID)
         win.loadURL(invisPath);
 
         win.webContents.on('did-finish-load', function () {
-            win.webContents.send('print-page', curPembelianID, windowID)
-        })
+            win.webContents.send('print-pembelian-besar', curPembelianID, windowID)
+        });
     };
-    ipcRenderer.removeAllListeners();
-    ipcRenderer.on('page-printed', function (event, input, output) {
-        createAlert("success", "Pembelian telah di print")
-    })
+    ipcRenderer.on('pembelian-besar-printed', function (event, input, output) {
+        ChangePembelianPrintedStatus(currentToken, curPembelianID, function(result){
+            if (result.token_status=="success")
+            {
+                console.log(result);
+                createAlert("success", "Pembelian telah di print");
+            }
+        });
+    //    ipcRenderer.removeAllListeners();
+    });
 
 
 }

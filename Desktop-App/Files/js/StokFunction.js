@@ -57,7 +57,7 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
                 if (hasHakAkses("HargaPokokLaba"))
                 {
                     totalUangBarang += barangEntry.harga_pokok * barangEntry.stok;
-                    document.getElementById("Stokbarang-TotalUangText").innerHTML = "Rp. " + numberWithCommas(totalUangBarang);
+                    document.getElementById("Stokbarang-TotalUangText").innerHTML = "Rp. " + numberWithCommas(Math.round(totalUangBarang));
                 }
                     var HargaPokok =
                         '<span class="pull-right">' +
@@ -78,6 +78,12 @@ function StokBarangPopulateEntry(BarangTable, barangEntry)
         }
     });
 }
+function StokbarangTambahStokModalChangeSatuanListener()
+{
+    var satuan = $("#Stokbarang-KoreksiModal-TambahSatuanInput").select2('data')[0].text;
+    document.getElementById("Stokbarang-TambahStokModal-SatuanHargaPokok").innerHTML="/ "+capitalizeFirstLetter(satuan);
+}
+
 function StokBarangPopulateKoreksiKurangModal(barangID)
 {
    // var i;
@@ -113,6 +119,7 @@ function StokBarangPopulateKoreksiKurangModal(barangID)
                 console.log("kurang stok sukses");
                 createAlert("success", "Stok barang berhasil dikurangi");
                 $("#Stokbarang-KoreksiKurangModal").modal('toggle');
+                $("#Stokbarang-EditModal").modal('toggle');
             }
         });
     }
@@ -134,7 +141,6 @@ function StokBarangPopulateKoreksiTambahModal(barangID)
         $("#Stokbarang-KoreksiModal-TambahSatuanInput").select2({
             data:data,
             placeholder:"-- Pilih Unit --",
-            allowClear:true
         });
     });
     document.getElementById("Stokbarang-KoreksiModal-TambahConfirmButton").onclick = function ()
@@ -150,6 +156,7 @@ function StokBarangPopulateKoreksiTambahModal(barangID)
                 console.log("add stok sukses");
                 createAlert("success", "Stok barang berhasil ditambahkan");
                 $("#Stokbarang-KoreksiTambahModal").modal('toggle');
+                $("#Stokbarang-EditModal").modal('toggle');
             }
         });
     }

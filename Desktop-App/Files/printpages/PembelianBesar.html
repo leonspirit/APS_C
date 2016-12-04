@@ -73,6 +73,7 @@
             </tfoot>
         </table>
     </section>
+    <button class="btn btn-primary" id="PembelianBesar-PrintButton">Print</button>
 </div>
 
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
@@ -84,24 +85,21 @@
 <script>
     $(function () {
 
-        console.log("lala");
-       // window.print();
         const ipc = require('electron').ipcRenderer;
         const BrowserWindow = require('electron').remote.BrowserWindow;
 
-        ipc.on('print-page', function (event, number, fromWindowId) {
-            //const result = 1;//factorial(number)
+        ipc.on('print-pembelian-besar', function (event, number, fromWindowId) {
             PopulatePembelianBesarInvoice(number);
-
-            const fromWindow = BrowserWindow.fromId(fromWindowId);
-            fromWindow.webContents.send('page-printed', number, 0);
-           // print();
-         //   window.close()
+            $("#PembelianBesar-PrintButton").show();
+            document.getElementById("PembelianBesar-PrintButton").onclick = function()
+            {
+                $("#PembelianBesar-PrintButton").hide();
+                window.print();
+                const fromWindow = BrowserWindow.fromId(fromWindowId);
+                fromWindow.webContents.send('pembelian-besar-printed', number, number);
+                window.close();
+            };
         });
-
-        function print () {
-            window.print();
-        }
     });
 </script>
 </body>
