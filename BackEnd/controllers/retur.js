@@ -253,11 +253,13 @@ router.post('/tambah_retur_pembelian', function(req,res){
                             }
                             else if (req.body.metode == 1){
                                 var querystring2 = 'SELECT pembelianID, harga_per_biji*(100 - (disc_1) - ((100-disc_1)/100*disc_2) - ((100 - (disc_1) - ((100-disc_1)/100*disc_2))/100*disc_3) )/100 as harga FROM pembelianbarang WHERE pembelianbarangID = ?'
-                                var querystring3 = 'SELECT p.supplierID as supplierID, t.harga as harga FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID'
+                                var querystring3 = 'SELECT p.supplierID as supplierID, p.disc as diskon, t.harga as harga FROM pembelian as p, ('+querystring2+') as t WHERE p.pembelianID = t.pembelianID'
                                 var voucherpembelian = [req.body.pembelianbarangID]
                                 connection.query(querystring3, voucherpembelian, function(err3, result3){
                                     if(err3) throw err3
                                     var harga_total = result3[0]['harga'] * req.body.quantity
+                                    var diskon = result3[0]['diskon']
+                                    harga_total = harga_total * (100-diskon) / 100
 
                                     var querystring6 = 'SELECT pembelianbarangID FROM pembelianbarang WHERE pembelianID = ?'
                                     var querystring7 = 'SELECT returpembelianID FROM returpembelian WHERE pembelianbarangID IN ('+querystring6+')'
@@ -293,11 +295,20 @@ router.post('/tambah_retur_pembelian', function(req,res){
                                     if(err3) throw err3
                                     var nominal = result3[0]['harga'] * req.body.quantity
 
-                                    var querystring3 = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "retur", karyawanID = ?'
-                                    var cicilan = [result3[0]['pembelianID'], req.body.tanggal, nominal, result['karyawanID']]
-                                    connection.query(querystring3, cicilan, function(err5, result5){
-                                        if(err5) throw err5
-                                        res.status(200).send(resp)
+                                    var querystring12 = 'SELECT disc FROM pembelian WHERE pembelianID = ?'
+                                    var pemb = [result3[0]['pembelianID']]
+                                    connection.query(querystring12, pemb, function(err12, result12){
+                                        if(err12) throw err12
+
+                                        var diskon = result12[0]['disc']
+                                        nominal = nominal * (100-diskon) / 100
+
+                                        var querystring3 = 'INSERT INTO cicilanpembelian SET pembelianID = ?, tanggal_cicilan = ?, nominal = ?, cara_pembayaran = "retur", karyawanID = ?'
+                                        var cicilan = [result3[0]['pembelianID'], req.body.tanggal, nominal, result['karyawanID']]
+                                        connection.query(querystring3, cicilan, function(err5, result5){
+                                            if(err5) throw err5
+                                            res.status(200).send(resp)
+                                        })
                                     })
                                 })
                             }

@@ -146,7 +146,7 @@ function asyncVoucher(iterations, harga, func, callback) {
     return loop;
 }
 
-function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, callback){
+function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, nama_barang, callback){
 
     var querystring = 'SELECT stokID, stok_skrg FROM stok WHERE barangID = ? AND stok_skrg > 0 LIMIT 1'
     var stok = [barangID]
@@ -175,8 +175,8 @@ function update_stok(item, barangID, satuanID, penjualanID, quantity, disc, harg
 
                 token_auth.get_stok_harga_pokok(barangID, function(result3){
                     var harga_pokok_saat_ini = result3['harga_pokok']
-                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?'
-                    var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID]
+                    var querystring3 = 'INSERT INTO penjualanbarang SET penjualanID = ?, satuanID = ?, quantity = ?, disc = ?, harga_pokok_saat_ini = ?, harga_jual_saat_ini = ?, stokID = ?, nama_barang = ?'
+                    var penjualanbarang = [penjualanID, satuanID, quantity, disc, harga_pokok_saat_ini, harga_jual_saat_ini, stokID, nama_barang]
                     connection.query(querystring3, penjualanbarang, function(err5, result5){
                         if(err5) throw err5
                         return callback(resp)
@@ -209,13 +209,30 @@ function add_penjualan_barang(req, i, penjualanID){
         var barangID = result[0]['barangID']
         var konversi = result[0]['konversi'] * result[0]['konversi_acuan']
 
-        asyncStok(quantity*konversi, function(loop){
-            update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, function(result){
-                loop.next(result['stok']);
-            })},
-            function(){
-            }
-        )
+        if(req.body.satuan[i]['nama_barang'] == ''){
+
+            var querystring2 = 'SELECT nama FROM barang WHERE barangID = ?'
+            var barang = [barangID]
+            connection.query(querystring2, barang, function(err2, result2){
+                if(err2) throw err2
+                asyncStok(quantity*konversi, function(loop){
+                    update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, result2[0]['nama'], function(result){
+                        loop.next(result['stok']);
+                    })},
+                    function(){
+                    }
+                )
+            })
+        }
+        else{
+            asyncStok(quantity*konversi, function(loop){
+                update_stok(loop.sisa(), barangID, satuanID, penjualanID, quantity, disc, harga_jual_saat_ini, req.body.satuan[i]['nama_barang'], function(result){
+                    loop.next(result['stok']);
+                })},
+                function(){
+                }
+            )
+        }
     })
 }
 
@@ -336,14 +353,7 @@ function add_detail_box(index, data, callback){
             if(err2) throw err2
             data[index]['konversi_box'] = result2[0]['konversi']
             data[index]['satuan_acuan_box'] = result2[0]['satuan_acuan']
-
-            var qrstring3 = 'SELECT nama FROM barang WHERE barangID = ?'
-            var barang = [result[0]['barangID']]
-            connection.query(qrstring3, barang, function(err3, result3){
-                if(err3) throw err3
-                data[index]['nama_barang'] = result3[0]['nama']
-                callback()
-            })
+            callback()
         })
     })
 }
@@ -811,8 +821,8 @@ router.post('/edit_penjualanbarang', function(req,res){
                 var curr_price = result2[0]['quantity'] * req.body.harga_jual_saat_ini
                 curr_price = curr_price * (100-req.body.disc) / 100
 
-                var querystring2 = 'UPDATE penjualanbarang SET harga_jual_saat_ini = ?, disc = ? WHERE penjualanbarangID = ?'
-                var penjualanbarang = [req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
+                var querystring2 = 'UPDATE penjualanbarang SET nama_barang = ?, harga_jual_saat_ini = ?, disc = ? WHERE penjualanbarangID = ?'
+                var penjualanbarang = [req.body.nama_barang, req.body.harga_jual_saat_ini, req.body.disc, req.body.penjualanbarangID]
                 connection.query(querystring2, penjualanbarang, function(err3, result3){
                     if(err3) throw err3
                     resp['affectedRows'] = result3.affectedRows
