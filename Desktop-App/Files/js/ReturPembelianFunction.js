@@ -67,7 +67,7 @@ function ReturPembelianAddRow(barang)
     var disc1 = barang.disc_1;
     var disc2 = barang.disc_2;
     var disc3 = barang.disc_3;
-    var itemSubtotal = (hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
+    var itemSubtotal = (hargaUnit * qty)*((100-disc1)/100)*((100-disc2)/100)*((100-disc3)/100);
 
     var cell1 = row.insertCell(0);
     cell1.innerHTML = rowNum.toString();
@@ -144,7 +144,7 @@ function ReturPembelianDrawTable(r)
         var disc3Str = curRow.cells[9].children[0].innerHTML;
         var disc3 = parseInt(disc3Str.replace(' %',''));
         //subtotal
-        var Subtotal = parseInt((qtyretur * hargaSatuan*(100-disc1-disc2-disc3))/100);
+        var Subtotal = parseInt(qtyretur * hargaSatuan*((100-disc1)/100)*((100-disc2)/100)*((100-disc3)/100));
         curRow.cells[11].children[0].innerHTML = "Rp. "+numberWithCommas(Subtotal);
     }
     var TotalHarga = 0;

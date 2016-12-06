@@ -76,7 +76,6 @@ function populateDetailPembelian(currentPembelianID)
             var grandTotalText ="<span class='pull-right'>Rp. "+numberWithCommas(hargaAfterDisc)+"</span>";
             var grandDiscountText ="<span class='pull-right'>"+numberWithCommas(pembelian.disc)+" %</span>";
 
-
             $(itemPembelianTable.column(9).footer()).html(grandTotalText);
             $(itemPembelianTable.column(7).footer()).html(grandDiscountText);
             for (i=0;i<pembelian.barang.length;i++)
@@ -232,10 +231,8 @@ function populateDetailPembelian(currentPembelianID)
                             nama_retur = pembelian.barang[j].nama_barang
                         }
                     }
-
                     var subtotal_retur = harga_unit_retur * pembelian.retur[i].quantity;
-                    subtotal_retur = subtotal_retur * (100 - disc1_retur - disc2_retur - disc3_retur) / 100;
-
+                    subtotal_retur = subtotal_retur * ((100 - disc1_retur)/100) * ((100-disc2_retur)/100) * ((100-disc3_retur)/100) ;
                     ReturPembelianTable.row.add([
                         "<span class='pull-right'>"+(i+1).toString()+"</span>",
                         tgl,
@@ -358,7 +355,7 @@ function InitDetailPembelianPage(curPembelianID)
     //ipcRenderer.removeAllListeners();
     const path = require('path');
 
-    document.getElementById("Detailpembelian-PrintButton").onclick = function () {
+    document.getElementById("Detailpembelian-PrintBesarButton").onclick = function () {
         const windowID = BrowserWindow.getFocusedWindow().id;
         const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
         let win = new BrowserWindow({ width: 800, height: 800, show: true });
@@ -368,7 +365,17 @@ function InitDetailPembelianPage(curPembelianID)
             win.webContents.send('print-pembelian-besar', curPembelianID, windowID)
         });
     };
-    ipcRenderer.on('pembelian-besar-printed', function (event, input, output) {
+    document.getElementById("Detailpembelian-PrintKecilButton").onclick = function () {
+        const windowID = BrowserWindow.getFocusedWindow().id;
+        const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
+        let win = new BrowserWindow({ width: 400, height: 800, show: true });
+        win.loadURL(invisPath);
+
+        win.webContents.on('did-finish-load', function () {
+            win.webContents.send('print-pembelian-kecil', curPembelianID, windowID)
+        });
+    };
+    ipcRenderer.on('pembelian-printed', function (event, input, output) {
         ChangePembelianPrintedStatus(currentToken, curPembelianID, function(result){
             if (result.token_status=="success")
             {

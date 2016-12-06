@@ -402,17 +402,27 @@ function InitDetailPenjualanPage(curPenjualanID)
     const ipcRenderer = require('electron').ipcRenderer;
     //ipcRenderer.removeAllListeners();
     const path = require('path');
-    document.getElementById("Detailpenjualan-PrintButton").onclick = function () {
+    document.getElementById("Detailpenjualan-PrintBesarButton").onclick = function () {
         const windowID = BrowserWindow.getFocusedWindow().id;
         const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanBesar.html');
         let win = new BrowserWindow({ width: 800, height: 800, show: true });
         win.loadURL(invisPath);
 
         win.webContents.on('did-finish-load', function () {
-            win.webContents.send('print-penjualan-besar', curPembelianID, windowID)
+            win.webContents.send('print-penjualan-besar', curPenjualanID, windowID)
         });
     };
-    ipcRenderer.on('penjualan-besar-printed', function (event, input, output) {
+    document.getElementById("Detailpenjualan-PrintKecilButton").onclick = function () {
+        const windowID = BrowserWindow.getFocusedWindow().id;
+        const invisPath = 'file://' + path.join(__dirname, 'printpages/PenjualanKecil.html');
+        let win = new BrowserWindow({ width: 400, height: 800, show: true });
+        win.loadURL(invisPath);
+
+        win.webContents.on('did-finish-load', function () {
+            win.webContents.send('print-penjualan-kecil', curPenjualanID, windowID)
+        });
+    };
+    ipcRenderer.on('penjualan-printed', function (event, input, output) {
         ChangePenjualanPrintedStatus(currentToken, curPenjualanID, function(result){
             if (result.token_status=="success")
             {

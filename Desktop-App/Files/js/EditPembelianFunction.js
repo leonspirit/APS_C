@@ -13,16 +13,16 @@ function EditPembelianAddRow(barang)
     var row = tableBody.insertRow(rowCount);
     var rowNum = rowCount+1;
 
-    var isi_box = "@ "+(barang.konversi_box).toString()+" "+capitalizeFirstLetter(barang.satuan_acuan_box)
-    var satuan_unit = barang.satuan_unit
-    var nama_barang = barang.nama_barang
+    var isi_box = "@ "+(barang.konversi_box).toString()+" "+capitalizeFirstLetter(barang.satuan_acuan_box);
+    var satuan_unit = barang.satuan_unit;
+    var nama_barang = barang.nama_barang;
 
     var hargaUnit = barang.harga_per_biji;
     var qty = barang.quantity;
     var disc1 = barang.disc_1;
     var disc2 = barang.disc_2;
     var disc3 = barang.disc_3;
-    var subtotal = hargaUnit*qty *(100-disc1-disc2-disc3)/100;
+    var subtotal = hargaUnit*qty *((100-disc1)/100)*((100-disc2)/100)*((100-disc3)/100);
    // var itemSubtotal = (hargaUnit * qty)*((100-disc1-disc2-disc3)/100);
 
 
@@ -34,8 +34,8 @@ function EditPembelianAddRow(barang)
     var cell2 = row.insertCell(1);
     cell2.innerHTML = nama_barang;
 
-    var cell5  =row.insertCell(2);
-    cell5.innerHTML = isi_box;
+    var cellisibox  =row.insertCell(2);
+    cellisibox.innerHTML = isi_box;
 
     var cell3 = row.insertCell(3);
     cell3.innerHTML = "<span class='pull-right'>"+numberWithCommas(qty)+"</span>";
@@ -277,7 +277,6 @@ function EditPembelianSaveConfirm(id)
 function EditPembelianEditEntry(pembelianbarangID, row)
 {
     console.log(pembelianbarangID+ row);
-
     EditPembelianBarang(currentToken,
         pembelianbarangID,
         document.getElementById("Editpembelian-Input-"+row+"-1").value,

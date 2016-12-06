@@ -17,7 +17,7 @@ function getRowIndex(item)
     var node = item;
     while(true)
     {
-        console.log(node.tagName);
+      //  console.log(node.tagName);
         if (node.tagName == "TR")
         {
             return node.rowIndex;

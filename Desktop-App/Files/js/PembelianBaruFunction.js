@@ -390,7 +390,7 @@ function PembelianBaruDrawTable(r)
     }
 
 }
-function PembelianBaruSave(isPrinted)//PENTING
+function PembelianBaruSave(isPrinted, callback)//PENTING
 {
     removeWarning();
     var satuan = [];
@@ -502,17 +502,15 @@ function PembelianBaruSave(isPrinted)//PENTING
                 if (result.token_status=="success")
                 {
                     console.log(result.pembelianID);
-                    PembelianBaruResetTable();
-                    var pad ="0000";
-                    var id = "" + result.pembelianID;
-                    var StrId  = "TB"+ pad.substring(0, pad.length - id.length)+id;
-                    createAlert("success", "Data Pembelian baru "+StrId+" berhasil ditambahkan");
-                    return result.pembelianID;
+
+                   // return result.pembelianID;
+                    callback (result.pembelianID);
                 }
                 else
                 {
-                    createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-                    return -1;
+                   // createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                  //  return -1;
+                    callback(-2);
                 }
             }
         );
@@ -618,7 +616,7 @@ function PembelianBaruCreateSupplierConfirm()
             else
             {
                 console.log("Token failed");
-                createAlert("danger", "Terd apat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
         });
     }
@@ -822,7 +820,20 @@ function InitPembelianBaruPage()
     });
     document.getElementById("Pembelianbaru-SaveButton").onclick=function()
     {
-        PembelianBaruSave(0);
+        PembelianBaruSave(0, function(result){
+            if (result>0)
+            {
+                PembelianBaruResetTable();
+                var pad ="0000";
+                var id = "" + result;
+                var StrId  = "TB"+ pad.substring(0, pad.length - id.length)+id;
+                createAlert("success", "Data Pembelian baru "+StrId+" berhasil ditambahkan");
+            }
+            else if result==-2){
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+
+        });
     };
     document.getElementById("Pembelianbaru-AddButton").onclick = function()
     {
@@ -846,34 +857,58 @@ function InitPembelianBaruPage()
     if (tableBody.rows.length<1)
         PembelianBaruAddRow();
 
+    PembelianBaruResetTable();
 
     const BrowserWindow = require('electron').remote.BrowserWindow;
     const ipcRenderer = require('electron').ipcRenderer;
     const path = require('path');
-    document.getElementById("Pembelianbaru-PrintButton").onclick = function () {
-        var resultPembelianID = PembelianBaruSave(0);
-        if (resultPembelianID!=-1)
-        {
-            const windowID = BrowserWindow.getFocusedWindow().id;
-            const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
-            let win = new BrowserWindow({ width: 800, height: 800, show: true });
-            win.loadURL(invisPath);
-            win.webContents.on('did-finish-load', function () {
-                win.webContents.send('print-pembelian-besar', resultPembelianID, windowID)
-            });
-        }
+    document.getElementById("Pembelianbaru-PrintBesarButton").onclick = function () {
+        PembelianBaruSave(0, function(result){
+            if (result > 0)
+            {
+                const windowID = BrowserWindow.getFocusedWindow().id;
+                const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
+                let win = new BrowserWindow({ width: 800, height: 800, show: true });
+                win.loadURL(invisPath);
+                win.webContents.on('did-finish-load', function () {
+                    win.webContents.send('print-pembelian-besar', result, windowID)
+                });
+            }
+            else if (result==-2){
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+        });
+
+    };
+    document.getElementById("Pembelianbaru-PrintKecilButton").onclick = function () {
+        PembelianBaruSave(0, function(result){
+            if (result > 0)
+            {
+                const windowID = BrowserWindow.getFocusedWindow().id;
+                const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
+                let win = new BrowserWindow({ width: 400, height: 800, show: true });
+                win.loadURL(invisPath);
+                win.webContents.on('did-finish-load', function () {
+                    win.webContents.send('print-pembelian-kecil', result, windowID)
+                });
+            }
+            else if (result==-2){
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+        });
+
     };
     ipcRenderer.on('pembelian-besar-printed', function (event, input, output) {//output=penjualanID
         ChangePembelianPrintedStatus(currentToken, output, function(result){
             if (result.token_status=="success")
             {
                 createAlert("success", "Pembelian telah di simpan dan dicetak");
+                PembelianBaruResetTable();
             }
             else {
                 createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
         });
-       // ipcRenderer.removeAllListeners();
     });
 
 }
