@@ -320,4 +320,97 @@ router.post('/tambah_retur_pembelian', function(req,res){
     })
 })
 
+router.post('/batal_retur_penjualan', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'SELECT penjualanbarangID, metode FROM returpenjualan WHERE returpenjualanID = ?'
+            var retur = [req.body.returpenjualanID]
+
+            connection.query(querystring, retur, function(err2, result2){
+                if(err2) throw err2;
+
+                var metode = result2[0]['metode']
+                if(metode == 1){
+                    // var querystring2 = 'SELECT penjualanID, quantity, harga_jual_saat_ini, disc FROM penjualanbarang WHERE penjualanbarangID = ?'
+                    // var penjualanbarang = [result2[0]['penjualanbarangID']]
+                    // connection.query(querystring2, penjualanbarang, function(err3, result3){
+                    //     if(err3) throw err3
+                    //
+                    //     var harga = result3[0]['quantity'] * result3[0]['harga_jual_saat_ini']
+                    //     harga = harga * (100 - result3[0]['disc'])/100
+                    //
+                    //     var querystring3 = 'SELECT penjualanbarangID FROM penjualanbarang WHERE penjualanID = ?'
+                    //     var querystring4 = 'SELECT returpenjualanID FROM returpenjualan WHERE penjualanbarangID IN ('+querystring3+')'
+                    //     var querystring5 = 'UPDATE voucherpenjualan SET jumlah = jumlah - ? WHERE returnpenjualanID IN ('+querystring4+')'
+                    //     var voucher = [harga, result3[0]['penjualanID']]
+                    //     connection.query(querystring5, voucher, function(err4, result4){
+                    //         if(err4) throw err4
+                    //
+                    //         var querystring6 = 'DELETE '
+                    //     })
+                    // })
+                    res.status(200).send(resp)
+                }
+                else if (metode == 0){
+                    var querystring2 = 'DELETE FROM returpenjualan WHERE returpenjualanID = ?'
+                    connection.query(querystring2, retur, function(err3, result3){
+                        if(err3) throw err3;
+                        res.status(200).send(resp)
+                    })
+                }
+                else{
+                    res.status(200).send(resp)
+                }
+            })
+        }
+    })
+})
+
+router.post('/batal_retur_pembelian', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'SELECT pembelianbarangID, metode FROM returpembelian WHERE returpembelianID = ?'
+            var retur = [req.body.returpembelianID]
+
+            connection.query(querystring, retur, function(err2, result2){
+                if(err2) throw err2;
+
+                var metode = result2[0]['metode']
+                if(metode == 1){
+                    res.status(200).send(resp)
+                }
+                else if (metode == 0){
+                    var querystring2 = 'DELETE FROM returpembelian WHERE returpembelianID = ?'
+                    connection.query(querystring2, retur, function(err3, result3){
+                        if(err3) throw err3;
+                        res.status(200).send(resp)
+                    })
+                }
+                else{
+                    // var querystring3 = 'DELETE FROM '
+                    res.status(200).send(resp)
+                }
+            })
+        }
+    })
+})
+
 module.exports = router

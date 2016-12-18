@@ -814,4 +814,27 @@ router.post('/edit_pembelian', function(req,res){
     })
 })
 
+router.post('/batal_pembayaran', function(req,res){
+
+    var resp = {}
+    res.type('application/json')
+    token_auth.check_token(req.body.token, function(result){
+        if(result == null || result == 'inaktif'){
+            resp['token_status'] = 'failed'
+            res.status(200).send(resp)
+        }
+        else{
+            resp['token_status'] = 'success'
+
+            var querystring = 'DELETE FROM cicilanpembelian WHERE cicilanpembelianID = ?'
+            var cicilan = [req.body.cicilanpembelianID]
+
+            connection.query(querystring, cicilan, function(err2, result2){
+                if(err2) throw err2;
+                res.status(200).send(resp)
+            })
+        }
+    })
+})
+
 module.exports = router
