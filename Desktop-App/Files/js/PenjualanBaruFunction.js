@@ -712,6 +712,31 @@ function PenjualanBaruCreatePelangganConfirm()
 }
 
 
+function    PenjualanBaruCreateBarangModalDisableHargaJualInput()
+{
+    var form = document.getElementById("Penjualanbaru-CreatebarangModal-CreateForm");
+
+    var satuanlokal =["grs", "kod", "lsn", "pcs"];
+    var i;
+
+    for (i=0;i<satuanlokal.length;i++)
+    {
+        if ($("#Penjualanbaru-CreatebarangModal-harga-jual-"+satuanlokal[i]+"-check").prop("checked"))
+        {
+            form.elements["harga-jual-"+satuanlokal[i]+"-input"].disabled =false;
+            $("#Penjualanbaru-CreatebarangModal-SatuanStokSelect-"+satuanlokal[i]+"Option").show();
+            $("#Penjualanbaru-CreatebarangModal-SatuanHpokokSelect-"+satuanlokal[i]+"Option").show();
+        }
+        else
+        {
+            form.elements["harga-jual-"+satuanlokal[i]+"-input"].disabled= true;
+            $("#Penjualanbaru-CreatebarangModal-SatuanStokSelect-"+satuanlokal[i]+"Option").hide();
+            $("#Penjualanbaru-CreatebarangModal-SatuanHpokokSelect-"+satuanlokal[i]+"Option").hide();
+        }
+    }
+}
+
+
 function PenjualanBaruCekItemStok(node)
 {
     var rowIndex = getRowIndex(node);//node.parentNode.parentNode.rowIndex;
@@ -983,12 +1008,12 @@ function PenjualanBaruCreateBarangConfirm()
     var konversiSatuan = [144, 20, 12, 1];
     var BarangTable = $('#BarangTable').DataTable();
     var valid = true;
-    var form = document.getElementById("Penjualanbaru-CreateModal-CreateForm");
+    var form = document.getElementById("Penjualanbaru-CreatebarangModal-CreateForm");
     removeWarning();
 
     console.log(form);
     var i;
-    $("#Penjualanbaru-CreateModal-harga-jual-box-check").iCheck("check");
+    $("#Penjualanbaru-CreatebarangModal-harga-jual-box-check").iCheck("check");
     var namaBarang = form.elements["nama"];
     var hargajualbox= form.elements["harga-jual-box-input"];
     var isibox = form.elements["isi-box-input"];
@@ -1008,7 +1033,7 @@ function PenjualanBaruCreateBarangConfirm()
         setWarning(isibox, "Isi per Box harus diisi");
     }
     for (i = 0; i < satuan.length; i++) {
-        if ($("#Penjualanbaru-CreateModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
+        if ($("#Penjualanbaru-CreatebarangModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
             if (form.elements["harga-jual-" + satuan[i] + "-input"].value=='' || form.elements["harga-jual-" + satuan[i] + "-input"].value==0)
             {
                 valid =false;
@@ -1042,7 +1067,7 @@ function PenjualanBaruCreateBarangConfirm()
                     {
                         console.log("adding satuan"+satuan[i]);
                         var hargajual = $(form.elements["harga-jual-"+satuan[i]+"-input"]).val();
-                        PenjualanBAruAddSatuanDanStok( result.barangID, hargajual, satuan[i], konversiSatuan[i], "pcs", 1, stokmasuk, hargapokok, satuanstok);
+                        PenjualanBaruAddSatuanDanStok( result.barangID, hargajual, satuan[i], konversiSatuan[i], "pcs", 1, stokmasuk, hargapokok, satuanstok);
 
                     }
                 }
@@ -1052,10 +1077,22 @@ function PenjualanBaruCreateBarangConfirm()
                 //InitStokBarangPage();
                 createAlert("success", "Barang baru "+StrId+" - "+form.elements["nama"].value.toString() +" berhasil ditambahkan");
                 form.reset();
-                $("#Penjualanbaru-CreateModal").modal("toggle");
-                $("#Penjualanbaru-CreateModal-harga-jual-box-check").iCheck("check").iCheck("disable");
+                $("#Penjualanbaru-CreatebarangModal").modal("toggle");
+                $("#Penjualanbaru-CreatebarangModal-harga-jual-box-check").iCheck("check").iCheck("disable");
                 for(i=0;i<satuan.length;i++)
-                    $("#Penjualanbaru-CreateModal-harga-jual-"+satuan[i]+"-check").iCheck("uncheck");
+                    $("#Penjualanbaru-CreatebarangModal-harga-jual-"+satuan[i]+"-check").iCheck("uncheck");
+                PenjualanBaruGetBarang();
+
+                // DataBarang.pop();
+                // DataBarang.push({
+                //     id:id,
+                //     text:nama
+                // });
+                // DataBarang.push({
+                //     id:"new",
+                //     text:"+ Tambah Pelanggan Baru"
+                // });
+
             }
             else {
                 createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
@@ -1217,5 +1254,18 @@ function InitPenjualanBaruPage()
 
     PenjualanBaruResetTable();
 
+
+    PenjualanBaruDisableHargaPokokField();
+    PenjualanBaruCreateBarangModalDisableHargaJualInput();
+
+    $(".check-satuan-createModal").off("ifChanged");
+    $(".check-satuan-createModal").on("ifChanged", function () {
+        PenjualanBaruCreateBarangModalDisableHargaJualInput();
+    });
+
+
+    document.getElementById("Penjualanbaru-CreatebarangModal-ConfirmButton").onclick= function () {
+        PenjualanBaruCreateBarangConfirm();
+    };
 
 }

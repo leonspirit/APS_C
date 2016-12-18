@@ -313,8 +313,9 @@ function AddCicilan(tipe, id)
     var nomorgiro=null, bank=null, tanggalPencairan=null;
     if (carabayar=='giro')
     {
-        var tanggalpencariantemp = new Date($("#NotificationModal-CicilanTanggalPencarianDate").datepicker().val());
-        tanggalPencairan = tanggalpencariantemp.getFullYear()+"-"+(tanggalpencariantemp.getMonth()+1)+"-"+tanggalpencariantemp.getDate();
+
+        var tanggalpencairantemp = new Date($("#NotificationModal-CicilanTanggalPencairanDate").datepicker().val());
+        tanggalPencairan = tanggalpencairantemp.getFullYear()+"-"+(tanggalpencairantemp.getMonth()+1)+"-"+tanggalpencairantemp.getDate();
         nomorgiro = formdata.elements['nomor-giro'].value;
         bank = formdata.elements['bank-giro'].value;
     }
@@ -344,7 +345,6 @@ function AddCicilan(tipe, id)
             {
                 if (result.token_status=="success")
                 {
-                    console.log(result.cicilanpenjualanID);
                     InitDetailPenjualanPage(id);
                     createAlert("success", "Pembayaran berhasil ditambahkan");
                     $("#NotificationModal").modal('toggle');
@@ -366,7 +366,6 @@ function AddCicilan(tipe, id)
             {
                 if (result.token_status=="success")
                 {
-                    console.log(result.cicilanpembelianID);
                     InitDetailPembelianPage(id);
                     createAlert("success", "Pembayaran berhasil ditambahkan");
                     $("#NotificationModal").modal('toggle');
@@ -380,7 +379,6 @@ function AddCicilan(tipe, id)
 function Logout(token)
 {
     myUserLogout(token, function(result){
-        console.log("success Logout");
 
         document.body.classList.remove("skin-blue-light");
         document.body.classList.remove("sidebar-mini");
@@ -451,7 +449,6 @@ function removeAllAlert()
 }
 function InitNavMenu()
 {
-    console.log("initnav");
     var HakAksesList = JSON.parse(localStorage.getItem("hak_akses"));
     var FullPages= ["StokBarang", "LaporanPenjualan", "LaporanPembelian", "PenjualanBaru", "PembelianBaru", "Piutang", "Hutang", "DaftarPelanggan", "DaftarKaryawan", "DaftarSupplier"];
     var li, a, img, span, i;
@@ -460,7 +457,6 @@ function InitNavMenu()
     {
         if ($.inArray(FullPages[i], HakAksesList)!=-1)
         {
-            console.log("iiii"+i);
             li = document.createElement("li");
             a = document.createElement("a");
             li.setAttribute("class", "nav-section");
@@ -517,7 +513,6 @@ function setPage(page)
 
 function ImportSectionsAndModals() {
 
-    console.log("initimport");
     var FullPages= ["StokBarang", "LaporanPenjualan", "LaporanPembelian", "PenjualanBaru", "PembelianBaru", "Piutang", "Hutang", "DaftarPelanggan", "DaftarKaryawan", "DaftarSupplier"];
 
     const links = document.querySelectorAll('link[rel="import"]');
@@ -619,6 +614,7 @@ function twoDigitPad(num)
 function CheckLogin()
 {
 
+    $("#login-alert").hide();
     var ID = localStorage.getItem("karyawanID");
     var hak_akses = localStorage.getItem("hak_akses");
     var token = localStorage.getItem("token");
@@ -657,11 +653,11 @@ function myLogin()
     var userName = form.elements["username"].value;
     var password = md5(form.elements["password"].value);
 
-    console.log(userName+" "+password);
+
     myUserLogin(userName, password, function(result){
-        console.log(result['num_rows']);
         if(result['num_rows']==1)
         {
+            $("#login-alert").hide();
             var karID = result['karyawanID'].toString();
             var i;
 
@@ -701,7 +697,7 @@ function myLogin()
         }
         else
         {
-            console.log("login gagal");
+            $("#login-alert").show();
         }
     });
 }

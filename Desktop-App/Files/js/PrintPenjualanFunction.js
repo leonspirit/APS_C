@@ -59,7 +59,7 @@ function PopulatePenjualanBesarInvoice(id)
             document.getElementById("PenjualanBesar-PembayaranText").innerHTML = PembayaranText;
             document.getElementById("PenjualanBesar-StatusText").innerHTML = capitalizeFirstLetter(penjualan.status);
             document.getElementById("PenjualanBesar-AlamatText").innerHTML = penjualan.alamat;
-            document.getElementById("PenjualanBesar-KodeText").innerHTML = StrId;
+         //   document.getElementById("PenjualanBesar-KodeText").innerHTML = StrId;
           //  document.getElementById("PenjualanBesar-NotesText").innerHTML = notesText;
 
             var grandTotalText = "<span class='pull-right'>Rp. " + numberWithCommas(penjualan.subtotal) + "</span>";
@@ -145,10 +145,10 @@ function PopulatePenjualanKecilInvoice(id)
             document.getElementById("PenjualanBesar-PelangganText").innerHTML = penjualan.pelangganNama;
             document.getElementById("PenjualanBesar-TglJatuhTempoText").innerHTML = JatuhTempoText;
             document.getElementById("PenjualanBesar-TglTransaksiText").innerHTML = TglTransaksiText;
-            document.getElementById("PenjualanBesar-PembayaranText").innerHTML = PembayaranText;
+       //     document.getElementById("PenjualanBesar-PembayaranText").innerHTML = PembayaranText;
        //     document.getElementById("PenjualanBesar-StatusText").innerHTML = capitalizeFirstLetter(penjualan.status);
             document.getElementById("PenjualanBesar-AlamatText").innerHTML = penjualan.alamat;
-            document.getElementById("PenjualanBesar-KodeText").innerHTML = StrId;
+        //    document.getElementById("PenjualanBesar-KodeText").innerHTML = StrId;
         //    document.getElementById("PenjualanBesar-NotesText").innerHTML = notesText;
 
             var subtotal  = parseInt(Math.round(penjualan.subtotal));
@@ -166,14 +166,11 @@ function PopulatePenjualanKecilInvoice(id)
                 var satuan_unit = penjualan.barang[i].satuan_unit;
 
                 itemPenjualanBesarTable.row.add([
-                  //  "<span class='pull-right'>" + (i + 1).toString() + "</span>",
                     "<span class='pull-left'>"+nama_barang+"</span>",
-                  //  "@ " + isi_box,
-                    "<span class='pull-right'>" + numberWithCommas(qty) + "</span>",
-                    capitalizeFirstLetter(satuan_unit),
-                  //  "<span class='pull-right'>Rp. " + numberWithCommas(hargaUnit) + "</span>",
-                  //  "<span class='pull-right'>" + disc + " %</span>",
-                    "<span class='pull-right'>Rp." + numberWithCommas(itemSubtotal) + "</span>"
+                    "<span class='pull-right'>" + numberWithCommas(qty) + " "+capitalizeFirstLetter(satuan_unit)+"</span>",
+                    "<span class='pull-right'" + numberWithCommas(hargaUnit) + "</span>",
+                    "<span class='pull-right'>" + disc + "%</span>",
+                    "<span class='pull-right'>" + numberWithCommas(itemSubtotal) + "</span>"
                 ]);
             }
             itemPenjualanBesarTable.draw();

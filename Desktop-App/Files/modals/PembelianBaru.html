@@ -62,4 +62,144 @@
             </div>
         </div>
     </div>
+    <div class="modal fade"  id="Pembelianbaru-CreatebarangModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Tambah Barang baru</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="Pembelianbaru-CreatebarangModal-CreateForm">
+                        <table class="table">
+                            <tr>
+                                <td colspan =2><b>Nama</b></td>
+                                <td class="form-group" style="padding:0">
+                                    <input type="text" name="nama" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2><b>Stok</b></td>
+                                <td style="padding:0">
+                                    <div class="input-group">
+                                        <input type="number" name="stok" class="form-control" onchange="PembelianBaruDisableHargaPokokField();">
+                                        <div class="input-group-btn">
+                                            <select name="satuan-stok-select" style="width:90px" class="form-control" onchange = "StokBarangCreatebarangModalSatuanIsiListener();">
+                                                <option value='box'>Box</option>
+                                                <option id="Pembelianbaru-CreatebarangModal-SatuanStokSelect-grsOption" value='grs'>Grs</option>
+                                                <option id="Pembelianbaru-CreatebarangModal-SatuanStokSelect-kodOption" value='kod'>Kod</option>
+                                                <option id="Pembelianbaru-CreatebarangModal-SatuanStokSelect-lsnOption" value='lsn'>Lsn</option>
+                                                <option id="Pembelianbaru-CreatebarangModal-SatuanStokSelect-pcsOption" value='pcs'>Pcs</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan =2><b>Isi/Box</b></td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group" style="width:100%;">
+                                            <input type="number" name="isi-box-input" class="form-control" value="">
+                                            <div class="input-group-btn">
+                                                <select name="acuan-box-select" style="width:90px" class="form-control">
+                                                    <option value="grs">Grs</option>
+                                                    <option value="lsn">Lsn</option>
+                                                    <option value="kod">Kod</option>
+                                                    <option value="pcs">Pcs</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><b>Harga Beli</b></td>
+                                <td style="padding:0">
+                                    <div class="input-group" style="width:100%;">
+                                        <div class="input-group-addon">Rp.</div>
+                                        <input type="number" class="form-control" name="harga-pokok-input">
+                                        <div class="input-group-addon" style="width:90px">
+                                            <span class="pull-left"  id="Pembelianbaru-CreatebarangModal-SatuanHargaBeliText">/Box</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Unit</th>
+                                <th>Harga Jual</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><input id="Pembelianbaru-CreatebarangModal-harga-jual-box-check" type="checkbox" name="harga-jual-box-check" class="minimal" disabled checked></td>
+                                <td>Box</td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group" style="margin:0">
+                                            <div class="input-group-addon">Rp.</div>
+                                            <input name="harga-jual-box-input" class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input id="Pembelianbaru-CreatebarangModal-harga-jual-grs-check" name="harga-jual-grs-check" type="checkbox" class="minimal check-satuan-createModal"></td>
+                                <td>Grs</td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp.</div>
+                                            <input name="harga-jual-grs-input" class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input id="Pembelianbaru-CreatebarangModal-harga-jual-kod-check" name="harga-jual-kod-check" type="checkbox" class="minimal check-satuan-createModal"></td>
+                                <td>Kod</td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp.</div>
+                                            <input name="harga-jual-kod-input" class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input id="Pembelianbaru-CreatebarangModal-harga-jual-lsn-check" name="harga-jual-lsn-check" type="checkbox" class="minimal check-satuan-createModal"></td>
+                                <td>Lsn</td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp.</div>
+                                            <input name="harga-jual-lsn-input" class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input id="Pembelianbaru-CreatebarangModal-harga-jual-pcs-check" name="harga-jual-pcs-check" type="checkbox" class="minimal check-satuan-createModal"></td>
+                                <td>Pcs</td>
+                                <td style="padding:0">
+                                    <div class="form-group" style="margin:0">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp.</div>
+                                            <input name="harga-jual-pcs-input" class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary  pull-left" data-dismiss="modal">Cancel</button>
+                    <button id="Pembelianbaru-CreatebarangModal-ConfirmButton" type="button" class="btn btn-primary  pull-right">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

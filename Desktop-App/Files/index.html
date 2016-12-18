@@ -70,6 +70,14 @@
                     <button id="LoginButton" class="btn btn-primary btn-flat">Sign In</button>
                 </div>
             </div>
+            <br><br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-danger" id="login-alert">
+                        Username atau password salah
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="wrapper">
@@ -176,10 +184,6 @@
     <script src="dist/js/demo.js"></script>
     <script>
       $(function () {
-          const BrowserWindow = require('electron').remote.BrowserWindow
-          const ipcRenderer = require('electron').ipcRenderer
-          const path = require('path')
-
           var loggedIn = CheckLogin();
           if (!loggedIn)
           {

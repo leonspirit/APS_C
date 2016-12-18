@@ -117,7 +117,8 @@ function PembelianBaruAddRow()
     var inputBarang = document.createElement("input");
     inputBarang.setAttribute("id", "Pembelianbaru-Input-"+twoDigitPad(rowNum)+"-1");
     inputBarang.setAttribute("style", "width:100%;");
-    inputBarang.setAttribute("onchange", "PembelianBaruGetSatuanBarangList(this);");
+    inputBarang.setAttribute("onchange", "PembelianBaruInputBarangChangeListener(this);");
+    //inputBarang.setAttribute("onchange", "PembelianBaruGetSatuanBarangList(this);");
     inputBarang.setAttribute("class", "barang-select2 form-control");
     cell2.appendChild(inputBarang);
     $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
@@ -797,6 +798,188 @@ function PembelianBaruSupplierSelectChangeListener()
 
     }
 }
+
+
+function PembelianBaruCreateBarangConfirm()
+{
+    var satuan =[ "grs", "kod", "lsn", "pcs"];
+    var konversiSatuan = [144, 20, 12, 1];
+    var BarangTable = $('#BarangTable').DataTable();
+    var valid = true;
+    var form = document.getElementById("Pembelianbaru-CreatebarangModal-CreateForm");
+    removeWarning();
+
+    console.log(form);
+    var i;
+    $("#Pembelianbaru-CreatebarangModal-harga-jual-box-check").iCheck("check");
+    var namaBarang = form.elements["nama"];
+    var hargajualbox= form.elements["harga-jual-box-input"];
+    var isibox = form.elements["isi-box-input"];
+    if (namaBarang.value==null || namaBarang.value=='')
+    {
+        valid = false;
+        setWarning(namaBarang, "Nama Barang harus diisi");
+    }
+    if (hargajualbox.value==''|| hargajualbox==null)
+    {
+        valid = false;
+        setWarning(hargajualbox, "Harga Tidak Boleh Kosong");
+    }
+    if (isibox.value==''|| isibox.value==0 )
+    {
+        valid = false;
+        setWarning(isibox, "Isi per Box harus diisi");
+    }
+    for (i = 0; i < satuan.length; i++) {
+        if ($("#Pembelianbaru-CreatebarangModal-harga-jual-" + satuan[i] + "-check").prop("checked")) {
+            if (form.elements["harga-jual-" + satuan[i] + "-input"].value=='' || form.elements["harga-jual-" + satuan[i] + "-input"].value==0)
+            {
+                valid =false;
+                setWarning(form.elements["harga-jual-" + satuan[i] + "-input"], "Harga Tidak Boleh Kosong");
+            }
+        }
+    }
+    if (valid)
+    {
+        AddBarang(currentToken, namaBarang.value, function(result)
+        {
+            if (result.token_status=="success")
+            {
+                var konversiAcuanBox;
+                var acuanBox = form.elements["acuan-box-select"].value;
+                for (i=0;i<satuan.length;i++)
+                {
+                    if (acuanBox==satuan[i])
+                    {
+                        konversiAcuanBox = konversiSatuan[i];
+                        break;
+                    }
+                }
+                var stokmasuk  = form.elements['stok'].value;
+                var satuanstok = form.elements['satuan-stok-select'].value;
+                var hargapokok = form.elements['harga-pokok-input'].value;
+                PembelianBaruAddSatuanDanStok( result.barangID, hargajualbox.value, "box", isibox.value, acuanBox, konversiAcuanBox, stokmasuk, hargapokok, satuanstok);
+                for (i=0;i<satuan.length;i++)
+                {
+                    if ($(form.elements["harga-jual-"+satuan[i]+"-check"]).prop("checked"))
+                    {
+                        console.log("adding satuan"+satuan[i]);
+                        var hargajual = $(form.elements["harga-jual-"+satuan[i]+"-input"]).val();
+                        PembelianBaruAddSatuanDanStok( result.barangID, hargajual, satuan[i], konversiSatuan[i], "pcs", 1, stokmasuk, hargapokok, satuanstok);
+
+                    }
+                }
+                var pad ="00000";
+                var id = "" + result.barangID;
+                var StrId  = "C"+ pad.substring(0, pad.length - id.length)+id;
+                //InitStokBarangPage();
+                createAlert("success", "Barang baru "+StrId+" - "+form.elements["nama"].value.toString() +" berhasil ditambahkan");
+                form.reset();
+                $("#Pembelianbaru-CreatebarangModal").modal("toggle");
+                $("#Pembelianbaru-CreatebarangModal-harga-jual-box-check").iCheck("check").iCheck("disable");
+                for(i=0;i<satuan.length;i++)
+                    $("#Pembelianbaru-CreatebarangModal-harga-jual-"+satuan[i]+"-check").iCheck("uncheck");
+                PenjualanBaruGetBarang();
+
+                // DataBarang.pop();
+                // DataBarang.push({
+                //     id:id,
+                //     text:nama
+                // });
+                // DataBarang.push({
+                //     id:"new",
+                //     text:"+ Tambah Pelanggan Baru"
+                // });
+
+            }
+            else {
+                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+            }
+        });
+    }
+}
+
+function PembelianBaruAddSatuanDanStok( barangID, hargajual, namasatuan, konversi, namasatuanacuan, konversiacuan, stoktambahan, hargapokok, satuanstoktambahan)
+{
+    AddSatuan(currentToken, barangID, hargajual, namasatuan, konversi, namasatuanacuan, konversiacuan,
+        function(result2){
+            if(result2.token_status="success")
+            {
+                console.log(result2.satuanID);
+                if (stoktambahan>0 && (satuanstoktambahan == namasatuan))
+                {
+                    console.log("addinsstok"+namasatuan);
+                    console.log(currentToken, barangID, stoktambahan, hargapokok, result2.satuanID);
+                    AddStok(currentToken, barangID, stoktambahan, hargapokok, result2.satuanID, function(result5){
+                        if (result5.token_status=="success")
+                        {
+                            console.log(result5);
+                            console.log("stok nambah");
+                        }
+                    });
+                }
+            }
+            else
+                AddSatuanSuccess  =false;
+        }
+    );
+}
+
+
+function PembelianBaruDisableHargaPokokField()
+{
+    var form = document.getElementById("Pembelianbaru-CreatebarangModal-CreateForm");
+    var stok = form.elements['stok'].value;
+    if (stok==0 || stok=='' || stok==null)
+    {
+        form.elements['harga-pokok-input'].disabled= true;
+    }else {
+        form.elements['harga-pokok-input'].disabled= false;
+    }
+}
+
+
+function    PembelianBaruCreateBarangModalDisableHargaJualInput()
+{
+    var form = document.getElementById("Pembelianbaru-CreatebarangModal-CreateForm");
+
+    var satuanlokal =["grs", "kod", "lsn", "pcs"];
+    var i;
+
+    for (i=0;i<satuanlokal.length;i++)
+    {
+        if ($("#Pembelianbaru-CreatebarangModal-harga-jual-"+satuanlokal[i]+"-check").prop("checked"))
+        {
+            form.elements["harga-jual-"+satuanlokal[i]+"-input"].disabled =false;
+            $("#Pembelianbaru-CreatebarangModal-SatuanStokSelect-"+satuanlokal[i]+"Option").show();
+            $("#Pembelianbaru-CreatebarangModal-SatuanHpokokSelect-"+satuanlokal[i]+"Option").show();
+        }
+        else
+        {
+            form.elements["harga-jual-"+satuanlokal[i]+"-input"].disabled= true;
+            $("#Pembelianbaru-CreatebarangModal-SatuanStokSelect-"+satuanlokal[i]+"Option").hide();
+            $("#Pembelianbaru-CreatebarangModal-SatuanHpokokSelect-"+satuanlokal[i]+"Option").hide();
+        }
+    }
+}
+
+function PembelianBaruInputBarangChangeListener(node)
+{
+    var rowIndex = getRowIndex(node);
+    console.log(rowIndex);
+    if ($(node).val()=="new")
+        $("#Pembelianbaru-CreatebarangModal").modal('toggle');
+    else  if ($(node).val()!=''){
+        var temp= $("#Pembelianbaru-Input-"+twoDigitPad(rowIndex)+"-1").select2('data')[0];
+        if (temp) {
+            //var namabarang = temp.text;
+            document.getElementById("Pembelianbaru-Input-" + twoDigitPad(rowIndex) + "-2").value = temp.text;
+        }
+    }
+    PembelianBaruGetSatuanBarangList(node);
+    //PenjualanBaruDrawTable(node);
+}
+
 function InitPembelianBaruPage()
 {
     currentToken = localStorage.getItem("token");
@@ -829,7 +1012,7 @@ function InitPembelianBaruPage()
                 var StrId  = "TB"+ pad.substring(0, pad.length - id.length)+id;
                 createAlert("success", "Data Pembelian baru "+StrId+" berhasil ditambahkan");
             }
-            else if result==-2){
+            else if (result==-2){
                 createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
             }
 
@@ -859,56 +1042,69 @@ function InitPembelianBaruPage()
 
     PembelianBaruResetTable();
 
-    const BrowserWindow = require('electron').remote.BrowserWindow;
-    const ipcRenderer = require('electron').ipcRenderer;
-    const path = require('path');
-    document.getElementById("Pembelianbaru-PrintBesarButton").onclick = function () {
-        PembelianBaruSave(0, function(result){
-            if (result > 0)
-            {
-                const windowID = BrowserWindow.getFocusedWindow().id;
-                const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
-                let win = new BrowserWindow({ width: 800, height: 800, show: true });
-                win.loadURL(invisPath);
-                win.webContents.on('did-finish-load', function () {
-                    win.webContents.send('print-pembelian-besar', result, windowID)
-                });
-            }
-            else if (result==-2){
-                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-            }
-        });
+    // const BrowserWindow = require('electron').remote.BrowserWindow;
+    // const ipcRenderer = require('electron').ipcRenderer;
+    // const path = require('path');
+    // document.getElementById("Pembelianbaru-PrintBesarButton").onclick = function () {
+    //     PembelianBaruSave(0, function(result){
+    //         if (result > 0)
+    //         {
+    //             const windowID = BrowserWindow.getFocusedWindow().id;
+    //             const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
+    //             let win = new BrowserWindow({ width: 800, height: 800, show: true });
+    //             win.loadURL(invisPath);
+    //             win.webContents.on('did-finish-load', function () {
+    //                 win.webContents.send('print-pembelian-besar', result, windowID)
+    //             });
+    //         }
+    //         else if (result==-2){
+    //             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+    //         }
+    //     });
+    //
+    // };
+    // document.getElementById("Pembelianbaru-PrintKecilButton").onclick = function () {
+    //     PembelianBaruSave(0, function(result){
+    //         if (result > 0)
+    //         {
+    //             const windowID = BrowserWindow.getFocusedWindow().id;
+    //             const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
+    //             let win = new BrowserWindow({ width: 400, height: 800, show: true });
+    //             win.loadURL(invisPath);
+    //             win.webContents.on('did-finish-load', function () {
+    //                 win.webContents.send('print-pembelian-kecil', result, windowID)
+    //             });
+    //         }
+    //         else if (result==-2){
+    //             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+    //         }
+    //     });
+    //
+    // };
+    // ipcRenderer.on('pembelian-besar-printed', function (event, input, output) {//output=penjualanID
+    //     ChangePembelianPrintedStatus(currentToken, output, function(result){
+    //         if (result.token_status=="success")
+    //         {
+    //             createAlert("success", "Pembelian telah di simpan dan dicetak");
+    //             PembelianBaruResetTable();
+    //         }
+    //         else {
+    //             createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
+    //         }
+    //     });
+    // });
 
-    };
-    document.getElementById("Pembelianbaru-PrintKecilButton").onclick = function () {
-        PembelianBaruSave(0, function(result){
-            if (result > 0)
-            {
-                const windowID = BrowserWindow.getFocusedWindow().id;
-                const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
-                let win = new BrowserWindow({ width: 400, height: 800, show: true });
-                win.loadURL(invisPath);
-                win.webContents.on('did-finish-load', function () {
-                    win.webContents.send('print-pembelian-kecil', result, windowID)
-                });
-            }
-            else if (result==-2){
-                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-            }
-        });
 
-    };
-    ipcRenderer.on('pembelian-besar-printed', function (event, input, output) {//output=penjualanID
-        ChangePembelianPrintedStatus(currentToken, output, function(result){
-            if (result.token_status=="success")
-            {
-                createAlert("success", "Pembelian telah di simpan dan dicetak");
-                PembelianBaruResetTable();
-            }
-            else {
-                createAlert("danger", "Terdapat kesalahan pada autentikasi akun anda atau anda tidak memiliki hak akses yang benar, mohon log out lalu log in kembali ");
-            }
-        });
+    PembelianBaruDisableHargaPokokField();
+    PembelianBaruCreateBarangModalDisableHargaJualInput();
+
+    $(".check-satuan-createModal").off("ifChanged");
+    $(".check-satuan-createModal").on("ifChanged", function () {
+        PembelianBaruCreateBarangModalDisableHargaJualInput();
     });
+
+    document.getElementById("Pembelianbaru-CreatebarangModal-ConfirmButton").onclick= function () {
+        PembelianBaruCreateBarangConfirm();
+    };
 
 }

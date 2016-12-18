@@ -141,7 +141,7 @@ function populateDetailPembelian(currentPembelianID)
                         var TglTransaksiCicilan = new Date(pembelian.cicilan[i].tanggal_cicilan);
                         var TglTransaksiCicilanText = TglTransaksiCicilan.getDate() + "/" + (TglTransaksiCicilan.getMonth() + 1) + "/" + TglTransaksiCicilan.getFullYear();
 
-                        var TglPencairanCicilan = pembelian.cicilan[i].tanggal_pencairan;
+                        var TglPencairanCicilan = new Date(pembelian.cicilan[i].tanggal_pencairan);
                         var TglPencairanCicilanText = "-";
                         if (TglPencairanCicilan != null && TglPencairanCicilan != "") {
                             TglPencairanCicilanText = TglPencairanCicilan.getDate() + "/" + (TglPencairanCicilan.getMonth() + 1) + "/" + TglPencairanCicilan.getFullYear();
@@ -350,41 +350,41 @@ function InitDetailPembelianPage(curPembelianID)
         $("#Detailpembelian-EditButton").hide();
     }
 
-    const BrowserWindow = require('electron').remote.BrowserWindow;
-    const ipcRenderer = require('electron').ipcRenderer;
-    //ipcRenderer.removeAllListeners();
-    const path = require('path');
-
-    document.getElementById("Detailpembelian-PrintBesarButton").onclick = function () {
-        const windowID = BrowserWindow.getFocusedWindow().id;
-        const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
-        let win = new BrowserWindow({ width: 800, height: 800, show: true });
-        win.loadURL(invisPath);
-
-        win.webContents.on('did-finish-load', function () {
-            win.webContents.send('print-pembelian-besar', curPembelianID, windowID)
-        });
-    };
-    document.getElementById("Detailpembelian-PrintKecilButton").onclick = function () {
-        const windowID = BrowserWindow.getFocusedWindow().id;
-        const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
-        let win = new BrowserWindow({ width: 400, height: 800, show: true });
-        win.loadURL(invisPath);
-
-        win.webContents.on('did-finish-load', function () {
-            win.webContents.send('print-pembelian-kecil', curPembelianID, windowID)
-        });
-    };
-    ipcRenderer.on('pembelian-printed', function (event, input, output) {
-        ChangePembelianPrintedStatus(currentToken, curPembelianID, function(result){
-            if (result.token_status=="success")
-            {
-                console.log(result);
-                createAlert("success", "Pembelian telah di print");
-            }
-        });
-    //    ipcRenderer.removeAllListeners();
-    });
+    // const BrowserWindow = require('electron').remote.BrowserWindow;
+    // const ipcRenderer = require('electron').ipcRenderer;
+    // //ipcRenderer.removeAllListeners();
+    // const path = require('path');
+    //
+    // document.getElementById("Detailpembelian-PrintBesarButton").onclick = function () {
+    //     const windowID = BrowserWindow.getFocusedWindow().id;
+    //     const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianBesar.html');
+    //     let win = new BrowserWindow({ width: 800, height: 800, show: true });
+    //     win.loadURL(invisPath);
+    //
+    //     win.webContents.on('did-finish-load', function () {
+    //         win.webContents.send('print-pembelian-besar', curPembelianID, windowID)
+    //     });
+    // };
+    // document.getElementById("Detailpembelian-PrintKecilButton").onclick = function () {
+    //     const windowID = BrowserWindow.getFocusedWindow().id;
+    //     const invisPath = 'file://' + path.join(__dirname, 'printpages/PembelianKecil.html');
+    //     let win = new BrowserWindow({ width: 400, height: 800, show: true });
+    //     win.loadURL(invisPath);
+    //
+    //     win.webContents.on('did-finish-load', function () {
+    //         win.webContents.send('print-pembelian-kecil', curPembelianID, windowID)
+    //     });
+    // };
+    // ipcRenderer.on('pembelian-printed', function (event, input, output) {
+    //     ChangePembelianPrintedStatus(currentToken, curPembelianID, function(result){
+    //         if (result.token_status=="success")
+    //         {
+    //             console.log(result);
+    //             createAlert("success", "Pembelian telah di print");
+    //         }
+    //     });
+    // //    ipcRenderer.removeAllListeners();
+    // });
 
 
 }
